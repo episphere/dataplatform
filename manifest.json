@@ -1,10 +1,10 @@
 {
-  "name": "Confluence Data Platform",
-  "short_name": "Confluence",
+  "name": "The Breast Cancer Risk Prediction Project",
+  "short_name": "BCRP",
   "theme_color": "#2f3f59",
   "background_color": "#ffffff",
   "display": "standalone",
-  "start_url": "/confluence/",
+  "start_url": "/bcrp/",
   "icons": [
     {
       "src": "static/images/icons/icon-72x72.png",

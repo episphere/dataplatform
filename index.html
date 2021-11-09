@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en-US">
-
+<!--- Changes needed host url-->
 <head>
+    <!---
     <script>
         const host = location.host;
         let measurementID = '';
@@ -12,7 +13,7 @@
         const gtagScript = document.createElement('script');
         gtagScript.src = gtagSrc;
         document.head.appendChild(gtagScript);
-    </script>
+    </script> --->
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -21,10 +22,11 @@
     </script>
 
     <meta charset="UTF-8">
-    <meta name="Description" content="Confluence is a large international project to study breast cancer genetic susceptibility in women and men of multiple ancestries, by integrating existing and new genome-wide genetic data, across several breast cancer consortia. Confluence is funded by the US National Cancer Institute (NCI), and coordinated by the Division of Cancer Epidemiology and Genetics (DCEG) of NCI.">
+    <!---Need to Change Description Here-->
+    <meta name="Description" content="BCRP is a large international project to study breast cancer genetic susceptibility in women and men of multiple ancestries, by integrating existing and new genome-wide genetic data, across several breast cancer consortia. BCRP is funded by the US National Cancer Institute (NCI), and coordinated by the Division of Cancer Epidemiology and Genetics (DCEG) of NCI.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Confluence Data Platform</title>
+    <title>BCRP Data Platform</title>
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#cd2f5a" />
     <link rel="apple-touch-icon" href="./static/images/icons/icon-144x144.png">
@@ -64,22 +66,22 @@
                 <div class="collapse navbar-collapse" id="navbarToggler">
                     <div class="navbar-nav grid" id="navBarOptions">
                         <div class="grid-elements">
-                            <a class="nav-link nav-menu-links white-font" rel="noopener" href="#" title="Confluence Home" id="homePage">
+                            <a class="nav-link nav-menu-links white-font" rel="noopener" href="#" title="BCRP Home" id="homePage">
                                 Home
                             </a>
                         </div>
                         <div class="grid-elements dropdown">
-                            <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" role="button" title="Confluence" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                About Confluence
+                            <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" role="button" title="BCRP" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                About BCRP
                             </button>
                             <div class="dropdown-menu navbar-dropdown">
-                                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#about/overview" id="aboutConfluence">Learn about Confluence</a>
-                                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#join" id="resourcesConfluence">Join a Participating Consortium</a>
-                                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#contact" id="contactConfluence">Contact</a>
+                                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#about/overview" id="aboutBCRP">Learn about BCRP</a>
+                                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#join" id="resourcesBCRP">Join a Participating Consortium</a>
+                                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#contact" id="contactBCRP">Contact</a>
                             </div>
                         </div>
                         <div class="grid-elements dropdown">
-                            <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" role="button" title="Confluence" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" role="button" title="BCRP" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 About the Data
                             </button>
                             <div class="dropdown-menu navbar-dropdown">
@@ -88,7 +90,7 @@
                             </div>
                         </div>
                         <div class="grid-elements">
-                            <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/confluence/issues" title="Confluence github issues">
+                            <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/bcrpdataplatform/issues" title="BCRP github issues">
                                 Report issue
                             </a>
                         </div>

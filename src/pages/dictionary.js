@@ -1,3 +1,4 @@
+//Changes required regarding dictionary
 import { addEventFilterBarToggle } from "../event.js";
 import { getFile, hideAnimation, shortenText, tsv2Json, json2other } from "./../shared.js";
 import { addEventToggleCollapsePanelBtn, pageSizeTemplate, dataPagination, paginationTemplate } from "./description.js";
