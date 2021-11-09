@@ -63,7 +63,7 @@ export const infoDeckAfterLoggedIn = async () => {
                 <img src="./static/images/hero-banner.jpg" class="banner-logo" style="min-height: 120px;" alt="Confluence logo">
                 <div class="banner-overlay-text row justify-content-center text-center">
                     <div class="col-md-12">
-                        <h1 class="banner-overlay-h1">BCRP DATA PLATFORM</h1>
+                        <h1 class="banner-overlay-h1">BREAST CANCER RISK PREDICTION DATA PLATFORM</h1>
                         <div class="banner-overlay-line"></div>
                         <h2 class="banner-overlay-h3" style="font-size:1.7vw;">Uncovering breast cancer genetic susceptibility</h2>
                     </div>
