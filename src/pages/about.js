@@ -16,6 +16,7 @@ export const aboutConfluence = (activeTab, showDescripton) => {
     document.getElementById('confluenceDiv').innerHTML = template;
 }
 
+// Changes needed here for definitions
 export const renderOverView = async () => {
     let template = `
         <div class="main-summary-row">
@@ -28,7 +29,7 @@ export const renderOverView = async () => {
                 <div class="col align-left">
                     </br>
                     <span>
-                        Confluence includes breast cancer case-control studies, case series or clinical trials of female or male breast cancer (invasive or in situ) with the following:
+                        BCRP includes breast cancer case-control studies, case series or clinical trials of female or male breast cancer (invasive or in situ) with the following:
                     </span>
                     </br>
                     <ul>
@@ -38,14 +39,14 @@ export const renderOverView = async () => {
                     </ul>
                     </br>
                     <span>
-                        The Confluence project will harmonize existing genome-wide genotyping data from about 150,000 
+                        The BCRP project will harmonize existing genome-wide genotyping data from about 150,000 
                         cases and 200,000 controls and double it by generating new genotypes from at least 150,000 
                         additional breast cancer cases and 100,000 controls, for a total of at least 300,000 cases and 
                         300,000 controls of different ancestries.
                     </span>
                     </br></br>
                     <span>
-                        Confluence will also harmonize risk factor, pathology, treatment, toxicities and survival data across studies.
+                        BCRP will also harmonize risk factor, pathology, treatment, toxicities and survival data across studies.
                     </span>
                     </br></br>
                     <span>

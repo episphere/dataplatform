@@ -839,6 +839,7 @@ export const handleRangeRequests = async () => {
     console.log(dataArray)
 }
 
+// Need to change to BCRP urls
 export const applicationURLs = {
     'dev': 'https://episphere.github.io/confluence',
     'stage': 'https://confluence-stage.cancer.gov',

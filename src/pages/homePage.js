@@ -1,3 +1,4 @@
+// Major updates required
 import { getFileInfo } from "./../shared.js";
 
 export const infoDeck = () => {
@@ -8,7 +9,7 @@ export const infoDeck = () => {
                 <img src="./static/images/hero-banner.jpg" class="banner-logo" style="min-height: 120px;" alt="Confluence logo">
                 <div class="banner-overlay-text row justify-content-center text-center">
                     <div class="col-xl-12">
-                        <h1 class="banner-overlay-h1">CONFLUENCE DATA PLATFORM</h1>
+                        <h1 class="banner-overlay-h1">BREAST CANCER RISK PREDICTION DATA PLATFORM</h1>
                         <div class="banner-overlay-line"></div>
                         <h2 class="banner-overlay-h3" style="font-size:1.7vw;">Uncovering breast cancer genetic susceptibility</h2>
                     </div>
@@ -16,9 +17,9 @@ export const infoDeck = () => {
             </div>
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`
-                    template += cardContents({header: 'Learn about Confluence', button: 'Learn about Confluence', href: '#about/overview', icon: 'fa-download', explanation: 'Confluence is a large international project to study breast cancer genetic susceptibility in women and men of multiple ancestries, by integrating existing and new genome-wide genetic data.'})
-                    template += cardContents({header: 'Join a Participating Consortium', button: 'Join a Consortia', href: '#join', icon: 'fa-chart-bar', explanation: 'You can participate in Confluence by joining a breast cancer consortium.'})
-                    template += cardContents({header: 'Data Access', button: 'Data Access', href: '#data_access', icon: 'fa-handshake', explanation: 'The Confluence Project is currently generating new genotyping data and harmonizing existing data across participating studies.'})
+                    template += cardContents({header: 'Learn about BCRP', button: 'Learn about BCRP', href: '#about/overview', icon: 'fa-download', explanation: 'BCRP is a large international project to study breast cancer genetic susceptibility in women and men of multiple ancestries, by integrating existing and new genome-wide genetic data.'})
+                    template += cardContents({header: 'Join a Participating Consortium', button: 'Join a Consortia', href: '#join', icon: 'fa-chart-bar', explanation: 'You can participate in BCRP by joining a breast cancer consortium.'})
+                    template += cardContents({header: 'Data Access', button: 'Data Access', href: '#data_access', icon: 'fa-handshake', explanation: 'The BCRP Project is currently generating new genotyping data and harmonizing existing data across participating studies.'})
                     template += cardContents({header: 'Data Dictionary', button: 'Data dictionary', href: '#data_exploration/dictionary', icon: 'fa-database', explanation: 'View variables from participating studies.'})
                 template += `</div>
             </div>
@@ -62,7 +63,7 @@ export const infoDeckAfterLoggedIn = async () => {
                 <img src="./static/images/hero-banner.jpg" class="banner-logo" style="min-height: 120px;" alt="Confluence logo">
                 <div class="banner-overlay-text row justify-content-center text-center">
                     <div class="col-md-12">
-                        <h1 class="banner-overlay-h1">CONFLUENCE DATA PLATFORM</h1>
+                        <h1 class="banner-overlay-h1">BCRP DATA PLATFORM</h1>
                         <div class="banner-overlay-line"></div>
                         <h2 class="banner-overlay-h3" style="font-size:1.7vw;">Uncovering breast cancer genetic susceptibility</h2>
                     </div>
@@ -73,7 +74,7 @@ export const infoDeckAfterLoggedIn = async () => {
                 if(studyDescription) template += cardContents({header: 'Study Description', button: 'Study description', href: '#about/description', icon: 'fa-file-alt', explanation: 'View descriptions of participating studies.'})
                 template += cardContents({header: 'Data Dictionary', button: 'Data dictionary', href: '#data_exploration/dictionary', icon: 'fa-database', explanation: 'View variables from participating studies.'})
                 template += cardContents({header: 'Explore Data', button: 'Explore Data', href: '#data_exploration/summary', icon: 'fa-chart-bar', explanation: 'Explore summary-level data to plan analyses.'})
-                template += cardContents({header: 'Data Access', button: 'Data Access', href: '#data_access', icon: 'fa-handshake', explanation: 'The Confluence Project is currently generating new genotyping data and harmonizing existing data across participating studies.'})
+                template += cardContents({header: 'Data Access', button: 'Data Access', href: '#data_access', icon: 'fa-handshake', explanation: 'The BCRP Project is currently generating new genotyping data and harmonizing existing data across participating studies.'})
                 template += `</div>
             </div>
         </div>
@@ -100,7 +101,7 @@ export const infoDeckAfterLoggedIn = async () => {
         </div>
         <div class="ternary-bg">
             <div class="container align-left confluence-info font-family-helvetica">
-                <div>Confluence is a large international project to study breast cancer genetic susceptibility in women and men of multiple ancestries, by integrating existing and new genome-wide genetic data, across several breast cancer consortia. Confluence is funded by the US National Cancer Institute (NCI), and coordinated by the Division of Cancer Epidemiology and Genetics (DCEG) of NCI.</div>
+                <div>BCRP is a large international project to study breast cancer genetic susceptibility in women and men of multiple ancestries, by integrating existing and new genome-wide genetic data, across several breast cancer consortia. Confluence is funded by the US National Cancer Institute (NCI), and coordinated by the Division of Cancer Epidemiology and Genetics (DCEG) of NCI.</div>
             </div>
         </div>
     `
