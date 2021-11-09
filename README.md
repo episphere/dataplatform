@@ -4,6 +4,6 @@
 
 We are altering Confluence Platform to meet the needs of BCRP Data Platform.
 
-BCRP Data Platform, live at https://episphere.github.io/bcrpdataplatform
+BCRP Data Platform, live at https://episphere.github.io/bcrpDataPlatform
 
 Confluence project, live at  https://episphere.github.io/confluence
