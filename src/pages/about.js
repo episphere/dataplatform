@@ -21,7 +21,7 @@ export const renderOverView = async () => {
     let template = `
         <div class="main-summary-row">
             <div class="align-left">
-                <h1 class="page-header">Learn about Confluence</h1>
+                <h1 class="page-header">Learn about BCRP</h1>
             </div>
         </div>
         <div class="home-page-stats font-size-18">
