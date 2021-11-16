@@ -3,18 +3,18 @@ import { applicationURLs } from './../shared.js';
 export const navBarMenutemplate = () => {
     return `
         <div class="grid-elements">
-            <a class="nav-link nav-menu-links white-font" href="#home" title="BCRP Home" id="homePage">
+            <a class="nav-link nav-menu-links white-font" href="#home" title="BCRPP Home" id="homePage">
                 Home
             </a>
         </div>
         <div class="grid-elements dropdown">
-            <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" title="BCRP" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                About BCRP
+            <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" title="BCRPP" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                About BCRPP
             </button>
             <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#about/overview" id="aboutBCRP">Learn about BCRP</a>
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#join" id="resourcesBCRP">Join a Participating Consortium</a>
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#contact" id="contactBCRP">Contact</a>
+                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#about/overview" id="aboutBCRPP">Learn about BCRPP</a>
+                <!---<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#join" id="resourcesBCRPP">Join a Participating Consortium</a>--->
+                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#contact" id="contactBCRPP">Contact</a>
             </div>
         </div>
         <div class="grid-elements dropdown">
@@ -53,7 +53,7 @@ export const navBarMenutemplate = () => {
             </div>
         </div>
         <div class="grid-elements">
-            <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/bcrpdataplatform/issues" title="BCRP github issues">
+            <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/bcrpDataPlatform/issues" title="BCRPP github issues">
                 Report issue
             </a>
         </div>

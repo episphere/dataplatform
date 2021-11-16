@@ -79,7 +79,7 @@ export const confluence = async () => {
             if (dataSummaryElement.classList.contains('navbar-active')) return;
             showAnimation();
             assignNavbarActive(dataSummaryElement, 1)
-            document.title = 'BCRP - Summary Statistics';
+            document.title = 'BCRPP - Summary Statistics';
             confluenceDiv.innerHTML = dataSummary('Summary Statistics', false, true);
             addEventUpdateSummaryStatsData();
             dataSummaryStatisticsTemplate();
@@ -101,7 +101,7 @@ export const confluence = async () => {
                 const confluenceDiv = document.getElementById('confluenceDiv');
                 showAnimation();
                 assignNavbarActive(dataSummarySubsetElement, 1);
-                document.title = 'BCRP - Subset Statistics';
+                document.title = 'BCRPP - Subset Statistics';
                 confluenceDiv.innerHTML = dataSummary('Subset Statistics', false, true);
                 addEventUpdateSummaryStatsData();
                 removeActiveClass('nav-link', 'active');
@@ -115,7 +115,7 @@ export const confluence = async () => {
                 const confluenceDiv = document.getElementById('confluenceDiv');
                 showAnimation();
                 assignNavbarActive(dataDictionaryElement, 1);
-                document.title = 'BCRP - Data Dictionary';
+                document.title = 'BCRPP - Data Dictionary';
                 confluenceDiv.innerHTML = dataSummary('Data Dictionary', true, false);
                 addEventUpdateSummaryStatsData();
                 removeActiveClass('nav-link', 'active');
@@ -222,7 +222,7 @@ const manageRouter = async () => {
         const element = document.getElementById('aboutConfluence');
         if(!element) return;
         if(element.classList.contains('navbar-active')) return;
-        document.title = 'BCRP - Overview';
+        document.title = 'BCRPP - Overview';
         assignNavbarActive(element, 1);
         aboutConfluence('overview');
         renderOverView();
@@ -231,7 +231,7 @@ const manageRouter = async () => {
         const element = document.getElementById('resourcesConfluence');
         if(!element) return;
         if(element.classList.contains('navbar-active')) return;
-        document.title = 'BCRP - Resources';
+        document.title = 'BCRPP - Resources';
         assignNavbarActive(element, 1);
         confluenceResources();
     }
@@ -239,7 +239,7 @@ const manageRouter = async () => {
         const element = document.getElementById('contactConfluence');
         if(!element) return;
         if(element.classList.contains('navbar-active')) return;
-        document.title = 'BCRP - Contact';
+        document.title = 'BCRPP - Contact';
         assignNavbarActive(element, 1);
         confluenceDiv.innerHTML = confluenceContactPage();
     }
@@ -247,7 +247,7 @@ const manageRouter = async () => {
         const element = document.getElementById('dataRequest');
         if(!element) return;
         if(element.classList.contains('navbar-active')) return;
-        document.title = 'BCRP - Data Access';
+        document.title = 'BCRPP - Data Access';
         assignNavbarActive(element, 1);
         confluenceDiv.innerHTML = dataRequestTemplate();
     }
@@ -256,7 +256,7 @@ const manageRouter = async () => {
         if (!dataDictionaryElement || dataDictionaryElement.classList.contains('navbar-active')) return;
         showAnimation();
         assignNavbarActive(dataDictionaryElement, 1);
-        document.title = 'BCRP - Data Dictionary';
+        document.title = 'BCRPP - Data Dictionary';
         confluenceDiv.innerHTML = dataSummary('Data Dictionary', true, false, true);
         removeActiveClass('nav-link', 'active');
         document.querySelectorAll('[href="#data_exploration/dictionary"]')[1].classList.add('active');

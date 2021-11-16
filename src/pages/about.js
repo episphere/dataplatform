@@ -21,7 +21,7 @@ export const renderOverView = async () => {
     let template = `
         <div class="main-summary-row">
             <div class="align-left">
-                <h1 class="page-header">Learn about BCRP</h1>
+                <h1 class="page-header">Learn about BCRPP</h1>
             </div>
         </div>
         <div class="home-page-stats font-size-18">
@@ -29,29 +29,21 @@ export const renderOverView = async () => {
                 <div class="col align-left">
                     </br>
                     <span>
-                        BCRP includes breast cancer case-control studies, case series or clinical trials of female or male breast cancer (invasive or in situ) with the following:
-                    </span>
-                    </br>
-                    <ul>
-                        <li>Genome-wide genotyping data</li>
-                        <li>Risk factor, pathology, treatment, toxicities and survival data</li>
-                        <li>Ethics approval and consent for germline genetic</li>
-                    </ul>
-                    </br>
-                    <span>
-                        The BCRP project will harmonize existing genome-wide genotyping data from about 150,000 
-                        cases and 200,000 controls and double it by generating new genotypes from at least 150,000 
-                        additional breast cancer cases and 100,000 controls, for a total of at least 300,000 cases and 
-                        300,000 controls of different ancestries.
+                    The BCRPP will develop a comprehensive tool that will predict breast cancer risk, overall and by sub-types, across racial/ethnic groups.
                     </span>
                     </br></br>
                     <span>
-                        BCRP will also harmonize risk factor, pathology, treatment, toxicities and survival data across studies.
+                    The BCRPP includes individual level data on over 1.5 million  women from the NCI Cohort Consortium Study and other large cohort studies 
+                    and is harmonizing information on family-history, polygenic risk-scores, anthropometric, life-style and reproductive factors, 
+                    hormonal biomarkers and mammographic density. The aims of the BCRP are:
                     </span>
                     </br></br>
-                    <span>
-                        Genotyping and harmonization of data is expected to be completed in 2022.
-                    </span>
+                    <div style="margin-left: 40px"> Aim 1. Develop a comprehensive and multi-ethnic model for estimating absolute risk of breast cancer by incorporating information on known breast cancer risk factors </div>
+                    </br>
+                    <div style="margin-left: 40px"> Aim 2. Extend the multi-ethnic risk model for the risk prediction of estrogen receptor definced breast cancer </div>
+                    </br>
+                    <div style="margin-left: 40px"> Aim 3. Evaluate the validity of the risk models developed in Aim 1 and Aim 2 in integrated health care systems, mammography, registries, and an ongoing risk-based mammographic screening trail in the US </div>
+                    </br>
                 </div>
             </div>
             <div class="align-left" id="confluenceDataSummary"></div>
