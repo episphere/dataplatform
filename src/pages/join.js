@@ -1,5 +1,5 @@
 export const confluenceResources = () => {
-    let template = `
+   let template = `
         <div class="general-bg padding-bottom-1rem">
             <div class="container body-min-height">
                 <div class="main-summary-row">
@@ -44,10 +44,10 @@ export const confluenceResources = () => {
                         <div class="consortia-desc">
                             You can also participate through a direct collaboration with the NCI Division of Cancer Epidemiology and Genetics.
                         </div>
-                        <div class="consortia-desc">
+                        <!---<div class="consortia-desc">
                             For more information:</br>
                             Visit: <a href="https://dceg.cancer.gov/research/cancer-types/breast-cancer/confluence-project" target="__blank">https://dceg.cancer.gov/research/cancer-types/breast-cancer/confluence-project</a></br>
-                            Email: <a href="mailto:ConfluenceProject@nih.gov">ConfluenceProject@nih.gov</a>
+                            Email: <a href="mailto:ConfluenceProject@nih.gov">ConfluenceProject@nih.gov</a>--->
                         </div>
                     <div>
                 <div>
