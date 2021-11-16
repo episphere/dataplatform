@@ -9,18 +9,18 @@ export const infoDeck = () => {
                 <img src="./static/images/hero-banner.jpg" class="banner-logo" style="min-height: 120px;" alt="Confluence logo">
                 <div class="banner-overlay-text row justify-content-center text-center">
                     <div class="col-xl-12">
-                        <h1 class="banner-overlay-h1">BREAST CANCER RISK PREDICTION DATA PLATFORM</h1>
+                        <h1 class="banner-overlay-h1">The Breast Cancer Risk Prediction Project (BCRPP)</h1>
                         <div class="banner-overlay-line"></div>
-                        <h2 class="banner-overlay-h3" style="font-size:1.7vw;">Uncovering breast cancer genetic susceptibility</h2>
+                        <h2 class="banner-overlay-h3" style="font-size:1.7vw;"> Building an integrated, multi-ethnic breast cancer risk prediction model</h2>
                     </div>
                 </div>
             </div>
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`
-                    template += cardContents({header: 'Learn about BCRP', button: 'Learn about BCRP', href: '#about/overview', icon: 'fa-download', explanation: 'BCRP is a large international project to study breast cancer genetic susceptibility in women and men of multiple ancestries, by integrating existing and new genome-wide genetic data.'})
-                    template += cardContents({header: 'Join a Participating Consortium', button: 'Join a Consortia', href: '#join', icon: 'fa-chart-bar', explanation: 'You can participate in BCRP by joining a breast cancer consortium.'})
-                    template += cardContents({header: 'Data Access', button: 'Data Access', href: '#data_access', icon: 'fa-handshake', explanation: 'The BCRP Project is currently generating new genotyping data and harmonizing existing data across participating studies.'})
-                    template += cardContents({header: 'Data Dictionary', button: 'Data dictionary', href: '#data_exploration/dictionary', icon: 'fa-database', explanation: 'View variables from participating studies.'})
+                    template += cardContents({header: 'Learn about BCRPP', button: 'Learn about BCRPP', href: '#about/overview', icon: 'fa-download', explanation: 'View main goals and collaborating institutions.'})
+                    template += cardContents({header: 'Participating Studies', button: 'Study Description', href: '#join', icon: 'fa-chart-bar', explanation: 'View description of prospective cohort studies.'})
+                    template += cardContents({header: 'Data Access', button: 'Data Access', href: '#data_access', icon: 'fa-handshake', explanation: 'View procedures for accessing data.'})
+                    template += cardContents({header: 'Data Dictionary', button: 'Data Dictionary', href: '#data_exploration/dictionary', icon: 'fa-database', explanation: 'View data types collected from participating cohort studies.'})
                 template += `</div>
             </div>
         </div>
@@ -29,7 +29,7 @@ export const infoDeck = () => {
             <div class="font-size-28 font-bold font-family-helvetica our-goals mt-3 mb-2">OUR GOALS</div>
             <div class="row">
                 <div class="col-lg-3"></div>
-                <div class="col-lg-6 font-size-18 align-left">To build a large research data resource of approximately 300,000 breast cancer cases and 300,000 controls for multi-ancestry genome wide association studies (GWAS) to:</div>
+                <div class="col-lg-6 font-size-18 align-left">To build a large-scale collaborative research resource with data from over 1.5 million women of different race/ethnic backgrounds participating in prospective cohort studies or trials to:</div>
                 <div class="col-lg-3"></div>
             </div>
             <br>
@@ -37,9 +37,8 @@ export const infoDeck = () => {
                 <div class="col-lg-3"></div>
                 <div class="col-lg-auto font-size-18 align-left mb-3">
                     <ul>
-                        <li>Discover variants for breast cancer risk overall and by subtype</li>
-                        <li>Develop multi-ancestry polygenic risk scores for personalized risk assessment</li>
-                        <li>Discover variants for breast cancer survival, pharmacogenomics, and second cancers</li>
+                        <li>Develop comprehensive breast cancer risk prediction models for precision prevention in diverse populations</li>
+                        <li>Validate newly developed models in integrated health care systems or breast cancer screening trials</li>
                     </ul>
                 </div>
                 <div class="col-lg-2"></div>
@@ -47,7 +46,7 @@ export const infoDeck = () => {
         </div>
         <div class="ternary-bg">
             <div class="container align-left confluence-info font-family-helvetica">
-                <div>Confluence is a large international project to study breast cancer genetic susceptibility in women and men of multiple ancestries, by integrating existing and new genome-wide genetic data, across several breast cancer consortia. Confluence is funded by the US National Cancer Institute (NCI), and coordinated by the Division of Cancer Epidemiology and Genetics (DCEG) of NCI.</div>
+                <div>The BCRPP is funded by the US National Cancer Institure (NCI) and coordinated by the Division of Cancer Epidemiology and Genetics (DCEG) of NCI and the Harvard T.H. Chan School of Public Health in collaboration with the NCI Cohort Consortium</div>
             </div>
         </div>
     `
@@ -65,16 +64,16 @@ export const infoDeckAfterLoggedIn = async () => {
                     <div class="col-md-12">
                         <h1 class="banner-overlay-h1">BREAST CANCER RISK PREDICTION DATA PLATFORM</h1>
                         <div class="banner-overlay-line"></div>
-                        <h2 class="banner-overlay-h3" style="font-size:1.7vw;">Uncovering breast cancer genetic susceptibility</h2>
+                        <h2 class="banner-overlay-h3" style="font-size:1.7vw;"> Building an integrated, multi-ethnic breast cancer risk prediction model</h2>
                     </div>
                 </div>
             </div>
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`
-                if(studyDescription) template += cardContents({header: 'Study Description', button: 'Study description', href: '#about/description', icon: 'fa-file-alt', explanation: 'View descriptions of participating studies.'})
-                template += cardContents({header: 'Data Dictionary', button: 'Data dictionary', href: '#data_exploration/dictionary', icon: 'fa-database', explanation: 'View variables from participating studies.'})
+                if(studyDescription) template += cardContents({header: 'Study Description', button: 'Study Description', href: '#about/description', icon: 'fa-file-alt', explanation: 'View descriptions of participating studies.'})
+                template += cardContents({header: 'Data Dictionary', button: 'Data Dictionary', href: '#data_exploration/dictionary', icon: 'fa-database', explanation: 'View variables from participating studies.'})
                 template += cardContents({header: 'Explore Data', button: 'Explore Data', href: '#data_exploration/summary', icon: 'fa-chart-bar', explanation: 'Explore summary-level data to plan analyses.'})
-                template += cardContents({header: 'Data Access', button: 'Data Access', href: '#data_access', icon: 'fa-handshake', explanation: 'The BCRP Project is currently generating new genotyping data and harmonizing existing data across participating studies.'})
+                template += cardContents({header: 'Data Access', button: 'Data Access', href: '#data_access', icon: 'fa-handshake', explanation: 'View procedures for accessing data.'})
                 template += `</div>
             </div>
         </div>
@@ -83,7 +82,7 @@ export const infoDeckAfterLoggedIn = async () => {
             <div class="font-size-28 font-bold font-family-helvetica our-goals mt-3 mb-2">OUR GOALS</div>
             <div class="row">
                 <div class="col-lg-3"></div>
-                <div class="col-lg-6 font-size-18 align-left">To build a large research data resource of approximately 300,000 breast cancer cases and 300,000 controls for multi-ancestry genome wide association studies (GWAS) to:</div>
+                <div class="col-lg-6 font-size-18 align-left">To build a large-scale collaborative research resource with data from over 1.5 million women of different race/ethnic backgrounds participating in prospective cohort studies or trials to:</div>
                 <div class="col-lg-3"></div>
             </div>
             <br>
@@ -91,9 +90,8 @@ export const infoDeckAfterLoggedIn = async () => {
                 <div class="col-lg-3"></div>
                 <div class="col-lg-auto font-size-18 align-left mb-3">
                     <ul>
-                        <li>Discover variants for breast cancer risk overall and by subtype</li>
-                        <li>Develop multi-ancestry polygenic risk scores for personalized risk assessment</li>
-                        <li>Discover variants for breast cancer survival, pharmacogenomics, and second cancers</li>
+                        <li>Develop comprehensive breast cancer risk prediction models for precision prevention in diverse populations</li>
+                        <li>Validate newly developed models in integrated health care systems or breast cancer screening trials</li>
                     </ul>
                 </div>
                 <div class="col-lg-2"></div>
@@ -101,7 +99,7 @@ export const infoDeckAfterLoggedIn = async () => {
         </div>
         <div class="ternary-bg">
             <div class="container align-left confluence-info font-family-helvetica">
-                <div>BCRP is a large international project to study breast cancer genetic susceptibility in women and men of multiple ancestries, by integrating existing and new genome-wide genetic data, across several breast cancer consortia. Confluence is funded by the US National Cancer Institute (NCI), and coordinated by the Division of Cancer Epidemiology and Genetics (DCEG) of NCI.</div>
+                <div>View main goals and collaborating institutions.</div>
             </div>
         </div>
     `

@@ -63,7 +63,7 @@ export const addEventConsortiaSelect = () => {
         let entries = (await getFolderItems(value)).entries;
         
         // check if study document exists
-        const documentExists = entries.filter(dt => dt.name.trim().toLowerCase() === 'bcrp data from studies');
+        const documentExists = entries.filter(dt => dt.name.trim().toLowerCase() === 'BCRPP data from studies');
         if(documentExists.length === 1){
             entries = (await getFolderItems(documentExists[0].id)).entries;
         }
@@ -683,7 +683,7 @@ export const addEventDataGovernanceNavBar = (bool) => {
         // if(dataGovernanceElement.classList.contains('navbar-active')) return;
         showAnimation();
         assignNavbarActive(dataGovernanceElement, 2 );
-        document.title = 'BCRP - Data Governance';
+        document.title = 'BCRPP - Data Governance';
         const confluenceDiv = document.getElementById('confluenceDiv');
         // if(bool){
             confluenceDiv.classList.add('general-bg');
@@ -924,7 +924,7 @@ export const addEventMyProjects = () => {
         if(myProjects.classList.contains('navbar-active')) return;
         showAnimation();
         assignNavbarActive(myProjects, 2);
-        document.title = 'BCRP - My Projects';
+        document.title = 'BCRPP - My Projects';
         myProjectsTemplate();
     });
 }
