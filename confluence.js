@@ -219,16 +219,17 @@ const manageRouter = async () => {
         hideAnimation();
     }
     else if(hash === '#about/overview'){
-        const element = document.getElementById('aboutConfluence');
+        const element = document.getElementById('aboutBCRPP');
         if(!element) return;
         if(element.classList.contains('navbar-active')) return;
         document.title = 'BCRPP - Overview';
+        console.log("Overview")
         assignNavbarActive(element, 1);
         aboutConfluence('overview');
         renderOverView();
     }
     else if(hash === '#join'){
-        const element = document.getElementById('resourcesConfluence');
+        const element = document.getElementById('resourcesBCRPP');
         if(!element) return;
         if(element.classList.contains('navbar-active')) return;
         document.title = 'BCRPP - Resources';
@@ -236,7 +237,7 @@ const manageRouter = async () => {
         confluenceResources();
     }
     else if(hash === '#contact'){
-        const element = document.getElementById('contactConfluence');
+        const element = document.getElementById('contactBCRPP');
         if(!element) return;
         if(element.classList.contains('navbar-active')) return;
         document.title = 'BCRPP - Contact';
@@ -331,6 +332,7 @@ const manageHash = async () => {
         const element = document.getElementById('aboutConfluence');
         if(!element) return;
         // if(element.classList.contains('navbar-active')) return;
+        console.log("Overview manageHash")
         assignNavbarActive(element, 1);
         document.title = 'Confluence - Overview';
         const fileInfo = await getFileInfo(761599566277);
