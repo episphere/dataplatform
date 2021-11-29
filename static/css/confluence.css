@@ -1,6 +1,7 @@
 h4 {
     color:gray;
-    font-family:sans-serif;
+    /* font-family:sans-serif; */
+    font-family: 'Montserrat';
 }
 
 .fa-copy, .getAllFileversions, .fa-folder-minus {
@@ -29,7 +30,7 @@ h4 {
 }
 
 body {
-    font-family: 'Helvetica Neue' !important;
+    font-family: 'Noto Sans' !important;
 }
 
 #page {
@@ -434,9 +435,9 @@ label {
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-.first-list-item {
+/* .first-list-item { */
     /* margin-top: 1rem; */
-}
+/* } */
 
 .main-summary-row {
     flex-wrap: wrap;
@@ -967,14 +968,21 @@ label {
 .nav-menu-links:hover, .nav-menu-links:focus {
     cursor: pointer;
     background-color: #ffffff !important;
-    color: #A41652 !important;
+    /* color: #A41652 !important; */
+    color: #2a72a5 !important;
     border: 0px;
 }
 
-.navbar-active {
+/* .navbar-active {
     border-bottom: 4px solid #A41652 !important;
     background-color: #ffffff !important;
     color: #A41652 !important;
+} */
+
+.navbar-active {
+    border-bottom: 4px solid #2a72a5 !important;
+    background-color: #ffffff !important;
+    color: #2a72a5 !important;
 }
 
 .dropdown-btn {
@@ -991,7 +999,8 @@ label {
 
 .navbar-dropdown {
     background-color: #ffffff !important;
-    color: #A41652 !important;
+    /* color: #A41652 !important; */
+    color: #2a72a5 !important;
     padding: 0 !important;
 }
 
@@ -1017,7 +1026,8 @@ label {
 
 .dropdown-menu-links {
     text-decoration: none !important;
-    color: #A41652 !important;
+    /* color: #A41652 !important; */
+    color: #2a72a5 !important;
     padding: 0.35rem 1rem !important;
     font-weight: bold !important;
 }
@@ -1044,17 +1054,17 @@ label {
 }
 
 .banner-overlay-h1 {
-    font-size:2.5vw;
+    font-size:3vw;
     color: #ffffff;
     font-weight: bold;
-    font-family: 'Helvetica Neue', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     margin: 0px !important;
 }
 
 .banner-overlay-h3 {
     font-size:1.5vw;
     color: #ffffff;
-    font-family: 'Helvetica Neue', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .rounded-circle {
@@ -1070,7 +1080,8 @@ label {
 }
 
 .primary-bg {
-    background-color: #A41652 !important;
+    /* background-color: #A41652 !important; */
+    background-color: #319fbe !important;
 }
 
 .secondary-bg {
@@ -1088,6 +1099,10 @@ label {
 
 .font-family-helvetica {
     font-family: 'Helvetica Neue', sans-serif !important;
+}
+
+.font-family-montserrat {
+    font-family: 'Montserrat', sans-serif !important;
 }
 
 .inverse-triangle {
@@ -1731,10 +1746,25 @@ form {
     margin-bottom: 15px;
 }
 
-.banner-logo {
+/* .banner-logo {
     max-width: 100%;
     height: auto;
+} */
+
+.banner-logo {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 450px;
+    background-image: url("../images/nci-vol-10623-150.jpg")
 }
+
+@media only screen and (max-device-width: 1366px) {
+    .banner-logo {
+      background-attachment: scroll;
+    }
+  }
 
 .active-page {
     color: #ffffff !important;
