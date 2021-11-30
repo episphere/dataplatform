@@ -60,12 +60,13 @@ export const infoDeckAfterLoggedIn = async () => {
     template += `
         <div class="secondary-bg padding-bottom-1rem">
             <div class="confluence-banner">
-                <img src="./static/images/nci-vol-10623-150.jpg" class="banner-logo" style="min-height: 120px; max-height=450px; width: 100%;" alt="Confluence logo">
-                <div class="banner-overlay-text row justify-content-center text-center">
-                    <div class="col-md-12">
-                        <h1 class="banner-overlay-h1">The Breast Cancer Risk Prediction Project (BCRPP)</h1>
-                        <div class="banner-overlay-line"></div>
-                        <h2 class="banner-overlay-h3" style="font-size:1.7vw;"> Building an integrated, multi-ethnic breast cancer risk prediction model</h2>
+                <div class="banner-logo">
+                    <div class="banner-overlay-text row justify-content-center text-center">
+                        <div class="col-md-12">
+                            <h1 class="banner-overlay-h1">The Breast Cancer Risk Prediction Project (BCRPP)</h1>
+                            <div class="banner-overlay-line"></div>
+                            <h2 class="banner-overlay-h3" style="font-size:1.7vw;"> Building an integrated, multi-ethnic breast cancer risk prediction model</h2>
+                        </div>
                     </div>
                 </div>
             </div>
