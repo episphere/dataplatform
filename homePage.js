@@ -1,4 +1,5 @@
 // Major updates required
+// Need to update infoDeck and infoDeckAfterLoggedIn to match template
 import { getFileInfo } from "./../shared.js";
 
 export const infoDeck = () => {
@@ -35,17 +36,17 @@ export const infoDeck = () => {
             <br>
             <div class="row">
                 <div class="col-lg-3"></div>
-                <div class="col-lg-auto font-size-18 align-left mb-3">
+                <div class="col-lg-6 font-size-18 align-left mb-3">
                     <ul>
                         <li>Develop comprehensive breast cancer risk prediction models for precision prevention in diverse populations</li>
                         <li>Validate newly developed models in integrated health care systems or breast cancer screening trials</li>
                     </ul>
                 </div>
-                <div class="col-lg-2"></div>
+                <div class="col-lg-3"></div>
             </div>
         </div>
         <div class="ternary-bg">
-            <div class="container align-left confluence-info font-family-helvetica">
+            <div class="container align-left confluence-info font-family-montserrat">
                 <div>The BCRPP is funded by the US National Cancer Institure (NCI) and coordinated by the Division of Cancer Epidemiology and Genetics (DCEG) of NCI and the Harvard T.H. Chan School of Public Health in collaboration with the NCI Cohort Consortium</div>
             </div>
         </div>
@@ -79,7 +80,7 @@ export const infoDeckAfterLoggedIn = async () => {
         </div>
         <div class="secondary-bg inverse-triangle"></div>
         <div class="container align-center">
-            <div class="font-size-28 font-bold font-family-helvetica our-goals mt-3 mb-2">OUR GOALS</div>
+            <div class="font-size-28 font-bold font-family-montserrat our-goals mt-3 mb-2">OUR GOALS</div>
             <div class="row">
                 <div class="col-lg-3"></div>
                 <div class="col-lg-6 font-size-18 align-left">To build a large-scale collaborative research resource with data from over 1.5 million women of different race/ethnic backgrounds participating in prospective cohort studies or trials to:</div>
@@ -88,17 +89,17 @@ export const infoDeckAfterLoggedIn = async () => {
             <br>
             <div class="row">
                 <div class="col-lg-3"></div>
-                <div class="col-lg-auto font-size-18 align-left mb-3">
+                <div class="col-lg-6 font-size-18 align-left mb-3">
                     <ul>
                         <li>Develop comprehensive breast cancer risk prediction models for precision prevention in diverse populations</li>
                         <li>Validate newly developed models in integrated health care systems or breast cancer screening trials</li>
                     </ul>
                 </div>
-                <div class="col-lg-2"></div>
+                <div class="col-lg-3"></div>
             </div>
         </div>
         <div class="ternary-bg">
-            <div class="container align-left confluence-info font-family-helvetica">
+            <div class="container align-left confluence-info font-family-montserrat">
                 <div>View main goals and collaborating institutions.</div>
             </div>
         </div>
