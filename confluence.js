@@ -329,7 +329,7 @@ const manageHash = async () => {
         hideAnimation();
     }
     else if(hash === '#about/overview'){
-        const element = document.getElementById('aboutConfluence');
+        const element = document.getElementById('aboutBCRPP');
         if(!element) return;
         // if(element.classList.contains('navbar-active')) return;
         console.log("Overview manageHash")
@@ -341,7 +341,7 @@ const manageHash = async () => {
         hideAnimation();
     }
     else if(hash === '#about/description'){
-        const element = document.getElementById('aboutConfluence');
+        const element = document.getElementById('aboutBCRPP');
         if(!element) return;
         // if(element.classList.contains('navbar-active')) return;
         assignNavbarActive(element, 1);
@@ -358,7 +358,7 @@ const manageHash = async () => {
         hideAnimation();
     }
     else if(hash === '#join'){
-        const element = document.getElementById('resourcesConfluence');
+        const element = document.getElementById('resourcesBCRPP');
         if(!element) return;
         if(element.classList.contains('navbar-active')) return;
         assignNavbarActive(element, 1);
@@ -367,7 +367,7 @@ const manageHash = async () => {
         hideAnimation();
     }
     else if(hash === '#contact'){
-        const element = document.getElementById('contactConfluence');
+        const element = document.getElementById('contactBCRPP');
         if(!element) return;
         if(element.classList.contains('navbar-active')) return;
         assignNavbarActive(element, 1);
