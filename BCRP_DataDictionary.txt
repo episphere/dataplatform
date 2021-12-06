@@ -1,4 +1,4 @@
-Category	Sub-Category	Variable	Label	Variable Type	Coding
+Category	Sub-Category	Variable Name	Label	Variable Type	Coding
 Core	Identification/Dates	subject_id	Individual ID combining study and person info	Character	"Study ID + ""_"" + person ID (e.g.: XX_XXX)"
 Core	Identification/Dates	id	Individual ID (original from study)	Character	Study specific person ID
 Core	Identification/Dates	record_date	Date of data/sample collection	Date	"dd/mm/yyyy
@@ -14,7 +14,7 @@ Core	Demographics	birth_year	Birth year	Date (yyyy)	"yyyy
 8888- Missing/Unknown"
 Core	Demographics	sex	Sex	Categorical	"0 - Female
 1 - Male"
-Core	Demographics	age	Age at record_dateï¿½ï¿½ï¿½	Integer	Age in years
+Core	Demographics	age	Age at record_date   	Integer	Age in years
 Core	Demographics	race	Race (US OMB categories)	Categorical	"1 - White
 2 - Black/African American
 3 - Asian

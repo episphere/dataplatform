@@ -70,11 +70,8 @@ const countPublicStatistics = (d, caseControl) => {
     const data = JSON.parse(JSON.stringify(d));
     const element = document.getElementById('confluenceDataSummary');
     let totalConsortia = 0;
-    let totalCases = 0;
-    let totalControls = 0;
-    let totalStudies = 0;
-    let totalBRCA1 = 0;
-    let totalBRCA2 = 0;
+    let totalPatients = 0;
+    let totalWomen = 0;
     let summary = 
     `
     </br>
@@ -98,11 +95,8 @@ const countPublicStatistics = (d, caseControl) => {
         if(!caseControl && key !== 'CIMBA') continue;
         if(key === 'dataModifiedAt') continue;
         ++totalConsortia;
-        totalCases += data[key].cases;
-        totalControls += data[key].controls;
-        totalStudies += data[key].studies;
-        if(data[key].BRCA1) totalBRCA1 += data[key].BRCA1
-        if(data[key].BRCA2) totalBRCA2 += data[key].BRCA2
+        totalPatients += data[key].numPatients;
+        totalWomen += data[key].numWomen;
         summary += `<div class="row font-size-16" style="margin:2px 2px;">
             ${key !== 'CIMBA' ? `
                 <input type="checkbox" data-consortia="${data[key].name}" id="label${data[key].name}" class="checkbox-consortia"/>
@@ -119,7 +113,7 @@ const countPublicStatistics = (d, caseControl) => {
     element.innerHTML = summary;
     addEventOverviewConsortiumSelection(d);
     addEventConsortiaFilter(d)
-    renderDataSummary({totalConsortia, totalStudies, totalCases, totalControls, totalBRCA1, totalBRCA2}, caseControl);
+    renderDataSummary({totalConsortia, totalWomen, totalPatients}, caseControl);
 }
 
 const addEventOverviewConsortiumSelection = (data) => {
@@ -140,32 +134,13 @@ export const renderDataSummary = (obj, caseControl) => {
                 <span class="font-size-32">${numberWithCommas(obj.totalConsortia)}</span>
             </div>
             <div class="col">
-                <span class="font-size-22">Studies</span></br>
-                <span class="font-size-32">${numberWithCommas(obj.totalStudies)}</span>
+                <span class="font-size-22">Number of Women</span></br>
+                <span class="font-size-32">${numberWithCommas(obj.totalWomen)}</span>
+            </div>
+            <div class="col">
+                <span class="font-size-22">Number of breast cancer patients</span></br>
+                <span class="font-size-32">${numberWithCommas(obj.totalPatients)}</span>
             </div>
         </div>
-        ${caseControl? `
-            <div class="row mt-3">
-                <div class="col">
-                    <span class="font-size-22">Cases</span></br>
-                    <span class="font-size-32">${numberWithCommas(obj.totalCases)}</span>
-                </div>
-                <div class="col">
-                    <span class="font-size-22">Controls</span></br>
-                    <span class="font-size-32">${numberWithCommas(obj.totalControls)}</span>
-                </div>
-            </div>
-        `: `
-        <div class="row mt-3">
-                <div class="col">
-                    <span class="font-size-22">BRCA1 Mutation Carriers</span></br>
-                    <span class="font-size-32">${numberWithCommas(obj.totalBRCA1)}</span>
-                </div>
-                <div class="col">
-                    <span class="font-size-22">BRCA2 Mutation Carriers</span></br>
-                    <span class="font-size-32">${numberWithCommas(obj.totalBRCA2)}</span>
-                </div>
-            </div>
-        `}
     `
 }
