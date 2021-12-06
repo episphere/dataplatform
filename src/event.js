@@ -1166,8 +1166,6 @@ const addEventUpdateSummaryStatsForm = () => {
                         publicDataObj[consortium].studies = 0;
                         publicDataObj[consortium].cases = 0;
                         publicDataObj[consortium].controls = 0;
-                        publicDataObj[consortium].BRCA1 = 0;
-                        publicDataObj[consortium].BRCA2 = 0;
                     }
                     if(uniqueStudies.indexOf(obj.study) === -1) {
                         uniqueStudies.push(obj.study);
@@ -1175,8 +1173,6 @@ const addEventUpdateSummaryStatsForm = () => {
                     }
                     if(obj.status === 'case') publicDataObj[consortium].cases += parseInt(obj.statusTotal);
                     if(obj.status === 'control') publicDataObj[consortium].controls += parseInt(obj.statusTotal);
-                    if(obj['Carrier_status'] && obj['Carrier_status'] === 'BRCA1') publicDataObj[consortium].BRCA1 += parseInt(obj.statusTotal);
-                    if(obj['Carrier_status'] && obj['Carrier_status'] === 'BRCA2') publicDataObj[consortium].BRCA2 += parseInt(obj.statusTotal);
                 })
             }
             masterArray = masterArray.concat(jsonArray);
@@ -1365,29 +1361,23 @@ export const addEventConsortiaFilter = (d) => {
             delete data['dataModifiedAt'];
             if(selectedConsortium.length > 0) {
                 const newData = Object.values(data).filter(dt => selectedConsortium.includes(dt.name));
-                let totalConsortia = 0, totalCases = 0, totalControls = 0, totalStudies = 0, totalBRCA1 = 0, totalBRCA2 = 0;
+                let totalConsortia = 0, totalWomen = 0, totalPatients = 0;
                 newData.forEach(obj => {
                     totalConsortia++;
-                    totalStudies += obj.studies;
-                    totalCases += obj.cases;
-                    totalControls += obj.controls;
-                    if(obj.BRCA1) totalBRCA1 += obj.BRCA1;
-                    if(obj.BRCA2) totalBRCA2 += obj.BRCA2;
+                    totalPatients += obj.numPatients;
+                    totalWomen += obj.numWomen;
                 });
-                renderDataSummary({totalConsortia, totalStudies, totalCases, totalControls, totalBRCA1, totalBRCA2}, true);
+                renderDataSummary({totalConsortia, totalPatients, totalWomen}, true);
             }
             else {
                 delete data['CIMBA']
-                let totalConsortia = 0, totalCases = 0, totalControls = 0, totalStudies = 0, totalBRCA1 = 0, totalBRCA2 = 0;
+                let totalConsortia = 0, totalWomen = 0, totalPatients = 0;
                 Object.values(data).forEach(obj => {
                     totalConsortia++;
-                    totalStudies += obj.studies;
-                    totalCases += obj.cases;
-                    totalControls += obj.controls;
-                    if(obj.BRCA1) totalBRCA1 += obj.BRCA1;
-                    if(obj.BRCA2) totalBRCA2 += obj.BRCA2;
+                    totalPatients += obj.numPatients;
+                    totalWomen += obj.numWomen;
                 });
-                renderDataSummary({totalConsortia, totalStudies, totalCases, totalControls, totalBRCA1, totalBRCA2}, true);
+                renderDataSummary({totalConsortia, totalPatients, totalWomen}, true);
             }
         })
     })
