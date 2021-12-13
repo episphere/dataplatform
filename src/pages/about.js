@@ -50,8 +50,7 @@ export const renderOverView = async () => {
             <div class="main-summary-row align-left">
                 <div class="col">
                     For more information:</br>
-                    Visit: <a href="https://dceg.cancer.gov/research/cancer-types/breast-cancer/confluence-project" target="__blank">https://dceg.cancer.gov/research/cancer-types/breast-cancer/confluence-project</a></br>
-                    Email: <a href="mailto:ConfluenceProject@nih.gov">ConfluenceProject@nih.gov</a>
+                    Email: Thomas Ahearn <a href="mailto:thomas.ahearn@nih.gov">thomas.ahearn@nih.gov</a>
                 </div>
             </div>
         </div>
@@ -80,6 +79,7 @@ const countPublicStatistics = (d, caseControl) => {
                 <div class="col-md-2" style="padding: 0px">
                     <div class="custom-border allow-overflow align-left" style="height:100%; padding-left: 5px !important; margin-right: 15px;">
                     <span class="font-size-17 font-bold">Filter</span></br>
+                    <span class="font-size-15">Cohort:</span></br>
                     ${data['CIMBA'] ? `
                         <div class="form-group pr-1">
                             <label class="filter-label font-size-13" for="overviewConsortiumSelection">Consortium</label>
@@ -130,7 +130,7 @@ export const renderDataSummary = (obj, caseControl) => {
     document.getElementById('renderDataSummaryCounts').innerHTML = `
         <div class="row">
             <div class="col">
-                <span class="font-size-22">Consortia</span></br>
+                <span class="font-size-22">Cohorts</span></br>
                 <span class="font-size-32">${numberWithCommas(obj.totalConsortia)}</span>
             </div>
             <div class="col">

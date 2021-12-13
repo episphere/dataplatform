@@ -14,7 +14,7 @@ Core	Demographics	birth_year	Birth year	Date (yyyy)	"yyyy
 8888- Missing/Unknown"
 Core	Demographics	sex	Sex	Categorical	"0 - Female
 1 - Male"
-Core	Demographics	age	Age at record_date   	Integer	Age in years
+Core	Demographics	age	Age at record_date	Integer	Age in years
 Core	Demographics	race	Race (US OMB categories)	Categorical	"1 - White
 2 - Black/African American
 3 - Asian
