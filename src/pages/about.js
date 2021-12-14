@@ -38,11 +38,11 @@ export const renderOverView = async () => {
                     hormonal biomarkers and mammographic density. The aims of the BCRP are:
                     </span>
                     </br></br>
-                    <div style="margin-left: 40px"> Aim 1. Develop a comprehensive and multi-ethnic model for estimating absolute risk of breast cancer by incorporating information on known breast cancer risk factors </div>
+                    <div style="margin-left: 40px"> <b>Aim 1:</b> <i>Develop a comprehensive and multi-ethnic model for estimating absolute risk of breast cancer by incorporating information on known breast cancer risk factors </i> </div>
                     </br>
-                    <div style="margin-left: 40px"> Aim 2. Extend the multi-ethnic risk model for the risk prediction of estrogen receptor definced breast cancer </div>
+                    <div style="margin-left: 40px"> <b>Aim 2:</b> <i>Extend the multi-ethnic risk model for the risk prediction of estrogen receptor definced breast cancer </i> </div>
                     </br>
-                    <div style="margin-left: 40px"> Aim 3. Evaluate the validity of the risk models developed in Aim 1 and Aim 2 in integrated health care systems, mammography, registries, and an ongoing risk-based mammographic screening trail in the US </div>
+                    <div style="margin-left: 40px"> <b>Aim 3:</b> <i>Evaluate the validity of the risk models developed in Aim 1 and Aim 2 in integrated health care systems, mammography, registries, and an ongoing risk-based mammographic screening trail in the US </i> </div>
                     </br>
                 </div>
             </div>
@@ -80,17 +80,8 @@ const countPublicStatistics = (d, caseControl) => {
                     <div class="custom-border allow-overflow align-left" style="height:100%; padding-left: 5px !important; margin-right: 15px;">
                     <span class="font-size-17 font-bold">Filter</span></br>
                     <span class="font-size-15">Cohort:</span></br>
-                    ${data['CIMBA'] ? `
-                        <div class="form-group pr-1">
-                            <label class="filter-label font-size-13" for="overviewConsortiumSelection">Consortium</label>
-                            <select class="form-control font-size-15" id="overviewConsortiumSelection">
-                                <option value='allOther'>Non-CIMBA</option>
-                                <option ${!caseControl ? 'selected': ''} value='cimba'>CIMBA</option>
-                            </select>
-                        </div>
-                    `:``}
     `
-    if(caseControl) delete data['CIMBA'];
+    //if(caseControl) delete data['CIMBA'];
     for(let key in data) {
         if(!caseControl && key !== 'CIMBA') continue;
         if(key === 'dataModifiedAt') continue;
@@ -121,8 +112,9 @@ const addEventOverviewConsortiumSelection = (data) => {
     if(!select) return;
     select.addEventListener('change', () => {
         const selectedValue = select.value;
-        if(selectedValue === 'cimba') countPublicStatistics(data, false);
-        else countPublicStatistics(data, true);
+        //if(selectedValue === 'cimba') countPublicStatistics(data, false);
+        //else countPublicStatistics(data, true);
+        countPublicStatistics(data, true);
     })
 }
 
