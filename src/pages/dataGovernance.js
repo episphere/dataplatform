@@ -4,9 +4,9 @@ import { getFolderItems, filterConsortiums, filterStudiesDataTypes, filterProjec
 
 export const template = async () => {
     // const response = await getFolderItems(0);
-    // const array = response.entries.filter(obj => obj.type === 'folder' && obj.id === '137304373658');
+    // const array = response.entries.filter(obj => obj.type === 'folder' && obj.id === '145995765326');
     // const array = filterConsortiums(response.entries);
-    const array = await getFolderInfo('137304373658');
+    const array = await getFolderInfo('145995765326'); //BCRP: 145995765326, Confluence: 137304373658
     // if(array.length <= 0) return;
     if(!array) return;
     
