@@ -102,7 +102,7 @@ const renderDataDictionaryFilters = (dictionary, headers) => {
         <div style="width: 100%;">
             <div class="form-group" margin:0px>
                 <label class="filter-label font-size-13" for="variableTypeList">Sub-Category</label>
-                <ul class="remove-padding-left font-size-15 filter-sub-div allow-overflow" id="variableTypeList">
+                <ul class="remove-padding-left font-size-15 allow-overflow" id="variableTypeList">
                 `
                 uniqueType.forEach(vt => {
                     template += `
