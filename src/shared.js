@@ -783,13 +783,13 @@ export const numberWithCommas = (x) => {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-export const publicDataFileId = 697309514903;
+export const publicDataFileId = 697309514903; //Unknown
 
-//export const summaryStatsFileId = 691143057533;
+//export const summaryStatsFileId = 691143057533; //Confluence Summary Statistics (691143057533) => Pilot - BCRP_Summary_Results_AllSubjects.csv (861342561526)
 
 export const summaryStatsFileId = 861342561526;
 
-export const missingnessStatsFileId = 653087731560;
+export const missingnessStatsFileId = 653087731560; //Unknown
 
 export const mapReduce = (data, variable) => {
     const filteredData = data.map(dt => parseInt(dt[variable])).filter(dt => isNaN(dt) === false);
