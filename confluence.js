@@ -38,7 +38,7 @@ export const confluence = async () => {
         const loginBoxAppEpisphere = document.getElementById('loginBoxAppEpisphere');
         const loginBoxAppProd = document.getElementById('loginBoxAppProd');
         const loginBoxAppStage = document.getElementById('loginBoxAppStage');
-        if (location.origin.match('localhost')) loginBoxAppDev.hidden = false;
+        if (location.origin.match('localhost') || location.origin.match('127.0.0.1')) loginBoxAppDev.hidden = false;
         if (location.origin.match(applicationURLs.stage)) loginBoxAppStage.hidden = false;
         if (location.origin.match(applicationURLs.prod)) loginBoxAppProd.hidden = false;
         if (location.origin.match('episphere')) loginBoxAppEpisphere.hidden = false;
@@ -151,10 +151,10 @@ export const confluence = async () => {
         const folders = await getFolderItems(0);
         const array = filterConsortiums(folders.entries);
         const projectArray = filterProjects(folders.entries);
-        const getCollaborators = await getCollaboration(137304373658, 'folders');
+        const getCollaborators = await getCollaboration(145995765326, 'folders');
         let getMyPermissionLevel = false;
         if(getCollaborators) getMyPermissionLevel =  checkDataSubmissionPermissionLevel(getCollaborators, JSON.parse(localStorage.parms).login);
-        console.log('137304373658 '+getMyPermissionLevel);
+        console.log('145995765326 '+getMyPermissionLevel);
         let showProjects = false;
         // for (let obj of projectArray) {
         //     if (showProjects === false) {
@@ -335,7 +335,8 @@ const manageHash = async () => {
         console.log("Overview manageHash")
         assignNavbarActive(element, 1);
         document.title = 'Confluence - Overview';
-        const fileInfo = await getFileInfo(761599566277);
+
+        const fileInfo = await getFileInfo(881144462693);
         aboutConfluence('overview', fileInfo ? true : false);
         renderOverView();
         hideAnimation();
@@ -347,7 +348,7 @@ const manageHash = async () => {
         assignNavbarActive(element, 1);
         document.title = 'Confluence - Study Description';
         showAnimation();
-        const fileInfo = await getFileInfo(761599566277);
+        const fileInfo = await getFileInfo(881144462693);
         if(!fileInfo) {
             location.hash = '#about/overview';
             hideAnimation();
