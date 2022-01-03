@@ -7,6 +7,7 @@ const { CacheFirst, NetworkFirst, StaleWhileRevalidate } = workbox.strategies;
 const { CacheableResponse, CacheableResponsePlugin } = workbox.cacheableResponse;
 const googleAnalytics = workbox.googleAnalytics;
 googleAnalytics.initialize();
+// Need a way to version to detect when NOT to stay statically cached.
 registerRoute(/\.(?:js|css)$/, new NetworkFirst({cacheName: 'static-cache'}));
 registerRoute(new RegExp('https://fonts.googleapis.com/.+'), new StaleWhileRevalidate({cacheName: 'static-cache'}));
 registerRoute(new RegExp('https:.*min\.(css|js)'), new CacheFirst({cacheName: 'static-cache'}));
