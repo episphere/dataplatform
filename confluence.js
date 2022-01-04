@@ -38,7 +38,7 @@ export const confluence = async () => {
         const loginBoxAppEpisphere = document.getElementById('loginBoxAppEpisphere');
         const loginBoxAppProd = document.getElementById('loginBoxAppProd');
         const loginBoxAppStage = document.getElementById('loginBoxAppStage');
-        if (location.origin.match('localhost') || location.origin.match('127.0.0.1')) loginBoxAppDev.hidden = false;
+        if (location.origin.match('localhost')) loginBoxAppDev.hidden = false;
         if (location.origin.match(applicationURLs.stage)) loginBoxAppStage.hidden = false;
         if (location.origin.match(applicationURLs.prod)) loginBoxAppProd.hidden = false;
         if (location.origin.match('episphere')) loginBoxAppEpisphere.hidden = false;
