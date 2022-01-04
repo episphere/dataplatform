@@ -13,7 +13,7 @@ export const navBarMenutemplate = () => {
             </button>
             <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#about/overview" id="aboutBCRPP">Learn about BCRPP</a>
-                <!---<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#join" id="resourcesBCRPP">Join a Participating Consortium</a>--->
+                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#about/description" id="resourcesBCRPP">Description of Studies</a>
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#contact" id="contactBCRPP">Contact</a>
             </div>
         </div>
