@@ -1,5 +1,5 @@
 import { addEventFilterBarToggle } from "../event.js";
-import { defaultPageSize, getFile, shortenText, tsv2Json } from "./../shared.js";
+import { defaultPageSize, getFile, shortenText, csv2Json } from "./../shared.js";
 import { downloadFiles } from "./dictionary.js";
 let previousValue = '';
 
@@ -63,10 +63,10 @@ export const renderDescription = (modified_at) => {
 }
 
 const getDescription = async () => {
-    const data = await getFile(761599566277);
-    const tsv2json = tsv2Json(data);
-    const json = tsv2json.data;
-    const headers = tsv2json.headers;
+    const data = await getFile(881144462693);
+    const csv2json = csv2Json(data);
+    const json = csv2json.data;
+    const headers = csv2json.headers;
     let newJsons = {};
     let prevAcronym = '';
     json.forEach(obj => {
