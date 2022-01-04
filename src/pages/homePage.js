@@ -55,7 +55,7 @@ export const infoDeck = () => {
 }
 
 export const infoDeckAfterLoggedIn = async () => {
-    const studyDescription = await getFileInfo(881144462693);
+    const studyDescription = await getFileInfo(898106732568); //new: 898106732568
     let template = '';
     template += `
         <div class="secondary-bg padding-bottom-1rem">
