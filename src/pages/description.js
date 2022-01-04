@@ -63,7 +63,8 @@ export const renderDescription = (modified_at) => {
 }
 
 const getDescription = async () => {
-    const data = await getFile(881144462693);
+    //const data = await getFile(881144462693);
+    const data = await fetch('./CohortDescriptions.csv');
     const csv2json = csv2Json(data);
     const json = csv2json.data;
     const headers = csv2json.headers;
