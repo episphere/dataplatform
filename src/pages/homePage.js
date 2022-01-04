@@ -19,7 +19,7 @@ export const infoDeck = () => {
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`
                     template += cardContents({header: 'Learn about BCRPP', button: 'Learn about BCRPP', href: '#about/overview', icon: 'fa-download', explanation: 'View main goals and collaborating institutions.'})
-                    template += cardContents({header: 'Participating Studies', button: 'Study Description', href: '#join', icon: 'fa-chart-bar', explanation: 'View description of prospective cohort studies.'})
+                    //template += cardContents({header: 'Participating Studies', button: 'Study Description', href: '#join', icon: 'fa-chart-bar', explanation: 'View description of prospective cohort studies.'})
                     template += cardContents({header: 'Data Access', button: 'Data Access', href: '#data_access', icon: 'fa-handshake', explanation: 'View procedures for accessing data.'})
                     template += cardContents({header: 'Data Dictionary', button: 'Data Dictionary', href: '#data_exploration/dictionary', icon: 'fa-database', explanation: 'View data types collected from participating cohort studies.'})
                 template += `</div>
@@ -55,7 +55,7 @@ export const infoDeck = () => {
 }
 
 export const infoDeckAfterLoggedIn = async () => {
-    const studyDescription = await getFileInfo(881144462693);
+    const studyDescription = await getFileInfo(898106732568); //new: 898106732568
     let template = '';
     template += `
         <div class="secondary-bg padding-bottom-1rem">
