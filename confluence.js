@@ -334,7 +334,7 @@ const manageHash = async () => {
         // if(element.classList.contains('navbar-active')) return;
         console.log("Overview manageHash")
         assignNavbarActive(element, 1);
-        document.title = 'Confluence - Overview';
+        document.title = 'BCRP - Overview';
 
         const fileInfo = await getFileInfo(898106732568);
         aboutConfluence('overview', fileInfo ? true : false);
@@ -346,7 +346,7 @@ const manageHash = async () => {
         if(!element) return;
         // if(element.classList.contains('navbar-active')) return;
         assignNavbarActive(element, 1);
-        document.title = 'Confluence - Study Description';
+        document.title = 'BCRP - Study Description';
         showAnimation();
         const fileInfo = await getFileInfo(898106732568); //new: 898106732568; original: 881144462693
         //if(!fileInfo) {
@@ -363,7 +363,7 @@ const manageHash = async () => {
         if(!element) return;
         if(element.classList.contains('navbar-active')) return;
         assignNavbarActive(element, 1);
-        document.title = 'Confluence - Resources';
+        document.title = 'BCRP - Resources';
         confluenceResources();
         hideAnimation();
     }
@@ -372,7 +372,7 @@ const manageHash = async () => {
         if(!element) return;
         if(element.classList.contains('navbar-active')) return;
         assignNavbarActive(element, 1);
-        document.title = 'Confluence - Contact';
+        document.title = 'BCRP - Committee';
         confluenceDiv.innerHTML = confluenceContactPage();
         hideAnimation();
     }
