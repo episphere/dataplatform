@@ -5,7 +5,7 @@ export const confluenceContactPage = () => {
             <div class="container body-min-height">
                 <div class="main-summary-row">
                     <div class="align-left">
-                        <h1 class="page-header">Contact</h1>
+                        <h1 class="page-header">Scientific Committee</h1>
                     </div>
                 </div>
                 <div class="main-summary-row confluence-resources white-bg div-border font-size-18">
