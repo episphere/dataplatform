@@ -12,9 +12,9 @@ export const template = () => {
                     <div class="row m-0">
                         The BCRPP Project is currently generating genotyping data and harmonizing risk factor and clinical data. Data is expected to be available for request in late 2022.Data access will be facilitated through this platform, in accordance to the data use agreements signed between participating studies (originator) and Data Coordinating Centers from Consortia participating in Confluence.
                     </div></br>
-                    <div class="row m-0 align-center">
+                    <!---<div class="row m-0 align-center">
                         <img src="./static/images/data_request.PNG" alt="Overview of data sharing and access in Confluence" style="margin:auto">
-                    </div></br>
+                    </div></br>--->
                     <div class="row m-0">
                         The following data access procedures are planned:
                     </div>
