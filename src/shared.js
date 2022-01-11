@@ -106,7 +106,6 @@ export const getFileInfo = async (id) => {
     try{
         const access_token = JSON.parse(localStorage.parms).access_token;
         let r = await fetch('https://api.box.com/2.0/files/'+id,{
-        //let r = await fetch('https://nih.app.box.com/file/'+id,{
             method:'GET',
             headers:{
                 Authorization:"Bearer "+access_token
