@@ -11,7 +11,7 @@ export const confluenceContactPage = () => {
                 <div class="main-summary-row confluence-resources white-bg div-border font-size-18">
                     <div class="col">
                         <span>For questions about the Breast Cancer Risk Prediction Project</span></br>
-                        <span>send mail to: Thomas Ahearn at </strong> <a href="mailto:thomas.ahearn@nih.gov">thomas.ahearn@nih.gov</a></span></br>
+                        <span>send mail to: Pete Kraft at </strong> <a href="">TBD</a></span></br>
                         </br></br>
                         <div class="row">
                             <div class="col">
