@@ -61,7 +61,7 @@ export const confluence = async () => {
         const dataDictionaryElement = document.getElementById('dataDictionary');
         const dataRequestElement = document.getElementById('dataRequest');
         // const platformTutorialElement = document.getElementById('platformTutorial');
-        const dataAnalysisElement = document.getElementById('dataAnalysis');
+        // const dataAnalysisElement = document.getElementById('dataAnalysis');
 
         dataSubmissionElement.addEventListener('click', async () => {
             if (dataSubmissionElement.classList.contains('navbar-active')) return;
@@ -139,14 +139,14 @@ export const confluence = async () => {
         //     confluenceDiv.innerHTML = dataRequestTemplate();
         //     hideAnimation();
         // });
-        dataAnalysisElement.addEventListener('click', () => {
-            if (dataAnalysisElement.classList.contains('navbar-active')) return;
-            showAnimation();
-            assignNavbarActive(dataAnalysisElement, 1);
-            document.title = 'Confluence - Data Analysis';
-            confluenceDiv.innerHTML = dataAnalysisTemplate();
-            hideAnimation();
-        });
+        // dataAnalysisElement.addEventListener('click', () => {
+        //     if (dataAnalysisElement.classList.contains('navbar-active')) return;
+        //     showAnimation();
+        //     assignNavbarActive(dataAnalysisElement, 1);
+        //     document.title = 'Confluence - Data Analysis';
+        //     confluenceDiv.innerHTML = dataAnalysisTemplate();
+        //     hideAnimation();
+        // });
 
         const folders = await getFolderItems(0);
         const array = filterConsortiums(folders.entries);
@@ -286,10 +286,10 @@ const manageHash = async () => {
         if(!element) return;
         element.click()
     }
-    else if (hash === '#data_analysis') {
-        const element = document.getElementById('dataAnalysis');
-        element.click();
-    }
+    // else if (hash === '#data_analysis') {
+    //     const element = document.getElementById('dataAnalysis');
+    //     element.click();
+    // }
     else if (hash === '#data_access') {
         const element = document.getElementById('dataRequest');
         element.click();
