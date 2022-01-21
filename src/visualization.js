@@ -53,7 +53,6 @@ const allFilters = (jsonData, headers, cimba) => {
         <label class="filter-label font-size-13" for="consortiumTypeSelection">Consortium</label>
         <select class="form-control font-size-15" id="consortiumTypeSelection">
             <option value='allOther'>Non-CIMBA</option>
-            <option ${cimba ? 'selected': ''} value='cimba'>CIMBA</option>
         </select>
     </div>
     `
