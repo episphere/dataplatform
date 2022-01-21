@@ -1,5 +1,5 @@
 export const variables = {
-    BCAC: {
+    BCRPP: {
         Carrier_status: {
             'label': 'Carrier status'
         },
@@ -75,11 +75,11 @@ export const variables = {
         },
         bYear: {
             888: "Don't Know",
-            'label': 'Year of birth'
+            'label': 'Birth Year'
         },
         ageInt: {
             888: "Don't Know",
-            'label': 'Age'
+            'label': 'Age at Baseline'
         },
         intDate : {
             '08/08/8000': "Don't Know",
@@ -181,7 +181,7 @@ export const variables = {
         },
         ageMenarche: {
             888: "Don't Know",
-            'label': 'Age at menarche'
+            'label': 'Age at Menarche'
         },
         mensAgeLast: {
             777: 'Not Applicable (still menstruating)',
@@ -198,11 +198,12 @@ export const variables = {
             0: 'nulliparous',
             1: '1+ full term pregnancies',
             888: "Don't Know",
-            'label': 'Nulliparous v parous'
+            //'label': 'Nulliparous v parous'
+            'label': 'Parity'
         },
         parity: {
             888: "Don't Know",
-            'label': 'Number of full-term pregnancies'
+            'label': 'Number of pregnancies (full-term)'
         },
         ageFFTP: {
             777: 'Not Applicable',
@@ -233,7 +234,8 @@ export const variables = {
             'label': 'Adult body height'
         },
         BMI: {
-            'label': 'Body mass index at interview/questionnaire in kg'
+            //'label': 'Body mass index at interview/questionnaire in kg'
+            'label': 'BMI'
         },
         OCEver: {
             0: 'never',

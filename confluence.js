@@ -336,7 +336,7 @@ const manageHash = async () => {
         assignNavbarActive(element, 1);
         document.title = 'BCRP - Overview';
 
-        const fileInfo = await getFileInfo(898106732568);
+        const fileInfo = await getFileInfo(904897189551);
         aboutConfluence('overview', fileInfo ? true : false);
         renderOverView();
         hideAnimation();
@@ -348,7 +348,7 @@ const manageHash = async () => {
         assignNavbarActive(element, 1);
         document.title = 'BCRP - Study Description';
         showAnimation();
-        const fileInfo = await getFileInfo(898106732568); //new: 898106732568; original: 881144462693
+        const fileInfo = await getFileInfo(904897189551); //new: 904897189551; original: 881144462693
         //if(!fileInfo) {
         //    location.hash = '#about/overview';
         //    hideAnimation();

@@ -1014,9 +1014,13 @@ export const addEventVariableDefinitions = () => {
                 variableName = 'Case-control status'; 
                 definition = "Number of subjects with a reported diagnosis of invasive breast cancer or in situ breast cancer and number of subjects without a breast cancer diagnosis";
             }
-            if(variable === 'ethnicityClass') {
-                variableName = 'Ancestry'; 
+            if(variable === 'ethnicity') {
+                variableName = 'Ethnicity'; 
                 definition = "Ethnic descent";
+            }
+            if(variable === 'study') {
+                variableName = 'Study'; 
+                definition = "Study";
             }
             if(variable === 'ageInt') {
                 variableName = 'Age'; 
@@ -1049,6 +1053,10 @@ export const addEventVariableDefinitions = () => {
             if(variable === 'midsetTopBars') {
                 variableName = 'Top bars'; 
                 definition = "Number of subjects with data on each of the selected variable (irrespective of the others).";
+            }
+            if(variable === 'midsetSideBars') {
+                variableName = 'Side bars'; 
+                definition = "Number of subjects with data on a combination 2 or more selected variables.";
             }
             if(variable === 'midsetSideBars') {
                 variableName = 'Side bars'; 
@@ -1265,13 +1273,23 @@ export const addEventSummaryStatsFilterForm = (jsonData, headers) => {
         });
     }
 
-    const genderSelection = document.getElementById('genderSelection');
-    genderSelection.addEventListener('change', () => {
+    // const genderSelection = document.getElementById('genderSelection');
+    // genderSelection.addEventListener('change', () => {
+    //     filterData(jsonData, headers);
+    // });
+
+    // const chipSelection = document.getElementById('genotypingChipSelection');
+    // chipSelection.addEventListener('change', () => {
+    //     filterData(jsonData, headers);
+    // });
+
+    const ethnicitySelection = document.getElementById('ethnicitySelection');
+    ethnicitySelection.addEventListener('change', () => {
         filterData(jsonData, headers);
     });
 
-    const chipSelection = document.getElementById('genotypingChipSelection');
-    chipSelection.addEventListener('change', () => {
+    const studySelection = document.getElementById('studySelection');
+    studySelection.addEventListener('change', () => {
         filterData(jsonData, headers);
     });
 
@@ -1297,10 +1315,14 @@ export const addEventSummaryStatsFilterForm = (jsonData, headers) => {
 };
 
 const filterData = (jsonData, headers) => {
-    const gender = document.getElementById('genderSelection').value;
-    const chip = document.getElementById('genotypingChipSelection').value;
-    const genderFilter = Array.from(document.getElementById('genderSelection').options).filter(op => op.selected)[0].textContent;
-    const chipFilter = Array.from(document.getElementById('genotypingChipSelection').options).filter(op => op.selected)[0].textContent;
+    //const gender = document.getElementById('genderSelection').value;
+    //const chip = document.getElementById('genotypingChipSelection').value;
+    const ethnicity = document.getElementById('ethnicitySelection').value;
+    const study = document.getElementById('studySelection').value;
+    //const genderFilter = Array.from(document.getElementById('genderSelection').options).filter(op => op.selected)[0].textContent;
+    //const chipFilter = Array.from(document.getElementById('genotypingChipSelection').options).filter(op => op.selected)[0].textContent;
+    const ethnicityFilter = Array.from(document.getElementById('ethnicitySelection').options).filter(op => op.selected)[0].textContent;
+    const studyFilter = Array.from(document.getElementById('studySelection').options).filter(op => op.selected)[0].textContent;
     let finalData = jsonData;
     let onlyCIMBA = false;
     
@@ -1333,22 +1355,28 @@ const filterData = (jsonData, headers) => {
     });
     const array = getSelectedStudies();
     
-    if(gender !== 'all') {
-        finalData = finalData.filter(dt => dt['sex'] === gender);
+    // if(gender !== 'all') {
+    //     finalData = finalData.filter(dt => dt['sex'] === gender);
+    // }
+    // if(chip !== 'all') {
+    //     finalData = finalData.filter(dt => dt['chip'] === chip);
+    // }
+    if(ethnicity !== 'all') {
+        finalData = finalData.filter(dt => dt['ethnicity'] === ethnicity);
     }
-    if(chip !== 'all') {
-        finalData = finalData.filter(dt => dt['chip'] === chip);
+    if(study !== 'all') {
+        finalData = finalData.filter(dt => dt['study'] === study);
     }
     updateCounts(finalData);
     if(array.length > 0){
         finalData = finalData.filter(dt => array.indexOf(`${dt.consortium}@#$${dt.study}`) !== -1);
     }
     const selectedStudies = array.map(s => s.split('@#$')[1]);
-    document.getElementById('listFilters').innerHTML = `
-        <span class="font-bold">Gender: </span>${genderFilter}<span class="vertical-line"></span>
-        <span class="font-bold">Genotyping chip: </span>${chipFilter}${selectedStudies.length > 0 ? `
-        <span class="vertical-line"></span><span class="font-bold">Study: </span>${selectedStudies[0]} ${selectedStudies.length > 1 ? `and <span class="other-variable-count">${selectedStudies.length-1} other</span>`:``}
-    `:``}`
+    // document.getElementById('listFilters').innerHTML = `
+    //     <span class="font-bold">Ethnicity: </span>${ethnicityFilter}<span class="vertical-line"></span>
+    //     <span class="font-bold">Genotyping chip: </span>${chipFilter}${selectedStudies.length > 0 ? `
+    //     <span class="vertical-line"></span><span class="font-bold">Study: </span>${selectedStudies[0]} ${selectedStudies.length > 1 ? `and <span class="other-variable-count">${selectedStudies.length-1} other</span>`:``}
+    // `:``}`
     renderAllCharts(finalData, headers, onlyCIMBA);
 }
 

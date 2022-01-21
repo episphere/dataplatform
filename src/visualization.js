@@ -27,71 +27,73 @@ export const getFileContent = async () => {
 const allFilters = (jsonData, headers, cimba) => {
     document.getElementById('allFilters').innerHTML = '';
     const div1 = document.createElement('div')
-    div1.classList = ['row gender-select'];
+    div1.classList = ['row ethnicity-select'];
     const obj = aggegrateData(jsonData);
     let template =`
         <div style="width: 100%;">
             <div class="form-group">
-                <label class="filter-label font-size-13" for="genderSelection">Gender</label>
-                <select class="form-control font-size-15" id="genderSelection" data-variable='sex'>
+                <label class="filter-label font-size-13" for="ethnicitySelection">Ethnicity</label>
+                <select class="form-control font-size-15" id="ethnicitySelection" data-variable='ethnicity'>
                     <option selected value='all'>All</option>
-                    <option value='female'>Female</option>
-                    <option value='male'>Male</option>
+                    <option value='Non-Hispanic/Non-Latino'>Non-Hispanic/Non-Latino</option>
+                    <option value='Hispanic/Latino'>Hispanic/Latino</option>
                 </select>
             </div>
+
             <div class="form-group">
-                <label class="filter-label font-size-13" for="genotypingChipSelection">Genotyping chip</label>
-                <select class="form-control font-size-15" id="genotypingChipSelection" data-variable='chip'>
-                    <option selected value='all'>All Arrays</option>
-                    <option value='Confluence chip'>Confluence Array</option>
-                    <option value='Other chip'>Other Array</option>
+                <label class="filter-label font-size-13" for="studySelection">Cohort</label>
+                <select class="form-control font-size-15" id="studySelection" data-variable='study'>
+                    <option selected value='all'>All</option>
+                    <option value='NHS'>NHS</option>
+                    <option value='NHS2'>NSH2</option>
+                    <option value='CPS2'>CPS2</option>
+                    <option value='CPS3'>CPS3</option>
                 </select>
             </div>
     `;
     template += `
-    <div class="form-group">
+    <div class="form-group" style="display: none">
         <label class="filter-label font-size-13" for="consortiumTypeSelection">Consortium</label>
         <select class="form-control font-size-15" id="consortiumTypeSelection">
             <option value='allOther'>Non-CIMBA</option>
-            <option ${cimba ? 'selected': ''} value='cimba'>CIMBA</option>
         </select>
     </div>
     `
     
-    for(let consortium in obj){
-        let innerTemplate = `
-                    <ul class="remove-padding-left font-size-15 consortium-ul" data-consortium="${consortium}" ${consortium === 'CIMBA' ? 'style="display:none"': ''}>
-                        <li class="custom-borders filter-list-item">
-                            <button type="button" class="consortium-selection consortium-selection-btn" data-toggle="collapse" href="#toggle${consortium.replace(/ /g, '')}">
-                                <i class="fas fa-caret-down"></i>
-                            </button>
-                            <input type="checkbox" data-consortia="${consortium}" id="label${consortium}" class="select-consortium"/>
-                            <label for="label${consortium}" class="consortia-name">${consortium}</label>
-                            <div class="ml-auto">
-                                <div class="filter-btn custom-margin consortia-total" data-consortia='${consortium}'>
-                                    ${numberWithCommas(obj[consortium].consortiumTotal)}
-                                </div>
-                            </div>
-                        </li>
-                        <ul class="collapse no-list-style custom-padding allow-overflow max-height-study-list" id="toggle${consortium.replace(/ /g, '')}">`;
-        for(let study in obj[consortium]){
-            if(study !== 'consortiumTotal') {
-                const total = obj[consortium][study].total;
-                innerTemplate += `<li class="filter-list-item">
-                                <input type="checkbox" data-study="${study}" data-consortium="${consortium}" id="label${study}" class="select-study"/>
-                                <label for="label${study}" class="study-name" title="${study}">${study.length > 10 ? `${study.substr(0,10)}...`:study}</label>
-                                <div class="ml-auto">
-                                    <div class="filter-btn custom-margin study-total" data-consortia-study='${consortium}@#$${study}'>
-                                        ${numberWithCommas(total)}
-                                    </div>
-                                </div>
-                            </li>`;
-            }
-        }
-        innerTemplate += `</ul></ul>`
-        template += innerTemplate;
+    // for(let consortium in obj){
+    //     let innerTemplate = `
+    //                 <ul class="remove-padding-left font-size-15 consortium-ul" data-consortium="${consortium}" ${consortium === 'CIMBA' ? 'style="display:none"': ''}>
+    //                     <li class="custom-borders filter-list-item">
+    //                         <button type="button" class="consortium-selection consortium-selection-btn" data-toggle="collapse" href="#toggle${consortium.replace(/ /g, '')}">
+    //                             <i class="fas fa-caret-down"></i>
+    //                         </button>
+    //                         <input type="checkbox" data-consortia="${consortium}" id="label${consortium}" class="select-consortium"/>
+    //                         <label for="label${consortium}" class="consortia-name">${consortium}</label>
+    //                         <div class="ml-auto">
+    //                             <div class="filter-btn custom-margin consortia-total" data-consortia='${consortium}'>
+    //                                 ${numberWithCommas(obj[consortium].consortiumTotal)}
+    //                             </div>
+    //                         </div>
+    //                     </li>
+    //                     <ul class="collapse no-list-style custom-padding allow-overflow max-height-study-list" id="toggle${consortium.replace(/ /g, '')}">`;
+    //     for(let study in obj[consortium]){
+    //         if(study !== 'consortiumTotal') {
+    //             const total = obj[consortium][study].total;
+    //             innerTemplate += `<li class="filter-list-item">
+    //                             <input type="checkbox" data-study="${study}" data-consortium="${consortium}" id="label${study}" class="select-study"/>
+    //                             <label for="label${study}" class="study-name" title="${study}">${study.length > 10 ? `${study.substr(0,10)}...`:study}</label>
+    //                             <div class="ml-auto">
+    //                                 <div class="filter-btn custom-margin study-total" data-consortia-study='${consortium}@#$${study}'>
+    //                                     ${numberWithCommas(total)}
+    //                                 </div>
+    //                             </div>
+    //                         </li>`;
+    //         }
+    //     }
+    //     innerTemplate += `</ul></ul>`
+    //     template += innerTemplate;
         
-    }
+    // }
     template += `</br>
     </div>`;
     div1.innerHTML = template;
@@ -163,15 +165,19 @@ export const renderAllCharts = (data, headers, onlyCIMBA) => {
     document.getElementById('chartRow1').innerHTML = '';
     document.getElementById('chartRow2').innerHTML = '';
     let finalData = {};
-    if(onlyCIMBA === undefined) finalData = data.filter(dt => dt.consortium !== 'CIMBA');
-    else finalData = data;
-    renderStudyDesignBarChart(finalData, 'studyDesign', 'dataSummaryVizChart7', 'dataSummaryVizLabel7', 'chartRow1');
-    renderStatusBarChart(finalData, onlyCIMBA ? 'Status_Carrier': 'status', 'dataSummaryVizChart2', 'dataSummaryVizLabel2', onlyCIMBA ? ['case-BRCA1', 'control-BRCA1', 'case-BRCA2', 'control-BRCA2'] : ['case', 'control'], 'chartRow1');
-    renderEthnicityBarChart(finalData, 'ethnicityClass', 'dataSummaryVizChart5', 'dataSummaryVizLabel5', 'chartRow1');
-    generateBarChart('ageInt', 'dataSummaryVizChart3', 'dataSummaryVizLabel3', finalData, 'chartRow2');
-    renderPlotlyPieChart(finalData, 'ER_statusIndex', 'dataSummaryVizChart4', 'dataSummaryVizLabel4', headers, 'chartRow2');
-    if(onlyCIMBA) renderStatusBarChart(finalData, 'status', 'dataSummaryVizChart6', 'dataSummaryVizLabel6', ['case', 'control'], 'chartRow2');
-    else generateBarSingleSelect('famHist', 'dataSummaryVizChart6', 'dataSummaryVizLabel6', finalData, headers, 'chartRow2')
+    finalData = data;
+    generateBirthBarChart('bYear', 'dataSummaryVizChart1', 'dataSummaryVizLabel1', finalData, 'chartRow1');
+    generateAgeBarChart('ageInt', 'dataSummaryVizChart2', 'dataSummaryVizLabel2', finalData, 'chartRow1');
+    generateMenarcheBarChart('ageMenarche', 'dataSummaryVizChart3', 'dataSummaryVizLabel3', finalData, 'chartRow1');
+    generateParityBarChart('parous', 'dataSummaryVizChart4', 'dataSummaryVizLabel4', finalData, 'chartRow2')
+    generatePregnaciesBarChart('parity', 'dataSummaryVizChart5', 'dataSummaryVizLabel5', finalData, 'chartRow2')
+    generateBMIBarChart('BMI', 'dataSummaryVizChart6', 'dataSummaryVizLabel6', finalData, 'chartRow2')
+    //renderStudyDesignBarChart(finalData, 'studyDesign', 'dataSummaryVizChart7', 'dataSummaryVizLabel7', 'chartRow1');
+    //renderStatusBarChart(finalData, onlyCIMBA ? 'Status_Carrier': 'status', 'dataSummaryVizChart4', 'dataSummaryVizLabel4', onlyCIMBA ? ['case-BRCA1', 'control-BRCA1', 'case-BRCA2', 'control-BRCA2'] : ['case', 'control'], 'chartRow2');
+    //renderEthnicityBarChart(finalData, 'ethnicityClass', 'dataSummaryVizChart5', 'dataSummaryVizLabel5', 'chartRow2');
+    //renderPlotlyPieChart(finalData, 'ER_statusIndex', 'dataSummaryVizChart4', 'dataSummaryVizLabel4', headers, 'chartRow2');
+    //if(onlyCIMBA) renderStatusBarChart(finalData, 'status', 'dataSummaryVizChart6', 'dataSummaryVizLabel6', ['case', 'control'], 'chartRow2');
+    //else generateBarSingleSelect('famHist', 'dataSummaryVizChart6', 'dataSummaryVizLabel6', finalData, headers, 'chartRow2')
 }
 
 export const updateCounts = (data) => {
@@ -202,17 +208,17 @@ export const getSelectedStudies = () => {
     return array;
 };
 
-const generateBarChart = (parameter, id, labelID, jsonData, chartRow) => {
+const generateAgeBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     const div = document.createElement('div');
     div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
     div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
     document.getElementById(chartRow).appendChild(div);
     const data = [
         {
-            x: ['<20','20-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80-89', '>=90'],
-            y: [ mapReduce(jsonData, '10-19'), mapReduce(jsonData, '20-29'), mapReduce(jsonData, '30-39'), mapReduce(jsonData, '40-49'), mapReduce(jsonData, '50-59'), mapReduce(jsonData, '60-69'), mapReduce(jsonData, '70-79'), mapReduce(jsonData, '80-89'), mapReduce(jsonData, '90-99') + mapReduce(jsonData, '100-109') ],
+            x: ['<20','20 to 29', '30 to 39', '40 to 49', '50 to 59', '60 to 69', '70 to 79', '80 to 89', '>90'],
+            y: [ mapReduce(jsonData, '<20'), mapReduce(jsonData, '20 to 29'), mapReduce(jsonData, '30 to 39'), mapReduce(jsonData, '40 to 49'), mapReduce(jsonData, '50 to 59'), mapReduce(jsonData, '60 to 69'), mapReduce(jsonData, '70 to 79'), mapReduce(jsonData, '80 to 89'), mapReduce(jsonData, '90 to 99') + mapReduce(jsonData, '>99') ],
             marker:{
-                color: ['#BF1B61', '#BF1B61', '#BF1B61', '#BF1B61', '#BF1B61', '#BF1B61', '#BF1B61', '#BF1B61', '#BF1B61']
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8']
             },
           type: 'bar'
         }
@@ -224,7 +230,132 @@ const generateBarChart = (parameter, id, labelID, jsonData, chartRow) => {
         plot_bgcolor: 'rgba(0,0,0,0)'
     };
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
-    document.getElementById(labelID).innerHTML = `${variables.BCAC[parameter]['label']}`;
+    document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
+}
+
+const generateBirthBarChart = (parameter, id, labelID, jsonData, chartRow) => {
+    const div = document.createElement('div');
+    div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
+    div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
+    document.getElementById(chartRow).appendChild(div);
+    const data = [
+        {
+            x: ['1900 to 1909','1910 to 1919', '1920 to 1929', '1930 to 1939', '1940 to 1949', '1950 to 1959', '1960 to 1969', '1970 to 1979', '1980 to 1989', '1990 to 1999'],
+            y: [ mapReduce(jsonData, '1900-1909'), mapReduce(jsonData, '1910-1919'), mapReduce(jsonData, '1920-1929'), mapReduce(jsonData, '1930-1939'), mapReduce(jsonData, '1940-1949'), mapReduce(jsonData, '1950-1959'), mapReduce(jsonData, '1960-1969'), mapReduce(jsonData, '1970-1979'), mapReduce(jsonData, '1980-1989'), mapReduce(jsonData, '1990-1999') ],
+            marker:{
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe']
+            },
+          type: 'bar'
+        }
+    ];
+    const layout = {
+        xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
+        yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
+    document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
+}
+
+const generateMenarcheBarChart = (parameter, id, labelID, jsonData, chartRow) => {
+    const div = document.createElement('div');
+    div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
+    div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
+    document.getElementById(chartRow).appendChild(div);
+    const data = [
+        {
+            x: ["≤12", "13", "14", "15", ">15", "Unknown"],
+            y: [mapReduce(jsonData, 'agemenarcheLE12'), mapReduce(jsonData, 'agemenarche13'), mapReduce(jsonData, 'agemenarche14'), mapReduce(jsonData, 'agemenarche15'), mapReduce(jsonData, 'agemenarcheGT15'), mapReduce(jsonData, 'agemenarcheDK')],
+            marker:{
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe']
+            },
+          type: 'bar'
+        }
+    ];
+    const layout = {
+        xaxis: {type: 'category', fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
+        yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
+    document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
+}
+
+const generateParityBarChart = (parameter, id, labelID, jsonData, chartRow) => {
+    const div = document.createElement('div');
+    div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
+    div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
+    document.getElementById(chartRow).appendChild(div);
+    const data = [
+        {
+            x: ["Nullparous","Parous","Unknown"],
+            y: [mapReduce(jsonData, 'parous0'), mapReduce(jsonData, 'parous1'), mapReduce(jsonData, 'parousDK')],
+            marker:{
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8']
+            },
+          type: 'bar'
+        }
+    ];
+    const layout = {
+        xaxis: {type: 'category', fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
+        yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
+    document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
+}
+
+const generatePregnaciesBarChart = (parameter, id, labelID, jsonData, chartRow) => {
+    const div = document.createElement('div');
+    div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
+    div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
+    document.getElementById(chartRow).appendChild(div);
+    const data = [
+        {
+            x: ["1", "2", "3", "4", "5", "6+", "Unknown"],
+            y: [mapReduce(jsonData, 'parity1'), mapReduce(jsonData, 'parity2'), mapReduce(jsonData, 'parity3'), mapReduce(jsonData, 'parity4'), mapReduce(jsonData, 'parity5'), mapReduce(jsonData, 'parity6+'), mapReduce(jsonData, 'parityDK')],
+            marker:{
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8']
+            },
+          type: 'bar'
+        }
+    ];
+    const layout = {
+        xaxis: {type: 'category', fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
+        yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
+    document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
+}
+
+const generateBMIBarChart = (parameter, id, labelID, jsonData, chartRow) => {
+    const div = document.createElement('div');
+    div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
+    div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
+    document.getElementById(chartRow).appendChild(div);
+    const data = [
+        {
+            x: ["<18.5", "18.5 to 24.9", "25.0 to 29.9", "30.0 to 34.9", "35.0 to 39.9", ">40.0", "Unkown"],
+            y: [mapReduce(jsonData, 'bmiLT18_5'), mapReduce(jsonData, 'bmi18_5_24_9'), mapReduce(jsonData, 'bmi25_0_29_9'), mapReduce(jsonData, 'bmi30_0_34_9'), mapReduce(jsonData, 'bmi35_0_39_9'), mapReduce(jsonData, 'bmiGE40_0'), mapReduce(jsonData, 'bmiDK')],
+            marker:{
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8']
+            },
+          type: 'bar'
+        }
+    ];
+    const layout = {
+        xaxis: {type: 'category', fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
+        yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
+    document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
 }
 
 const generateBarSingleSelect = (parameter, id, labelID, jsonData, headers, chartRow) => {
