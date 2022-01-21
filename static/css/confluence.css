@@ -61,7 +61,7 @@ body {
 }
 
 .active {
-    border-bottom: 2px solid #A41652;
+    border-bottom: 2px solid #2a72a5;
 }
 
 .active-tab {
@@ -219,7 +219,7 @@ body {
 }
 
 .confluence-pink {
-    color: #A41652;
+    color: #2a72a5;
     font-weight: bold;
 }
 
@@ -380,7 +380,7 @@ label {
 }
 
 .dc-chart .selected circle, .dc-chart .selected path {
-    stroke: #711a1a !important;
+    stroke: #2a72a5 !important;
     stroke-width: 2 !important;
 }
 
@@ -749,7 +749,7 @@ label {
     border-top: 1px solid rgba(0,0,0,.3);
 }
 
-.genotype-select, .gender-select, .status-select, .study-select  {
+.genotype-select, .gender-select, .status-select, .study-select, .ethnicity-select  {
     padding: 0 5px;
 }
 
@@ -847,7 +847,7 @@ label {
 .filter-studies:hover, .filter-studies:focus, .filter-midset-variable:focus, .filter-midset-variable:hover, 
 .filter-midset-data-status:focus, .filter-midset-data-status:hover, .filter-midset-data-study:focus, .filter-midset-data-study:hover, 
 .filter-midset-data-ancestory:focus, .filter-midset-data-ancestory:hover, .update-summary-stats-btn:focus, .update-summary-stats-btn:hover,
-.genotype-selection-btn:hover, .genotype-selection-btn:focus, .gender-selection-btn:hover, .gender-selection-btn:focus  {
+.genotype-selection-btn:hover, .genotype-selection-btn:focus, .gender-selection-btn:hover, .gender-selection-btn:focus, .ethnicity-selection-btn:hover, .ethnicity-selection-btn:focus  {
     cursor: pointer;
     background-color: #c9c9c9;
     border-radius: 0.25rem !important;
@@ -1341,7 +1341,7 @@ span.icon {
 }
 
 .active-chart {
-    border-bottom: 2px solid #A41652;
+    border-bottom: 2px solid #2a72a5;
 }
 
 .div-sticky {

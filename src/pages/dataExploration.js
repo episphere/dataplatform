@@ -70,12 +70,6 @@ export const dataSummaryStatisticsTemplate = () => {
     </div>
     <div class="col-xl-10 padding-right-zero" id="summaryStatsCharts">
         <button id="filterBarToggle"><i class="fas fa-lg fa-caret-left"></i></button>
-        <div class="main-summary-row pl-2" style="min-height: 10px;margin-bottom: 1rem;">
-            <div class="col white-bg div-border align-left font-size-17" style="padding: 0.5rem;" id="listFilters">
-                <span class="font-bold">Gender:</span> All<span class="vertical-line"></span>
-                <span class="font-bold">Genotyping chip:</span> All Arrays
-            </div>
-        </div>
         <div class="main-summary-row" id="chartRow1"></div>
         <div class="main-summary-row" id="chartRow2"></div>
 
@@ -144,7 +138,7 @@ const renderFilter = (data, acceptedVariables, headers, status, studies, ancesto
             <strong class="side-panel-header">Filter</strong>
         </div>
         <div class="card-body" id="cardContent">
-            <div id="midsetFilterData" class="row gender-select align-left"></div>
+            <div id="midsetFilterData" class="row ethnicity-select align-left"></div>
         </div>
     </div>
     `
