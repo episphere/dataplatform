@@ -67,7 +67,7 @@ export const confluence = async () => {
             if (dataSubmissionElement.classList.contains('navbar-active')) return;
             showAnimation();
             assignNavbarActive(dataSubmissionElement, 1)
-            document.title = 'Confluence - Data Submit';
+            document.title = 'BCRPP - Data Submit';
             confluenceDiv.innerHTML = await dataSubmissionTemplate();
             lazyload();
             addEventStudyRadioBtn();
