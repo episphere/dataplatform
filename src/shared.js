@@ -576,7 +576,7 @@ export const getValidConsortium = async () => {
     return filterConsortiums(response.entries);
 }
 
-const consortiums = ['Confluence_NCI', 'Confluence_BCAC', 'Confluence_LAGENO', 'Confluence_OCPL', 'Confluence_CIMBA'];
+const consortiums = ['BCRP_NHS2', 'BCRP_NHS', 'BCRP_CPS3', 'BCRP_CPS2'];
 
 export const filterConsortiums = (array) => {
     return array.filter(obj => obj.type === 'folder' && consortiums.includes(obj.name));
