@@ -13,6 +13,7 @@ export const dataSubmissionTemplate = async () => {
     for(let consortia of array){
         if(bool) continue;
         const permitted = checkDataSubmissionPermissionLevel(await getCollaboration(consortia.id, `${consortia.type}s`), JSON.parse(localStorage.parms).login);
+        console.log('910115863871 '+permitted);
         if(permitted) bool = true;
     }
     if(array.length <= 0) {
