@@ -1,18 +1,15 @@
-import { getFolderItems, filterStudiesDataTypes, filterConsortiums, hideAnimation, checkDataSubmissionPermissionLevel, getCollaboration, getFile, tsv2Json } from "../shared.js";
+import { getFolderItems, filterStudiesDataTypes, filterConsortiums, hideAnimation, checkDataSubmissionPermissionLevel, getCollaboration, getFile, tsv2Json, consortiumSelection } from "../shared.js";
 import { uploadInStudy } from "../components/modal.js";
 
 export const dataSubmissionTemplate = async () => {
-    const response = await getFolderItems(0);
+    const response = await getFolderItems('145996351913'); //Should be 0 for those without access to this folder
     const studiesList = await getFile('910115863871')
     let studyIDs = [];
     if(studiesList) studyIDs = tsv2Json(studiesList).data.map(dt => dt['Folder ID'].trim());
     const studies = response.entries.filter(obj => studyIDs.includes(obj.id));
     const consortias = filterConsortiums(response.entries);
-    const array = [...studies, ...consortias];
-    console.log(studyIDs)
-    console.log(studies);
-    console.log(consortias);
-    console.log(array);
+    const array = [...studies];//, ...consortias];
+    console.log(array)
     let bool = false;
     for(let consortia of array){
         if(bool) continue;

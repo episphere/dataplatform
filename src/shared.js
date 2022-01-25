@@ -576,7 +576,7 @@ export const getValidConsortium = async () => {
     return filterConsortiums(response.entries);
 }
 
-const consortiums = ['BCRP_NHS2', 'BCRP_NHS', 'BCRP_CPS3', 'BCRP_CPS2'];
+const consortiums = ['Pilot - BCRP_NHS2_Study_Info_and_Data', 'Pilot - BCRP_NHS_Study_Info_and_Data', 'Pilot - BCRP_CPS3_Study_Info_and_Data', 'Pilot - BCRP_CPS2_Study_Info_and_Data'];
 
 export const filterConsortiums = (array) => {
     return array.filter(obj => obj.type === 'folder' && consortiums.includes(obj.name));
@@ -795,7 +795,7 @@ export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov'
 
 export const publicDataFileId = 697309514903; //Unknown
 
-export const summaryStatsFileId = 908600664259;//908600664259; //Confluence Summary Statistics (691143057533) => Pilot - BCRP_Summary_Results_AllSubjects.csv (861342561526)
+export const summaryStatsFileId = 861342561526;//908600664259; //Confluence Summary Statistics (691143057533) => Pilot - BCRP_Summary_Results_AllSubjects.csv (861342561526)
 
 //export const summaryStatsFileId = 861342561526;
 
