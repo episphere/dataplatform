@@ -9,6 +9,7 @@ export const dataSubmissionTemplate = async () => {
     const studies = response.entries.filter(obj => studyIDs.includes(obj.id));
     const consortias = filterConsortiums(response.entries);
     const array = [...studies, ...consortias];
+    console.log(studyIDs)
     console.log(studies);
     console.log(consortias);
     console.log(array);
