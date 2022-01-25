@@ -7,7 +7,8 @@ export const aboutConfluence = (activeTab, showDescripton) => {
             <div class="container">
                 ${showDescripton ? `<div class="main-summary-row white-bg div-border">
                     <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'overview' ? 'active': ''} black-font font-size-14" href="#about/overview"><strong>Overview</strong></a></button>
-                    <button class="sub-menu-btn"><a class="nav-link ${activeTab !== 'overview' ? 'active': ''} black-font font-size-14" href="#about/description"> <strong>Description of Studies</strong></a></button>
+                    <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'description' ? 'active': ''} black-font font-size-14" href="#about/description"> <strong>Description of Studies</strong></a></button>
+                    <!---<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'contact' ? 'active': ''} black-font font-size-14" href="#contact"> <strong>Scientific Committee</strong></a></button>--->
                 </div>`:``}
                 <div id="overview"></div>
             </div>
@@ -47,12 +48,6 @@ export const renderOverView = async () => {
                 </div>
             </div>
             <div class="align-left" id="confluenceDataSummary"></div>
-            <div class="main-summary-row align-left">
-                <div class="col">
-                    For more information:</br>
-                    Email: Thomas Ahearn <a href="mailto:thomas.ahearn@nih.gov">thomas.ahearn@nih.gov</a>
-                </div>
-            </div>
         </div>
     `;
     document.getElementById('overview').innerHTML = template;

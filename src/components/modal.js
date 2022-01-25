@@ -13,14 +13,14 @@ export const uploadInStudy = async (id) => {
                 <form id="uploadStudyForm" method="POST">
                     <div class="modal-body allow-overflow">
                         <div class="form-group">
-                            <label for="selectConsortiaUIS">Select consortia</label> <span class="required">*</span>
+                            <label for="selectConsortiaUIS">Select Study</label> <span class="required">*</span>
                             <select class="form-control" name="selectedConsortia" id="selectConsortiaUIS" required>
-                                <option value="">-- Select consortia --</option>
+                                <option value="">-- Select study --</option>
                                 ${await createConsortiaOptions()}
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Create new study? <span class="required">*</span>
+                            <label>Create new folder? <span class="required">*</span>
                                 <div class="form-check form-check-inline">
                                     <label class="form-check-label">
                                         <input class="form-check-input" type="radio" required name="createStudyRadio" value="yes">Yes
@@ -81,7 +81,7 @@ export const fileVersionsModal = () => {
 
 const createConsortiaOptions = async () => {
     let template = ``;
-    const response = await getFolderItems(0);
+    const response = await getFolderItems('145996351913'); //Should be 0 if users given access to just folder in studies
     const array = filterConsortiums(response.entries);
     for(let consortia of array){
         const bool = checkDataSubmissionPermissionLevel(await getCollaboration(consortia.id, `${consortia.type}s`), JSON.parse(localStorage.parms).login);

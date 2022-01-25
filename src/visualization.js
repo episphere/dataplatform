@@ -24,7 +24,7 @@ export const getFileContent = async () => {
     allFilters(jsonData, headers, false);
 };
 
-const allFilters = (jsonData, headers, cimba) => {
+const allFilters = (jsonData, headers) => {
     document.getElementById('allFilters').innerHTML = '';
     const div1 = document.createElement('div')
     div1.classList = ['row ethnicity-select'];
@@ -41,39 +41,47 @@ const allFilters = (jsonData, headers, cimba) => {
             </div>
 
             <div class="form-group">
+                <label class="filter-label font-size-13" for="raceSelection">Race</label>
+                <select class="form-control font-size-15" id="raceSelection" data-variable='race'>
+                    <option selected value='all'>All</option>
+                    <option value='American Indian/Alaska Native'>American Indian/Alaska Native</option>
+                    <option value='Asian'>Asian</option>
+                    <option value='Black/African American'>Black/African American</option>
+                    <option value='Native Hawaiian/ Pacific Islander'>Native Hawaiian/ Pacific Islander</option>
+                    <option value='Other including multiracial'>Other including multiracial</option>
+                    <option value='White'>White</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
                 <label class="filter-label font-size-13" for="studySelection">Cohort</label>
                 <select class="form-control font-size-15" id="studySelection" data-variable='study'>
                     <option selected value='all'>All</option>
                     <option value='NHS'>NHS</option>
-                    <option value='NHS2'>NSH2</option>
+                    <option value='NHS2'>NHS2</option>
                     <option value='CPS2'>CPS2</option>
                     <option value='CPS3'>CPS3</option>
                 </select>
             </div>
     `;
-    template += `
-    <div class="form-group" style="display: none">
-        <label class="filter-label font-size-13" for="consortiumTypeSelection">Consortium</label>
-        <select class="form-control font-size-15" id="consortiumTypeSelection">
-            <option value='allOther'>Non-CIMBA</option>
-        </select>
-    </div>
-    `
-    
+    // template += `
+    // <div class="form-group" style="display: none">
+    //     <label class="filter-label font-size-13" for="consortiumTypeSelection">Consortium</label>
+    //     <select class="form-control font-size-15" id="consortiumTypeSelection">
+    //         <option value='allOther'>Non-CIMBA</option>
+    //     </select>
+    // </div>
+    // `
+    //console.log(obj)
     // for(let consortium in obj){
     //     let innerTemplate = `
-    //                 <ul class="remove-padding-left font-size-15 consortium-ul" data-consortium="${consortium}" ${consortium === 'CIMBA' ? 'style="display:none"': ''}>
+    //                 <ul class="remove-padding-left font-size-15 consortium-ul" data-consortium="${consortium}">
     //                     <li class="custom-borders filter-list-item">
     //                         <button type="button" class="consortium-selection consortium-selection-btn" data-toggle="collapse" href="#toggle${consortium.replace(/ /g, '')}">
     //                             <i class="fas fa-caret-down"></i>
     //                         </button>
     //                         <input type="checkbox" data-consortia="${consortium}" id="label${consortium}" class="select-consortium"/>
     //                         <label for="label${consortium}" class="consortia-name">${consortium}</label>
-    //                         <div class="ml-auto">
-    //                             <div class="filter-btn custom-margin consortia-total" data-consortia='${consortium}'>
-    //                                 ${numberWithCommas(obj[consortium].consortiumTotal)}
-    //                             </div>
-    //                         </div>
     //                     </li>
     //                     <ul class="collapse no-list-style custom-padding allow-overflow max-height-study-list" id="toggle${consortium.replace(/ /g, '')}">`;
     //     for(let study in obj[consortium]){
@@ -82,11 +90,6 @@ const allFilters = (jsonData, headers, cimba) => {
     //             innerTemplate += `<li class="filter-list-item">
     //                             <input type="checkbox" data-study="${study}" data-consortium="${consortium}" id="label${study}" class="select-study"/>
     //                             <label for="label${study}" class="study-name" title="${study}">${study.length > 10 ? `${study.substr(0,10)}...`:study}</label>
-    //                             <div class="ml-auto">
-    //                                 <div class="filter-btn custom-margin study-total" data-consortia-study='${consortium}@#$${study}'>
-    //                                     ${numberWithCommas(total)}
-    //                                 </div>
-    //                             </div>
     //                         </li>`;
     //         }
     //     }
@@ -161,7 +164,7 @@ export const addEventConsortiumSelect = () => {
     })
 }
 
-export const renderAllCharts = (data, headers, onlyCIMBA) => {
+export const renderAllCharts = (data) => {
     document.getElementById('chartRow1').innerHTML = '';
     document.getElementById('chartRow2').innerHTML = '';
     let finalData = {};
@@ -182,15 +185,15 @@ export const renderAllCharts = (data, headers, onlyCIMBA) => {
 
 export const updateCounts = (data) => {
     const obj = aggegrateData(data);
-    for(let consortia in obj){
-        const elements = document.querySelectorAll(`[data-consortia="${consortia}"]`);
+    for(let consortium in obj){
+        const elements = document.querySelectorAll(`[data-consortia="${consortium}"]`);
         Array.from(elements).forEach(element => {
-            element.innerHTML = numberWithCommas(obj[consortia].consortiumTotal);
+            element.innerHTML = numberWithCommas(obj[consortium].consortiumTotal);
         });
-        for(let study in obj[consortia]){
-            const studyElements = document.querySelectorAll(`[data-consortia-study="${consortia}@#$${study}"]`);
+        for(let study in obj[consortium]){
+            const studyElements = document.querySelectorAll(`[data-consortia-study="${consortium}@#$${study}"]`);
             Array.from(studyElements).forEach(element => {
-                element.innerHTML = numberWithCommas(obj[consortia][study].total);
+                element.innerHTML = numberWithCommas(obj[consortium][study].total);
             });
         };
     };
@@ -483,99 +486,6 @@ const renderStatusBarChart = (jsonData, parameter, id, labelID, xarray, chartRow
         plot_bgcolor: 'rgba(0,0,0,0)'
     };
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
-}
-
-const renderStudyDesignBarChart = (jsonData, parameter, id, labelID, chartRow) => {
-    let pieLabel = ''
-    if(variables.BCAC[parameter] && variables.BCAC[parameter]['label']){
-        pieLabel = variables.BCAC[parameter]['label'];
-    }else{
-        pieLabel = parameter;
-    }
-
-    const div = document.createElement('div');
-    div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
-    div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
-    document.getElementById(chartRow).appendChild(div);
-    
-    document.getElementById(labelID).innerHTML = `${pieLabel}`;
-    
-    let allLabels = getUniqueConsortium(jsonData, parameter);
-    const valueCount = [];
-    for(let studyDesign of allLabels){
-        valueCount.push(jsonData.filter(dt => {if(dt[parameter] === studyDesign) return dt}).map(dt => dt['total']).reduce((a,b) => a+b));
-    }
-    const data = [
-        {
-            x: allLabels,
-            y: valueCount,
-            type: 'bar',
-            marker:{
-                color: getColors(allLabels.length)
-            },
-        }
-    ];
-    const layout = {
-        xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
-        yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
-        paper_bgcolor: 'rgba(0,0,0,0)',
-        plot_bgcolor: 'rgba(0,0,0,0)'
-    };
-    Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
-}
-
-const getUniqueConsortium = (jsonData, parameter) => {
-    let array = [];
-    for(let obj of jsonData){
-        if(array.indexOf(obj[parameter]) === -1) array.push(obj[parameter]);
-    }
-    return array;
-}
-
-const renderEthnicityBarChart = (jsonData, parameter, id, labelID, chartRow) => {
-    let pieLabel = ''
-    if(variables.BCAC[parameter] && variables.BCAC[parameter]['label']){
-        pieLabel = variables.BCAC[parameter]['label'];
-    }else{
-        pieLabel = parameter;
-    }
-    const div = document.createElement('div');
-    div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
-    div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
-    document.getElementById(chartRow).appendChild(div);
-    
-    document.getElementById(labelID).innerHTML = `${pieLabel}`;
-    const allLabels = getUniqueConsortium(jsonData, parameter);
-    const valueCount = [];
-    for(let studyDesign of allLabels){
-        valueCount.push(jsonData.filter(dt => {if(dt[parameter] === studyDesign) return dt}).map(dt => dt['total']).reduce((a,b) => a+b));
-    }
-    const data = [
-        {
-            x: allLabels,
-            y: valueCount,
-            type: 'bar',
-            marker:{
-                color: ['#BF1B61', '#cb4880', '#d876a0','#e5a3bf', '#BF1B61', '#cb4880', '#7F7F7F']
-            },
-        }
-    ];
-    const layout = {
-        xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
-        yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
-        paper_bgcolor: 'rgba(0,0,0,0)',
-        plot_bgcolor: 'rgba(0,0,0,0)'
-    };
-    Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
-}
-
-const getColors = (n) => {
-    let colors = [];
-    for(let i=0; i<n ; i++) {
-        if(Math.abs(i % 2) == 1) colors.push('#f7b6d2');
-        else colors.push('#BF1B61')
-    }
-    return colors;
 }
 
 const dataVisulizationCards = (obj) => `

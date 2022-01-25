@@ -18,7 +18,7 @@ export const addEventStudyRadioBtn = () => {
                     const selectConsortiaUIS = document.getElementById('selectConsortiaUIS');
                     studyFormElements.innerHTML = `
                         <div class="form-group">
-                            <label for="selectStudyUIS">Select study</label> <span class="required">*</span>
+                            <label for="selectStudyUIS">Select folder</label> <span class="required">*</span>
                             <select class="form-control" id="selectStudyUIS" name="selectedStudy" required></select>
                         </div>
                         <div class="form-group">
@@ -32,8 +32,8 @@ export const addEventStudyRadioBtn = () => {
                     const studyFormElements = document.getElementById('studyFormElements');
                     studyFormElements.innerHTML = `
                         <div class="form-group">
-                            <label for="newStudyName">Study Name</label> <span class="required">*</span>
-                            <input type="text" id="newStudyName" autocomplete="off" required class="form-control" placeholder="Enter study name">
+                            <label for="newStudyName">Folder Name</label> <span class="required">*</span>
+                            <input type="text" id="newStudyName" autocomplete="off" required class="form-control" placeholder="Enter folder name">
                         </div>
                         <div class="form-group">
                             <label for="uploadDataUIS">Submit data</label> <span class="required">*</span>
@@ -71,7 +71,7 @@ export const addEventConsortiaSelect = () => {
         selectStudyUIS.innerHTML = '';
         const firstOption = document.createElement('option');
         firstOption.value = '';
-        firstOption.text = '-- Select study --'
+        firstOption.text = '-- Select folder --'
         selectStudyUIS.appendChild(firstOption);
         entries = filterStudies(entries);
         for(let obj of entries){
@@ -1018,6 +1018,10 @@ export const addEventVariableDefinitions = () => {
                 variableName = 'Ethnicity'; 
                 definition = "Ethnic descent";
             }
+            if(variable === 'race') {
+                variableName = 'race'; 
+                definition = "Race";
+            }
             if(variable === 'study') {
                 variableName = 'Study'; 
                 definition = "Study";
@@ -1266,12 +1270,12 @@ export const addEventMissingnessFilterBarToggle = () => {
 
 export const addEventSummaryStatsFilterForm = (jsonData, headers) => {
 
-    const consortiumTypeSelection = document.getElementById('consortiumTypeSelection');
-    if(consortiumTypeSelection) {
-        consortiumTypeSelection.addEventListener('change', () => {
-            filterData(jsonData, headers);
-        });
-    }
+    // const consortiumTypeSelection = document.getElementById('consortiumTypeSelection');
+    // if(consortiumTypeSelection) {
+    //     consortiumTypeSelection.addEventListener('change', () => {
+    //         filterData(jsonData, headers);
+    //     });
+    // }
 
     // const genderSelection = document.getElementById('genderSelection');
     // genderSelection.addEventListener('change', () => {
@@ -1285,6 +1289,11 @@ export const addEventSummaryStatsFilterForm = (jsonData, headers) => {
 
     const ethnicitySelection = document.getElementById('ethnicitySelection');
     ethnicitySelection.addEventListener('change', () => {
+        filterData(jsonData, headers);
+    });
+
+    const raceSelection = document.getElementById('raceSelection');
+    raceSelection.addEventListener('change', () => {
         filterData(jsonData, headers);
     });
 
@@ -1319,35 +1328,37 @@ const filterData = (jsonData, headers) => {
     //const chip = document.getElementById('genotypingChipSelection').value;
     const ethnicity = document.getElementById('ethnicitySelection').value;
     const study = document.getElementById('studySelection').value;
+    const race = document.getElementById('raceSelection').value;
     //const genderFilter = Array.from(document.getElementById('genderSelection').options).filter(op => op.selected)[0].textContent;
     //const chipFilter = Array.from(document.getElementById('genotypingChipSelection').options).filter(op => op.selected)[0].textContent;
     const ethnicityFilter = Array.from(document.getElementById('ethnicitySelection').options).filter(op => op.selected)[0].textContent;
     const studyFilter = Array.from(document.getElementById('studySelection').options).filter(op => op.selected)[0].textContent;
+    const raceFilter = Array.from(document.getElementById('raceSelection').options).filter(op => op.selected)[0].textContent;
     let finalData = jsonData;
     let onlyCIMBA = false;
     
-    const consortiumTypeSelection = document.getElementById('consortiumTypeSelection');
-    if(consortiumTypeSelection.value === 'cimba') {
-        Array.from(document.getElementsByClassName('consortium-ul')).forEach(ele => {
-            if(ele.dataset.consortium === 'CIMBA') ele.style.display = 'block';
-            else {
-                Array.from(ele.querySelectorAll('input:checked.select-study')).forEach(e => e.checked = false);
-                ele.style.display = 'none';
-            }
-        });
-        onlyCIMBA = true;
-        finalData = finalData.filter(dt => dt.consortium === 'CIMBA');
-    }
-    else {
-        Array.from(document.getElementsByClassName('consortium-ul')).forEach(ele => {
-            if(ele.dataset.consortium === 'CIMBA') {
-                Array.from(ele.querySelectorAll('input:checked.select-study')).forEach(e => e.checked = false);
-                ele.style.display = 'none';
-            }
-            else ele.style.display = 'block';
-        })
-        finalData = finalData.filter(dt => dt.consortium !== 'CIMBA');
-    }
+    // const consortiumTypeSelection = document.getElementById('consortiumTypeSelection');
+    // if(consortiumTypeSelection.value === 'cimba') {
+    //     Array.from(document.getElementsByClassName('consortium-ul')).forEach(ele => {
+    //         if(ele.dataset.consortium === 'CIMBA') ele.style.display = 'block';
+    //         else {
+    //             Array.from(ele.querySelectorAll('input:checked.select-study')).forEach(e => e.checked = false);
+    //             ele.style.display = 'none';
+    //         }
+    //     });
+    //     onlyCIMBA = true;
+    //     finalData = finalData.filter(dt => dt.consortium === 'CIMBA');
+    // }
+    // else {
+    //     Array.from(document.getElementsByClassName('consortium-ul')).forEach(ele => {
+    //         if(ele.dataset.consortium === 'CIMBA') {
+    //             Array.from(ele.querySelectorAll('input:checked.select-study')).forEach(e => e.checked = false);
+    //             ele.style.display = 'none';
+    //         }
+    //         else ele.style.display = 'block';
+    //     })
+    //     finalData = finalData.filter(dt => dt.consortium !== 'CIMBA');
+    // }
 
     let selectedConsortia = [];
     Array.from(document.getElementsByClassName('select-consortium')).forEach(dt => {
@@ -1367,6 +1378,9 @@ const filterData = (jsonData, headers) => {
     if(study !== 'all') {
         finalData = finalData.filter(dt => dt['study'] === study);
     }
+    if(race !== 'all') {
+        finalData = finalData.filter(dt => dt['race'] === race);
+    }
     updateCounts(finalData);
     if(array.length > 0){
         finalData = finalData.filter(dt => array.indexOf(`${dt.consortium}@#$${dt.study}`) !== -1);
@@ -1377,7 +1391,7 @@ const filterData = (jsonData, headers) => {
     //     <span class="font-bold">Genotyping chip: </span>${chipFilter}${selectedStudies.length > 0 ? `
     //     <span class="vertical-line"></span><span class="font-bold">Study: </span>${selectedStudies[0]} ${selectedStudies.length > 1 ? `and <span class="other-variable-count">${selectedStudies.length-1} other</span>`:``}
     // `:``}`
-    renderAllCharts(finalData, headers, onlyCIMBA);
+    renderAllCharts(finalData);
 }
 
 export const addEventConsortiaFilter = (d) => {
@@ -1398,7 +1412,6 @@ export const addEventConsortiaFilter = (d) => {
                 renderDataSummary({totalConsortia, totalPatients, totalWomen}, true);
             }
             else {
-                delete data['CIMBA']
                 let totalConsortia = 0, totalWomen = 0, totalPatients = 0;
                 Object.values(data).forEach(obj => {
                     totalConsortia++;
