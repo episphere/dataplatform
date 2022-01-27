@@ -26,7 +26,7 @@ export const navBarMenutemplate = () => {
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_exploration/summary" title="Summary Statistics" id="dataSummary">
                     Summary Statistics
                 </a>
-                ${
+                <!---${
                     location.origin.match(applicationURLs.prod) ? 
                     ``:
                     `
@@ -34,7 +34,7 @@ export const navBarMenutemplate = () => {
                             Subset Statistics
                         </a>
                     `
-                }
+                }--->
                 
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_exploration/dictionary" title="Data Dictionary" id="dataDictionary">
                     Dictionary
