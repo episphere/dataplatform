@@ -2,7 +2,7 @@ import { navBarMenutemplate } from './src/components/navBarMenuItems.js';
 import { infoDeck, infoDeckAfterLoggedIn } from './src/pages/homePage.js';
 import { dataSubmissionTemplate, lazyload } from './src/pages/dataSubmission.js';
 import { dataSummary, dataSummaryMissingTemplate, dataSummaryStatisticsTemplate } from './src/pages/dataExploration.js';
-import { template as dataRequestTemplate } from './src/pages/dataRequest.js';
+import { template as dataRequestTemplate, generateForm, dataApproval } from './src/pages/dataRequest.js';
 import { checkAccessTokenValidity, loginAppDev, loginObs, loginAppEpisphere, logOut, loginAppProd } from './src/manageAuthentication.js';
 import { storeAccessToken, removeActiveClass, showAnimation, getCurrentUser, inactivityTime, filterConsortiums, getFolderItems, filterProjects, amIViewer, getCollaboration, hideAnimation, assignNavbarActive, getFileInfo, handleRangeRequests, applicationURLs, checkDataSubmissionPermissionLevel } from './src/shared.js';
 import { addEventConsortiaSelect, addEventUploadStudyForm, addEventStudyRadioBtn, addEventDataGovernanceNavBar, addEventMyProjects, addEventUpdateSummaryStatsData } from './src/event.js';
@@ -129,6 +129,8 @@ export const confluence = async () => {
             assignNavbarActive(dataRequestElement, 1)
             document.title = 'Confluence - Data Access';
             confluenceDiv.innerHTML = dataRequestTemplate();
+            generateForm();
+            dataApproval();
             hideAnimation();
         });
         // platformTutorialElement.addEventListener('click', () => {
