@@ -1,4 +1,5 @@
 // Require additional changes regarding data
+//import * as docx from "docx";
 
 export const template = () => {
     let template = `
@@ -65,13 +66,13 @@ export const template = () => {
       <input id="institution" name="institution" type="text"/>
     </div>
 
-    <div class="input-group">
+    <!---<div class="input-group">
       <label for="dataplatform"><b>Data Platform</b></label>
       <select id="dataplatform" name="dataplatform">
         <option>BCRPP</option>
         <option>Confluence</option>
       </select>
-    </div>
+    </div>--->
 
     <div class="input-group">
         <label for="cohort"><b>Cohort Data Requested: </b></label>
@@ -86,13 +87,13 @@ export const template = () => {
     </div>
     
     <div class="input-group">
-      <label for="message"><b>Please provide a concise description of Background/Aims</b></label>
-      <textarea id="message" name="message" rows="4" cols="65"></textarea>
+      <label for="background"><b>Please provide a concise description of Background/Aims</b></label>
+      <textarea id="background" name="background" rows="4" cols="65"></textarea>
     </div>
 
     <div class="input-group">
-      <label for="message"><b>Please provide any additional information</b></label>
-      <textarea id="message" name="message" rows="4" cols="65"></textarea>
+      <label for="additional"><b>Please provide any additional information</b></label>
+      <textarea id="additional" name="additional" rows="4" cols="65"></textarea>
     </div>
 
     <div class="input-group">
@@ -110,23 +111,6 @@ export const template = () => {
 </div>
 </div>`
 
-// function handleFormSubmit(event) {
-//     event.preventDefault();
-  
-//     const data = new FormData(event.target);
-  
-//     const formJSON = Object.fromEntries(data.entries());
-  
-//     // for multi-selects, we need special handling
-//     //formJSON.snacks = data.getAll('snacks');
-  
-//     const results = document.querySelector('.results pre');
-//     results.innerText = JSON.stringify(formJSON, null, 2);
-//   }
-
-// const form = document.querySelector('.contact-form');
-// form.addEventListener('submitform', handleFormSubmit);
-
 template += `<div class="results">
     <h2>Form Data</h2>
     <pre></pre>
@@ -135,38 +119,155 @@ template += `<div class="results">
     return template
 }
 
-// function handleFormSubmit(event) {
-//     event.preventDefault();
-  
-//     const data = new FormData(event.target);
-  
-//     const formJSON = Object.fromEntries(data.entries());
-  
-//     // for multi-selects, we need special handling
-//     formJSON.snacks = data.getAll('snacks');
-  
-//     const results = document.querySelector('.results pre');
-//     results.innerText = JSON.stringify(formJSON, null, 2);
-//   }
-  
-// export const form = document.querySelector('.contact-form');
-//     form.addEventListener('submit', handleFormSubmit);
-
 
 export const dataForm = () => {
-    function handleFormSubmit(eventtest) {
-        eventtest.preventDefault();
+  function handleFormSubmit(eventtest) {
+      eventtest.preventDefault();
+  
+      const data = new FormData(eventtest.target);
+  
+      const formJSON = Object.fromEntries(data.entries());
     
-        const data = new FormData(eventtest.target);
-    
-        const formJSON = Object.fromEntries(data.entries());
-    
-        // for multi-selects, we need special handling
-        //formJSON.snacks = data.getAll('snacks');
-    
-        const results = document.querySelector('.results pre');
-        results.innerText = JSON.stringify(formJSON, null, 2);
-    }
-    const form = document.querySelector('.contact-form');
-    form.addEventListener('submit', handleFormSubmit);
+      // for multi-selects, we need special handling
+      //formJSON.snacks = data.getAll('snacks');
+  
+      const results = document.querySelector('.results pre');
+      results.innerText = JSON.stringify(formJSON, null, 2);
+      //const data2 = JSON.parse(JSON.stringify(formJSON));
+      //console.log(data2)
+      //console.log(formJSON.name)
+      generate(formJSON);
+  };
+
+  function generate(jsondata) {
+    const doc = new docx.Document({
+      sections: [{
+        properties: {},
+        children: [
+          new docx.Paragraph({ text: "BCRPP Data Access Submission", heading: docx.HeadingLevel.TITLE, alignment: docx.AlignmentType.CENTER}),
+          new docx.Paragraph({ text: "Investigator(s): ", heading: docx.HeadingLevel.HEADING_2}),
+          new docx.Paragraph({ alignment: docx.AlignmentType.START, style: { paragraph: { indent: 500},},
+            children: [
+              new docx.TextRun({
+                text: jsondata.name,
+                bold: true,
+              }),
+            ],
+          }),
+          new docx.Paragraph({ text: "Contact Email: ", heading: docx.HeadingLevel.HEADING_2}),
+          new docx.Paragraph({ alignment: docx.AlignmentType.START, style: { paragraph: { indent: {left:1440, hanging: 980},},},
+            children: [
+              new docx.TextRun({
+                text: jsondata.email,
+                bold: true,
+              }),
+            ],
+          }),
+          new docx.Paragraph({ text: "Title of Proposed Project: ", heading: docx.HeadingLevel.HEADING_2}),
+          new docx.Paragraph({ alignment: docx.AlignmentType.START, style: { paragraph: { indent: {left:1440, hanging: 980},},},
+            children: [
+              new docx.TextRun({
+                text: jsondata.project,
+                bold: true,
+              }),
+            ],
+          }),
+          new docx.Paragraph({ text: "Is this an amendment? ", heading: docx.HeadingLevel.HEADING_2}),
+          new docx.Paragraph({ alignment: docx.AlignmentType.START, style: { paragraph: { indent: {left:1440, hanging: 980},},},
+            children: [
+              new docx.TextRun({
+                text: jsondata.amendment,
+                bold: true,
+              }),
+            ],
+          }),
+          new docx.Paragraph({ text: "Institution: ", heading: docx.HeadingLevel.HEADING_2}),
+          new docx.Paragraph({ alignment: docx.AlignmentType.START, style: { paragraph: { indent: {left:1440, hanging: 980},},},
+            children: [
+              new docx.TextRun({
+                text: jsondata.institution,
+                bold:true,
+              }),
+            ],
+          }),
+          new docx.Paragraph({ text: "Cohort Requested: ", heading: docx.HeadingLevel.HEADING_2}),
+          new docx.Paragraph({ alignment: docx.AlignmentType.START, style: { paragraph: { indent: {left:1440, hanging: 980},},},
+            children: [
+              new docx.TextRun({
+                text: jsondata.cohort,
+                bold:true,
+              }),
+            ],
+          }),
+          new docx.Paragraph({ text: "Background/Aims: ", heading: docx.HeadingLevel.HEADING_2}),
+          new docx.Paragraph({ alignment: docx.AlignmentType.START, style: { paragraph: { indent: {left:1440, hanging: 980},},},
+            children: [
+              new docx.TextRun({
+                text: jsondata.background,
+                bold:false,
+              }),
+            ],
+          }),
+          new docx.Paragraph({ text: "Additional Information: ", heading: docx.HeadingLevel.HEADING_2}),
+          new docx.Paragraph({ alignment: docx.AlignmentType.START, style: { paragraph: { indent: {left:1440, hanging: 980},},},
+            children: [
+              new docx.TextRun({
+                text: jsondata.additional,
+                bold:false,
+              }),
+            ],
+          }),
+          new docx.Paragraph({ text: "Agreement: ", heading: docx.HeadingLevel.HEADING_2}),
+          new docx.Paragraph({ alignment: docx.AlignmentType.START, style: { paragraph: { indent: {left:1440, hanging: 980},},},
+            children: [
+              new docx.TextRun({
+                text: jsondata.confirmation,
+                bold:true,
+              }),
+            ],
+          }),
+        ],
+      }]
+    });
+
+    docx.Packer.toBlob(doc).then(blob => {
+      console.log(blob);
+      saveAs(blob, "BCRPPexample.docx");
+      console.log("Document created successfully");
+    });
+  }
+
+  const form = document.querySelector('.contact-form');
+  form.addEventListener('submit', handleFormSubmit);
 }
+
+// export const createDoc = () =>{
+//   function generate() {
+//     const doc = new docx.Document({
+//       sections: [{
+//         properties: {},
+//         children: [
+//           new docx.Paragraph({
+//             children: [
+//               new docx.TextRun("Hello World"),
+//               new docx.TextRun({
+//                 text: "Foo Bar",
+//                 bold: true,
+//               }),
+//               new docx.TextRun({
+//                 text: "\tGithub is the best",
+//                 bold: true,
+//               }),
+//             ],
+//           }),
+//         ],
+//       }]
+//     });
+
+//     docx.Packer.toBlob(doc).then(blob => {
+//       console.log(blob);
+//       saveAs(blob, "example.docx");
+//       console.log("Document created successfully");
+//     });
+//   }
+// }
