@@ -2,7 +2,7 @@ import { navBarMenutemplate } from './src/components/navBarMenuItems.js';
 import { infoDeck, infoDeckAfterLoggedIn } from './src/pages/homePage.js';
 import { dataSubmissionTemplate, lazyload } from './src/pages/dataSubmission.js';
 import { dataSummary, dataSummaryMissingTemplate, dataSummaryStatisticsTemplate } from './src/pages/dataExploration.js';
-import { template as dataRequestTemplate, dataForm} from './src/pages/dataRequest.js';
+import { template as dataRequestTemplate, dataFrom, generateForm, dataApproval } from './src/pages/dataRequest.js';
 import { checkAccessTokenValidity, loginAppDev, loginObs, loginAppEpisphere, logOut, loginAppProd } from './src/manageAuthentication.js';
 import { storeAccessToken, removeActiveClass, showAnimation, getCurrentUser, inactivityTime, filterConsortiums, getFolderItems, filterProjects, amIViewer, getCollaboration, hideAnimation, assignNavbarActive, getFileInfo, handleRangeRequests, applicationURLs, checkDataSubmissionPermissionLevel } from './src/shared.js';
 import { addEventConsortiaSelect, addEventUploadStudyForm, addEventStudyRadioBtn, addEventDataGovernanceNavBar, addEventMyProjects, addEventUpdateSummaryStatsData } from './src/event.js';
@@ -130,6 +130,8 @@ export const confluence = async () => {
             document.title = 'BCRPP - Data Access';
             confluenceDiv.innerHTML = dataRequestTemplate();
             dataForm();
+            generateForm();
+            dataApproval();
             hideAnimation();
         });
         // platformTutorialElement.addEventListener('click', () => {

@@ -507,6 +507,111 @@ export const updateBoxCollaborator = async (id, role) => {
     }
 }
 
+export const getTaskList = async (id) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/files/${id}/tasks`, {
+            method: 'GET',
+            headers: {
+                Authorization: "Bearer "+access_token,
+            }
+        })
+        if (response.status === 401) {
+            if ((await refreshToken()) === true) return await getTaskList(id);
+        }
+        if (response.status === 200) {
+            return response.json();
+        } else {
+            return null;
+        }
+    } catch(err) {
+        if ((await refreshToken()) === true) return await getTaskList(id);
+    }
+}
+
+export const createFileTask = async (id) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/tasks`, {
+            method: 'POST',
+            headers: {
+                Authorization: "Bearer "+access_token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                item: {
+                    id,
+                    type: "file"
+                },
+                action: "review"
+            })
+        });
+        if (response.status === 401) {
+            if ((await refreshToken()) === true) return await createFileTask(id);
+        } else {
+            return response;
+        }
+
+    } catch(err) {
+        if((await refreshToken()) === true) return await createFileTask(id);
+    }
+}
+
+export const assignTask = async(taskId, userId) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/task_assignments`, {
+            method: 'POST',
+            headers: {
+                Authorization: "Bearer "+access_token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                task: {
+                    id: taskId,
+                    type: "task"
+                },
+                assign_to: {
+                    id: userId
+                }
+            })
+        });
+        if (response.status === 401) {
+            if ((await refreshToken()) === true) return await assignTask(taskId, userId);
+        } else {
+            return response;
+        }
+    } catch(err) {
+        if ((await refreshToken()) === true) return await assignTask(taskId, userId);
+    }
+}
+
+export const updateTaskAssignment = async (id, res_state, msg="") => {
+    try {
+        let body = msg.length
+            ? JSON.stringify({resolution_state: res_state, message: msg})
+            : JSON.stringify({resolution_state: res_state});
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/task_assignments/${id}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: "Bearer "+access_token
+            },
+            body
+        });
+        if(response.status === 401) {
+            if((await refreshToken()) === true) return await updateTaskAssignment(id, res_state, msg);
+        } else {
+            return response
+        }
+    }
+    catch(err) {
+        if ((await refreshToken()) === true) return await updateTaskAssignment(id, res_state, msg);
+    }
+}
+
+
+
 export const removeActiveClass = (className, activeClass) => {
     let fileIconElement = document.getElementsByClassName(className);
     Array.from(fileIconElement).forEach(elm => {
