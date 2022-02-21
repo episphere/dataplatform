@@ -8,12 +8,12 @@ export const navBarMenutemplate = () => {
             </a>
         </div>
         <div class="grid-elements dropdown">
-            <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" title="BCRPP" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 About BCRPP
             </button>
             <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#about/overview" id="aboutBCRPP">Learn about BCRPP</a>
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#about/description" id="resourcesBCRPP">Description of Studies</a>
+                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#about/description" id="resourcesBCRPP">Description of Studies</a>
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#contact" id="contactBCRPP">Scientific Committee</a>
             </div>
         </div>
@@ -26,7 +26,7 @@ export const navBarMenutemplate = () => {
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_exploration/summary" title="Summary Statistics" id="dataSummary">
                     Summary Statistics
                 </a>
-                ${
+                <!---${
                     location.origin.match(applicationURLs.prod) ? 
                     ``:
                     `
@@ -34,7 +34,7 @@ export const navBarMenutemplate = () => {
                             Subset Statistics
                         </a>
                     `
-                }
+                }--->
                 
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_exploration/dictionary" title="Data Dictionary" id="dataDictionary">
                     Dictionary

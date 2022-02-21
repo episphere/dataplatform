@@ -18,7 +18,7 @@ export const addEventStudyRadioBtn = () => {
                     const selectConsortiaUIS = document.getElementById('selectConsortiaUIS');
                     studyFormElements.innerHTML = `
                         <div class="form-group">
-                            <label for="selectStudyUIS">Select study</label> <span class="required">*</span>
+                            <label for="selectStudyUIS">Select folder</label> <span class="required">*</span>
                             <select class="form-control" id="selectStudyUIS" name="selectedStudy" required></select>
                         </div>
                         <div class="form-group">
@@ -32,8 +32,8 @@ export const addEventStudyRadioBtn = () => {
                     const studyFormElements = document.getElementById('studyFormElements');
                     studyFormElements.innerHTML = `
                         <div class="form-group">
-                            <label for="newStudyName">Study Name</label> <span class="required">*</span>
-                            <input type="text" id="newStudyName" autocomplete="off" required class="form-control" placeholder="Enter study name">
+                            <label for="newStudyName">Folder Name</label> <span class="required">*</span>
+                            <input type="text" id="newStudyName" autocomplete="off" required class="form-control" placeholder="Enter folder name">
                         </div>
                         <div class="form-group">
                             <label for="uploadDataUIS">Submit data</label> <span class="required">*</span>
@@ -71,7 +71,7 @@ export const addEventConsortiaSelect = () => {
         selectStudyUIS.innerHTML = '';
         const firstOption = document.createElement('option');
         firstOption.value = '';
-        firstOption.text = '-- Select study --'
+        firstOption.text = '-- Select folder --'
         selectStudyUIS.appendChild(firstOption);
         entries = filterStudies(entries);
         for(let obj of entries){
@@ -103,7 +103,7 @@ export const addEventUploadStudyForm = () => {
         const r = confirm(`Upload ${fileName} in ${consortiaText} >> ${studyName}?`);
         if(r){
             document.getElementById('submitBtn').classList.add('btn-disbaled');
-            document.getElementById('submitBtn').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Performing QAQC...`;
+            //document.getElementById('submitBtn').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Performing QAQC...`;
             
             let fileReader = new FileReader();
             fileReader.onload = function(fileLoadedEvent){
@@ -126,23 +126,23 @@ const separateData = async (qaqcFileName, textFromFileLoaded, fileName) => {
         studyId = study.value;
     }
     else if (newStudyName) {
-        document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Creating new study...`;
+        //document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Creating new folder...`;
         const entries = (await getFolderItems(consortiaId)).entries;
-        const studyFolders = entries.filter(dt => dt.type === 'folder' && dt.name.trim().toLowerCase() === 'confluence data from studies');
+        const studyFolders = entries.filter(dt => dt.type === 'folder' && dt.name.trim().toLowerCase() === 'bcrpp data from studies');
         const response = await createFolder(`${studyFolders.length === 0 ? consortiaId : studyFolders[0].id}`, newStudyName.value);
         if(response.status !== 201 ) return
         const data = await response.json();
         studyId = data.id;
     }
     const dataEntries = (await getFolderItems(studyId)).entries;
-    document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Checking folders...`;
-    let logFolderID = '', cDataFolderID = '', pDataFolderID = '', rfDataFolderID = '', stDataFolderID = '';
+    //document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Checking folders...`;
+    let logFolderID = '', cDataFolderID = '';//, pDataFolderID = '', rfDataFolderID = '', stDataFolderID = '';
     logFolderID = await existsOrCreateNewFolder(dataEntries, studyId, 'Submission_Logs');
     cDataFolderID = await existsOrCreateNewFolder(dataEntries, studyId, 'Core Data');
-    pDataFolderID = await existsOrCreateNewFolder(dataEntries, studyId, 'Pathology Data');
-    rfDataFolderID = await existsOrCreateNewFolder(dataEntries, studyId, 'Risk Factor Data');
-    stDataFolderID = await existsOrCreateNewFolder(dataEntries, studyId, 'Survival and Treatment Data');
-    document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Separating data...`;
+    //pDataFolderID = await existsOrCreateNewFolder(dataEntries, studyId, 'Incident Breast Cancer Data');
+    //rfDataFolderID = await existsOrCreateNewFolder(dataEntries, studyId, 'Mammographic Density Data');
+    //stDataFolderID = await existsOrCreateNewFolder(dataEntries, studyId, 'Summary Results');
+    //document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Separating data...`;
     let rows = textFromFileLoaded.split(/\n/g).map(tx=>tx.split(/\t/g));
     const headings = rows[0];
     rows.splice(0, 1);
@@ -156,76 +156,76 @@ const separateData = async (qaqcFileName, textFromFileLoaded, fileName) => {
     
     const masterFile = variables.masterFile;
     const core = masterFile.core.map(att => att.toLowerCase());
-    const pathology = masterFile.pathology.map(att => att.toLowerCase());
-    const riskFactor = masterFile.riskFactor.map(att => att.toLowerCase());
-    const survivalTreatment = masterFile.survivalAndTreatment.map(att => att.toLowerCase());
+    //const pathology = masterFile.pathology.map(att => att.toLowerCase());
+    //const riskFactor = masterFile.riskFactor.map(att => att.toLowerCase());
+    //const survivalTreatment = masterFile.survivalAndTreatment.map(att => att.toLowerCase());
     
     let coreData = [];
-    let pathologyData = [];
-    let rfData = [];
-    let stData = [];
+    //let pathologyData = [];
+    //let rfData = [];
+    //let stData = [];
     
     obj.forEach(data => {
         let cObj = {};
-        let pObj = {};
-        let rfObj = {};
-        let stObj = {};
+        //let pObj = {};
+        //let rfObj = {};
+        //let stObj = {};
 
         for(const key in data){
             if(core.indexOf(key.toLowerCase()) !== -1){
                 cObj[key] = data[key];
             }
 
-            if(pathology.indexOf(key.toLowerCase()) !== -1){
-                pObj[key] = data[key];
-            }
+            // if(pathology.indexOf(key.toLowerCase()) !== -1){
+            //     pObj[key] = data[key];
+            // }
             
-            if(riskFactor.indexOf(key.toLowerCase()) !== -1){
-                rfObj[key] = data[key];
-            }
+            // if(riskFactor.indexOf(key.toLowerCase()) !== -1){
+            //     rfObj[key] = data[key];
+            // }
 
-            if(survivalTreatment.indexOf(key.toLowerCase()) !== -1){
-                stObj[key] = data[key];
-            }
+            // if(survivalTreatment.indexOf(key.toLowerCase()) !== -1){
+            //     stObj[key] = data[key];
+            // }
         }
 
         if(Object.keys(cObj).length > 0) coreData.push(cObj);
-        if(Object.keys(pObj).length > 0) pathologyData.push(pObj);
-        if(Object.keys(rfObj).length > 0) rfData.push(rfObj);
-        if(Object.keys(stObj).length > 0) stData.push(stObj);
+        // if(Object.keys(pObj).length > 0) pathologyData.push(pObj);
+        // if(Object.keys(rfObj).length > 0) rfData.push(rfObj);
+        // if(Object.keys(stObj).length > 0) stData.push(stObj);
     });
     // Upload Data
-    document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading data...`;
+    //document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading data...`;
     const response1 = await uploadFile(coreData, `${fileName.slice(0, fileName.lastIndexOf('.'))}_Core_Data.json`, cDataFolderID);
     
-    if(response1.status === 409) {
-        const conflictFileId = response1.json.context_info.conflicts.id;
-        document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading new version...`;
-        await uploadFileVersion(coreData, conflictFileId, 'application/json');
-    }
-    const response2 = await uploadFile(pathologyData, `${fileName.slice(0, fileName.lastIndexOf('.'))}_Pathology_Data.json`, pDataFolderID);
-    if(response2.status === 409) {
-        const conflictFileId = response2.json.context_info.conflicts.id;
-        document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading new version...`;
-        await uploadFileVersion(pathologyData, conflictFileId, 'application/json');
-    }
-    const response3 = await uploadFile(rfData, `${fileName.slice(0, fileName.lastIndexOf('.'))}_Risk_Factor_Data.json`, rfDataFolderID);
-    if(response3.status === 409) {
-        const conflictFileId = response3.json.context_info.conflicts.id;
-        document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading new version...`;
-        await uploadFileVersion(rfData, conflictFileId, 'application/json');
-    }
-    const response4 = await uploadFile(stData, `${fileName.slice(0, fileName.lastIndexOf('.'))}_Survival_and_Treatment_Data.json`, stDataFolderID);
-    if(response4.status === 409) {
-        const conflictFileId = response4.json.context_info.conflicts.id;
-        document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading new version...`;
-        await uploadFileVersion(stData, conflictFileId, 'application/json');
-    }
+    // if(response1.status === 409) {
+    //     const conflictFileId = response1.json.context_info.conflicts.id;
+    //     document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading new version...`;
+    //     await uploadFileVersion(coreData, conflictFileId, 'application/json');
+    // }
+    // const response2 = await uploadFile(pathologyData, `${fileName.slice(0, fileName.lastIndexOf('.'))}_Pathology_Data.json`, pDataFolderID);
+    // if(response2.status === 409) {
+    //     const conflictFileId = response2.json.context_info.conflicts.id;
+    //     document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading new version...`;
+    //     await uploadFileVersion(pathologyData, conflictFileId, 'application/json');
+    // }
+    // const response3 = await uploadFile(rfData, `${fileName.slice(0, fileName.lastIndexOf('.'))}_Risk_Factor_Data.json`, rfDataFolderID);
+    // if(response3.status === 409) {
+    //     const conflictFileId = response3.json.context_info.conflicts.id;
+    //     document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading new version...`;
+    //     await uploadFileVersion(rfData, conflictFileId, 'application/json');
+    // }
+    // const response4 = await uploadFile(stData, `${fileName.slice(0, fileName.lastIndexOf('.'))}_Survival_and_Treatment_Data.json`, stDataFolderID);
+    // if(response4.status === 409) {
+    //     const conflictFileId = response4.json.context_info.conflicts.id;
+    //     document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading new version...`;
+    //     await uploadFileVersion(stData, conflictFileId, 'application/json');
+    // }
 
     // Upload Submission logs
-    document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading QAQC report...`;
-    const elHtml = document.getElementById('qaqcSubmissionReport').innerHTML;
-    await uploadFile(elHtml, qaqcFileName, logFolderID, true)
+    //document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading QAQC report...`;
+    //const elHtml = document.getElementById('qaqcSubmissionReport').innerHTML;
+    //await uploadFile(elHtml, qaqcFileName, logFolderID, true)
     
     location.reload();
 }
@@ -243,34 +243,34 @@ const existsOrCreateNewFolder = async (dataEntries, studyId, folderName) => {
 }
 
 const performQAQC = async (textFromFileLoaded, fileName) => {
-    document.getElementById('uploadErrorReport').innerHTML = `
-        <div id="qaqcSubmissionReport" class="qaqc-submission-report">
-            ${runQAQC(dataForQAQC(textFromFileLoaded))}
-        </div>
-    `;
+    // document.getElementById('uploadErrorReport').innerHTML = `
+    //     <div id="qaqcSubmissionReport" class="qaqc-submission-report">
+    //         ${runQAQC(dataForQAQC(textFromFileLoaded))}
+    //     </div>
+    // `;
     
-    const submitBtn = document.getElementById('submitBtn');
+    // const submitBtn = document.getElementById('submitBtn');
     
-    const newBtn = document.createElement('button');
-    newBtn.id = "continueSubmission";
-    newBtn.classList = ["btn btn-light"];
-    newBtn.title = "Continue Submission";
-    newBtn.innerHTML = 'Submit';
-    newBtn.type = "button";
+    // const newBtn = document.createElement('button');
+    // newBtn.id = "continueSubmission";
+    // newBtn.classList = ["btn btn-light"];
+    // newBtn.title = "Continue Submission";
+    // newBtn.innerHTML = 'Submit';
+    // newBtn.type = "button";
 
-    const downloadAndClose = document.createElement('button');
-    downloadAndClose.classList = ['btn btn-dark'];
-    downloadAndClose.id = 'downloadQAQCReport';
-    downloadAndClose.title = 'Download Report and Close';
-    downloadAndClose.innerHTML = 'Download Report and Close';
-    newBtn.type = 'button';
+    // const downloadAndClose = document.createElement('button');
+    // downloadAndClose.classList = ['btn btn-dark'];
+    // downloadAndClose.id = 'downloadQAQCReport';
+    // downloadAndClose.title = 'Download Report and Close';
+    // downloadAndClose.innerHTML = 'Download Report and Close';
+    // newBtn.type = 'button';
 
-    const closeBtn = submitBtn.parentNode.querySelectorAll('[data-dismiss="modal"]')[0];
-    closeBtn.parentNode.replaceChild(downloadAndClose, closeBtn)
-    submitBtn.parentNode.replaceChild(newBtn, submitBtn);
+    //const closeBtn = submitBtn.parentNode.querySelectorAll('[data-dismiss="modal"]')[0];
+    //closeBtn.parentNode.replaceChild(downloadAndClose, closeBtn)
+    //submitBtn.parentNode.replaceChild(newBtn, submitBtn);
     
     const fileNameQAQC = `${fileName.substr(0, fileName.lastIndexOf('.'))}_qaqc_${new Date().toISOString()}.html`
-    addEventDownloadQAQCReport(fileNameQAQC);
+    //addEventDownloadQAQCReport(fileNameQAQC);
     addEventContinueSubmission(fileNameQAQC, textFromFileLoaded, fileName);
 }
 
@@ -314,10 +314,10 @@ const replaceBtns = () => {
 
 const addEventContinueSubmission = (qaqcFileName, textFromFileLoaded, fileName) => {
     const element = document.getElementById('continueSubmission');
-    element.addEventListener('click', async () => {
-        element.classList.add('btn-disbaled');
-        separateData(qaqcFileName, textFromFileLoaded, fileName);
-    });
+    // element.addEventListener('click', async () => {
+    //     element.classList.add('btn-disbaled');
+    separateData(qaqcFileName, textFromFileLoaded, fileName);
+    //});
 }
 
 const dataForQAQC = (txt) => {
@@ -853,7 +853,7 @@ const addEventCPCSelect = () => {
         let response = await getFolderItems(ID);
         if(response.entries.length === 0) return;
         // check if study document exists
-        const documentExists = response.entries.filter(dt => dt.name.trim().toLowerCase() === 'confluence data from studies');
+        const documentExists = response.entries.filter(dt => dt.name.trim().toLowerCase() === 'BCRPP data from studies');
         if(documentExists.length === 1){
             response = (await getFolderItems(documentExists[0].id));
         }
@@ -1017,6 +1017,10 @@ export const addEventVariableDefinitions = () => {
             if(variable === 'ethnicity') {
                 variableName = 'Ethnicity'; 
                 definition = "Ethnic descent";
+            }
+            if(variable === 'race') {
+                variableName = 'race'; 
+                definition = "Race";
             }
             if(variable === 'study') {
                 variableName = 'Study'; 
@@ -1266,12 +1270,12 @@ export const addEventMissingnessFilterBarToggle = () => {
 
 export const addEventSummaryStatsFilterForm = (jsonData, headers) => {
 
-    const consortiumTypeSelection = document.getElementById('consortiumTypeSelection');
-    if(consortiumTypeSelection) {
-        consortiumTypeSelection.addEventListener('change', () => {
-            filterData(jsonData, headers);
-        });
-    }
+    // const consortiumTypeSelection = document.getElementById('consortiumTypeSelection');
+    // if(consortiumTypeSelection) {
+    //     consortiumTypeSelection.addEventListener('change', () => {
+    //         filterData(jsonData, headers);
+    //     });
+    // }
 
     // const genderSelection = document.getElementById('genderSelection');
     // genderSelection.addEventListener('change', () => {
@@ -1285,6 +1289,11 @@ export const addEventSummaryStatsFilterForm = (jsonData, headers) => {
 
     const ethnicitySelection = document.getElementById('ethnicitySelection');
     ethnicitySelection.addEventListener('change', () => {
+        filterData(jsonData, headers);
+    });
+
+    const raceSelection = document.getElementById('raceSelection');
+    raceSelection.addEventListener('change', () => {
         filterData(jsonData, headers);
     });
 
@@ -1319,35 +1328,37 @@ const filterData = (jsonData, headers) => {
     //const chip = document.getElementById('genotypingChipSelection').value;
     const ethnicity = document.getElementById('ethnicitySelection').value;
     const study = document.getElementById('studySelection').value;
+    const race = document.getElementById('raceSelection').value;
     //const genderFilter = Array.from(document.getElementById('genderSelection').options).filter(op => op.selected)[0].textContent;
     //const chipFilter = Array.from(document.getElementById('genotypingChipSelection').options).filter(op => op.selected)[0].textContent;
     const ethnicityFilter = Array.from(document.getElementById('ethnicitySelection').options).filter(op => op.selected)[0].textContent;
     const studyFilter = Array.from(document.getElementById('studySelection').options).filter(op => op.selected)[0].textContent;
+    const raceFilter = Array.from(document.getElementById('raceSelection').options).filter(op => op.selected)[0].textContent;
     let finalData = jsonData;
     let onlyCIMBA = false;
     
-    const consortiumTypeSelection = document.getElementById('consortiumTypeSelection');
-    if(consortiumTypeSelection.value === 'cimba') {
-        Array.from(document.getElementsByClassName('consortium-ul')).forEach(ele => {
-            if(ele.dataset.consortium === 'CIMBA') ele.style.display = 'block';
-            else {
-                Array.from(ele.querySelectorAll('input:checked.select-study')).forEach(e => e.checked = false);
-                ele.style.display = 'none';
-            }
-        });
-        onlyCIMBA = true;
-        finalData = finalData.filter(dt => dt.consortium === 'CIMBA');
-    }
-    else {
-        Array.from(document.getElementsByClassName('consortium-ul')).forEach(ele => {
-            if(ele.dataset.consortium === 'CIMBA') {
-                Array.from(ele.querySelectorAll('input:checked.select-study')).forEach(e => e.checked = false);
-                ele.style.display = 'none';
-            }
-            else ele.style.display = 'block';
-        })
-        finalData = finalData.filter(dt => dt.consortium !== 'CIMBA');
-    }
+    // const consortiumTypeSelection = document.getElementById('consortiumTypeSelection');
+    // if(consortiumTypeSelection.value === 'cimba') {
+    //     Array.from(document.getElementsByClassName('consortium-ul')).forEach(ele => {
+    //         if(ele.dataset.consortium === 'CIMBA') ele.style.display = 'block';
+    //         else {
+    //             Array.from(ele.querySelectorAll('input:checked.select-study')).forEach(e => e.checked = false);
+    //             ele.style.display = 'none';
+    //         }
+    //     });
+    //     onlyCIMBA = true;
+    //     finalData = finalData.filter(dt => dt.consortium === 'CIMBA');
+    // }
+    // else {
+    //     Array.from(document.getElementsByClassName('consortium-ul')).forEach(ele => {
+    //         if(ele.dataset.consortium === 'CIMBA') {
+    //             Array.from(ele.querySelectorAll('input:checked.select-study')).forEach(e => e.checked = false);
+    //             ele.style.display = 'none';
+    //         }
+    //         else ele.style.display = 'block';
+    //     })
+    //     finalData = finalData.filter(dt => dt.consortium !== 'CIMBA');
+    // }
 
     let selectedConsortia = [];
     Array.from(document.getElementsByClassName('select-consortium')).forEach(dt => {
@@ -1367,6 +1378,9 @@ const filterData = (jsonData, headers) => {
     if(study !== 'all') {
         finalData = finalData.filter(dt => dt['study'] === study);
     }
+    if(race !== 'all') {
+        finalData = finalData.filter(dt => dt['race'] === race);
+    }
     updateCounts(finalData);
     if(array.length > 0){
         finalData = finalData.filter(dt => array.indexOf(`${dt.consortium}@#$${dt.study}`) !== -1);
@@ -1377,7 +1391,7 @@ const filterData = (jsonData, headers) => {
     //     <span class="font-bold">Genotyping chip: </span>${chipFilter}${selectedStudies.length > 0 ? `
     //     <span class="vertical-line"></span><span class="font-bold">Study: </span>${selectedStudies[0]} ${selectedStudies.length > 1 ? `and <span class="other-variable-count">${selectedStudies.length-1} other</span>`:``}
     // `:``}`
-    renderAllCharts(finalData, headers, onlyCIMBA);
+    renderAllCharts(finalData);
 }
 
 export const addEventConsortiaFilter = (d) => {
@@ -1398,7 +1412,6 @@ export const addEventConsortiaFilter = (d) => {
                 renderDataSummary({totalConsortia, totalPatients, totalWomen}, true);
             }
             else {
-                delete data['CIMBA']
                 let totalConsortia = 0, totalWomen = 0, totalPatients = 0;
                 Object.values(data).forEach(obj => {
                     totalConsortia++;
