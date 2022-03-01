@@ -2,7 +2,7 @@ import { navBarMenutemplate } from './src/components/navBarMenuItems.js';
 import { infoDeck, infoDeckAfterLoggedIn } from './src/pages/homePage.js';
 import { dataSubmissionTemplate, lazyload } from './src/pages/dataSubmission.js';
 import { dataSummary, dataSummaryMissingTemplate, dataSummaryStatisticsTemplate } from './src/pages/dataExploration.js';
-import { template as dataRequestTemplate, dataFrom, generateForm, dataApproval } from './src/pages/dataRequest.js';
+import { dataAccess as dataRequestTemplate, dataAccessNotSignedIn, dataForm, dataApproval } from './src/pages/dataRequest.js';
 import { checkAccessTokenValidity, loginAppDev, loginObs, loginAppEpisphere, logOut, loginAppProd } from './src/manageAuthentication.js';
 import { storeAccessToken, removeActiveClass, showAnimation, getCurrentUser, inactivityTime, filterConsortiums, getFolderItems, filterProjects, amIViewer, getCollaboration, hideAnimation, assignNavbarActive, getFileInfo, handleRangeRequests, applicationURLs, checkDataSubmissionPermissionLevel } from './src/shared.js';
 import { addEventConsortiaSelect, addEventUploadStudyForm, addEventStudyRadioBtn, addEventDataGovernanceNavBar, addEventMyProjects, addEventUpdateSummaryStatsData } from './src/event.js';
@@ -124,13 +124,23 @@ export const confluence = async () => {
             })
         }
         dataRequestElement.addEventListener('click', () => {
-            if (dataRequestElement.classList.contains('navbar-active')) return;
-            showAnimation();
-            assignNavbarActive(dataRequestElement, 1)
+            // if (dataRequestElement.classList.contains('navbar-active')) return;
+            // const confluenceDiv = document.getElementById('aboutDiv');
+            // showAnimation();
+            // assignNavbarActive(dataRequestElement, 1)
+            // document.title = 'BCRPP - Data Access';
+            // confluenceDiv.innerHTML = dataAccessNotSignedIn();
+            // //dataForm();
+            // //dataApproval();
+            // //hideAnimation();
+            const element = document.getElementById('dataRequest');
+            if(!element) return;
+            if(element.classList.contains('navbar-active')) return;
             document.title = 'BCRPP - Data Access';
+            assignNavbarActive(element, 1);
+            dataRequestTemplate();
             confluenceDiv.innerHTML = dataRequestTemplate();
             dataForm();
-            generateForm();
             dataApproval();
             hideAnimation();
         });
@@ -253,8 +263,10 @@ const manageRouter = async () => {
         if(element.classList.contains('navbar-active')) return;
         document.title = 'BCRPP - Data Access';
         assignNavbarActive(element, 1);
+        dataRequestTemplate();
         confluenceDiv.innerHTML = dataRequestTemplate();
         dataForm();
+        dataApproval();
         hideAnimation();
     }
     else if (hash === '#data_exploration/dictionary') {
