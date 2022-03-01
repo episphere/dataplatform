@@ -329,6 +329,39 @@ export const uploadFile = async (data, fileName, folderId, html) => {
     }
 }
 
+export const uploadWordFile = async (data, fileName, folderId, html) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const form = new FormData();
+        form.append('file', data);
+        form.append('attributes', `{"name": "${fileName}", "parent": {"id": "${folderId}"}}`);
+    
+        let response = await fetch("https://upload.box.com/api/2.0/files/content", {
+            method: "POST",
+            headers:{
+                Authorization:"Bearer "+access_token
+            },
+            body: form,
+            contentType: false
+        });
+        if(response.status === 401){
+            if((await refreshToken()) === true) return await uploadWordFile(data, fileName, folderId, html);
+        }
+        else if(response.status === 201){
+            return response.json();
+        }
+        else if(response.status === 409) {
+            return {status: response.status, json: await response.json()}
+        }
+        else{
+            return {status: response.status, statusText: response.statusText};
+        };
+    }
+    catch(err) {
+        if((await refreshToken()) === true) return await uploadWordFile(data, fileName, folderId, html);
+    }
+}
+
 export const uploadFileVersion = async (data, fileId, type) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
@@ -338,6 +371,35 @@ export const uploadFileVersion = async (data, fileId, type) => {
         else blobData = new Blob([JSON.stringify(data)], { type: type});
         
         form.append('file', blobData);
+    
+        let response = await fetch(`https://upload.box.com/api/2.0/files/${fileId}/content`, {
+            method: "POST",
+            headers:{
+                Authorization:"Bearer "+access_token
+            },
+            body: form,
+            contentType: false
+        });
+        if(response.status === 401){
+            if((await refreshToken()) === true) return await uploadFileVersion(data, fileId, type);
+        }
+        else if(response.status === 201){
+            return response.json();
+        }
+        else{
+            return {status: response.status, statusText: response.statusText};
+        };
+    }
+    catch(err) {
+        if((await refreshToken()) === true) return await uploadFileVersion(data, fileId, 'text/html');
+    }
+}
+
+export const uploadWordFileVersion = async (data, fileId) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        
+        form.append('file', data);
     
         let response = await fetch(`https://upload.box.com/api/2.0/files/${fileId}/content`, {
             method: "POST",

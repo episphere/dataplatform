@@ -124,22 +124,22 @@ export const confluence = async () => {
             })
         }
         dataRequestElement.addEventListener('click', () => {
-            // if (dataRequestElement.classList.contains('navbar-active')) return;
-            // const confluenceDiv = document.getElementById('aboutDiv');
+            if (dataRequestElement.classList.contains('navbar-active')) return;
+            // const confluenceDiv = document.getElementById('dataRequest');
             // showAnimation();
             // assignNavbarActive(dataRequestElement, 1)
             // document.title = 'BCRPP - Data Access';
-            // confluenceDiv.innerHTML = dataAccessNotSignedIn();
-            // //dataForm();
-            // //dataApproval();
-            // //hideAnimation();
+            //confluenceDiv.innerHTML = dataAccessNotSignedIn();
+            //dataForm();
+            //dataApproval();
+            //hideAnimation();
             const element = document.getElementById('dataRequest');
             if(!element) return;
             if(element.classList.contains('navbar-active')) return;
             document.title = 'BCRPP - Data Access';
             assignNavbarActive(element, 1);
             dataRequestTemplate();
-            confluenceDiv.innerHTML = dataRequestTemplate();
+             confluenceDiv.innerHTML = dataRequestTemplate();
             dataForm();
             dataApproval();
             hideAnimation();
@@ -263,11 +263,11 @@ const manageRouter = async () => {
         if(element.classList.contains('navbar-active')) return;
         document.title = 'BCRPP - Data Access';
         assignNavbarActive(element, 1);
-        dataRequestTemplate();
-        confluenceDiv.innerHTML = dataRequestTemplate();
-        dataForm();
-        dataApproval();
-        hideAnimation();
+        confluenceDiv.innerHTML = dataAccessNotSignedIn();
+        //confluenceDiv.innerHTML = dataRequestTemplate();
+        //dataForm();
+        //dataApproval();
+        //hideAnimation();
     }
     else if (hash === '#data_exploration/dictionary') {
         const dataDictionaryElement = document.getElementById('dataDictionary');

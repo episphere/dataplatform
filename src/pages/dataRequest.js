@@ -1,5 +1,5 @@
 // import { createFileTask, assignTask, updateTaskAssignment } from '../shared.js';
-import { getTaskList, updateTaskAssignment } from '../shared.js';
+import { getTaskList, updateTaskAssignment, uploadFile, uploadWordFile, getFolderItems, uploadWordFileVersion} from '../shared.js';
 
 // Require additional changes regarding data
 //import * as docx from "docx";
@@ -28,6 +28,7 @@ export const dataAccessNotSignedIn = () => {
                           <li>Upon DTA signatures, the data coordinating center(s) will be able to provide access of the approved data to researchers through the Confluence Data Platform.</li>
                       </ul>
                   </div>
+                </div>
             </div>
         </div>
       `;
@@ -175,7 +176,7 @@ export const dataAccess = () => {
             <h2>Form Data</h2>
             <pre></pre>
             </div>
-
+          </div>
         </div>
       </div>
     `;
@@ -202,8 +203,18 @@ export const dataApproval = () => {
     form.addEventListener('submit', approveDoc)
 }
 
-export const dataForm = () => {
-  function handleFormSubmit(eventtest) {
+export const dataForm = async () => {
+  let files = await getFolderItems(155292358576);
+  //console.log(files.entries)
+  const filesinfoldernames = [];
+  const filesinfolderids = [];
+  for (let i = 0; i < files.entries.length; i++) {
+    filesinfoldernames.push(files.entries[i].name);
+    filesinfolderids.push(files.entries[i].id);
+  }
+  //console.log(filesinfolderids);
+ 
+  async function handleFormSubmit(eventtest) {
       eventtest.preventDefault();
   
       const data = new FormData(eventtest.target);
@@ -218,10 +229,15 @@ export const dataForm = () => {
       //const data2 = JSON.parse(JSON.stringify(formJSON));
       //console.log(data2)
       //console.log(formJSON.name)
-      generate(formJSON);
+      //uploadFile(formJSON, "BCRPPexample.json", 155292358576)
+      // let files = async () =>{
+      //   await console.log(getFolderItems(155292358576));//149098174998);
+      //  }
+      // console.log(files.entries);
+      await generateWord(formJSON);
   };
 
-  function generate(jsondata) {
+  async function generateWord(jsondata) {
     const doc = new docx.Document({
       sections: [{
         properties: {},
@@ -312,10 +328,29 @@ export const dataForm = () => {
       }]
     });
 
+    let files = await getFolderItems(155292358576);
+    //console.log(files.entries)
+    const filesinfoldernames = [];
+    const filesinfolderids = [];
+    for (let i = 0; i < files.entries.length; i++) {
+      filesinfoldernames.push(files.entries[i].name);
+      filesinfolderids.push(files.entries[i].id);
+    }
+    //console.log(filesinfoldernames);
+
     docx.Packer.toBlob(doc).then(blob => {
       console.log(blob);
-      saveAs(blob, "BCRPPexample.docx");
+      //saveAs(blob, "BCRPPexample.docx");
       console.log("Document created successfully");
+      //let files = getFolderItems(155292358576);//149098174998);
+      if (filesinfoldernames.includes("BCRPPexample.docx")){
+        console.log("File Exists: Saving New Version");
+        let fileidupdate = filesinfolderids[filesinfoldernames.indexOf("BCRPPexample.docx")];
+        uploadWordFileVersion(blob, fileidupdate);
+      } else {
+        console.log("Saving File to Box");
+        uploadWordFile(blob, "BCRPPexample.docx", 155292358576);
+      }
     });
   }
 
