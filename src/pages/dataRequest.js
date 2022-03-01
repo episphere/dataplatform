@@ -138,40 +138,45 @@ export const dataAccess = () => {
                       
                       <button type="submit">Send Form</button>
                     </form>
-                  </section>
+                  </section>`
 
-                  <div class="general-bg padding-bottom-1rem">
-                              <div class="container body-min-height">
-                                  <div class="main-summary-row">
-                                      <div class="align-left">
-                                          <h1 class="page-header">Data Approval</h1>
-                                      </div>
-                                  </div>
-                                  <div class="div-border font-size-18" style="padding-left: 1rem;">
-                                      <div class="row m-0 align-center data-approval">
-                                          <iframe
-                                              class="row m-0 align-center"
-                                              src="https://nih.app.box.com/embed/s/01c2pxqx0emwixd68wwarkw1ndymm3ov?sortColumn=date&view=list"
-                                              width="700"
-                                              height="800"
-                                              frameborder="0"
-                                              allowfullscreen
-                                              webkitallowfullscreen
-                                              msallowfullscreen
-                                          ></iframe>
-                                          <form>
-                                              <label for="message">Enter a Message</label>
-                                              <div class="input-group">
-                                                  <textarea id="message" name="message" rows="6" cols="65"></textarea>
-                                              </div>
-                                              <button type="submit" value="approved">Approve</button>
-                                              <button type="submit" value="rejected">Reject</button>
-                                          </form>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
+      // template +=  `
+      //                       <div class="general-bg padding-bottom-1rem">
+      //                         <div class="container body-min-height">
+      //                             <div class="main-summary-row">
+      //                                 <div class="align-left">
+      //                                     <h1 class="page-header">Data Approval</h1>
+      //                                 </div>
+      //                             </div>
+      //                             <div class="div-border font-size-18" style="padding-left: 1rem;">
+      //                                 <div class="row m-0 align-center data-approval">
+      //                                     <iframe
+      //                                         class="row m-0 align-center"
+      //                                         src="https://nih.app.box.com/embed/s/u7su974i2ehejpud73wtw4uyjufhv100?sortColumn=date&view=list"
+      //                                         width="700"
+      //                                         height="800"
+      //                                         frameborder="0"
+      //                                         allowfullscreen
+      //                                         webkitallowfullscreen
+      //                                         msallowfullscreen
+      //                                     ></iframe>
+      //                                     <form>
+      //                                         <label for="message">Enter a Message</label>
+      //                                         <div class="input-group">
+      //                                             <textarea id="message" name="message" rows="6" cols="65"></textarea>
+      //                                         </div>
+      //                                         <button type="submit" value="approved">Approve</button>
+      //                                         <button type="submit" value="rejected">Reject</button>
+      //                                     </form>
+      //                                 </div>
+      //                             </div>
+      //                         </div>
+      //                     </div>`
 
+    template += `
+            <div align="center">
+            <iframe src="https://nih.app.box.com/f/852124ef6a4f4ee4aa2f50cc34188f3e" height="800" width="1000"></iframe>
+            </div>
             <div class="results">
             <h2>Form Data</h2>
             <pre></pre>

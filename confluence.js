@@ -141,7 +141,7 @@ export const confluence = async () => {
             dataRequestTemplate();
              confluenceDiv.innerHTML = dataRequestTemplate();
             dataForm();
-            dataApproval();
+            //dataApproval();
             hideAnimation();
         });
         // platformTutorialElement.addEventListener('click', () => {
