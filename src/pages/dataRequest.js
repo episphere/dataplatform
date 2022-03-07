@@ -10,7 +10,7 @@ export const template = () => {
                 </div>
                 <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
                     <div class="row m-0">
-                        The Breast Cancer Risk Prediction Project is currently generating genotyping data and harmonizing risk factor and clinical data. Data is expected to be available for request in late 2022. Data access will be facilitated through this platform, in accordance to the data transfer agreements signed between participating studies (originator) and the BCRPP Data Coordinating Center (DCC) at the Division of Cancer Epidemiology and Genetics at the National Cancer Institute.
+                        The Breast Cancer Risk Prediction Project is currently harmonizing risk factor and clinical data from participating cohorts. Data is expected to be available for request in late 2022. Data access will be facilitated through this platform, in accordance to the data transfer agreements signed between participating studies (originator) and the BCRPP Data Coordinating Center (DCC) at the Division of Cancer Epidemiology and Genetics at the National Cancer Institute.
                     </div></br>
                     <!---<div class="row m-0 align-center">
                         <img src="./static/images/data_request.PNG" alt="Overview of data sharing and access in Confluence" style="margin:auto">
