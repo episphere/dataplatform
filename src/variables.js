@@ -83,7 +83,8 @@ export const variables = {
         },
         invasive_primary: {
             888: "Don't Know",
-            'label': 'Count of Cancer Invasiveness'
+            'label': 'Breast Cancer Behavior'
+            //'label': 'Count of Cancer Invasiveness'
         },
         ageInt: {
             888: "Don't Know",
@@ -179,7 +180,7 @@ export const variables = {
             0: 'negative',
             1: 'positive',
             888: "Don't Know",
-            'label': 'Estrogen receptor status'
+            'label': 'Estrogen Receptor Status'
         },
         eduCat: {
             'label': 'Highest level of education received'
@@ -314,7 +315,7 @@ export const variables = {
             2: 'other methods of detection',
             777: 'Not Applicable',
             888: "Don't Know",
-            'label': 'Mode of detection of first breast cancer diagnosis'
+            'label': 'Mode of Detection of First Breast Cancer Diagnosis'
         },
         Index: {
             1: 'ascertained for first tumour',
@@ -351,7 +352,7 @@ export const variables = {
             2: 'moderately differentiated',
             3: 'poorly/un-differentiated',
             888: "Don't Know",
-            'label': 'Histopathological grade'
+            'label': 'Histopathological Grade'
         },
         Grade2: {
             1: 'well differentiated',
