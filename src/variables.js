@@ -83,7 +83,8 @@ export const variables = {
         },
         invasive_primary: {
             888: "Don't Know",
-            'label': 'Count of Cancer Invasiveness'
+            'label': 'Breast Cancer Behavior'
+            //'label': 'Count of Cancer Invasiveness'
         },
         ageInt: {
             888: "Don't Know",
