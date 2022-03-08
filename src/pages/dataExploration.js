@@ -2,7 +2,7 @@ import { getFile, hideAnimation, csv2Json, numberWithCommas, emailsAllowedToUpda
 import { addEventConsortiumSelect, getSelectedStudies } from '../visualization.js';
 import { addEventVariableDefinitions, addEventFilterBarToggle, addEventMissingnessFilterBarToggle } from '../event.js';
 
-export const dataSummary = (pageHeader, showPages, showUpdateButton, publicAccess) => {
+export const dataSummary = (pageHeader, showPages, subCases, showUpdateButton, publicAccess) => {
     return `
         <div class="general-bg">
             <div class="container body-min-height">
@@ -34,6 +34,17 @@ export const dataSummary = (pageHeader, showPages, showUpdateButton, publicAcces
                                             <button class="transparent-btn dropdown-item dropdown-menu-links" title="Download dictionary as tsv" id="downloadDictionaryTSV">TSV</button>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        `: ``}
+                        ${subCases ? `
+                            <div class="ml-auto mt-3 mb-1" id="classSelect">
+                                <div class="col-md-12 p-0 form-group">
+                                    <!---<label class="filter-label font-size-13" for="subcasesSelection">Selection</label>--->
+                                    <select class="form-control font-size-15" id="subcasesSelection" data-variable='subcases'>
+                                        <option selected value='all'>All Subjects</option>
+                                        <option value='cases'>Cases</option>
+                                    </select>
                                 </div>
                             </div>
                         `: ``}

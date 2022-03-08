@@ -77,6 +77,14 @@ export const variables = {
             888: "Don't Know",
             'label': 'Birth Year'
         },
+        dxdate_primary: {
+            888: "Don't Know",
+            'label': 'Year of Diagnosis'
+        },
+        invasive_primary: {
+            888: "Don't Know",
+            'label': 'Count of Cancer Invasiveness'
+        },
         ageInt: {
             888: "Don't Know",
             'label': 'Age at Baseline'
@@ -505,12 +513,12 @@ export const variables = {
             888: "Don't Know",
             'label': 'Estrogen receptor status of second tumour'
         },
-        ER_statusIndex: {
-            0: 'negative',
-            1: 'positive',
-            888: "Don't Know",
-            'label': 'ER status for cases'
-        },
+        // ER_statusIndex: {
+        //     0: 'negative',
+        //     1: 'positive',
+        //     888: "Don't Know",
+        //     'label': 'ER status for cases'
+        // },
         ER_status1_source: {
             0: 'clinical records',
             1: 'IHC stain of whole sections',

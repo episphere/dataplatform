@@ -4,7 +4,7 @@ import { variables } from './variables.js';
 import { template as dataGovernanceTemplate, addFields, dataGovernanceLazyLoad, dataGovernanceCollaboration, dataGovernanceProjects } from './pages/dataGovernance.js';
 import { myProjectsTemplate } from './pages/myProjects.js';
 import { createProjectModal } from './components/modal.js';
-import { getSelectedStudies, renderAllCharts, updateCounts } from './visualization.js';
+import { getSelectedStudies, renderAllCasesCharts, renderAllCharts, updateCounts } from './visualization.js';
 
 let top = 0;
 
@@ -1302,6 +1302,11 @@ export const addEventSummaryStatsFilterForm = (jsonData, headers) => {
         filterData(jsonData, headers);
     });
 
+    const subcasesSelection = document.getElementById('subcasesSelection');
+    subcasesSelection.addEventListener('change', () => {
+        filterData(jsonData, headers);
+    });
+
     const elements = document.getElementsByClassName('select-consortium');
     Array.from(elements).forEach((el,index) => {
         el.addEventListener('click', () => {
@@ -1329,11 +1334,13 @@ const filterData = (jsonData, headers) => {
     const ethnicity = document.getElementById('ethnicitySelection').value;
     const study = document.getElementById('studySelection').value;
     const race = document.getElementById('raceSelection').value;
+    const subCases = document.getElementById('subcasesSelection').value;
     //const genderFilter = Array.from(document.getElementById('genderSelection').options).filter(op => op.selected)[0].textContent;
     //const chipFilter = Array.from(document.getElementById('genotypingChipSelection').options).filter(op => op.selected)[0].textContent;
     const ethnicityFilter = Array.from(document.getElementById('ethnicitySelection').options).filter(op => op.selected)[0].textContent;
     const studyFilter = Array.from(document.getElementById('studySelection').options).filter(op => op.selected)[0].textContent;
     const raceFilter = Array.from(document.getElementById('raceSelection').options).filter(op => op.selected)[0].textContent;
+    const subCasesFilter = Array.from(document.getElementById('subcasesSelection').options).filter(op => op.selected)[0].textContent;
     let finalData = jsonData;
     let onlyCIMBA = false;
     
@@ -1381,7 +1388,9 @@ const filterData = (jsonData, headers) => {
     if(race !== 'all') {
         finalData = finalData.filter(dt => dt['race'] === race);
     }
+
     updateCounts(finalData);
+
     if(array.length > 0){
         finalData = finalData.filter(dt => array.indexOf(`${dt.consortium}@#$${dt.study}`) !== -1);
     }
@@ -1391,7 +1400,12 @@ const filterData = (jsonData, headers) => {
     //     <span class="font-bold">Genotyping chip: </span>${chipFilter}${selectedStudies.length > 0 ? `
     //     <span class="vertical-line"></span><span class="font-bold">Study: </span>${selectedStudies[0]} ${selectedStudies.length > 1 ? `and <span class="other-variable-count">${selectedStudies.length-1} other</span>`:``}
     // `:``}`
-    renderAllCharts(finalData);
+    if(subCases == 'all') {
+        renderAllCharts(finalData);
+    }
+    else renderAllCasesCharts(finalData);
+    //renderAllCharts(finalData);
+    //renderAllCasesCharts(finalData);
 }
 
 export const addEventConsortiaFilter = (d) => {

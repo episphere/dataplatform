@@ -1,7 +1,7 @@
-import { hideAnimation, getFile, csvJSON, numberWithCommas, summaryStatsFileId, getFileInfo, mapReduce, reSizePlots } from './shared.js';
+import { hideAnimation, getFile, csvJSON, numberWithCommas, summaryStatsFileId, getFileInfo, mapReduce, summaryStatsCasesFileId, reSizePlots } from './shared.js';
 import { variables } from './variables.js';
 import { addEventSummaryStatsFilterForm } from './event.js';
-const plotTextSize = 10;
+const plotTextSize = 10.5;
 
 const chartLabels = {
     'yes': 'Yes',
@@ -24,14 +24,36 @@ export const getFileContent = async () => {
     allFilters(jsonData, headers, false);
 };
 
+export const getFileContentCases = async () => {
+    const {jsonData, headers} = csvJSON(await getFile(summaryStatsCasesFileId)); // Get summary level data
+    const lastModified = (await getFileInfo(summaryStatsCasesFileId)).modified_at;
+    document.getElementById('dataLastModified').innerHTML = `Data last modified at - ${new Date(lastModified).toLocaleString()}`;
+    hideAnimation();
+    if(jsonData.length === 0) {
+        document.getElementById('confluenceDiv').innerHTML = `You don't have access to summary level data, please contact NCI for the access.`
+        return;
+    };
+    renderAllCasesCharts(jsonData, headers);
+    allFilters(jsonData, headers, false);
+};
+
 const allFilters = (jsonData, headers) => {
     document.getElementById('allFilters').innerHTML = '';
     const div1 = document.createElement('div')
-    div1.classList = ['row ethnicity-select'];
+    div1.classList = ['row select'];
     const obj = aggegrateData(jsonData);
     let template =`
         <div style="width: 100%;">
             
+            <div class="form-group">
+                <label class="filter-label font-size-13" for="ethnicitySelection">Ethnicity</label>
+                <select class="form-control font-size-15" id="ethnicitySelection" data-variable='ethnicity'>
+                    <option selected value='all'>All</option>
+                    <option value='Non-Hispanic/Non-Latino'>Non-Hispanic/Non-Latino</option>
+                    <option value='Hispanic/Latino'>Hispanic/Latino</option>
+                </select>
+            </div>
+        
             <div class="form-group">
                 <label class="filter-label font-size-13" for="raceSelection">Race</label>
                 <select class="form-control font-size-15" id="raceSelection" data-variable='race'>
@@ -42,15 +64,6 @@ const allFilters = (jsonData, headers) => {
                     <option value='Native Hawaiian/ Pacific Islander'>Native Hawaiian/ Pacific Islander</option>
                     <option value='Other including multiracial'>Other including multiracial</option>
                     <option value='White'>White</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label class="filter-label font-size-13" for="ethnicitySelection">Ethnicity</label>
-                <select class="form-control font-size-15" id="ethnicitySelection" data-variable='ethnicity'>
-                    <option selected value='all'>All</option>
-                    <option value='Non-Hispanic/Non-Latino'>Non-Hispanic/Non-Latino</option>
-                    <option value='Hispanic/Latino'>Hispanic/Latino</option>
                 </select>
             </div>
             
@@ -173,15 +186,21 @@ export const renderAllCharts = (data) => {
     generateBirthBarChart('bYear', 'dataSummaryVizChart1', 'dataSummaryVizLabel1', finalData, 'chartRow1');
     generateAgeBarChart('ageInt', 'dataSummaryVizChart2', 'dataSummaryVizLabel2', finalData, 'chartRow1');
     generateMenarcheBarChart('ageMenarche', 'dataSummaryVizChart3', 'dataSummaryVizLabel3', finalData, 'chartRow1');
-    generateParityBarChart('parous', 'dataSummaryVizChart4', 'dataSummaryVizLabel4', finalData, 'chartRow2')
-    generatePregnaciesBarChart('parity', 'dataSummaryVizChart5', 'dataSummaryVizLabel5', finalData, 'chartRow2')
-    generateBMIBarChart('BMI', 'dataSummaryVizChart6', 'dataSummaryVizLabel6', finalData, 'chartRow2')
-    //renderStudyDesignBarChart(finalData, 'studyDesign', 'dataSummaryVizChart7', 'dataSummaryVizLabel7', 'chartRow1');
-    //renderStatusBarChart(finalData, onlyCIMBA ? 'Status_Carrier': 'status', 'dataSummaryVizChart4', 'dataSummaryVizLabel4', onlyCIMBA ? ['case-BRCA1', 'control-BRCA1', 'case-BRCA2', 'control-BRCA2'] : ['case', 'control'], 'chartRow2');
-    //renderEthnicityBarChart(finalData, 'ethnicityClass', 'dataSummaryVizChart5', 'dataSummaryVizLabel5', 'chartRow2');
-    //renderPlotlyPieChart(finalData, 'ER_statusIndex', 'dataSummaryVizChart4', 'dataSummaryVizLabel4', headers, 'chartRow2');
-    //if(onlyCIMBA) renderStatusBarChart(finalData, 'status', 'dataSummaryVizChart6', 'dataSummaryVizLabel6', ['case', 'control'], 'chartRow2');
-    //else generateBarSingleSelect('famHist', 'dataSummaryVizChart6', 'dataSummaryVizLabel6', finalData, headers, 'chartRow2')
+    generateParityBarChart('parous', 'dataSummaryVizChart4', 'dataSummaryVizLabel4', finalData, 'chartRow2');
+    generatePregnaciesBarChart('parity', 'dataSummaryVizChart5', 'dataSummaryVizLabel5', finalData, 'chartRow2');
+    generateBMIBarChart('BMI', 'dataSummaryVizChart6', 'dataSummaryVizLabel6', finalData, 'chartRow2');
+}
+
+export const renderAllCasesCharts = (data) => {
+    document.getElementById('chartRow1').innerHTML = '';
+    document.getElementById('chartRow2').innerHTML = '';
+    let finalData = {};
+    finalData = data;
+    generateYearsDiagBarChart('dxdate_primary', 'dataSummaryVizChart1', 'dataSummaryVizLabel1', finalData, 'chartRow1');
+    generateCancerInvBarChart('invasive_primary', 'dataSummaryVizChart2', 'dataSummaryVizLabel2', finalData, 'chartRow1')
+    generateDetectionPrimBarChart('Detection_screen', 'dataSummaryVizChart3', 'dataSummaryVizLabel3', finalData, 'chartRow1');
+    generateERTumorStatusBarChart('ER_statusIndex', 'dataSummaryVizChart4', 'dataSummaryVizLabel4', finalData, 'chartRow2');
+    generateTumorGradeBarChart('Grade1', 'dataSummaryVizChart5', 'dataSummaryVizLabel5', finalData, 'chartRow2');
 }
 
 export const updateCounts = (data) => {
@@ -223,6 +242,106 @@ const generateAgeBarChart = (parameter, id, labelID, jsonData, chartRow) => {
             y: [ mapReduce(jsonData, '<20'), mapReduce(jsonData, '20 to 29'), mapReduce(jsonData, '30 to 39'), mapReduce(jsonData, '40 to 49'), mapReduce(jsonData, '50 to 59'), mapReduce(jsonData, '60 to 69'), mapReduce(jsonData, '70 to 79'), mapReduce(jsonData, '80 to 89'), mapReduce(jsonData, '90 to 99') + mapReduce(jsonData, '>99') ],
             marker:{
                 color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8']
+            },
+          type: 'bar'
+        }
+    ];
+    const layout = {
+        xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
+        yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
+    document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
+}
+
+const generateDetectionPrimBarChart = (parameter, id, labelID, jsonData, chartRow) => {
+    const div = document.createElement('div');
+    div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
+    div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
+    document.getElementById(chartRow).appendChild(div);
+    const data = [
+        {
+            x: ['Screen-detected','Non-screen detected', 'Unknown'],
+            y: [ mapReduce(jsonData, 'detection_primary11'), mapReduce(jsonData, 'detection_primary12'), mapReduce(jsonData, 'detection_primary1DK') ],
+            marker:{
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8']
+            },
+          type: 'bar'
+        }
+    ];
+    const layout = {
+        xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
+        yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
+    document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
+}
+
+const generateCancerInvBarChart = (parameter, id, labelID, jsonData, chartRow) => {
+    const div = document.createElement('div');
+    div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
+    div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
+    document.getElementById(chartRow).appendChild(div);
+    const data = [
+        {
+            x: ['Invasive', 'In-situ', 'Unknown'],
+            y: [ mapReduce(jsonData, 'invasive_primary11'), mapReduce(jsonData, 'invasive_primary12'), mapReduce(jsonData, 'invasive_primary1DK') ],
+            marker:{
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8']
+            },
+          type: 'bar'
+        }
+    ];
+    const layout = {
+        xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
+        yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
+    document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
+}
+
+const generateERTumorStatusBarChart = (parameter, id, labelID, jsonData, chartRow) => {
+    const div = document.createElement('div');
+    div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
+    div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
+    document.getElementById(chartRow).appendChild(div);
+    const data = [
+        {
+            x: ['Negative', 'Positive', 'Unknown'],
+            y: [ mapReduce(jsonData, 'er_primary10'), mapReduce(jsonData, 'er_primary11'), mapReduce(jsonData, 'er_primaryDK') ],
+            marker:{
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8']
+            },
+          type: 'bar'
+        }
+    ];
+    const layout = {
+        xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
+        yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
+    document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
+}
+
+const generateTumorGradeBarChart = (parameter, id, labelID, jsonData, chartRow) => {
+    const div = document.createElement('div');
+    div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
+    div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
+    document.getElementById(chartRow).appendChild(div);
+    const data = [
+        {
+            x: ['Well differentiated', 'Moderately differentiated', 'Poorly/un-differentiated', 'Unknown'],
+            y: [ mapReduce(jsonData, 'grade_primary11'), mapReduce(jsonData, 'grade_primary12'), mapReduce(jsonData, 'grade_primary13'), mapReduce(jsonData, 'grade_primary1DK') ],
+            marker:{
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe']
             },
           type: 'bar'
         }
@@ -354,6 +473,56 @@ const generateBMIBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     ];
     const layout = {
         xaxis: {type: 'category', fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
+        yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
+    document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
+}
+
+const generateYearsDiagBarChart = (parameter, id, labelID, jsonData, chartRow) => {
+    const div = document.createElement('div');
+    div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
+    div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
+    document.getElementById(chartRow).appendChild(div);
+    const data = [
+        {
+            x: ['1970 to 1979','1980 to 1989', '1990 to 1999', '2000 to 2009', '2010 to 2019', 'Unknown'],
+            y: [mapReduce(jsonData, 'dxdate_primary11970_1979'), mapReduce(jsonData, 'dxdate_primary11980_1989'), mapReduce(jsonData, 'dxdate_primary11990_1999'), mapReduce(jsonData, 'dxdate_primary12000_2009'), mapReduce(jsonData, 'dxdate_primary12010_2019'), mapReduce(jsonData, 'dxdate_primary1DK') ],
+            marker:{
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe']
+            },
+          type: 'bar'
+        }
+    ];
+    const layout = {
+        xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
+        yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
+    document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
+}
+
+const generateModeDetCountBarChart = (parameter, id, labelID, jsonData, chartRow) => {
+    const div = document.createElement('div');
+    div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
+    div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
+    document.getElementById(chartRow).appendChild(div);
+    const data = [
+        {
+            x: ['1970 to 1979','1980 to 1989', '1990 to 1999', '2000 to 2009', '2010 to 2019', 'Unknown'],
+            y: [mapReduce(jsonData, 'dxdate_primary11970_1979'), mapReduce(jsonData, 'dxdate_primary11980_1989'), mapReduce(jsonData, 'dxdate_primary11990_1999'), mapReduce(jsonData, 'dxdate_primary12000_2009'), mapReduce(jsonData, 'dxdate_primary12010_2019'), mapReduce(jsonData, 'dxdate_primary1DK') ],
+            marker:{
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe']
+            },
+          type: 'bar'
+        }
+    ];
+    const layout = {
+        xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
         yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)'
