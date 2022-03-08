@@ -47,7 +47,7 @@ export const infoDeck = () => {
         </div>
         <div class="ternary-bg">
             <div class="container align-left confluence-info font-family-montserrat">
-                <div>The BCRPP is funded by the US National Cancer Institute (NCI) and coordinated by the Division of Cancer Epidemiology and Genetics (DCEG) of NCI and the Harvard T.H. Chan School of Public Health in collaboration with the NCI Cohort Consortium.</div>
+                <div>The BCRPP is funded by the US National Cancer Institute (NCI) grant <a href="https://maps.cancer.gov/overview/DCCPSGrants/abstract.jsp?applId=10263893&term=CA249866"> and the NCI Intramural Research Funds. BCRPP is coordinated by the Harvard T.H. Chan School of Public Health and the Division of Cancer Epidemiology and Genetics (DCEG) of NCI, in collaboration with the NCI Cohort Consortium.</div>
             </div>
         </div>
     `
@@ -100,7 +100,7 @@ export const infoDeckAfterLoggedIn = async () => {
         </div>
         <div class="ternary-bg">
             <div class="container align-left confluence-info font-family-montserrat">
-                <div>The BCRPP is funded by the US National Cancer Institute (NCI) and coordinated by the Division of Cancer Epidemiology and Genetics (DCEG) of NCI and the Harvard T.H. Chan School of Public Health in collaboration with the NCI Cohort Consortium.</div>
+                <div>The BCRPP is funded by the US National Cancer Institute (NCI) grant <a href="https://maps.cancer.gov/overview/DCCPSGrants/abstract.jsp?applId=10263893&term=CA249866"> and the NCI Intramural Research Funds. BCRPP is coordinated by the Harvard T.H. Chan School of Public Health and the Division of Cancer Epidemiology and Genetics (DCEG) of NCI, in collaboration with the NCI Cohort Consortium.</div>
             </div>
         </div>
     `

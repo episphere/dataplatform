@@ -7,7 +7,7 @@ import { checkAccessTokenValidity, loginAppDev, loginObs, loginAppEpisphere, log
 import { storeAccessToken, removeActiveClass, showAnimation, getCurrentUser, inactivityTime, filterConsortiums, getFolderItems, filterProjects, amIViewer, getCollaboration, hideAnimation, assignNavbarActive, getFileInfo, handleRangeRequests, applicationURLs, checkDataSubmissionPermissionLevel } from './src/shared.js';
 import { addEventConsortiaSelect, addEventUploadStudyForm, addEventStudyRadioBtn, addEventDataGovernanceNavBar, addEventMyProjects, addEventUpdateSummaryStatsData } from './src/event.js';
 import { dataAnalysisTemplate } from './src/pages/dataAnalysis.js';
-import { getFileContent } from './src/visualization.js';
+import { getFileContent, getFileContentCases } from './src/visualization.js';
 import { aboutConfluence, renderOverView } from './src/pages/about.js';
 import { confluenceResources } from './src/pages/join.js';
 import { confluenceContactPage } from './src/pages/contact.js';
@@ -80,21 +80,27 @@ export const confluence = async () => {
             showAnimation();
             assignNavbarActive(dataSummaryElement, 1)
             document.title = 'BCRPP - Summary Statistics';
-            confluenceDiv.innerHTML = dataSummary('Summary Statistics', false, true);
+            confluenceDiv.innerHTML = dataSummary('Summary Statistics', false, true, true);
             addEventUpdateSummaryStatsData();
             dataSummaryStatisticsTemplate();
-            if(document.getElementById('dataSummaryFilter')) document.getElementById('dataSummaryFilter').addEventListener('click', e => {
-                e.preventDefault();
-                const header = document.getElementById('confluenceModalHeader');
-                const body = document.getElementById('confluenceModalBody');
-                header.innerHTML = `<h5 class="modal-title">Filter summary data</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>`;
-                body.innerHTML = `<span>Select Consortia or Studies to Display</span>`;
-            })
+            // if(document.getElementById('dataSummaryFilter')) document.getElementById('dataSummaryFilter').addEventListener('click', e => {
+            //     e.preventDefault();
+            //     const header = document.getElementById('confluenceModalHeader');
+            //     const body = document.getElementById('confluenceModalBody');
+            //     header.innerHTML = `<h5 class="modal-title">Filter summary data</h5>
+            //                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            //                             <span aria-hidden="true">&times;</span>
+            //                         </button>`;
+            //     body.innerHTML = `<span>Select Consortia or Studies to Display</span>`;
+            // })
             getFileContent();
+            const subcasesSelection = document.getElementById('subcasesSelection');
+            subcasesSelection.addEventListener('change', function(event) {
+                if (event.target.value == 'all') getFileContent()
+                if (event.target.value == 'cases') getFileContentCases()
+            });
         });
+
         if(dataSummarySubsetElement) {
             dataSummarySubsetElement.addEventListener('click', () => {
                 if (dataSummarySubsetElement.classList.contains('navbar-active')) return;
@@ -102,7 +108,7 @@ export const confluence = async () => {
                 showAnimation();
                 assignNavbarActive(dataSummarySubsetElement, 1);
                 document.title = 'BCRPP - Subset Statistics';
-                confluenceDiv.innerHTML = dataSummary('Subset Statistics', false, true);
+                confluenceDiv.innerHTML = dataSummary('Subset Statistics', false, true, true);
                 addEventUpdateSummaryStatsData();
                 removeActiveClass('nav-link', 'active');
                 document.querySelectorAll('[href="#data_exploration/subset"]')[1].classList.add('active');
@@ -116,7 +122,7 @@ export const confluence = async () => {
                 showAnimation();
                 assignNavbarActive(dataDictionaryElement, 1);
                 document.title = 'BCRPP - Data Dictionary';
-                confluenceDiv.innerHTML = dataSummary('Data Dictionary', true, false);
+                confluenceDiv.innerHTML = dataSummary('Data Dictionary', true, false, false);
                 addEventUpdateSummaryStatsData();
                 removeActiveClass('nav-link', 'active');
                 document.querySelectorAll('[href="#data_exploration/dictionary"]')[1].classList.add('active');
@@ -127,7 +133,7 @@ export const confluence = async () => {
             if (dataRequestElement.classList.contains('navbar-active')) return;
             showAnimation();
             assignNavbarActive(dataRequestElement, 1)
-            document.title = 'Confluence - Data Access';
+            document.title = 'BCRPP - Data Access';
             confluenceDiv.innerHTML = dataRequestTemplate();
             hideAnimation();
         });
@@ -154,7 +160,7 @@ export const confluence = async () => {
         const getCollaborators = await getCollaboration(145995765326, 'folders');
         let getMyPermissionLevel = false;
         if(getCollaborators) getMyPermissionLevel =  checkDataSubmissionPermissionLevel(getCollaborators, JSON.parse(localStorage.parms).login);
-        console.log('145995765326 '+getMyPermissionLevel);
+        //console.log('145995765326 '+getMyPermissionLevel);
         let showProjects = false;
         // for (let obj of projectArray) {
         //     if (showProjects === false) {
@@ -258,7 +264,7 @@ const manageRouter = async () => {
         showAnimation();
         assignNavbarActive(dataDictionaryElement, 1);
         document.title = 'BCRPP - Data Dictionary';
-        confluenceDiv.innerHTML = dataSummary('Data Dictionary', true, false, true);
+        confluenceDiv.innerHTML = dataSummary('Data Dictionary', true, false, false, true);
         removeActiveClass('nav-link', 'active');
         document.querySelectorAll('[href="#data_exploration/dictionary"]')[1].classList.add('active');
         dataDictionaryTemplate();
