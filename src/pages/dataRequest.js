@@ -36,8 +36,21 @@ export const dataAccessNotSignedIn = () => {
   return template;
 }
 
-export const dataAccess = () => {
+export const dataAccess = (activeTab, showDescripton) => {
     let template = `
+        <div class="general-bg body-min-height padding-bottom-1rem">
+            <div class="container">
+              <div class="main-summary-row white-bg div-border">
+                 <div class="main-summary-row white-bg div-border">
+                    <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'overview' ? 'active': ''} black-font font-size-14" href="#data_access/overview"><strong>Overview</strong></a></button>
+                    <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'form' ? 'active': ''} black-font font-size-14" href="#data_access/form"> <strong>Submission Form</strong></a></button>
+                </div>
+                <div id="overview"></div>
+            </div>
+        </div>
+        `;
+    
+   template += `
         <div class="general-bg padding-bottom-1rem">
             <div class="container body-min-height">
                 <div class="main-summary-row">
