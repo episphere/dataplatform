@@ -12,7 +12,8 @@ export const navBarMenutemplate = () => {
                 About BCRPP
             </button>
             <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#about/overview" id="aboutBCRPP">Learn about BCRPP</a>
+                <h6 class="dropdown-header dropdown-header-bg font-bold">Learn About BCRPP</h6>
+                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#about/overview" id="aboutBCRPP">Overview</a>
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#about/description" id="resourcesBCRPP">Description of Studies</a>
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#contact" id="contactBCRPP">Scientific Committee</a>
             </div>
@@ -44,9 +45,9 @@ export const navBarMenutemplate = () => {
                 </a>
                 <div id="governanceNav" class="grid-elements"></div>
                 <div id="myProjectsNav" class="grid-elements"></div>
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#data_access" title="Data Access" id="dataRequest">
-                    Request
-                </a>
+                <h6 class="dropdown-header dropdown-header-bg font-bold">Data Request</h6>
+                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/overview" title="Data Access" id="dataRequest"> Request </a>
+                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/form" title="Data Form" id="dataForm"> Form </a>
             </div>
         </div>
         <div class="grid-elements">

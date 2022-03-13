@@ -20,7 +20,7 @@ export const infoDeck = () => {
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`
                     template += cardContents({header: 'Learn about BCRPP', button: 'Learn about BCRPP', href: '#about/overview', icon: 'fa-download', explanation: 'View main goals and collaborating institutions.'})
                     template += cardContents({header: 'Participating Studies', button: 'Study Description', href: '#join', icon: 'fa-chart-bar', explanation: 'View description of prospective cohort studies.'})
-                    template += cardContents({header: 'Data Access', button: 'Data Access', href: '#data_access', icon: 'fa-handshake', explanation: 'View procedures for accessing data.'})
+                    template += cardContents({header: 'Data Access', button: 'Data Access', href: '#data_access/overview', icon: 'fa-handshake', explanation: 'View procedures for accessing data.'})
                     template += cardContents({header: 'Data Dictionary', button: 'Data Dictionary', href: '#data_exploration/dictionary', icon: 'fa-database', explanation: 'View data types collected from participating cohort studies.'})
                 template += `</div>
             </div>
@@ -75,7 +75,7 @@ export const infoDeckAfterLoggedIn = async () => {
                 if(studyDescription) template += cardContents({header: 'Study Description', button: 'Study Description', href: '#about/description', icon: 'fa-file-alt', explanation: 'View descriptions of participating studies.'})
                 template += cardContents({header: 'Data Dictionary', button: 'Data Dictionary', href: '#data_exploration/dictionary', icon: 'fa-database', explanation: 'View variables from participating studies.'})
                 template += cardContents({header: 'Explore Data', button: 'Explore Data', href: '#data_exploration/summary', icon: 'fa-chart-bar', explanation: 'Explore summary-level data to plan analyses.'})
-                template += cardContents({header: 'Data Access', button: 'Data Access', href: '#data_access', icon: 'fa-handshake', explanation: 'View procedures for accessing data.'})
+                template += cardContents({header: 'Data Access', button: 'Data Access', href: '#data_access/overview', icon: 'fa-handshake', explanation: 'View procedures for accessing data.'})
                 template += `</div>
             </div>
         </div>

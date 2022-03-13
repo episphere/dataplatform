@@ -329,6 +329,39 @@ export const uploadFile = async (data, fileName, folderId, html) => {
     }
 }
 
+export const uploadWordFile = async (data, fileName, folderId, html) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const form = new FormData();
+        form.append('file', data);
+        form.append('attributes', `{"name": "${fileName}", "parent": {"id": "${folderId}"}}`);
+    
+        let response = await fetch("https://upload.box.com/api/2.0/files/content", {
+            method: "POST",
+            headers:{
+                Authorization:"Bearer "+access_token
+            },
+            body: form,
+            contentType: false
+        });
+        if(response.status === 401){
+            if((await refreshToken()) === true) return await uploadWordFile(data, fileName, folderId, html);
+        }
+        else if(response.status === 201){
+            return response.json();
+        }
+        else if(response.status === 409) {
+            return {status: response.status, json: await response.json()}
+        }
+        else{
+            return {status: response.status, statusText: response.statusText};
+        };
+    }
+    catch(err) {
+        if((await refreshToken()) === true) return await uploadWordFile(data, fileName, folderId, html);
+    }
+}
+
 export const uploadFileVersion = async (data, fileId, type) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
@@ -338,6 +371,35 @@ export const uploadFileVersion = async (data, fileId, type) => {
         else blobData = new Blob([JSON.stringify(data)], { type: type});
         
         form.append('file', blobData);
+    
+        let response = await fetch(`https://upload.box.com/api/2.0/files/${fileId}/content`, {
+            method: "POST",
+            headers:{
+                Authorization:"Bearer "+access_token
+            },
+            body: form,
+            contentType: false
+        });
+        if(response.status === 401){
+            if((await refreshToken()) === true) return await uploadFileVersion(data, fileId, type);
+        }
+        else if(response.status === 201){
+            return response.json();
+        }
+        else{
+            return {status: response.status, statusText: response.statusText};
+        };
+    }
+    catch(err) {
+        if((await refreshToken()) === true) return await uploadFileVersion(data, fileId, 'text/html');
+    }
+}
+
+export const uploadWordFileVersion = async (data, fileId) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        
+        form.append('file', data);
     
         let response = await fetch(`https://upload.box.com/api/2.0/files/${fileId}/content`, {
             method: "POST",
@@ -506,6 +568,111 @@ export const updateBoxCollaborator = async (id, role) => {
         if((await refreshToken()) === true) return await updateBoxCollaborator(id, role);
     }
 }
+
+export const getTaskList = async (id) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/files/${id}/tasks`, {
+            method: 'GET',
+            headers: {
+                Authorization: "Bearer "+access_token,
+            }
+        })
+        if (response.status === 401) {
+            if ((await refreshToken()) === true) return await getTaskList(id);
+        }
+        if (response.status === 200) {
+            return response.json();
+        } else {
+            return null;
+        }
+    } catch(err) {
+        if ((await refreshToken()) === true) return await getTaskList(id);
+    }
+}
+
+export const createFileTask = async (id) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/tasks`, {
+            method: 'POST',
+            headers: {
+                Authorization: "Bearer "+access_token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                item: {
+                    id,
+                    type: "file"
+                },
+                action: "review"
+            })
+        });
+        if (response.status === 401) {
+            if ((await refreshToken()) === true) return await createFileTask(id);
+        } else {
+            return response;
+        }
+
+    } catch(err) {
+        if((await refreshToken()) === true) return await createFileTask(id);
+    }
+}
+
+export const assignTask = async(taskId, userId) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/task_assignments`, {
+            method: 'POST',
+            headers: {
+                Authorization: "Bearer "+access_token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                task: {
+                    id: taskId,
+                    type: "task"
+                },
+                assign_to: {
+                    id: userId
+                }
+            })
+        });
+        if (response.status === 401) {
+            if ((await refreshToken()) === true) return await assignTask(taskId, userId);
+        } else {
+            return response;
+        }
+    } catch(err) {
+        if ((await refreshToken()) === true) return await assignTask(taskId, userId);
+    }
+}
+
+export const updateTaskAssignment = async (id, res_state, msg="") => {
+    try {
+        let body = msg.length
+            ? JSON.stringify({resolution_state: res_state, message: msg})
+            : JSON.stringify({resolution_state: res_state});
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/task_assignments/${id}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: "Bearer "+access_token
+            },
+            body
+        });
+        if(response.status === 401) {
+            if((await refreshToken()) === true) return await updateTaskAssignment(id, res_state, msg);
+        } else {
+            return response
+        }
+    }
+    catch(err) {
+        if ((await refreshToken()) === true) return await updateTaskAssignment(id, res_state, msg);
+    }
+}
+
+
 
 export const removeActiveClass = (className, activeClass) => {
     let fileIconElement = document.getElementsByClassName(className);
