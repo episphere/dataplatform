@@ -1,5 +1,5 @@
 // import { createFileTask, assignTask, updateTaskAssignment } from '../shared.js';
-import { getTaskList, updateTaskAssignment, uploadFile, uploadWordFile, getFolderItems, uploadWordFileVersion} from '../shared.js';
+import { getTaskList, updateTaskAssignment, uploadFile, uploadWordFile, getFolderItems, uploadWordFileVersion, emailforChair, emailforDACC, uploadFormFolder, assignTask, createFileTask, getFileInfo, numberWithCommas, hideAnimation} from '../shared.js';
 
 // Require additional changes regarding data
 //import * as docx from "docx";
@@ -44,7 +44,9 @@ export const dataAccess = (activeTab, showDescripton) => {
                  <div class="main-summary-row white-bg div-border">
                     <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'overview' ? 'active': ''} black-font font-size-14" href="#data_access/overview"><strong>Overview</strong></a></button>
                     <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'form' ? 'active': ''} black-font font-size-14" href="#data_access/form"> <strong>Submission Form</strong></a></button>
-                </div>
+                    ${emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'chairView' ? 'active': ''} black-font font-size-14" href="#data_access/chairView"> <strong>Chair Menu</strong></a></button>`:``}
+                    ${emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'daccView' ? 'active': ''} black-font font-size-14" href="#data_access/daccView"> <strong>DACC Menu</strong></a></button>`:``}
+                  </div>
                 <div id="overview"></div>
             </div>
         </div>
@@ -89,7 +91,9 @@ export const formSection = (activeTab, showDescripton) => {
                           <div class="main-summary-row white-bg div-border">
                               <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'overview' ? 'active': ''} black-font font-size-14" href="#data_access/overview"><strong>Overview</strong></a></button>
                               <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'form' ? 'active': ''} black-font font-size-14" href="#data_access/form"> <strong>Submission Form</strong></a></button>
-                          </div>
+                              ${emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'chairView' ? 'active': ''} black-font font-size-14" href="#data_access/chairView"> <strong>Chair Menu</strong></a></button>`:``}
+                              ${emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'daccView' ? 'active': ''} black-font font-size-14" href="#data_access/daccView"> <strong>DACC Menu</strong></a></button>`:``}
+                            </div>
                           <div id="overview"></div>
                       </div>
                   </div>
@@ -97,6 +101,12 @@ export const formSection = (activeTab, showDescripton) => {
     template += ` 
                   <div class="general-bg padding-bottom-1rem">
                           <div class="container body-min-height">
+                              <!---<div class="main-summary-row">
+                                <div class="align-left">
+                                  <h1 class="page-header">Submitted Forms</h1>
+                                </div>
+                              </div>--->
+
                               <div class="main-summary-row">
                                   <div class="align-left">
                                       <h1 class="page-header">Form Submission</h1>
@@ -189,51 +199,297 @@ export const formSection = (activeTab, showDescripton) => {
 }
 
 export const approveRejectSection = () => {
-      // template +=  `
-      //                       <div class="general-bg padding-bottom-1rem">
-      //                         <div class="container body-min-height">
-      //                             <div class="main-summary-row">
-      //                                 <div class="align-left">
-      //                                     <h1 class="page-header">Data Approval</h1>
-      //                                 </div>
-      //                             </div>
-      //                             <div class="div-border font-size-18" style="padding-left: 1rem;">
-      //                                 <div class="row m-0 align-center data-approval">
-      //                                     <iframe
-      //                                         class="row m-0 align-center"
-      //                                         src="https://nih.app.box.com/embed/s/u7su974i2ehejpud73wtw4uyjufhv100?sortColumn=date&view=list"
-      //                                         width="700"
-      //                                         height="800"
-      //                                         frameborder="0"
-      //                                         allowfullscreen
-      //                                         webkitallowfullscreen
-      //                                         msallowfullscreen
-      //                                     ></iframe>
-      //                                     <form>
-      //                                         <label for="message">Enter a Message</label>
-      //                                         <div class="input-group">
-      //                                             <textarea id="message" name="message" rows="6" cols="65"></textarea>
-      //                                         </div>
-      //                                         <button type="submit" value="approved">Approve</button>
-      //                                         <button type="submit" value="rejected">Reject</button>
-      //                                     </form>
-      //                                 </div>
-      //                             </div>
-      //                         </div>
-      //                     </div>`
+      let template =  `
+                            <div class="general-bg padding-bottom-1rem">
+                              <div class="container body-min-height">
+                                  <div class="main-summary-row">
+                                      <div class="align-left">
+                                          <h1 class="page-header">Data Approval</h1>
+                                      </div>
+                                  </div>
+                                  <div class="div-border font-size-18" style="padding-left: 1rem;">
+                                      <div class="row m-0 align-center data-approval">
+                                          <iframe
+                                              class="row m-0 align-center"
+                                              src="https://nih.app.box.com/embed/s/myksohhrdv6klrzk3b0237yz3m502siw?sortColumn=date&view=list"
+                                              width="700"
+                                              height="800"
+                                              frameborder="0"
+                                              allowfullscreen
+                                              webkitallowfullscreen
+                                              msallowfullscreen
+                                          ></iframe>
+                                          <form>
+                                              <label for="message">Enter a Message</label>
+                                              <div class="input-group">
+                                                  <textarea id="message" name="message" rows="6" cols="65"></textarea>
+                                              </div>
+                                              <button type="submit" value="approved">Approve</button>
+                                              <button type="submit" value="rejected">Reject</button>
+                                          </form>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>`
 
-    template += `
-            <div align="center">
-            <iframe src="https://nih.app.box.com/f/852124ef6a4f4ee4aa2f50cc34188f3e" height="800" width="1000"></iframe>
-            </div>`
+    // template += `
+    //         <div align="center">
+    //         <iframe src="https://nih.app.box.com/f/852124ef6a4f4ee4aa2f50cc34188f3e" height="800" width="1000"></iframe>
+    //         </div>`
+
   return template
 }
 
+export const chairSection = (activeTab) => {
+  let template = `
+  <div class="general-bg body-min-height padding-bottom-1rem">
+      <div class="container">
+        <div class="main-summary-row white-bg div-border">
+          <div class="main-summary-row white-bg div-border">
+              <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'overview' ? 'active': ''} black-font font-size-14" href="#data_access/overview"><strong>Overview</strong></a></button>
+              <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'form' ? 'active': ''} black-font font-size-14" href="#data_access/form"> <strong>Submission Form</strong></a></button>
+              ${emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'chairView' ? 'active': ''} black-font font-size-14" href="#data_access/chairView"> <strong>Chair Menu</strong></a></button>`:``}
+              ${emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'daccView' ? 'active': ''} black-font font-size-14" href="#data_access/daccView"> <strong>DACC Menu</strong></a></button>`:``}
+          </div>
+          <div id="overview"></div>
+        </div>
+      </div>
+    <div id="chairFileView" class="align-left"></div>
+  </div>
+  `;
+
+  return template
+}
+
+export const chairFileView = async() => {
+  const response = await getFolderItems('155292358576');
+  let filearray = response.entries;
+  console.log(filearray);
+
+  let template = `
+  <div class="general-bg padding-bottom-1rem">
+    <div class="container body-min-height">
+      <div class="main-summary-row">
+          <div class="align-left">
+              <h1 class="page-header">DACC Access Only</h1>
+          </div>
+      </div>
+    <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
+    <h2 class="page-header">To Be Completed</h2>
+    <ul>
+      `;
+    const filesincomplete = [];
+    const filescompleted = [];
+    const filesapproved = [];
+    for(let obj of filearray){
+      let id = obj.id;
+      //console.log(id);
+      let tasklist = await getTaskList(id);
+      let entries = tasklist.entries;
+      //console.log(entries.length !== 0);
+      if(entries.length !== 0) {
+        for(let item of entries){
+          if(item.is_completed == false){
+            //console.log(item.task_assignment_collection);
+            for(let taskassignment of item.task_assignment_collection.entries){
+              if(taskassignment.status=='incomplete' && taskassignment.assigned_to.login==JSON.parse(localStorage.parms).login){
+                console.log(taskassignment.assigned_at);
+                if (!filesincomplete.includes(id)) {
+                  filesincomplete.push(id);
+                  //console.log("id pushed" + id);
+                }
+              }
+            }
+          }
+          if(item.is_completed == true){
+            for(let taskassignment of item.task_assignment_collection.entries){
+              if(taskassignment.status=='approved'){
+                  filesapproved.push(id);
+              }
+              else if (taskassignment.status=='completed') {
+                filescompleted.push(id);
+              }
+            }
+          } 
+        }
+      }
+    };
+  for (const id of filesincomplete){
+    let fileinfo = await getFileInfo(id)
+    template += `
+                  <li><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></li>
+                  `
+  }
+  template += `</ul>
+  <h2 class="page-header">DACC Completed</h2>
+  <ul>
+  `
+  for (const id of filescompleted){
+    let fileinfo = await getFileInfo(id)
+    template += `
+                  <li><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></li>
+                  `
+  }
+
+  template += `</ul>
+  <h2 class="page-header">Approved</h2>
+  <ul>
+  `
+  for (const id of filesapproved){
+    let fileinfo = await getFileInfo(id)
+    template += `
+                  <li><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></li>
+                  `
+  }
+
+  template += `
+  </div></div></div>`;
+  document.getElementById('chairFileView').innerHTML = template;
+}
+  
+  // const response = await getFolderItems('155292358576');
+  // let filearray = response.entries;
+  // console.log(filearray);
+
+  // let template = `
+  // <div class="general-bg padding-bottom-1rem">
+  //   <div class="container body-min-height">
+  //     <div class="main-summary-row">
+  //         <div class="align-left">
+  //             <h1 class="page-header">Chair Access Only</h1>
+  //         </div>
+  //     </div>
+  //   <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
+  //   <ul>
+  //     `;
+
+  //   for(let obj of filearray){
+  //     let id = obj.id;
+  //     let type = obj.type;
+  //     console.log(obj.name);
+  //     template += `
+  //                 <li><a href="https://nih.app.box.com/file/${id}">${obj.name}</a></li>
+  //                 `
+  // };
+
+  // template += '</ul></div></div></div>';
+  // document.getElementById('chairFileView').innerHTML = template;
+
+export const daccSection = (activeTab) => {
+  let template = `
+  <div class="general-bg body-min-height padding-bottom-1rem">
+      <div class="container">
+        <div class="main-summary-row white-bg div-border">
+          <div class="main-summary-row white-bg div-border">
+              <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'overview' ? 'active': ''} black-font font-size-14" href="#data_access/overview"><strong>Overview</strong></a></button>
+              <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'form' ? 'active': ''} black-font font-size-14" href="#data_access/form"> <strong>Submission Form</strong></a></button>
+              ${emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'chairView' ? 'active': ''} black-font font-size-14" href="#data_access/chairView"> <strong>Chair Menu</strong></a></button>`:``}
+              ${emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'daccView' ? 'active': ''} black-font font-size-14" href="#data_access/daccView"> <strong>DACC Menu</strong></a></button>`:``}
+          </div>
+          <div id="overview"></div>
+        </div>
+      </div>
+    <div id="daccFileView" class="align-left"></div>
+  </div>
+  `;
+
+  return template
+}
+
+export const daccFileView = async() => {
+  const response = await getFolderItems('155292358576');
+  let filearray = response.entries;
+  console.log(filearray);
+
+  let template = `
+  <div class="general-bg padding-bottom-1rem">
+    <div class="container body-min-height">
+      <div class="main-summary-row">
+          <div class="align-left">
+              <h1 class="page-header">DACC Access Only</h1>
+          </div>
+      </div>
+    <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
+    <h2 class="page-header">To Be Completed</h2>
+    <ul>
+      `;
+    const filesincomplete = [];
+    const filescompleted = [];
+    for(let obj of filearray){
+      let id = obj.id;
+      //console.log(id);
+      let tasklist = await getTaskList(id);
+      let entries = tasklist.entries;
+      //console.log(entries.length !== 0);
+      if(entries.length !== 0) {
+        for(let item of entries){
+          if(item.is_completed == false){
+            //console.log(item.task_assignment_collection);
+            for(let taskassignment of item.task_assignment_collection.entries){
+              if(taskassignment.status=='incomplete' && taskassignment.assigned_to.login==JSON.parse(localStorage.parms).login){
+                console.log(taskassignment.assigned_at);
+                if (!filesincomplete.includes(id)) {
+                  filesincomplete.push(id);
+                  //console.log("id pushed" + id);
+                }
+              }
+              else if(taskassignment.status=='completed' && taskassignment.assigned_to.login==JSON.parse(localStorage.parms).login){
+                if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
+                  filescompleted.push(id);
+                }
+              }
+            }
+          }
+          else if(item.is_completed == true){
+            console.log(item.task_assignment_collection.entries);
+            for(let taskassignment of item.task_assignment_collection.entries){
+              if(taskassignment.status=='completed' && taskassignment.assigned_to.login==JSON.parse(localStorage.parms).login){
+                if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
+                  filescompleted.push(id);
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+  for (const id of filesincomplete){
+    let fileinfo = await getFileInfo(id)
+    template += `
+                  <li><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></li>
+                  `
+  }
+  template += `</ul>
+  <h2 class="page-header">Completed</h2>
+  <ul>
+  `
+  for (const id of filescompleted){
+    let fileinfo = await getFileInfo(id)
+    template += `
+                  <li><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></li>
+                  `
+  }
+
+  template += `
+  </div></div></div>`;
+  document.getElementById('daccFileView').innerHTML = template;
+}
+
 export const dataApproval = () => {
+    // let files = await getFolderItems(uploadFormFolder);
+    // const filesinfoldernames = [];
+    // const filesinfolderids = [];
+    // for (let i = 0; i < files.entries.length; i++) {
+    //   filesinfoldernames.push(files.entries[i].name);
+    //   filesinfolderids.push(files.entries[i].id);
+    // }
+    
+    // let fileId = filesinfolderids[filesinfoldernames.indexOf(filename)];
+
     let approveDoc = async (e) => {
         e.preventDefault();
 
-        let fileId = "913453324112";
+        let fileId = 931127106406;
         let approval = e.submitter.value;
         let message = e.target[0].value;
 
@@ -249,7 +505,9 @@ export const dataApproval = () => {
 }
 
 export const dataForm = async () => {
-  let files = await getFolderItems(155292358576);
+  let files = await getFolderItems(uploadFormFolder);
+  const d = new Date();
+  const filename = JSON.parse(localStorage.parms).login.split("@")[0] + "_" + d.getDate() + "_" + d.getMonth() + "_" + d.getFullYear() + ".docx";
   //console.log(files.entries)
   const filesinfoldernames = [];
   const filesinfolderids = [];
@@ -258,7 +516,27 @@ export const dataForm = async () => {
     filesinfolderids.push(files.entries[i].id);
   }
   //console.log(filesinfolderids);
- 
+  
+  // async function assigntasktochair() {
+  //   let files = await getFolderItems(uploadFormFolder);
+  //   const filesinfoldernames = [];
+  //   const filesinfolderids = [];
+  //   for (let i = 0; i < files.entries.length; i++) {
+  //     filesinfoldernames.push(files.entries[i].name);
+  //     filesinfolderids.push(files.entries[i].id);
+  //   }
+  
+  //   let fileId = filesinfolderids[filesinfoldernames.indexOf(filename)];
+  //   //console.log(fileId);
+  //   await createFileTask(fileId);
+  //   let tasklist = await getTaskList(fileId);
+  //   console.log(tasklist.entries)
+  //   let tasktochair = tasklist.entries[0].id;
+  //   console.log(emailforChair[0]);
+  //   await assignTask(tasktochair, emailforChair[0]);
+  //   console.log("Chair has been notified: " +  tasktochair);
+  // };
+
   async function handleFormSubmit(eventtest) {
       eventtest.preventDefault();
   
@@ -274,12 +552,33 @@ export const dataForm = async () => {
       //const data2 = JSON.parse(JSON.stringify(formJSON));
       //console.log(data2)
       //console.log(formJSON.name)
-      //uploadFile(formJSON, "BCRPPexample.json", 155292358576)
+      //uploadFile(formJSON, "BCRPPexample.json", uploadFormFolder)
       // let files = async () =>{
-      //   await console.log(getFolderItems(155292358576));//149098174998);
+      //   await console.log(getFolderItems(uploadFormFolder));//149098174998);
       //  }
       // console.log(files.entries);
       await generateWord(formJSON);
+      //await assigntasktochair();
+  };
+
+  async function assigntasktochair() {
+    let files = await getFolderItems(uploadFormFolder);
+    const filesinfoldernames = [];
+    const filesinfolderids = [];
+    for (let i = 0; i < files.entries.length; i++) {
+      filesinfoldernames.push(files.entries[i].name);
+      filesinfolderids.push(files.entries[i].id);
+    }
+  
+    let fileId = filesinfolderids[filesinfoldernames.indexOf(filename)];
+    //console.log(fileId);
+    await createFileTask(fileId);
+    let tasklist = await getTaskList(fileId);
+    console.log(tasklist.entries)
+    let tasktochair = tasklist.entries[0].id;
+    console.log(emailforChair[0]);
+    await assignTask(tasktochair, emailforChair[0]);
+    console.log("Chair has been notified: " +  tasktochair);
   };
 
   async function generateWord(jsondata) {
@@ -373,7 +672,7 @@ export const dataForm = async () => {
       }]
     });
 
-    let files = await getFolderItems(155292358576);
+    let files = await getFolderItems(uploadFormFolder);
     //console.log(files.entries)
     const filesinfoldernames = [];
     const filesinfolderids = [];
@@ -387,18 +686,21 @@ export const dataForm = async () => {
       console.log(blob);
       //saveAs(blob, "BCRPPexample.docx");
       console.log("Document created successfully");
-      //let files = getFolderItems(155292358576);//149098174998);
-      if (filesinfoldernames.includes("BCRPPexample.docx")){
-        console.log("File Exists: Saving New Version");
-        let fileidupdate = filesinfolderids[filesinfoldernames.indexOf("BCRPPexample.docx")];
+      //let files = getFolderItems(uploadFormFolder);//149098174998);
+      if (filesinfoldernames.includes(filename)){
+        console.log(filename + " Exists: Saving New Version");
+        let fileidupdate = filesinfolderids[filesinfoldernames.indexOf(filename)];
         uploadWordFileVersion(blob, fileidupdate);
+        assigntasktochair();
       } else {
-        console.log("Saving File to Box");
-        uploadWordFile(blob, "BCRPPexample.docx", 155292358576);
+        console.log("Saving File to Box: " + filename);
+        uploadWordFile(blob, filename, uploadFormFolder);
+        assigntasktochair();
       }
     });
   }
 
   const form = document.querySelector('.contact-form');
   form.addEventListener('submit', handleFormSubmit);
+  //form.addEventListener('submit', assigntasktochair);
 }

@@ -2,7 +2,7 @@ import { navBarMenutemplate } from './src/components/navBarMenuItems.js';
 import { infoDeck, infoDeckAfterLoggedIn } from './src/pages/homePage.js';
 import { dataSubmissionTemplate, lazyload } from './src/pages/dataSubmission.js';
 import { dataSummary, dataSummaryMissingTemplate, dataSummaryStatisticsTemplate } from './src/pages/dataExploration.js';
-import { dataAccess as dataRequestTemplate, dataAccessNotSignedIn, dataForm, dataApproval, formSection } from './src/pages/dataRequest.js';
+import { dataAccess as dataRequestTemplate, dataAccessNotSignedIn, dataForm, dataApproval, formSection, approveRejectSection, daccSection, chairSection, chairFileView, daccFileView } from './src/pages/dataRequest.js';
 import { checkAccessTokenValidity, loginAppDev, loginObs, loginAppEpisphere, logOut, loginAppProd } from './src/manageAuthentication.js';
 import { storeAccessToken, removeActiveClass, showAnimation, getCurrentUser, inactivityTime, filterConsortiums, getFolderItems, filterProjects, amIViewer, getCollaboration, hideAnimation, assignNavbarActive, getFileInfo, handleRangeRequests, applicationURLs, checkDataSubmissionPermissionLevel } from './src/shared.js';
 import { addEventConsortiaSelect, addEventUploadStudyForm, addEventStudyRadioBtn, addEventDataGovernanceNavBar, addEventMyProjects, addEventUpdateSummaryStatsData } from './src/event.js';
@@ -61,6 +61,8 @@ export const confluence = async () => {
         const dataDictionaryElement = document.getElementById('dataDictionary');
         const dataRequestElement = document.getElementById('dataRequest');
         const dataFormElement = document.getElementById('dataForm')
+        const chairViewElement = document.getElementById('chairView')
+        const daccViewElement = document.getElementById('daccView')
         // const platformTutorialElement = document.getElementById('platformTutorial');
         // const dataAnalysisElement = document.getElementById('dataAnalysis');
 
@@ -134,9 +136,41 @@ export const confluence = async () => {
                 assignNavbarActive(element, 1);
                 //dataForm();
                 confluenceDiv.innerHTML = formSection('form');
-                hideAnimation();
+                //confluenceDiv.innerHTML = approveRejectSection();
                 dataForm();
-                dataApproval();
+                //dataApproval();
+                hideAnimation();
+            })
+        }
+        if(chairViewElement){
+            chairViewElement.addEventListener('click', () => {
+                if (chairViewElement.classList.contains('navbar-active')) return;
+                const element = document.getElementById('chairView');
+                if(!element) return;
+                if(element.classList.contains('navbar-active')) return;
+                document.title = 'BCRPP - Chair View';
+                assignNavbarActive(element, 1);
+                //dataForm();
+                confluenceDiv.innerHTML = chairSection('chairView');
+                chairFileView();
+                //hideAnimation();
+                //dataForm();
+                hideAnimation();
+            })
+        }
+        if(daccViewElement){
+            daccViewElement.addEventListener('click', () => {
+                if (daccViewElement.classList.contains('navbar-active')) return;
+                const element = document.getElementById('daccView');
+                if(!element) return;
+                if(element.classList.contains('navbar-active')) return;
+                document.title = 'BCRPP - DACC View';
+                assignNavbarActive(element, 1);
+                //dataForm();
+                confluenceDiv.innerHTML = daccSection('daccView');
+                daccFileView();
+                //hideAnimation();
+                //dataForm();
                 hideAnimation();
             })
         }
@@ -296,6 +330,29 @@ const manageRouter = async () => {
         assignNavbarActive(dataFormElement, 1);
         document.title = 'BCRPP - Data Form';
         confluenceDiv.innerHTML = formSection();
+        //confluenceDiv.innerHTML = approveRejectSection();
+        removeActiveClass('nav-link', 'active');
+    }
+
+    else if (hash === '#data_access/chairView'){
+        const chairViewElement = document.getElementById('chairView');
+        if (!chairViewElement) return;
+        if(chairViewElement.classList.contains('navbar-active')) return;
+        showAnimation();
+        assignNavbarActive(chairViewElement, 1);
+        document.title = 'BCRPP - Chair View';
+        confluenceDiv.innerHTML = chairSection();
+        removeActiveClass('nav-link', 'active');
+    }
+
+    else if (hash === '#data_access/daccView'){
+        const daccViewElement = document.getElementById('daccView');
+        if (!daccViewElement) return;
+        if(daccViewElement.classList.contains('navbar-active')) return;
+        showAnimation();
+        assignNavbarActive(daccViewElement, 1);
+        document.title = 'BCRPP - DACC View';
+        confluenceDiv.innerHTML = daccSection();
         removeActiveClass('nav-link', 'active');
     }
 
@@ -343,6 +400,16 @@ const manageHash = async () => {
     }
     else if (hash === '#data_access/form') {
         const element = document.getElementById('dataForm');
+        if(!element) return;
+        element.click();
+    }
+    else if (hash === '#data_access/chairView') {
+        const element = document.getElementById('chairView');
+        if(!element) return;
+        element.click();
+    }
+    else if (hash === '#data_access/daccView') {
+        const element = document.getElementById('daccView');
         if(!element) return;
         element.click();
     }

@@ -1,4 +1,4 @@
-import { applicationURLs } from './../shared.js';
+import { applicationURLs, emailforChair, emailforDACC } from './../shared.js';
 
 export const navBarMenutemplate = () => {
     return `
@@ -48,6 +48,8 @@ export const navBarMenutemplate = () => {
                 <h6 class="dropdown-header dropdown-header-bg font-bold">Data Request</h6>
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/overview" title="Data Access" id="dataRequest"> Request </a>
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/form" title="Data Form" id="dataForm"> Form </a>
+                ${emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/chairView" title="Chair File View" id="chairView"> Chair Menu </a>`:``}
+                ${emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/daccView" title="DACC Menu" id="daccView"> DACC Menu </a>`:``}
             </div>
         </div>
         <div class="grid-elements">
