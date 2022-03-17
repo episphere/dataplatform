@@ -346,34 +346,6 @@ export const chairFileView = async() => {
   </div></div></div>`;
   document.getElementById('chairFileView').innerHTML = template;
 }
-  
-  // const response = await getFolderItems('155292358576');
-  // let filearray = response.entries;
-  // console.log(filearray);
-
-  // let template = `
-  // <div class="general-bg padding-bottom-1rem">
-  //   <div class="container body-min-height">
-  //     <div class="main-summary-row">
-  //         <div class="align-left">
-  //             <h1 class="page-header">Chair Access Only</h1>
-  //         </div>
-  //     </div>
-  //   <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
-  //   <ul>
-  //     `;
-
-  //   for(let obj of filearray){
-  //     let id = obj.id;
-  //     let type = obj.type;
-  //     console.log(obj.name);
-  //     template += `
-  //                 <li><a href="https://nih.app.box.com/file/${id}">${obj.name}</a></li>
-  //                 `
-  // };
-
-  // template += '</ul></div></div></div>';
-  // document.getElementById('chairFileView').innerHTML = template;
 
 export const daccSection = (activeTab) => {
   let template = `
@@ -507,7 +479,7 @@ export const dataApproval = () => {
 export const dataForm = async () => {
   let files = await getFolderItems(uploadFormFolder);
   const d = new Date();
-  const filename = JSON.parse(localStorage.parms).login.split("@")[0] + "_" + d.getDate() + "_" + d.getMonth() + "_" + d.getFullYear() + ".docx";
+  const filename = JSON.parse(localStorage.parms).login.split("@")[0] + "testing" + "_" + d.getDate() + "_" + d.getMonth() + "_" + d.getFullYear() + ".docx";
   //console.log(files.entries)
   const filesinfoldernames = [];
   const filesinfolderids = [];
@@ -690,12 +662,16 @@ export const dataForm = async () => {
       if (filesinfoldernames.includes(filename)){
         console.log(filename + " Exists: Saving New Version");
         let fileidupdate = filesinfolderids[filesinfoldernames.indexOf(filename)];
-        uploadWordFileVersion(blob, fileidupdate);
-        assigntasktochair();
+        (async () => {
+          await uploadWordFileVersion(blob, fileidupdate);
+          await assigntasktochair();
+        })();
       } else {
         console.log("Saving File to Box: " + filename);
-        uploadWordFile(blob, filename, uploadFormFolder);
-        assigntasktochair();
+        (async () => {
+          await uploadWordFile(blob, filename, uploadFormFolder);
+          await assigntasktochair();
+        })();
       }
     });
   }

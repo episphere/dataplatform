@@ -152,6 +152,7 @@ export const confluence = async () => {
                 assignNavbarActive(element, 1);
                 //dataForm();
                 confluenceDiv.innerHTML = chairSection('chairView');
+                lazyload();
                 chairFileView();
                 //hideAnimation();
                 //dataForm();
@@ -168,6 +169,7 @@ export const confluence = async () => {
                 assignNavbarActive(element, 1);
                 //dataForm();
                 confluenceDiv.innerHTML = daccSection('daccView');
+                lazyload();
                 daccFileView();
                 //hideAnimation();
                 //dataForm();
