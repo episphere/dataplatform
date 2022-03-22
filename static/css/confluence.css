@@ -1984,3 +1984,9 @@ form {
     from {opacity: 0;}
     to {opacity:1 ;}
   }
+
+  .preview-container {
+    border: 1px solid #eee;
+    height: 490px;
+    width: 100%;
+  }

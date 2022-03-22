@@ -672,6 +672,133 @@ export const updateTaskAssignment = async (id, res_state, msg="") => {
     }
 }
 
+export const createComment = async (id, res_state, msg="") => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box/com/2.0/comments`, {
+            method: 'POST',
+            headers: {
+                Authorization: "Bearer "+access_token
+            },
+            body: JSON.stringify({
+                message: msg.toString(),
+                item: {
+                    type: "file",
+                    id: id.toString()
+                }
+            })
+        });
+        if(response.status === 401) {
+            if((await refreshToken()) === true) return await createComment(id, res_state, msg);
+        } else {
+            return response
+        }
+    }
+    catch(err) {
+        if ((await refreshToken()) === true) return await createComment(id, res_state, msg);
+    }
+}
+
+
+export const createMetadata = async (id, res_state) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/files/${id}/metadata/global/properties`, { //enterprise_355526
+            method: 'POST',
+            headers: {
+                Authorization: "Bearer "+access_token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                BCRPP_uploading_complete: "1",
+                BCRPP_tasks_initiated: "0"
+            })
+        });
+        if(response.status === 401) {
+            if((await refreshToken()) === true) return await createMetadata(id, res_state);
+        } else {
+            return response
+        }
+    }
+    catch(err) {
+        if ((await refreshToken()) === true) return await createMetadata(id, res_state);
+    }
+}
+
+export const searchMetadata = async (res_state) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/search?query=BCRPP_uploading_complete`, { //enterprise_355526
+            method: 'GET',
+            headers: {
+                Authorization: "Bearer "+access_token//,
+                //'Content-Type': 'application/json'
+            }//,
+            // body: JSON.stringify({
+            //     from: "global.properties",
+            //     query: "BCRPP_stage = :BCRPP_stage",
+            //     query_params: {"BCRPP_stage": "0"},
+            //     ancestor_folder_id: "0",
+            //     fields: ["id"]
+            // })
+        });
+        if(response.status === 401) {
+            if((await refreshToken()) === true) return await searchMetadata(res_state);
+        } else {
+            return response
+        }
+    }
+    catch(err) {
+        if ((await refreshToken()) === true) return await searchMetadata(res_state);
+    }
+}
+
+export const metadataTemplates = async (id, res_state) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/metadata_templates/global`, { //enterprise_355526
+            method: 'GET',
+            headers: {
+                Authorization: "Bearer "+access_token
+            }
+        });
+        if(response.status === 401) {
+            if((await refreshToken()) === true) return await createComment(id, res_state, msg);
+        } else {
+            return response
+        }
+    }
+    catch(err) {
+        if ((await refreshToken()) === true) return await createComment(id, res_state, msg);
+    }
+}
+
+// export const createMetadata = async (id, res_state, msg="") => {
+//     try {
+//         const access_token = JSON.parse(localStorage.parms).access_token;
+//         const response = await fetch(`https://api.box/com/2.0/comments`, {
+//             method: 'POST',
+//             headers: {
+//                 Authorization: "Bearer "+access_token
+//             },
+//             body: JSON.stringify({
+//                 message: msg.toString(),
+//                 item: {
+//                     type: "file",
+//                     id: id.toString()
+//                 }
+//             })
+//         });
+//         if(response.status === 401) {
+//             if((await refreshToken()) === true) return await createMetadata(id, res_state, msg);
+//         } else {
+//             return response
+//         }
+//     }
+//     catch(err) {
+//         if ((await refreshToken()) === true) return await createMetadata(id, res_state, msg);
+//     }
+// }
 
 
 export const removeActiveClass = (className, activeClass) => {

@@ -4,7 +4,7 @@ import { dataSubmissionTemplate, lazyload } from './src/pages/dataSubmission.js'
 import { dataSummary, dataSummaryMissingTemplate, dataSummaryStatisticsTemplate } from './src/pages/dataExploration.js';
 import { dataAccess as dataRequestTemplate, dataAccessNotSignedIn, dataForm, dataApproval, formSection, approveRejectSection, daccSection, chairSection, chairFileView, daccFileView } from './src/pages/dataRequest.js';
 import { checkAccessTokenValidity, loginAppDev, loginObs, loginAppEpisphere, logOut, loginAppProd } from './src/manageAuthentication.js';
-import { storeAccessToken, removeActiveClass, showAnimation, getCurrentUser, inactivityTime, filterConsortiums, getFolderItems, filterProjects, amIViewer, getCollaboration, hideAnimation, assignNavbarActive, getFileInfo, handleRangeRequests, applicationURLs, checkDataSubmissionPermissionLevel } from './src/shared.js';
+import { metadataTemplates, storeAccessToken, removeActiveClass, showAnimation, getCurrentUser, inactivityTime, filterConsortiums, getFolderItems, filterProjects, amIViewer, getCollaboration, hideAnimation, assignNavbarActive, getFileInfo, handleRangeRequests, applicationURLs, checkDataSubmissionPermissionLevel } from './src/shared.js';
 import { addEventConsortiaSelect, addEventUploadStudyForm, addEventStudyRadioBtn, addEventDataGovernanceNavBar, addEventMyProjects, addEventUpdateSummaryStatsData } from './src/event.js';
 import { dataAnalysisTemplate } from './src/pages/dataAnalysis.js';
 import { getFileContent } from './src/visualization.js';
@@ -152,7 +152,6 @@ export const confluence = async () => {
                 assignNavbarActive(element, 1);
                 //dataForm();
                 confluenceDiv.innerHTML = chairSection('chairView');
-                lazyload();
                 chairFileView();
                 //hideAnimation();
                 //dataForm();
@@ -169,7 +168,6 @@ export const confluence = async () => {
                 assignNavbarActive(element, 1);
                 //dataForm();
                 confluenceDiv.innerHTML = daccSection('daccView');
-                lazyload();
                 daccFileView();
                 //hideAnimation();
                 //dataForm();
@@ -402,6 +400,7 @@ const manageHash = async () => {
     }
     else if (hash === '#data_access/form') {
         const element = document.getElementById('dataForm');
+        console.log(await metadataTemplates());
         if(!element) return;
         element.click();
     }

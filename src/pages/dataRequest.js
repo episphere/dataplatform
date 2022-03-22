@@ -1,6 +1,6 @@
 // import { createFileTask, assignTask, updateTaskAssignment } from '../shared.js';
-import { getTaskList, updateTaskAssignment, uploadFile, uploadWordFile, getFolderItems, uploadWordFileVersion, emailforChair, emailforDACC, uploadFormFolder, assignTask, createFileTask, getFileInfo, numberWithCommas, hideAnimation} from '../shared.js';
-
+import { searchMetadata, metadataTemplates, createMetadata, getTaskList, updateTaskAssignment, uploadFile, uploadWordFile, getFolderItems, uploadWordFileVersion, emailforChair, emailforDACC, uploadFormFolder, assignTask, createFileTask, getFileInfo, numberWithCommas, hideAnimation} from '../shared.js';
+import { addEventToggleCollapsePanelBtn } from './description.js';
 // Require additional changes regarding data
 //import * as docx from "docx";
 
@@ -317,7 +317,31 @@ export const chairFileView = async() => {
   for (const id of filesincomplete){
     let fileinfo = await getFileInfo(id)
     template += `
-                  <li><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></li>
+                <div class="card mt-1 mb-1 align-left">
+                  <div style="padding: 10px" aria-expanded="false" id="heading${id}">
+                    <div class = "row">
+                      <div class="col-md-4"><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></div>
+                        <div class="col-md-1">
+                            <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${id}">
+                                <i class="fas fa-caret-down fa-2x"></i>
+                            </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="study${id}" class="collapse" aria-labelledby="heading${id}">
+                    <div class="card-body comment-submit" style="padding-left: 10px;background-color:#f6f6f6;">
+                    <form>
+                      <label for"message">Enter Comments</label>
+                      <div class="input-group">
+                        <textarea id="message" name="message" rows="6" cols="65"></textarea>
+                      </div>
+                      <button type="submit" value="send">Send Comment</button>
+                    </form>
+                    <!---<div class="preview-container" style="height:400px;width:575px"></div>--->
+                    </div>
+                  </div>
+                </div>
                   `
   }
   template += `</ul>
@@ -344,7 +368,65 @@ export const chairFileView = async() => {
 
   template += `
   </div></div></div>`;
+  await console.log(await searchMetadata());
   document.getElementById('chairFileView').innerHTML = template;
+  //addEventPreviewFile();
+  addEventToggleCollapsePanelBtn();
+  //viewFile();
+  commentSubmit();
+}
+
+export const commentSubmit = () => {
+  let approveComment = async (e) => {
+      e.preventDefault();
+      //let fileId = e.fileId;
+      let approval = e.submitter.value;
+      //let message = e.target[0].value;
+      console.log(e);
+      console.log(approval);
+
+      // let taskList = await getTaskList(fileId);
+      // console.log(taskList)
+      // let taskAssignment = taskList.entries[0].task_assignment_collection.entries[0];
+
+      // console.log(await updateTaskAssignment(taskAssignment.id, approval, message))
+  }
+
+  const form = document.querySelector('.comment-submit')
+  form.addEventListener('submit', approveComment)
+}
+
+const viewFile = () => {
+  var preview = new Box.Preview();
+  preview.show(id, JSON.parse(localStorage.parms).access_token, {
+    container: '.preview-container',
+    showDownload: true
+  });
+}
+
+const addEventPreviewFile = () => {
+  const btns = Array.from(document.querySelectorAll('.preview-file'));
+  btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+          const header = document.getElementById('confluencePreviewerModalHeader');
+              const body = document.getElementById('confluencePreviewerModalBody');
+              header.innerHTML = `<h5 class="modal-title">File preview</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                  </button>`;
+          const fileId = btn.dataset.fileId;
+          console.log(fileId);
+          filePreviewer(fileId, '#confluencePreviewerModalBody');
+      })
+  })
+}
+
+export const filePreviewer = (fileId, divId) => {
+  const access_token = JSON.parse(localStorage.parms).access_token;
+  const preview = new Box.Preview();
+  preview.show(fileId, access_token, {
+      container: divId
+  });
 }
 
 export const daccSection = (activeTab) => {
@@ -551,6 +633,7 @@ export const dataForm = async () => {
     console.log(emailforChair[0]);
     await assignTask(tasktochair, emailforChair[0]);
     console.log("Chair has been notified: " +  tasktochair);
+    await createMetadata(fileId);
   };
 
   async function generateWord(jsondata) {
