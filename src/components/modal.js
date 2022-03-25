@@ -78,6 +78,20 @@ export const fileVersionsModal = () => {
     </div>`
 }
 
+export const submissionModal = () => {
+    let template = `<div class="modal fade" id="submissionModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header allow-overflow" id="modalFVHeader"></div>
+        <div class="modal-body allow-overflow" id="modalFVBody"></div>
+        <div class="modal-footer">
+            <button type="button" title="Close" class="btn btn-dark" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+    </div>`
+}
 
 const createConsortiaOptions = async () => {
     let template = ``;
