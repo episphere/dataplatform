@@ -710,8 +710,8 @@ export const createMetadata = async (id, res_state) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                BCRPP_uploading_complete: "1",
-                BCRPP_tasks_initiated: "0"
+                BCRPPuploadingcomplete: "1",
+                BCRPPtasksinitiated: "0"
             })
         });
         if(response.status === 401) {

@@ -561,8 +561,8 @@ export const dataApproval = () => {
 export const dataForm = async () => {
   let files = await getFolderItems(uploadFormFolder);
   const d = new Date();
-  const filename = JSON.parse(localStorage.parms).login.split("@")[0] + "testing" + "_" + d.getDate() + "_" + d.getMonth() + "_" + d.getFullYear() + ".docx";
-  //console.log(files.entries)
+  const filename = JSON.parse(localStorage.parms).login.split("@")[0] + "testing" + "_" + d.getDate() + "_" + (d.getMonth()+1) + "_" + d.getFullYear() + ".docx";
+  console.log("Month " + d.getMonth());
   const filesinfoldernames = [];
   const filesinfolderids = [];
   for (let i = 0; i < files.entries.length; i++) {
