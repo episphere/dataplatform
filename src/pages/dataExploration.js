@@ -1,6 +1,23 @@
-import { getFile, hideAnimation, csv2Json, numberWithCommas, emailsAllowedToUpdateData, getFileInfo, missingnessStatsFileId, reSizePlots, applicationURLs } from '../shared.js';
-import { addEventConsortiumSelect, getSelectedStudies } from '../visualization.js';
-import { addEventVariableDefinitions, addEventFilterBarToggle, addEventMissingnessFilterBarToggle } from '../event.js';
+import {
+    getFile,
+    hideAnimation,
+    csv2Json,
+    numberWithCommas,
+    emailsAllowedToUpdateData,
+    getFileInfo,
+    missingnessStatsFileId,
+    reSizePlots,
+    applicationURLs
+} from '../shared.js';
+import {
+    addEventConsortiumSelect,
+    getSelectedStudies
+} from '../visualization.js';
+import {
+    addEventVariableDefinitions,
+    addEventFilterBarToggle,
+    addEventMissingnessFilterBarToggle
+} from '../event.js';
 
 export const dataSummary = (pageHeader, showPages, showUpdateButton, publicAccess) => {
     return `
@@ -37,6 +54,16 @@ export const dataSummary = (pageHeader, showPages, showUpdateButton, publicAcces
                                 </div>
                             </div>
                         `: ``}
+                        <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Filter
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="#"></a>
+    <a class="dropdown-item" href="#">Another action</a>
+    <a class="dropdown-item" href="#">Something else here</a>
+  </div>
+</div>
                     </div>
                 </div>
                 
@@ -56,7 +83,7 @@ export const dataSummary = (pageHeader, showPages, showUpdateButton, publicAcces
 
 export const dataSummaryStatisticsTemplate = () => {
     let template = '';
-    
+
     template = `
     <div class="col-xl-2 filter-column" id="summaryFilterSiderBar">
         <div class="card">
@@ -64,6 +91,7 @@ export const dataSummaryStatisticsTemplate = () => {
                 <strong class="side-panel-header font-size-17">Filter</strong>
             </div>
             <div id="cardContent" class="card-body">
+                <button>Show Filters</button>
                 <div id="allFilters" class="align-left"></div>
             </div>
         </div>
@@ -83,18 +111,21 @@ export const dataSummaryMissingTemplate = async () => {
     const response = await getFile(missingnessStatsFileId);
     const lastModified = (await getFileInfo(missingnessStatsFileId)).modified_at;
     document.getElementById('dataLastModified').innerHTML = `Data last modified at - ${new Date(lastModified).toLocaleString()}`;
-    const {data, headers} = csv2Json(response);
-    const variables = headers.filter(dt => /status_/i.test(dt) === false && /study/i.test(dt) === false && /consortia/i.test(dt) === false && /ethnicityClass_/i.test(dt) === false  && /bcac_id/i.test(dt) === false);
+    const {
+        data,
+        headers
+    } = csv2Json(response);
+    const variables = headers.filter(dt => /status_/i.test(dt) === false && /study/i.test(dt) === false && /consortia/i.test(dt) === false && /ethnicityClass_/i.test(dt) === false && /bcac_id/i.test(dt) === false);
     const status = headers.filter(dt => /status_/i.test(dt) === true);
     const initialSelection = variables.length > 5 ? variables.slice(0, 5) : variables;
     // const studies = data.map(dt => dt['study']).filter((item, i, ar) => ar.indexOf(item) === i);
     const studies = {};
     data.forEach(dt => {
-        if(studies[dt['Consortia']] === undefined) studies[dt['Consortia']] = {};
-        if(dt['study'] && studies[dt['Consortia']][dt['study']] === undefined) studies[dt['Consortia']][dt['study']] = {};
+        if (studies[dt['Consortia']] === undefined) studies[dt['Consortia']] = {};
+        if (dt['study'] && studies[dt['Consortia']][dt['study']] === undefined) studies[dt['Consortia']][dt['study']] = {};
     });
     const ancestory = headers.filter(dt => /ethnicityClass_/i.test(dt) === true);
-    
+
     const div1 = document.createElement('div');
     div1.classList = ['col-xl-2 filter-column'];
     div1.id = 'missingnessFilter';
@@ -167,14 +198,14 @@ const renderMidsetFilterData = (data, acceptedVariables, headers, status, studie
                 <select class="form-control font-size-15" id="ancestrySelection">`
     ancestory.forEach(anc => {
         template += `<option value="${anc}" ${anc === 'All' ? 'selected':''}>${anc.replace(new RegExp('ethnicityClass_', 'i'), '')}</option>`
-    }) 
-                
+    })
+
     template += `</select>
             </div>
             <div class="form-group">
                 <label class="filter-label font-size-13" for="studiesList">Studies</label>
                 <div id="studiesList" class="font-size-15">`
-    for(let consortium in studies){
+    for (let consortium in studies) {
         let innerTemplate = `
             <ul class="remove-padding-left">
                 <li class="custom-borders filter-list-item consortia-study-list" data-consortia="${consortium}">
@@ -187,10 +218,10 @@ const renderMidsetFilterData = (data, acceptedVariables, headers, status, studie
                     </div>
                 </li>
         `;
-        if(Object.keys(studies[consortium]).length !== 0) {
+        if (Object.keys(studies[consortium]).length !== 0) {
             innerTemplate += `<ul class="collapse no-list-style custom-padding allow-overflow max-height-study-list" id="toggle${consortium.replace(/ /g, '')}">`;
 
-            for(let study in studies[consortium]){
+            for (let study in studies[consortium]) {
                 innerTemplate += `
                     <li class="filter-list-item">
                         <input type="checkbox" data-study="${study}" data-consortium="${consortium}" id="label${study}" class="select-study"/>
@@ -202,7 +233,7 @@ const renderMidsetFilterData = (data, acceptedVariables, headers, status, studie
         innerTemplate += '</ul>'
         template += innerTemplate
     }
-    template +=`
+    template += `
                 </div>
             </div>
             <div class="form-group" id="midsetVariables">
@@ -264,13 +295,13 @@ const filterMidsetData = (data) => {
     const consortiaSelection = Array.from(document.querySelectorAll(`input:checked.select-consortium`)).map(dt => dt.dataset.consortia);
 
     let newData = data;
-    if(studiesSelection.length > 0 || consortiaSelection.length > 0) newData = newData.filter(dt => (studiesSelection.indexOf(dt['study']) !== -1 || consortiaSelection.indexOf(dt['Consortia']) !== -1 ));
-    
-    if(status !== 'All') {
+    if (studiesSelection.length > 0 || consortiaSelection.length > 0) newData = newData.filter(dt => (studiesSelection.indexOf(dt['study']) !== -1 || consortiaSelection.indexOf(dt['Consortia']) !== -1));
+
+    if (status !== 'All') {
         newData = newData.filter(dt => dt[status] === '1');
     }
-    
-    if(ancestry !== 'All') {
+
+    if (ancestry !== 'All') {
         newData = newData.filter(dt => dt[ancestry] === '1');
     }
     document.getElementById('listFilters').innerHTML = `
@@ -299,25 +330,25 @@ const midset = (data, acceptedVariables) => {
     let plotData = [];
     let headerData = '';
 
-    if(acceptedVariables.length === 0){
+    if (acceptedVariables.length === 0) {
         template += 'No variable selected.';
         hideAnimation();
         document.getElementById('missingnessTable').innerHTML = template;
         return;
     }
-    if(data.length > 0){
+    if (data.length > 0) {
         template += '<table class="table table-hover table-borderless missingness-table table-striped"><thead class="midset-table-header">';
         const headerCount = computeHeader(data, acceptedVariables);
         headerData = headerCount;
         const result = computeSets(data, acceptedVariables);
         template += `<tr class="midset-header"><th class="missing-column"><button class="info-btn variable-definition" aria-label="More info" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#confluenceMainModal" data-variable='midsetTopBars'><i class="fas fa-question-circle cursor-pointer"></i></button></th><th class='bar-chart-cell' colspan="${Object.keys(headerCount).length}"><div id="midsetHeader"></div></th><th class="missing-column"></th></tr>`
-        
+
         template += `<tr><th class="missing-column"></th>`
-        for(let variable in headerCount) {
+        for (let variable in headerCount) {
             template += `<th class="missing-column cell-equal-width">${numberWithCommas(headerCount[variable])}</th>`
         }
         template += `<th class="missing-column"></th></tr><tr><td class="missing-column"></td>`;
-        for(let variable in headerCount) {
+        for (let variable in headerCount) {
             template += `<th class="missing-column cell-equal-width">${variable.replace('_Data available', '')}</th>`
         }
         template += `<th class="missing-column"></th>
@@ -328,11 +359,11 @@ const midset = (data, acceptedVariables) => {
                             All subjects 
                             <button class="info-btn variable-definition" aria-label="More info" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#confluenceMainModal"  data-variable='allSubjects'><i class="fas fa-question-circle cursor-pointer"></i></button>
                         </td>`;
-        
+
         const set0 = data.length;
         acceptedVariables.forEach((variable, index) => {
             template += `<td class="missing-column">&#9898</td>`;
-            if(index === acceptedVariables.length - 1) template += `<td class="missing-column">${numberWithCommas(set0)}</td><td id="midsetChart" rowspan="${Object.keys(result).length + 2}"></td>`;
+            if (index === acceptedVariables.length - 1) template += `<td class="missing-column">${numberWithCommas(set0)}</td><td id="midsetChart" rowspan="${Object.keys(result).length + 2}"></td>`;
         });
         template += `</tr>
                     <tr>
@@ -343,12 +374,12 @@ const midset = (data, acceptedVariables) => {
         const set1 = setLengths(data, acceptedVariables);
         acceptedVariables.forEach((variable, index) => {
             template += `<td class="missing-column">&#9899</td>`;
-            if(index === acceptedVariables.length - 1) template += `<td class="missing-column">${numberWithCommas(set1)}</td>`;
+            if (index === acceptedVariables.length - 1) template += `<td class="missing-column">${numberWithCommas(set1)}</td>`;
         });
         template += '</tr>';
         let ignore = '';
-        acceptedVariables.forEach((v,i) => {
-            if(i===0) ignore += v;
+        acceptedVariables.forEach((v, i) => {
+            if (i === 0) ignore += v;
             else ignore += `@#$${v}`;
             delete result[v];
         });
@@ -358,36 +389,33 @@ const midset = (data, acceptedVariables) => {
         plotData.unshift(set0);
 
         let variableDisplayed = {};
-        for(let key in result) {
+        for (let key in result) {
             const allVariables = key.split('@#$');
             const firstVar = key.split('@#$')[0];
             template += '<tr>';
-            if(variableDisplayed[firstVar] === undefined) {
+            if (variableDisplayed[firstVar] === undefined) {
                 template += `<td class="missing-column set-label">${firstVar.replace('_Data available', '')}</td>`;
                 variableDisplayed[firstVar] = '';
-            }else {
+            } else {
                 template += '<td class="missing-column"></td>'
             }
             acceptedVariables.forEach((variable, index) => {
-                if(variable === firstVar) {
+                if (variable === firstVar) {
                     template += '<td class="missing-column">&#9899</td>'
-                }
-                else if(variable !== firstVar && allVariables.indexOf(variable) !== -1){
+                } else if (variable !== firstVar && allVariables.indexOf(variable) !== -1) {
                     template += '<td class="missing-column">&#9899</td>'
-                }
-                else if(variable !== firstVar && allVariables.indexOf(variable) === -1){
+                } else if (variable !== firstVar && allVariables.indexOf(variable) === -1) {
                     template += '<td class="missing-column">&#9898</td>'
                 }
-                if(index === acceptedVariables.length - 1) {
+                if (index === acceptedVariables.length - 1) {
                     template += `<td class="missing-column">${numberWithCommas(result[key])}</td>`
                 }
             });
             template += '</tr>';
         }
-        
+
         template += '</tbody></table>';
-    }
-    else template += 'Data not available.'
+    } else template += 'Data not available.'
     hideAnimation();
     document.getElementById('missingnessTable').innerHTML = template;
     addEventVariableDefinitions();
@@ -424,7 +452,7 @@ const renderMidsetHeader = (x, y, id) => {
             showline: false,
             autotick: true,
             fixedrange: true,
-            tickformat:',d'
+            tickformat: ',d'
         },
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
@@ -438,10 +466,13 @@ const renderMidsetHeader = (x, y, id) => {
     }
 
     const options = {
-        responsive: true, 
+        responsive: true,
         displayModeBar: false,
         useResizeHandler: true,
-        style: {width: "100%", height: "100%"}
+        style: {
+            width: "100%",
+            height: "100%"
+        }
     }
     Plotly.newPlot(id, data, layout, options);
 }
@@ -462,7 +493,7 @@ const renderMidsetPlot = (x, id) => {
             showgrid: false,
             zeroline: false,
             fixedrange: true,
-            tickformat:',d'
+            tickformat: ',d'
         },
         yaxis: {
             autorange: true,
@@ -485,10 +516,13 @@ const renderMidsetPlot = (x, id) => {
     }
 
     const options = {
-        responsive: true, 
+        responsive: true,
         displayModeBar: false,
         useResizeHandler: true,
-        style: {width: "100%", height: "100%"}
+        style: {
+            width: "100%",
+            height: "100%"
+        }
     }
     Plotly.newPlot(id, data, layout, options);
 }
@@ -498,7 +532,7 @@ const computeSets = (data, acceptedVariables) => {
     const allCombinations = getCombinations(acceptedVariables);
     allCombinations.forEach(combination => {
         const setLength = setLengths(data, combination.split('@#$'));
-        if(setLength > 0) {
+        if (setLength > 0) {
             obj[combination] = setLength;
         }
     });
@@ -507,7 +541,7 @@ const computeSets = (data, acceptedVariables) => {
 
 const setLengths = (data, arr) => {
     arr.forEach(variable => {
-        if(variable) {
+        if (variable) {
             data = data.filter(dt => dt[variable] === '1');
         }
     });

@@ -57,6 +57,7 @@ export const navBarMenutemplate = () => {
                 Report issue
             </a>
         </div>
+
         <div class="navbar-nav ml-auto">
             ${localStorage.parms && JSON.parse(localStorage.parms).name ? `
                 <div class="grid-elements dropdown">

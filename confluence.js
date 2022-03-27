@@ -16,6 +16,7 @@ import { renderDescription } from './src/pages/description.js';
 import { dataDictionaryTemplate } from './src/pages/dictionary.js';
 
 
+
 export const confluence = async () => {
     // handleRangeRequests();
     if('serviceWorker' in navigator){

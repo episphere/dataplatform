@@ -1,6 +1,7 @@
 // import { createFileTask, assignTask, updateTaskAssignment } from '../shared.js';
 import { searchMetadata, metadataTemplates, createMetadata, getTaskList, updateTaskAssignment, uploadFile, uploadWordFile, getFolderItems, uploadWordFileVersion, emailforChair, emailforDACC, uploadFormFolder, assignTask, createFileTask, getFileInfo, numberWithCommas, hideAnimation} from '../shared.js';
 import { addEventToggleCollapsePanelBtn } from './description.js';
+import { showPreviews } from '../components/boxPreview.js';
 // Require additional changes regarding data
 //import * as docx from "docx";
 
@@ -278,7 +279,7 @@ export const chairFileView = async() => {
     <h2 class="page-header">To Be Completed</h2>
     <ul>
       `;
-    const filesincomplete = [];
+    const filesincomplete = ['934945963612'];
     const filescompleted = [];
     const filesapproved = [];
     for(let obj of filearray){
@@ -320,7 +321,7 @@ export const chairFileView = async() => {
                 <div class="card mt-1 mb-1 align-left">
                   <div style="padding: 10px" aria-expanded="false" id="heading${id}">
                     <div class = "row">
-                      <div class="col-md-4"><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></div>
+                      <div class="col-md-4 card-title"><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></div>
                         <div class="col-md-1">
                             <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${id}">
                                 <i class="fas fa-caret-down fa-2x"></i>
@@ -344,6 +345,7 @@ export const chairFileView = async() => {
                 </div>
                   `
   }
+ 
   template += `</ul>
   <h2 class="page-header">DACC Completed</h2>
   <ul>
@@ -374,6 +376,7 @@ export const chairFileView = async() => {
   addEventToggleCollapsePanelBtn();
   //viewFile();
   commentSubmit();
+  showPreviews(filesincomplete);
 }
 
 export const commentSubmit = () => {
