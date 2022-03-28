@@ -2,6 +2,7 @@
 import { searchMetadata, metadataTemplates, createMetadata, getTaskList, updateTaskAssignment, uploadFile, uploadWordFile, getFolderItems, uploadWordFileVersion, emailforChair, emailforDACC, uploadFormFolder, assignTask, createFileTask, getFileInfo, numberWithCommas, hideAnimation} from '../shared.js';
 import { addEventToggleCollapsePanelBtn } from './description.js';
 import { showPreviews } from '../components/boxPreview.js';
+import { pageNavBar } from '../components/navBarMenuItems.js';
 // Require additional changes regarding data
 //import * as docx from "docx";
 
@@ -38,18 +39,26 @@ export const dataAccessNotSignedIn = () => {
 }
 
 export const dataAccess = (activeTab, showDescripton) => {
+    let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+    let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+    let navBarItems = '';
+    if (authDacc && authChair) {
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu", 'test');
+    }
+    else if(authChair) {
+      navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
+    }
+    else if(authDacc){
+      navBarItems = pageNavBar('Overview', 'Submission Form', 'DACC Menu');
+    }
+    else {
+      navBarItems = pageNavBar('Overview', 'Submission Form');
+    }
     let template = `
         <div class="general-bg body-min-height padding-bottom-1rem">
             <div class="container">
-              <div class="main-summary-row white-bg div-border">
-                 <div class="main-summary-row white-bg div-border">
-                    <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'overview' ? 'active': ''} black-font font-size-14" href="#data_access/overview"><strong>Overview</strong></a></button>
-                    <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'form' ? 'active': ''} black-font font-size-14" href="#data_access/form"> <strong>Submission Form</strong></a></button>
-                    ${emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'chairView' ? 'active': ''} black-font font-size-14" href="#data_access/chairView"> <strong>Chair Menu</strong></a></button>`:``}
-                    ${emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'daccView' ? 'active': ''} black-font font-size-14" href="#data_access/daccView"> <strong>DACC Menu</strong></a></button>`:``}
-                  </div>
-                <div id="overview"></div>
-            </div>
+              ${navBarItems}
+            
         </div>
         `;
     
@@ -85,20 +94,28 @@ export const dataAccess = (activeTab, showDescripton) => {
 }
 
 export const formSection = (activeTab, showDescripton) => {
-    let template = `
-                  <div class="general-bg body-min-height padding-bottom-1rem">
-                      <div class="container">
-                        <div class="main-summary-row white-bg div-border">
-                          <div class="main-summary-row white-bg div-border">
-                              <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'overview' ? 'active': ''} black-font font-size-14" href="#data_access/overview"><strong>Overview</strong></a></button>
-                              <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'form' ? 'active': ''} black-font font-size-14" href="#data_access/form"> <strong>Submission Form</strong></a></button>
-                              ${emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'chairView' ? 'active': ''} black-font font-size-14" href="#data_access/chairView"> <strong>Chair Menu</strong></a></button>`:``}
-                              ${emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'daccView' ? 'active': ''} black-font font-size-14" href="#data_access/daccView"> <strong>DACC Menu</strong></a></button>`:``}
-                            </div>
-                          <div id="overview"></div>
-                      </div>
-                  </div>
-                  `;
+  let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+  let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+  let navBarItems = '';
+  if (authDacc && authChair) {
+  navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu", "test");
+  }
+  else if(authChair) {
+    navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
+  }
+  else if(authDacc){
+    navBarItems = pageNavBar('Overview', 'Submission Form', 'DACC Menu');
+  }
+  else {
+    navBarItems = pageNavBar('Overview', 'Submission Form');
+  }
+  let template = `
+      <div class="general-bg body-min-height padding-bottom-1rem">
+          <div class="container">
+            ${navBarItems}
+          
+      </div>
+      `;
     template += ` 
                   <div class="general-bg padding-bottom-1rem">
                           <div class="container body-min-height">
@@ -242,19 +259,29 @@ export const approveRejectSection = () => {
 }
 
 export const chairSection = (activeTab) => {
+  let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+  let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+  let navBarItems = '';
+  if (authDacc && authChair) {
+  navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu", "test");
+  }
+  else if(authChair) {
+    navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
+  }
+  else if(authDacc){
+    navBarItems = pageNavBar('Overview', 'Submission Form', 'DACC Menu');
+  }
+  else {
+    navBarItems = pageNavBar('Overview', 'Submission Form');
+  }
   let template = `
-  <div class="general-bg body-min-height padding-bottom-1rem">
-      <div class="container">
-        <div class="main-summary-row white-bg div-border">
-          <div class="main-summary-row white-bg div-border">
-              <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'overview' ? 'active': ''} black-font font-size-14" href="#data_access/overview"><strong>Overview</strong></a></button>
-              <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'form' ? 'active': ''} black-font font-size-14" href="#data_access/form"> <strong>Submission Form</strong></a></button>
-              ${emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'chairView' ? 'active': ''} black-font font-size-14" href="#data_access/chairView"> <strong>Chair Menu</strong></a></button>`:``}
-              ${emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'daccView' ? 'active': ''} black-font font-size-14" href="#data_access/daccView"> <strong>DACC Menu</strong></a></button>`:``}
-          </div>
-          <div id="overview"></div>
-        </div>
+      <div class="general-bg body-min-height padding-bottom-1rem">
+          <div class="container">
+            ${navBarItems}
+          
       </div>
+      `;
+  template += `
     <div id="chairFileView" class="align-left"></div>
   </div>
   `;
@@ -279,7 +306,7 @@ export const chairFileView = async() => {
     <h2 class="page-header">To Be Completed</h2>
     <ul>
       `;
-    const filesincomplete = ['934945963612'];
+    const filesincomplete = ['934945963612', "934537789566","937143456496"];
     const filescompleted = [];
     const filesapproved = [];
     for(let obj of filearray){
@@ -433,19 +460,29 @@ export const filePreviewer = (fileId, divId) => {
 }
 
 export const daccSection = (activeTab) => {
+  let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+  let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+  let navBarItems = '';
+  if (authDacc && authChair) {
+  navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu", "test");
+  }
+  else if(authChair) {
+    navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
+  }
+  else if(authDacc){
+    navBarItems = pageNavBar('Overview', 'Submission Form', 'DACC Menu');
+  }
+  else {
+    navBarItems = pageNavBar('Overview', 'Submission Form');
+  }
   let template = `
-  <div class="general-bg body-min-height padding-bottom-1rem">
-      <div class="container">
-        <div class="main-summary-row white-bg div-border">
-          <div class="main-summary-row white-bg div-border">
-              <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'overview' ? 'active': ''} black-font font-size-14" href="#data_access/overview"><strong>Overview</strong></a></button>
-              <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'form' ? 'active': ''} black-font font-size-14" href="#data_access/form"> <strong>Submission Form</strong></a></button>
-              ${emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'chairView' ? 'active': ''} black-font font-size-14" href="#data_access/chairView"> <strong>Chair Menu</strong></a></button>`:``}
-              ${emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'daccView' ? 'active': ''} black-font font-size-14" href="#data_access/daccView"> <strong>DACC Menu</strong></a></button>`:``}
-          </div>
-          <div id="overview"></div>
-        </div>
+      <div class="general-bg body-min-height padding-bottom-1rem">
+          <div class="container">
+            ${navBarItems}
+          
       </div>
+      `;
+  template += `
     <div id="daccFileView" class="align-left"></div>
   </div>
   `;
