@@ -710,8 +710,9 @@ export const createMetadata = async (id, res_state) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                BCRPPuploadingcomplete: "1",
-                BCRPPtasksinitiated: "0"
+                BCRPPstage: "0",
+                BCRPPchair: "1",
+                BCRPPdacc: "0"
             })
         });
         if(response.status === 401) {
@@ -722,6 +723,41 @@ export const createMetadata = async (id, res_state) => {
     }
     catch(err) {
         if ((await refreshToken()) === true) return await createMetadata(id, res_state);
+    }
+}
+
+export const getMetadata = async (id) => {
+        // var myHeaders = new Headers();
+        // const access_token = JSON.parse(localStorage.parms).access_token;
+        // myHeaders.append("Authorization", "Bearer " + access_token);
+        
+        // var requestOptions = {
+        //     method: 'GET',
+        //     headers: myHeaders,
+        //     redirect: 'follow'
+        // };
+        
+        // await fetch(`https://api.box.com/2.0/files/${id}/metadata`, requestOptions)
+        //     .then(response => response.json())
+        //     .then(result => console.log(result))
+        //     .catch(error => console.log('error', error));
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/files/${id}/metadata`, { //enterprise_355526
+            method: 'GET',
+            headers: {
+                "Authorization": "Bearer "+access_token,
+                'Content-Type': 'application/json'
+            }
+        });
+        if(response.status === 401) {
+            if((await refreshToken()) === true) return await getMetadata(id);
+        } else {
+            return response.json();
+        }
+    }
+    catch(err) {
+        if ((await refreshToken()) === true) return await getMetadata(id);
     }
 }
 

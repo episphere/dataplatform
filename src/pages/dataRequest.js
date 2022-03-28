@@ -1,5 +1,5 @@
 // import { createFileTask, assignTask, updateTaskAssignment } from '../shared.js';
-import { searchMetadata, metadataTemplates, createMetadata, getTaskList, updateTaskAssignment, uploadFile, uploadWordFile, getFolderItems, uploadWordFileVersion, emailforChair, emailforDACC, uploadFormFolder, assignTask, createFileTask, getFileInfo, numberWithCommas, hideAnimation} from '../shared.js';
+import { getMetadata, searchMetadata, metadataTemplates, createMetadata, getTaskList, updateTaskAssignment, uploadFile, uploadWordFile, getFolderItems, uploadWordFileVersion, emailforChair, emailforDACC, uploadFormFolder, assignTask, createFileTask, getFileInfo, numberWithCommas, hideAnimation} from '../shared.js';
 import { addEventToggleCollapsePanelBtn } from './description.js';
 import { showPreviews } from '../components/boxPreview.js';
 // Require additional changes regarding data
@@ -263,6 +263,9 @@ export const chairSection = (activeTab) => {
 }
 
 export const chairFileView = async() => {
+  // let check =  await getMetadata("937143456496");
+  // console.log(check.entries["0"]);
+
   const response = await getFolderItems('155292358576');
   let filearray = response.entries;
   console.log(filearray);
@@ -272,19 +275,21 @@ export const chairFileView = async() => {
     <div class="container body-min-height">
       <div class="main-summary-row">
           <div class="align-left">
-              <h1 class="page-header">DACC Access Only</h1>
+              <h1 class="page-header">Chair Access Only</h1>
           </div>
       </div>
     <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
     <h2 class="page-header">To Be Completed</h2>
     <ul>
       `;
-    const filesincomplete = ['934945963612'];
+    const filesincomplete = []; // '934945963612'
     const filescompleted = [];
     const filesapproved = [];
     for(let obj of filearray){
       let id = obj.id;
       //console.log(id);
+      let check =  await getMetadata(id);
+
       let tasklist = await getTaskList(id);
       let entries = tasklist.entries;
       //console.log(entries.length !== 0);
@@ -315,41 +320,43 @@ export const chairFileView = async() => {
         }
       }
     };
-  for (const id of filesincomplete){
-    let fileinfo = await getFileInfo(id)
-    template += `
-                <div class="card mt-1 mb-1 align-left">
-                  <div style="padding: 10px" aria-expanded="false" id="heading${id}">
-                    <div class = "row">
-                      <div class="col-md-4 card-title"><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></div>
-                        <div class="col-md-1">
-                            <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${id}">
-                                <i class="fas fa-caret-down fa-2x"></i>
-                            </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div id="study${id}" class="collapse" aria-labelledby="heading${id}">
-                    <div class="card-body comment-submit" style="padding-left: 10px;background-color:#f6f6f6;">
-                    <form>
-                      <label for"message">Enter Comments</label>
-                      <div class="input-group">
-                        <textarea id="message" name="message" rows="6" cols="65"></textarea>
-                      </div>
-                      <button type="submit" value="send">Send Comment</button>
-                    </form>
-                    <!---<div class="preview-container" style="height:400px;width:575px"></div>--->
-                    </div>
-                  </div>
-                </div>
-                  `
-  }
+    template += `<div class="card mt-1 mb-1 align-left">`
+    template += await viewFiles(filesincomplete);
+  // template += `<div class="card mt-1 mb-1 align-left">`  
+  // for (const id of filesincomplete){
+  //   let fileinfo = await getFileInfo(id)
+  //   template += `
+                
+  //                 <div style="padding: 10px" aria-expanded="false" id="heading${id}">
+  //                   <div class = "row">
+  //                     <div class="col-md-4 card-title"><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></div>
+  //                       <div class="col-md-1">
+  //                           <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${id}">
+  //                               <i class="fas fa-caret-down fa-2x"></i>
+  //                           </button>
+  //                       </div>
+  //                     </div>
+  //                   </div>
+  //                 `
+  //   template += `
+  //                 <div id="study${id}" class="collapse" aria-labelledby="heading${id}">
+  //                   <div class="card-body comment-submit" style="padding-left: 10px;background-color:#f6f6f6;">
+  //                     <form>
+  //                       <label for"message">Enter Comments</label>
+  //                       <div class="input-group">
+  //                         <textarea id="message" name="message" rows="6" cols="65"></textarea>
+  //                       </div>
+  //                       <button type="submit" value="send">Send Comment</button>
+  //                     </form>
+  //                   </div>
+  //                 </div>
+  //                 `
+  // }
  
-  template += `</ul>
-  <h2 class="page-header">DACC Completed</h2>
-  <ul>
-  `
+   template += `</div></ul>
+   <h2 class="page-header">DACC Completed</h2>
+   <ul>
+   `
   for (const id of filescompleted){
     let fileinfo = await getFileInfo(id)
     template += `
@@ -370,13 +377,14 @@ export const chairFileView = async() => {
 
   template += `
   </div></div></div>`;
-  await console.log(await searchMetadata());
+  //await console.log(await searchMetadata());
   document.getElementById('chairFileView').innerHTML = template;
   //addEventPreviewFile();
   addEventToggleCollapsePanelBtn();
   //viewFile();
   commentSubmit();
-  showPreviews(filesincomplete);
+  //console.log(filesincomplete);
+  //showPreviews(filesincomplete);
 }
 
 export const commentSubmit = () => {
@@ -765,4 +773,39 @@ export const dataForm = async () => {
   const form = document.querySelector('.contact-form');
   form.addEventListener('submit', handleFormSubmit);
   //form.addEventListener('submit', assigntasktochair);
+}
+
+const viewFiles = async(files) => { 
+  let template = ``;
+  for (const id of files){
+    // let check =  await getMetadata(id);
+    // console.log(check);
+    let fileinfo = await getFileInfo(id);
+    template += `
+                  <div style="padding: 10px" aria-expanded="false" id="heading${id}">
+                    <div class = "row">
+                      <div class="col-md-4 card-title"><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></div>
+                        <div class="col-md-1">
+                            <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${id}">
+                                <i class="fas fa-caret-down fa-2x"></i>
+                            </button>
+                        </div>
+                      </div>
+                    </div>
+                  `
+    template += `
+                  <div id="study${id}" class="collapse" aria-labelledby="heading${id}">
+                    <div class="card-body comment-submit" style="padding-left: 10px;background-color:#f6f6f6;">
+                      <form>
+                        <label for"message">Enter Comments</label>
+                        <div class="input-group">
+                          <textarea id="message" name="message" rows="6" cols="65"></textarea>
+                        </div>
+                        <button type="submit" value="send">Send Comment</button>
+                      </form>
+                    </div>
+                  </div>
+                  `
+  };
+  return(template);
 }
