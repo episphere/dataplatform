@@ -77,3 +77,81 @@ export const navBarMenutemplate = () => {
         </div>
     `;
 };
+
+export function pageNavBar(page, activeTab, ...pageHeaders) {
+    const containerEl = document.createElement('div');
+    containerEl.classList.add('container');
+    
+    const outerDivEl = document.createElement('div');
+    outerDivEl.classList.add('main-summary-row', 'white-bg', 'div-border');
+    
+    const innerDivEl = document.createElement('div');
+    innerDivEl.classList.add('main-summary-row', 'white-bg', 'div-border');
+    
+    outerDivEl.appendChild(innerDivEl);
+    containerEl.appendChild(outerDivEl);
+    
+
+    let btns = [];
+    for (const header of pageHeaders){
+        console.log('Title', header);
+        const btn = document.createElement('button');
+        btn.classList.add('sub-menu-btn');
+        const link = document.createElement('a');
+        link.classList.add('nav-link', 'black-font', 'font-size-14', 'font-weight-bold');
+        
+        //Active Tab Function
+        if(header == 'Overview'){
+            link.href = `#${page}/overview`
+            if(activeTab === 'overview')
+                link.classList.add('active');
+        }
+        if(header == 'Submission Form'){
+            link.href = `#${page}/form`
+            if(activeTab === 'form')
+                link.classList.add('active');
+        }
+        if(header == 'Chair Menu'){
+            link.href = `#${page}/chairView`
+            if(activeTab === 'chairView')
+                link.classList.add('active');
+        }
+        if(header == 'DACC Menu'){
+            link.href = `#${page}/daccView`
+            if(activeTab === 'daccView')
+                link.classList.add('active');
+        }
+
+        if(header == 'Description of Studies'){
+            link.href = `#${page}/description`
+            if(activeTab === 'description')
+                link.classList.add('active');
+        }
+
+        
+
+        link.innerText = header;
+        btn.appendChild(link);
+        console.log(btn);
+        innerDivEl.appendChild(btn);
+
+    }
+
+    const overviewDiv = document.createElement('div');
+    overviewDiv.id = 'overview';
+    containerEl.appendChild(overviewDiv);
+    
+    console.log(containerEl.innerHTML);
+    return containerEl.innerHTML;
+}
+/*
+<div class="main-summary-row white-bg div-border">
+
+<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'overview' ? 'active': ''} black-font font-size-14" href="#data_access/overview"><strong>Overview</strong></a></button>
+<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'form' ? 'active': ''} black-font font-size-14" href="#data_access/form"> <strong>Submission Form</strong></a></button>
+${emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'chairView' ? 'active': ''} black-font font-size-14" href="#data_access/chairView"> <strong>Chair Menu</strong></a></button>`:``}
+${emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'daccView' ? 'active': ''} black-font font-size-14" href="#data_access/daccView"> <strong>DACC Menu</strong></a></button>`:``}
+
+<div id="overview"></div>
+</div>
+*/

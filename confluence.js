@@ -453,7 +453,6 @@ const manageHash = async () => {
         const element = document.getElementById('aboutBCRPP');
         if(!element) return;
         // if(element.classList.contains('navbar-active')) return;
-        console.log("Overview manageHash")
         assignNavbarActive(element, 1);
         document.title = 'BCRP - Overview';
 
