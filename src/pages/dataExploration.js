@@ -19,7 +19,7 @@ import {
     addEventMissingnessFilterBarToggle
 } from '../event.js';
 
-export const dataSummary = (pageHeader, showPages, showUpdateButton, publicAccess) => {
+export const dataSummary = (pageHeader, showPages, subCases, showUpdateButton, publicAccess) => {
     return `
         <div class="general-bg">
             <div class="container body-min-height">
@@ -54,16 +54,17 @@ export const dataSummary = (pageHeader, showPages, showUpdateButton, publicAcces
                                 </div>
                             </div>
                         `: ``}
-                        <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Filter
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#"></a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-  </div>
-</div>
+                        ${subCases ? `
+                            <div class="ml-auto mt-3 mb-1" id="classSelect">
+                                <div class="col-md-12 p-0 form-group">
+                                    <!---<label class="filter-label font-size-13" for="subcasesSelection">Selection</label>--->
+                                    <select class="form-control font-size-15" id="subcasesSelection" data-variable='subcases'>
+                                        <option selected value='all'>All Subjects</option>
+                                        <option value='cases'>Cases</option>
+                                    </select>
+                                </div>
+                            </div>
+                        `: ``}
                     </div>
                 </div>
                 
