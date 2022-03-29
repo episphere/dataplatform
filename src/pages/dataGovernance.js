@@ -7,6 +7,7 @@ export const template = async () => {
     // const array = response.entries.filter(obj => obj.type === 'folder' && obj.id === '145995765326');
     // const array = filterConsortiums(response.entries);
     const array = await getFolderInfo('145995765326'); //BCRP: 145995765326, Confluence: 137304373658
+    console.log(array);
     // if(array.length <= 0) return;
     if(!array) return;
     
@@ -14,7 +15,7 @@ export const template = async () => {
     
     template += '<div class="card-body data-governance"><ul class="ul-list-style first-list-item collapsible-items p-0 m-0">';
 
-    // for(let obj of array){
+    //for(let obj of array){
         const ID = array.id;
         const consortiaName = array.name;
         let type = array.type;
@@ -26,7 +27,7 @@ export const template = async () => {
             </button> ${consortiaName}
         </li>
         `
-    // }
+    //}
     template += `</ul></div></div>`
     return template;
 }

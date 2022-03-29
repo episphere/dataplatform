@@ -1,16 +1,15 @@
 import { addEventConsortiaFilter } from "../event.js";
 import { getPublicFile, numberWithCommas, publicDataFileId } from "./../shared.js";
+import { pageNavBar } from '../components/navBarMenuItems.js';
 
 export const aboutConfluence = (activeTab, showDescripton) => {
+    let navBarItems = showDescripton ? pageNavBar('about', activeTab, 'Overview', 'Description of Studies', 'test') : `<div id='overview'></div>`;
     let template = `
         <div class="general-bg body-min-height padding-bottom-1rem">
             <div class="container">
-                ${showDescripton ? `<div class="main-summary-row white-bg div-border">
-                    <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'overview' ? 'active': ''} black-font font-size-14" href="#about/overview"><strong>Overview</strong></a></button>
-                    <button class="sub-menu-btn"><a class="nav-link ${activeTab === 'description' ? 'active': ''} black-font font-size-14" href="#about/description"> <strong>Description of Studies</strong></a></button>
+                ${navBarItems}
                     <!---<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'contact' ? 'active': ''} black-font font-size-14" href="#contact"> <strong>Scientific Committee</strong></a></button>--->
-                </div>`:``}
-                <div id="overview"></div>
+               
             </div>
         </div>
     `;

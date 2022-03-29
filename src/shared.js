@@ -329,6 +329,39 @@ export const uploadFile = async (data, fileName, folderId, html) => {
     }
 }
 
+export const uploadWordFile = async (data, fileName, folderId, html) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const form = new FormData();
+        form.append('file', data);
+        form.append('attributes', `{"name": "${fileName}", "parent": {"id": "${folderId}"}}`);
+    
+        let response = await fetch("https://upload.box.com/api/2.0/files/content", {
+            method: "POST",
+            headers:{
+                Authorization:"Bearer "+access_token
+            },
+            body: form,
+            contentType: false
+        });
+        if(response.status === 401){
+            if((await refreshToken()) === true) return await uploadWordFile(data, fileName, folderId, html);
+        }
+        else if(response.status === 201){
+            return response.json();
+        }
+        else if(response.status === 409) {
+            return {status: response.status, json: await response.json()}
+        }
+        else{
+            return {status: response.status, statusText: response.statusText};
+        };
+    }
+    catch(err) {
+        if((await refreshToken()) === true) return await uploadWordFile(data, fileName, folderId, html);
+    }
+}
+
 export const uploadFileVersion = async (data, fileId, type) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
@@ -338,6 +371,35 @@ export const uploadFileVersion = async (data, fileId, type) => {
         else blobData = new Blob([JSON.stringify(data)], { type: type});
         
         form.append('file', blobData);
+    
+        let response = await fetch(`https://upload.box.com/api/2.0/files/${fileId}/content`, {
+            method: "POST",
+            headers:{
+                Authorization:"Bearer "+access_token
+            },
+            body: form,
+            contentType: false
+        });
+        if(response.status === 401){
+            if((await refreshToken()) === true) return await uploadFileVersion(data, fileId, type);
+        }
+        else if(response.status === 201){
+            return response.json();
+        }
+        else{
+            return {status: response.status, statusText: response.statusText};
+        };
+    }
+    catch(err) {
+        if((await refreshToken()) === true) return await uploadFileVersion(data, fileId, 'text/html');
+    }
+}
+
+export const uploadWordFileVersion = async (data, fileId) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        
+        form.append('file', data);
     
         let response = await fetch(`https://upload.box.com/api/2.0/files/${fileId}/content`, {
             method: "POST",
@@ -506,6 +568,358 @@ export const updateBoxCollaborator = async (id, role) => {
         if((await refreshToken()) === true) return await updateBoxCollaborator(id, role);
     }
 }
+
+export const getTaskList = async (id) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/files/${id}/tasks`, {
+            method: 'GET',
+            headers: {
+                Authorization: "Bearer "+access_token,
+            }
+        })
+        if (response.status === 401) {
+            if ((await refreshToken()) === true) return await getTaskList(id);
+        }
+        if (response.status === 200) {
+            return response.json();
+        } else {
+            return null;
+        }
+    } catch(err) {
+        if ((await refreshToken()) === true) return await getTaskList(id);
+    }
+}
+
+export const getTask = async (id) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/tasks/${id}`, {
+            method: 'GET',
+            headers: {
+                Authorization: "Bearer "+access_token,
+            }
+        })
+        if (response.status === 401) {
+            if ((await refreshToken()) === true) return await getTask(id);
+        }
+        if (response.status === 200) {
+            return response.json();
+        } else {
+            return null;
+        }
+    } catch(err) {
+        if ((await refreshToken()) === true) return await getTask(id);
+    }
+}
+
+export const createFileTask = async (fileId) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/tasks`, {
+            method: 'POST',
+            headers: {
+                Authorization: "Bearer " + access_token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                item: {
+                    id: fileId.toString(),
+                    type: "file"
+                },
+                action: "review"
+            })
+        });
+        if (response.status === 401) {
+            if ((await refreshToken()) === true) return await createFileTask(fileId);
+        } else {
+            return response;
+        }
+
+    } catch(err) {
+        if((await refreshToken()) === true) return await createFileTask(fileId);
+    }
+}
+
+export const createCompleteTask = async (fileId) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/tasks`, {
+            method: 'POST',
+            headers: {
+                Authorization: "Bearer " + access_token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                item: {
+                    id: fileId.toString(),
+                    type: "file"
+                },
+                action: "complete"
+            })
+        });
+        if (response.status === 401) {
+            if ((await refreshToken()) === true) return await createFileTask(fileId);
+        } else {
+            return response;
+        }
+
+    } catch(err) {
+        if((await refreshToken()) === true) return await createFileTask(fileId);
+    }
+}
+
+export const assignTask = async(taskId, userId) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/task_assignments`, {
+            method: 'POST',
+            headers: {
+                Authorization: "Bearer "+access_token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                task: {
+                    id: taskId.toString(),
+                    type: "task"
+                },
+                assign_to: {
+                    login: userId
+                }
+            })
+        });
+        if (response.status === 401) {
+            if ((await refreshToken()) === true) return await assignTask(taskId, userId);
+        } else {
+            return response;
+        }
+    } catch(err) {
+        if ((await refreshToken()) === true) return await assignTask(taskId, userId);
+    }
+}
+
+export const updateTaskAssignment = async (id, res_state, msg="") => {
+    try {
+        let body = msg.length
+            ? JSON.stringify({resolution_state: res_state, message: msg})
+            : JSON.stringify({resolution_state: res_state});
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/task_assignments/${id}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: "Bearer "+access_token
+            },
+            body
+        });
+        if(response.status === 401) {
+            if((await refreshToken()) === true) return await updateTaskAssignment(id, res_state, msg);
+        } else {
+            return response
+        }
+    }
+    catch(err) {
+        if ((await refreshToken()) === true) return await updateTaskAssignment(id, res_state, msg);
+    }
+}
+
+export const createComment = async (id, msg="") => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/comments`, {
+            method: 'POST',
+            headers: {
+                Authorization: "Bearer "+access_token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: msg,
+                item: {
+                    type: "file",
+                    id: id
+                }
+            })
+        });
+        if(response.status === 401) {
+            if((await refreshToken()) === true) return await createComment(id, msg);
+        } else {
+            return response
+        }
+    }
+    catch(err) {
+        if ((await refreshToken()) === true) return await createComment(id, msg);
+    }
+}
+
+export const listComments = async (id) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box/com/2.0/files/${id}/comments`, {
+            method: 'GET',
+            headers: {
+                Authorization: "Bearer "+access_token
+            },
+            body: JSON.stringify({
+                message: msg.toString(),
+                item: {
+                    type: "file",
+                    id: id.toString()
+                }
+            })
+        });
+        if(response.status === 401) {
+            if((await refreshToken()) === true) return await listComments(id);
+        } else {
+            return response
+        }
+    }
+    catch(err) {
+        if ((await refreshToken()) === true) return await listComments(id);
+    }
+}
+
+
+export const createMetadata = async (id) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/files/${id}/metadata/global/properties`, { //enterprise_355526
+            method: 'POST',
+            headers: {
+                Authorization: "Bearer "+access_token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                BCRPPchair: "1",
+                BCRPPdacc: "0"
+            })
+        });
+        if(response.status === 401) {
+            if((await refreshToken()) === true) return await createMetadata(id);
+        } else {
+            return response
+        }
+    }
+    catch(err) {
+        if ((await refreshToken()) === true) return await createMetadata(id);
+    }
+}
+
+export const updateMetadata = async (id, path, value) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/files/${id}/metadata/global/properties`, { //enterprise_355526
+            method: 'PUT',
+            headers: {
+                Authorization: "Bearer "+access_token,
+                'Content-Type': 'application/json-patch+json'
+            },
+            body: JSON.stringify([
+                {
+                "op": "replace",
+                "path": "/"+path,
+                "value": value
+            }])
+        });
+        if(response.status === 401) {
+            if((await refreshToken()) === true) return await updateMetadata(id, path, value);
+        } else {
+            return response
+        }
+    }
+    catch(err) {
+        if ((await refreshToken()) === true) return await updateMetadata(id, path, value);
+    }
+}
+
+export const getMetadata = async (id) => {
+        // var myHeaders = new Headers();
+        // const access_token = JSON.parse(localStorage.parms).access_token;
+        // myHeaders.append("Authorization", "Bearer " + access_token);
+        
+        // var requestOptions = {
+        //     method: 'GET',
+        //     headers: myHeaders,
+        //     redirect: 'follow'
+        // };
+        
+        // await fetch(`https://api.box.com/2.0/files/${id}/metadata`, requestOptions)
+        //     .then(response => response.json())
+        //     .then(result => console.log(result))
+        //     .catch(error => console.log('error', error));
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/files/${id}/metadata`, { //enterprise_355526
+            method: 'GET',
+            headers: {
+                "Authorization": "Bearer "+access_token,
+                'Content-Type': 'application/json'
+            }
+        });
+        if(response.status === 401) {
+            if((await refreshToken()) === true) return await getMetadata(id);
+        } else {
+            return response.json();
+        }
+    }
+    catch(err) {
+        if ((await refreshToken()) === true) return await getMetadata(id);
+    }
+}
+
+export const searchMetadata = async (res_state) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/search?query=BCRPP_uploading_complete`, { //enterprise_355526
+            method: 'GET',
+            headers: {
+                Authorization: "Bearer "+access_token//,
+                //'Content-Type': 'application/json'
+            }//,
+            // body: JSON.stringify({
+            //     from: "global.properties",
+            //     query: "BCRPP_stage = :BCRPP_stage",
+            //     query_params: {"BCRPP_stage": "0"},
+            //     ancestor_folder_id: "0",
+            //     fields: ["id"]
+            // })
+        });
+        if(response.status === 401) {
+            if((await refreshToken()) === true) return await searchMetadata(res_state);
+        } else {
+            return response
+        }
+    }
+    catch(err) {
+        if ((await refreshToken()) === true) return await searchMetadata(res_state);
+    }
+}
+
+// export const createMetadata = async (id, res_state, msg="") => {
+//     try {
+//         const access_token = JSON.parse(localStorage.parms).access_token;
+//         const response = await fetch(`https://api.box/com/2.0/comments`, {
+//             method: 'POST',
+//             headers: {
+//                 Authorization: "Bearer "+access_token
+//             },
+//             body: JSON.stringify({
+//                 message: msg.toString(),
+//                 item: {
+//                     type: "file",
+//                     id: id.toString()
+//                 }
+//             })
+//         });
+//         if(response.status === 401) {
+//             if((await refreshToken()) === true) return await createMetadata(id, res_state, msg);
+//         } else {
+//             return response
+//         }
+//     }
+//     catch(err) {
+//         if ((await refreshToken()) === true) return await createMetadata(id, res_state, msg);
+//     }
+// }
+
 
 export const removeActiveClass = (className, activeClass) => {
     let fileIconElement = document.getElementsByClassName(className);
@@ -793,6 +1207,10 @@ export const numberWithCommas = (x) => {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
+export const emailforChair = ['kopchickbp@nih.gov', 'ahearntu@nih.gov', 'wraynr@nih.gov']
+
+export const emailforDACC = ['wraynr@nih.gov', 'kopchickbp@nih.gov']//, 'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
+
 export const publicDataFileId = 697309514903; //Unknown
 
 export const summaryStatsFileId = 861342561526;//908600664259; //Confluence Summary Statistics (691143057533) => Pilot - BCRP_Summary_Results_AllSubjects.csv (861342561526)
@@ -800,6 +1218,8 @@ export const summaryStatsFileId = 861342561526;//908600664259; //Confluence Summ
 export const summaryStatsCasesFileId = 862065772362;//927803436743; //862065772362; //cases => Pilot - BCRP_Summary_Results_Cases.csv
 
 export const missingnessStatsFileId = 653087731560; //Unknown
+
+export const uploadFormFolder = 155292358576;
 
 export const mapReduce = (data, variable) => {
     const filteredData = data.map(dt => parseInt(dt[variable])).filter(dt => isNaN(dt) === false);
