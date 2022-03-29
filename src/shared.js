@@ -591,6 +591,28 @@ export const getTaskList = async (id) => {
     }
 }
 
+export const getTask = async (id) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/tasks/${id}`, {
+            method: 'GET',
+            headers: {
+                Authorization: "Bearer "+access_token,
+            }
+        })
+        if (response.status === 401) {
+            if ((await refreshToken()) === true) return await getTask(id);
+        }
+        if (response.status === 200) {
+            return response.json();
+        } else {
+            return null;
+        }
+    } catch(err) {
+        if ((await refreshToken()) === true) return await getTask(id);
+    }
+}
+
 export const createFileTask = async (fileId) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
@@ -606,6 +628,34 @@ export const createFileTask = async (fileId) => {
                     type: "file"
                 },
                 action: "review"
+            })
+        });
+        if (response.status === 401) {
+            if ((await refreshToken()) === true) return await createFileTask(fileId);
+        } else {
+            return response;
+        }
+
+    } catch(err) {
+        if((await refreshToken()) === true) return await createFileTask(fileId);
+    }
+}
+
+export const createCompleteTask = async (fileId) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/tasks`, {
+            method: 'POST',
+            headers: {
+                Authorization: "Bearer " + access_token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                item: {
+                    id: fileId.toString(),
+                    type: "file"
+                },
+                action: "complete"
             })
         });
         if (response.status === 401) {
@@ -672,11 +722,39 @@ export const updateTaskAssignment = async (id, res_state, msg="") => {
     }
 }
 
-export const createComment = async (id, res_state, msg="") => {
+export const createComment = async (id, msg="") => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
-        const response = await fetch(`https://api.box/com/2.0/comments`, {
+        const response = await fetch(`https://api.box.com/2.0/comments`, {
             method: 'POST',
+            headers: {
+                Authorization: "Bearer "+access_token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: msg,
+                item: {
+                    type: "file",
+                    id: id
+                }
+            })
+        });
+        if(response.status === 401) {
+            if((await refreshToken()) === true) return await createComment(id, msg);
+        } else {
+            return response
+        }
+    }
+    catch(err) {
+        if ((await refreshToken()) === true) return await createComment(id, msg);
+    }
+}
+
+export const listComments = async (id) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box/com/2.0/files/${id}/comments`, {
+            method: 'GET',
             headers: {
                 Authorization: "Bearer "+access_token
             },
@@ -689,18 +767,18 @@ export const createComment = async (id, res_state, msg="") => {
             })
         });
         if(response.status === 401) {
-            if((await refreshToken()) === true) return await createComment(id, res_state, msg);
+            if((await refreshToken()) === true) return await listComments(id);
         } else {
             return response
         }
     }
     catch(err) {
-        if ((await refreshToken()) === true) return await createComment(id, res_state, msg);
+        if ((await refreshToken()) === true) return await listComments(id);
     }
 }
 
 
-export const createMetadata = async (id, res_state) => {
+export const createMetadata = async (id) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
         const response = await fetch(`https://api.box.com/2.0/files/${id}/metadata/global/properties`, { //enterprise_355526
@@ -710,19 +788,45 @@ export const createMetadata = async (id, res_state) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                BCRPPstage: "0",
                 BCRPPchair: "1",
                 BCRPPdacc: "0"
             })
         });
         if(response.status === 401) {
-            if((await refreshToken()) === true) return await createMetadata(id, res_state);
+            if((await refreshToken()) === true) return await createMetadata(id);
         } else {
             return response
         }
     }
     catch(err) {
-        if ((await refreshToken()) === true) return await createMetadata(id, res_state);
+        if ((await refreshToken()) === true) return await createMetadata(id);
+    }
+}
+
+export const updateMetadata = async (id, path, value) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0/files/${id}/metadata/global/properties`, { //enterprise_355526
+            method: 'PUT',
+            headers: {
+                Authorization: "Bearer "+access_token,
+                'Content-Type': 'application/json-patch+json'
+            },
+            body: JSON.stringify([
+                {
+                "op": "replace",
+                "path": "/"+path,
+                "value": value
+            }])
+        });
+        if(response.status === 401) {
+            if((await refreshToken()) === true) return await updateMetadata(id, path, value);
+        } else {
+            return response
+        }
+    }
+    catch(err) {
+        if ((await refreshToken()) === true) return await updateMetadata(id, path, value);
     }
 }
 
@@ -786,26 +890,6 @@ export const searchMetadata = async (res_state) => {
     }
     catch(err) {
         if ((await refreshToken()) === true) return await searchMetadata(res_state);
-    }
-}
-
-export const metadataTemplates = async (id, res_state) => {
-    try {
-        const access_token = JSON.parse(localStorage.parms).access_token;
-        const response = await fetch(`https://api.box.com/2.0/metadata_templates/global`, { //enterprise_355526
-            method: 'GET',
-            headers: {
-                Authorization: "Bearer "+access_token
-            }
-        });
-        if(response.status === 401) {
-            if((await refreshToken()) === true) return await createComment(id, res_state, msg);
-        } else {
-            return response
-        }
-    }
-    catch(err) {
-        if ((await refreshToken()) === true) return await createComment(id, res_state, msg);
     }
 }
 
@@ -1125,7 +1209,7 @@ export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov'
 
 export const emailforChair = ['kopchickbp@nih.gov', 'ahearntu@nih.gov', 'wraynr@nih.gov']
 
-export const emailforDACC = ['wraynr@nih.gov', 'kopchickbp@nih.gov', 'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
+export const emailforDACC = ['wraynr@nih.gov', 'kopchickbp@nih.gov']//, 'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
 
 export const publicDataFileId = 697309514903; //Unknown
 

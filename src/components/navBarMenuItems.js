@@ -94,7 +94,7 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
 
     let btns = [];
     for (const header of pageHeaders){
-        console.log('Title', header);
+        //console.log('Title', header);
         const btn = document.createElement('button');
         btn.classList.add('sub-menu-btn');
         const link = document.createElement('a');
@@ -141,7 +141,7 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
     overviewDiv.id = 'overview';
     containerEl.appendChild(overviewDiv);
     
-    console.log(containerEl.innerHTML);
+    //console.log(containerEl.innerHTML);
     return containerEl.innerHTML;
 }
 /*
