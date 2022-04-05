@@ -132,7 +132,7 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
 
         link.innerText = header;
         btn.appendChild(link);
-        console.log(btn);
+        //console.log(btn);
         innerDivEl.appendChild(btn);
 
     }
