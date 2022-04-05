@@ -1,5 +1,5 @@
 // import { createFileTask, assignTask, updateTaskAssignment } from '../shared.js';
-import { searchMetadata, metadataTemplates, createMetadata, getTaskList, updateTaskAssignment, uploadFile, uploadWordFile, getFolderItems, uploadWordFileVersion, emailforChair, emailforDACC, uploadFormFolder, assignTask, createFileTask, getFileInfo, numberWithCommas, hideAnimation} from '../shared.js';
+import { createComment, createCompleteTask, updateMetadata, getMetadata, searchMetadata, createMetadata, getTaskList, updateTaskAssignment, uploadFile, uploadWordFile, getFolderItems, uploadWordFileVersion, emailforChair, emailforDACC, uploadFormFolder, assignTask, createFileTask, getFileInfo, numberWithCommas, hideAnimation, getTask, consortiumSelection} from '../shared.js';
 import { addEventToggleCollapsePanelBtn } from './description.js';
 import { showPreview, previewButtons, showPreviews } from '../components/boxPreview.js';
 import { pageNavBar } from '../components/navBarMenuItems.js';
@@ -72,17 +72,19 @@ export const dataAccess = (activeTab, showDescripton) => {
                 </div>
                 <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
                     <div class="row m-0">
-                        The BCRPP Project is currently generating genotyping data and harmonizing risk factor and clinical data. Data is expected to be available for request in late 2022. Data access will be facilitated through this platform, in accordance to the data use agreements signed between participating studies (originator) and Data Coordinating Centers from Consortia participating in Confluence.
+
+                        The Breast Cancer Risk Prediction Project is currently harmonizing risk factor and clinical data from participating cohorts. Data is expected to be available for request in late 2022. Data access will be facilitated through this platform, in accordance to the data transfer agreements signed between participating studies (originator) and the BCRPP Data Coordinating Center (DCC) at the Division of Cancer Epidemiology and Genetics at the National Cancer Institute.
+
                     </div></br>
                     <div class="row m-0">
                         The following data access procedures are planned:
                     </div>
                     <div class="row m-0">
                         <ul>
-                            <li>Researcher submits a study concept describing the project, including variables of interest, via the Confluence Data Platform. This request will be sent via the platform to the relevant consortia data access coordinating committees (DACCs) that govern the requested data.</li>
-                            <li>After approval by the relevant consortia DACCs, individual studies contributing data are notified and given a time period to opt-out their study from the approved project.</li>
-                            <li>After the opt-out period has elapsed, the researcher’s institution signs a data transfer agreement (DTA) for the study conceptwith each of the relevant consortium data coordinating center(s) governing the data.</li>
-                            <li>Upon DTA signatures, the data coordinating center(s) will be able to provide access of the approved data to researchers through the Confluence Data Platform.</li>
+                            <li>Researcher submits a study concept describing the project, including variables of interest, via the BCRPP Data Platform. This request will be sent via the platform to the BCRPP data access coordinating committee (DACC), which governs the requested data.</li>
+                            <li>After approval by the DACC, individual studies contributing data are notified and given a time period to opt-out their study from the approved project.</li>
+                            <li>After the opt-out period has elapsed, the researcher's institution signs a data transfer agreement (DTA) for the study concept with the BCRPP DCC.</li>
+                            <li>Upon DTA signatures, the DCC will provide access of the approved data to researchers.</li>
                         </ul>
                     </div> `;
     template += `</div>
@@ -290,6 +292,10 @@ export const chairSection = (activeTab) => {
 }
 
 export const chairFileView = async() => {
+  // let check =  await getMetadata("937143456496");
+  // console.log(check.entries["0"]);
+  //await updateMetadata("934537789566", "BCRPP_uploading_complete", "changed");
+
   const response = await getFolderItems('155292358576');
   let filearray = response.entries;
   console.log(filearray);
@@ -300,7 +306,7 @@ export const chairFileView = async() => {
     <div class="container body-min-height">
       <div class="main-summary-row">
           <div class="align-left">
-              <h1 class="page-header">DACC Access Only</h1>
+              <h1 class="page-header">Chair Access Only</h1>
           </div>
       </div>
 
@@ -420,24 +426,74 @@ export const chairFileView = async() => {
   })
 }
 
-export const commentSubmit = () => {
+export const submitToDacc = () => {
+  let submitDacc = async (e) => {
+    e.preventDefault();
+    let fileId = e.submitter.value;
+    let message = e.target[0].value;
+    console.log(fileId);
+    console.log(message);
+    await createCompleteTask(fileId);
+    let tasklist = await getTaskList(fileId);
+    let tasktodacc = tasklist.entries[0].id;
+    console.log(emailforDACC.length.toString());
+    for (let i=0, daccemaillength=emailforDACC.length; i < daccemaillength; i++ ) {
+      await assignTask(tasktodacc, emailforDACC[i]);
+      console.log("Task assigned to "+ emailforDACC[i]);
+    }
+    await updateMetadata(fileId, "BCRPPchair", '2');
+    await updateMetadata(fileId, "BCRPPdacc", emailforDACC.length.toString());
+    console.log("Meta Data Updated");
+    document.location.reload(true);
+  }
+  const form = document.querySelector('.dacc-submit');
+  if (form) {
+  form.addEventListener('submit', submitDacc);
+  }
+}
+
+// export const commentSubmit = () => {
+//   let approveComment = async (e) => {
+//       e.preventDefault();
+//       //let fileId = e.submitter.fileId;
+//       let fileId = e.submitter.value;
+//       let message = e.target[0].value;
+//       console.log(e);
+//       console.log(fileId);
+//       console.log(message);
+//       //console.log(fileId);
+
+//       // let taskList = await getTaskList(fileId);
+//       // console.log(taskList)
+//       // let taskAssignment = taskList.entries[0].task_assignment_collection.entries[0];
+
+//       // console.log(await updateTaskAssignment(taskAssignment.id, approval, message))
+//   }
+
+//   const form = document.querySelector('.approvedeny')
+//   form.addEventListener('submit', approveComment)
+// }
+
+export const commentApproveReject = () => {
   let approveComment = async (e) => {
       e.preventDefault();
-      //let fileId = e.fileId;
+      var $btn = $(document.activeElement);
+      let taskId = $btn["0"].name;
+      let fileId = $btn["0"].id;
       let approval = e.submitter.value;
-      //let message = e.target[0].value;
-      console.log(e);
+      let message = e.target[0].value;
       console.log(approval);
-
-      // let taskList = await getTaskList(fileId);
-      // console.log(taskList)
-      // let taskAssignment = taskList.entries[0].task_assignment_collection.entries[0];
-
-      // console.log(await updateTaskAssignment(taskAssignment.id, approval, message))
+      let task = await getTask(taskId);
+      let taskAssignment = task.task_assignment_collection.entries[0].id;
+      await updateTaskAssignment(taskAssignment, approval, message);
+      await updateMetadata(fileId, "BCRPPchair", "0");
+      document.location.reload();
   }
 
-  const form = document.querySelector('.comment-submit')
+  const form = document.querySelector('.approvedeny')
+  if (form) {
   form.addEventListener('submit', approveComment)
+  }
 }
 
 const viewFile = () => {
@@ -507,7 +563,6 @@ export const daccSection = (activeTab) => {
 export const daccFileView = async() => {
   const response = await getFolderItems('155292358576');
   let filearray = response.entries;
-  console.log(filearray);
 
   let template = `
   <div class="general-bg padding-bottom-1rem">
@@ -523,37 +578,53 @@ export const daccFileView = async() => {
       `;
     const filesincomplete = [];
     const filescompleted = [];
+    const tasksincomplete = [];
+    const taskscompleted = [];
     for(let obj of filearray){
       let id = obj.id;
       //console.log(id);
-      let tasklist = await getTaskList(id);
-      let entries = tasklist.entries;
-      //console.log(entries.length !== 0);
-      if(entries.length !== 0) {
-        for(let item of entries){
-          if(item.is_completed == false){
-            //console.log(item.task_assignment_collection);
-            for(let taskassignment of item.task_assignment_collection.entries){
-              if(taskassignment.status=='incomplete' && taskassignment.assigned_to.login==JSON.parse(localStorage.parms).login){
-                console.log(taskassignment.assigned_at);
-                if (!filesincomplete.includes(id)) {
+      let metaArray = await getMetadata(id);
+      let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
+      let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
+      //console.log("DACC Value: "+daccMetaValue);
+
+      if(daccMetaValue != 0 && chairMetaValue == 2) {
+        let tasklist = await getTaskList(id);
+        let entries = tasklist.entries;
+        if(entries.length !== 0) {
+          for(let item of entries){
+            if(item.is_completed == false){
+              for(let taskassignment of item.task_assignment_collection.entries){
+                if(taskassignment.status=='incomplete' && taskassignment.assigned_to.login==JSON.parse(localStorage.parms).login){
+                  console.log(taskassignment.assigned_at);
+                  if (!filesincomplete.includes(id)) {
                   filesincomplete.push(id);
-                  //console.log("id pushed" + id);
+                  tasksincomplete.push(taskassignment.id);
+                  }
                 }
-              }
-              else if(taskassignment.status=='completed' && taskassignment.assigned_to.login==JSON.parse(localStorage.parms).login){
-                if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
-                  filescompleted.push(id);
+                else if(taskassignment.status=='completed' && taskassignment.assigned_to.login==JSON.parse(localStorage.parms).login){
+                  if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
+                    filescompleted.push(id);
+                    taskscompleted.push(taskassignment.id);
+                  }
                 }
               }
             }
           }
-          else if(item.is_completed == true){
-            console.log(item.task_assignment_collection.entries);
-            for(let taskassignment of item.task_assignment_collection.entries){
-              if(taskassignment.status=='completed' && taskassignment.assigned_to.login==JSON.parse(localStorage.parms).login){
-                if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
-                  filescompleted.push(id);
+        }
+      }
+      if(chairMetaValue == 3) {
+        let tasklist = await getTaskList(id);
+        let entries = tasklist.entries;
+        if(entries.length !== 0) {
+          for(let item of entries){
+            if(item.is_completed == false){
+              for(let taskassignment of item.task_assignment_collection.entries){
+                if(taskassignment.status=='completed' && taskassignment.assigned_to.login==JSON.parse(localStorage.parms).login){
+                  if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
+                    filescompleted.push(id);
+                    taskscompleted.push(taskassignment.id);
+                  }
                 }
               }
             }
@@ -561,13 +632,15 @@ export const daccFileView = async() => {
         }
       }
     };
-  for (const id of filesincomplete){
-    let fileinfo = await getFileInfo(id)
-    template += `
-                  <li><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></li>
-                  `
-  }
-  template += `</ul>
+  template += `<div class="card mt-1 mb-1 align-left">`
+  template += await viewDACCFiles(filesincomplete, tasksincomplete);
+  // for (const id of filesincomplete){
+  //   let fileinfo = await getFileInfo(id)
+  //   template += `
+  //                 <li><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></li>
+  //                 `
+  // }
+  template += `</div></ul>
   <h2 class="page-header">Completed</h2>
   <ul>
   `
@@ -581,6 +654,51 @@ export const daccFileView = async() => {
   template += `
   </div></div></div>`;
   document.getElementById('daccFileView').innerHTML = template;
+  showPreviews(filesincomplete);
+  addEventToggleCollapsePanelBtn();
+  submitToComment();
+}
+
+export const submitToComment = () => {
+  let submitComment = async (e) => {
+    e.preventDefault();
+    var $btn = $(document.activeElement);
+    let taskId = $btn["0"].name;
+    let fileId = e.submitter.value;
+    let message = e.target[0].value;
+    console.log(fileId);
+    console.log(message);
+    let metaArray = await getMetadata(fileId);
+    let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
+    //let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
+    await createComment(fileId, message);
+    await updateTaskAssignment(taskId, "completed");
+    if (daccMetaValue == 1) {
+      await updateMetadata(fileId, "BCRPPchair", "3");
+      console.log("New Chair Value: 3");
+      await createFileTask(fileId);
+      console.log("Chair Task Created");
+      let tasklist = await getTaskList(fileId);
+      let entries = tasklist.entries;
+      console.log(entries);
+      for (let item of entries){
+        console.log(item.id);
+        if (item.is_completed == false){
+          console.log(item.id);
+          await assignTask(item.id, emailforChair[0]);
+          console.log("Chair Task Assigned");
+        }
+      }
+    };
+    let newDaccValue = parseInt(daccMetaValue) - 1;
+    await updateMetadata(fileId, "BCRPPdacc", newDaccValue.toString());
+    console.log("New DACC Value: "+newDaccValue);
+    //document.location.reload(true);
+  }
+  const form = document.querySelector('.dacc-comment');
+  if (form) {
+    form.addEventListener('submit', submitComment);
+  }
 }
 
 export const dataApproval = () => {
@@ -615,8 +733,7 @@ export const dataApproval = () => {
 export const dataForm = async () => {
   let files = await getFolderItems(uploadFormFolder);
   const d = new Date();
-  const filename = JSON.parse(localStorage.parms).login.split("@")[0] + "testing" + "_" + d.getDate() + "_" + d.getMonth() + "_" + d.getFullYear() + ".docx";
-  //console.log(files.entries)
+  const filename = JSON.parse(localStorage.parms).login.split("@")[0] + "testing" + "_" + d.getDate() + "_" + (d.getMonth()+1) + "_" + d.getFullYear() + ".docx";
   const filesinfoldernames = [];
   const filesinfolderids = [];
   for (let i = 0; i < files.entries.length; i++) {
@@ -680,13 +797,13 @@ export const dataForm = async () => {
   
     let fileId = filesinfolderids[filesinfoldernames.indexOf(filename)];
     //console.log(fileId);
-    await createFileTask(fileId);
-    let tasklist = await getTaskList(fileId);
-    console.log(tasklist.entries)
-    let tasktochair = tasklist.entries[0].id;
-    console.log(emailforChair[0]);
-    await assignTask(tasktochair, emailforChair[0]);
-    console.log("Chair has been notified: " +  tasktochair);
+    // await createFileTask(fileId);
+    // let tasklist = await getTaskList(fileId);
+    // console.log(tasklist.entries)
+    // let tasktochair = tasklist.entries[0].id;
+    // console.log(emailforChair[0]);
+    // await assignTask(tasktochair, emailforChair[0]);
+    // console.log("Chair has been notified: " +  tasktochair);
     await createMetadata(fileId);
   };
 
@@ -816,4 +933,116 @@ export const dataForm = async () => {
   const form = document.querySelector('.contact-form');
   form.addEventListener('submit', handleFormSubmit);
   //form.addEventListener('submit', assigntasktochair);
+}
+
+const viewFiles = async(files) => { 
+  let template = ``;
+  for (const id of files){
+    // let check =  await getMetadata(id);
+    // console.log(check);
+    let fileinfo = await getFileInfo(id);
+    template += `
+                  <div style="padding: 10px" aria-expanded="false" id="heading${id}">
+                    <div class = "row">
+                      <div class="col-md-4 card-title"><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></div>
+                        <div class="col-md-1">
+                            <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${id}">
+                                <i class="fas fa-caret-down fa-2x"></i>
+                            </button>
+                        </div>
+                      </div>
+                    </div>
+                  `
+    template += `
+                  <div id="study${id}" class="collapse" aria-labelledby="heading${id}">
+                    <div class="card-body dacc-submit" style="padding-left: 10px;background-color:#f6f6f6;">
+                      <form>
+                        <label for"message">Send to DACC</label>
+                        <div class="input-group">
+                          <textarea id="message" name="message" rows="6" cols="65"></textarea>
+                        </div>
+                        <button type="submit" value="${id}">Send </button>
+                      </form>
+                    </div>
+                  </div>
+                  `
+  };
+  return(template);
+}
+
+const viewDACCCompletedFiles = async(files, taskids) => { 
+  let template = ``;
+  var ival = 0;
+  for (const id of files){
+    // let check =  await getMetadata(id);
+    // console.log(check);
+    let fileinfo = await getFileInfo(id);
+    let taskid = taskids[ival]
+    template += `
+                  <div style="padding: 10px" aria-expanded="false" id="heading${id}">
+                    <div class = "row">
+                      <div class="col-md-4 card-title"><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></div>
+                        <div class="col-md-1">
+                            <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${id}">
+                                <i class="fas fa-caret-down fa-2x"></i>
+                            </button>
+                        </div>
+                      </div>
+                    </div>
+                  `
+    template += `
+                  <div id="study${id}" class="collapse" aria-labelledby="heading${id}">
+                    <div class="card-body approvedeny" style="padding-left: 10px;background-color:#f6f6f6;">
+                      <form>
+                        <label for="message">Enter Message for Submitter</label>
+                        <div class="input-group">
+                            <textarea id="message" name="message" rows="6" cols="65"></textarea>
+                        </div>
+                        <button type="submit" name="${taskid}" id="${id}" value="approved">Approve</button>
+                        <button type="submit" name="${taskid}" id="${id}" value="rejected">Deny</button>
+                      </form>
+                    </div>
+                  </div>
+                  `
+    ival +=1;
+  };
+  return(template);
+}
+
+const viewDACCFiles = async(files, taskids) => { 
+  let template = ``;
+  var ival = 0;
+  for (const id of files){
+    // let check =  await getMetadata(id);
+    // console.log(check);
+    let fileinfo = await getFileInfo(id);
+    let taskid = taskids[ival];
+    template += `
+                  <div style="padding: 10px" aria-expanded="false" id="heading${id}">
+                    <div class = "row">
+                      <div class="col-md-4 card-title"><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></div>
+                        <div class="col-md-1">
+                            <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${id}">
+                                <i class="fas fa-caret-down fa-2x"></i>
+                            </button>
+                        </div>
+                      </div>
+                    </div>
+                  `
+    template += `
+                  <div id="study${id}" class="collapse" aria-labelledby="heading${id}">
+                    <div class="card-body dacc-comment" style="padding-left: 10px;background-color:#f6f6f6;">
+                      <form>
+                        <label for"message">Submit Comment</label>
+                        <div class="input-group">
+                          <textarea id="message" name="message" rows="6" cols="65"></textarea>
+                        </div>
+                        <button type="submit" name="${taskid}" value="${id}">Submit & Complete </button>
+                      </form>
+                    </div>
+                  </div>
+                  `
+    ival += 1;
+  };
+  return(template);
 }
