@@ -394,7 +394,7 @@ export const chairFileView = async() => {
   addEventToggleCollapsePanelBtn();
   //viewFile();
   //commentSubmit();
-  showPreview(testfilesincomplete[0]);
+  showPreview(filearray[0].id);
   //previewButtons(testfilesincomplete);
 
   //Switch Tabs
