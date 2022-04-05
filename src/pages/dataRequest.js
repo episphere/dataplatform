@@ -299,7 +299,7 @@ export const chairFileView = async() => {
   const response = await getFolderItems('155292358576');
   let filearray = response.entries;
   console.log(filearray);
-  const testfilesincomplete = ["937422848336"];
+  const testfilesincomplete = ["937422848336", "937765611772", "941052347357"];
   let file = await getFileInfo(testfilesincomplete[0]);
   let template = `
   <div class="general-bg padding-bottom-1rem">
@@ -330,20 +330,68 @@ export const chairFileView = async() => {
 
             <div class='card-body'>
             <div class='card-title'>
-            <div class='dropdown'>
+            <select onchange="
+            const access_token = JSON.parse(localStorage.parms).access_token;
+   
+                    console.log('SHOWING PREVIEW', this.value);
+                    let previewContainer = document.getElementById('boxFilePreview');
+                    var preview = new Box.Preview();
+                    preview.show(this.value, access_token, {
+                      container: previewContainer
+                    });
+            
+            
+            ">
+            `;
+
+            for(const id of testfilesincomplete){
+              file = await getFileInfo(id);
+              template += `
+              <option value='${id}'>
+              
+                <button id='file${id}' class='dropdown-item' 
+              
+                  onclick="const access_token = JSON.parse(localStorage.parms).access_token;
+   
+                    console.log('SHOWING PREVIEW', ${id});
+                    let previewContainer = document.getElementById('boxFilePreview');
+                    var preview = new Box.Preview();
+                    preview.show(${id}, access_token, {
+                      container: previewContainer
+                    });
+              
+              
+              ">${file.name}</button> </option>`;
+            }
+            template += `
+            <!--div class='dropdown'>
                   <a class='btn btn-secondary dropdown-toggle' role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false" href="https://nih.app.box.com/file/${file.id}">${file.name}</a> 
                   <div class='dropdown-menu' aria-labelledby="dropdownMenuLink">
             
             `;
-
+            console.log(testfilesincomplete.slice(1,));
+            
             for (const id of testfilesincomplete.slice(1,)){
               file = await getFileInfo(id);
-              template += `<button id='file${id}' class='dropdown-item'>${file.name}</button>`;
+              template += `<button id='file${id}' class='dropdown-item' 
+              
+              onclick="const access_token = JSON.parse(localStorage.parms).access_token;
+   
+              console.log('SHOWING PREVIEW', ${id});
+              let previewContainer = document.getElementById('boxFilePreview');
+              var preview = new Box.Preview();
+              preview.show(${id}, access_token, {
+                container: previewContainer
+              });
+              
+              
+              ">${file.name}</button>`;
              
             }
               
                 template += `
-                  </div>
+                  </div-->
+              </select>
               </div>
                 
                 <div id='boxFilePreview' class="preview-container"></div>
@@ -394,7 +442,7 @@ export const chairFileView = async() => {
   //addEventPreviewFile();
   addEventToggleCollapsePanelBtn();
   //viewFile();
-  commentSubmit();
+  //commentSubmit();
   showPreview(testfilesincomplete[0]);
   //previewButtons(testfilesincomplete);
   document.getElementById('toBeCompletedTab').addEventListener('click', (e) => {
@@ -452,27 +500,27 @@ export const submitToDacc = () => {
   }
 }
 
-// export const commentSubmit = () => {
-//   let approveComment = async (e) => {
-//       e.preventDefault();
-//       //let fileId = e.submitter.fileId;
-//       let fileId = e.submitter.value;
-//       let message = e.target[0].value;
-//       console.log(e);
-//       console.log(fileId);
-//       console.log(message);
-//       //console.log(fileId);
+export const commentSubmit = () => {
+  let approveComment = async (e) => {
+      e.preventDefault();
+      //let fileId = e.submitter.fileId;
+      let fileId = e.submitter.value;
+      let message = e.target[0].value;
+      console.log(e);
+      console.log(fileId);
+      console.log(message);
+      //console.log(fileId);
 
-//       // let taskList = await getTaskList(fileId);
-//       // console.log(taskList)
-//       // let taskAssignment = taskList.entries[0].task_assignment_collection.entries[0];
+      // let taskList = await getTaskList(fileId);
+      // console.log(taskList)
+      // let taskAssignment = taskList.entries[0].task_assignment_collection.entries[0];
 
-//       // console.log(await updateTaskAssignment(taskAssignment.id, approval, message))
-//   }
+      // console.log(await updateTaskAssignment(taskAssignment.id, approval, message))
+  }
 
-//   const form = document.querySelector('.approvedeny')
-//   form.addEventListener('submit', approveComment)
-// }
+  const form = document.querySelector('.approvedeny')
+  form.addEventListener('submit', approveComment)
+}
 
 export const commentApproveReject = () => {
   let approveComment = async (e) => {
