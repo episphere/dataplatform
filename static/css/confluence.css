@@ -2004,7 +2004,11 @@ form {
     cursor: pointer;
 }
 .buttonsubmit:active {
-    background-color: #2a72a5 !important;
+    background-color: #2a72a5ab !important;
+}
+
+.buttonsubmit:hover {
+    background-color: #1c4f74 !important;
 }
 
 .buttonsubmit__text {
