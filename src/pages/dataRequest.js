@@ -121,11 +121,6 @@ export const formSection = (activeTab, showDescripton) => {
     template += ` 
                   <div class="general-bg padding-bottom-1rem">
                           <div class="container body-min-height">
-                              <!---<div class="main-summary-row">
-                                <div class="align-left">
-                                  <h1 class="page-header">Submitted Forms</h1>
-                                </div>
-                              </div>--->
 
                               <div class="main-summary-row">
                                   <div class="align-left">
@@ -144,6 +139,11 @@ export const formSection = (activeTab, showDescripton) => {
                               <div class="input-group">
                                 <label for="email"><b>Contact Email</b></label>
                                 <input id="email" name="email" type="email"/>
+                              </div>
+
+                              <div class="input-group">
+                                <label for="keywords"><b>Keywords</b></label>
+                                <input id="keywords" name="keywords" type="text"/>
                               </div>
 
                               <div class="input-group">
@@ -204,7 +204,9 @@ export const formSection = (activeTab, showDescripton) => {
                                 </select>
                               </div>
                               
-                              <button type="submit">Send Form</button>
+                              <button type="submit" id="submitFormButton" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+                                <span class="buttonsubmit__text"> Send Form </span>
+                              </button>
                             </form>
                           </section>
                           
@@ -244,8 +246,8 @@ export const approveRejectSection = () => {
                                               <div class="input-group">
                                                   <textarea id="message" name="message" rows="6" cols="65"></textarea>
                                               </div>
-                                              <button type="submit" value="approved">Approve</button>
-                                              <button type="submit" value="rejected">Reject</button>
+                                              <button type="submit" value="approved" class="btn-primary">Approve</button>
+                                              <button type="submit" value="rejected" class="btn-primary">Reject</button>
                                           </form>
                                       </div>
                                   </div>
@@ -455,12 +457,14 @@ export const chairFileView = async() => {
 
 export const submitToDacc = () => {
   let submitDacc = async (e) => {
+    const btn = document.activeElement;
+    btn.disabled=true;
     e.preventDefault();
     let fileId = e.submitter.value;
     let message = e.target[0].value;
     console.log(fileId);
     console.log(message);
-    await createCompleteTask(fileId);
+    await createCompleteTask(fileId, message);
     let tasklist = await getTaskList(fileId);
     let tasktodacc = tasklist.entries[0].id;
     console.log(emailforDACC.length.toString());
@@ -504,9 +508,10 @@ export const submitToDacc = () => {
 export const commentApproveReject = () => {
   let approveComment = async (e) => {
       e.preventDefault();
-      var $btn = $(document.activeElement);
-      let taskId = $btn["0"].name;
-      let fileId = $btn["0"].id;
+      const btn = document.activeElement;
+      btn.disabled=true;
+      let taskId = btn.name;
+      let fileId = btn.id;
       let approval = e.submitter.value;
       let message = e.target[0].value;
       console.log(approval);
@@ -689,8 +694,9 @@ export const daccFileView = async() => {
 export const submitToComment = () => {
   let submitComment = async (e) => {
     e.preventDefault();
-    var $btn = $(document.activeElement);
-    let taskId = $btn["0"].name;
+    const btn = document.activeElement;
+    btn.disabled=true;
+    let taskId = btn.name;
     let fileId = e.submitter.value;
     let message = e.target[0].value;
     console.log(fileId);
@@ -709,9 +715,7 @@ export const submitToComment = () => {
       let entries = tasklist.entries;
       console.log(entries);
       for (let item of entries){
-        console.log(item.id);
         if (item.is_completed == false){
-          console.log(item.id);
           await assignTask(item.id, emailforChair[0]);
           console.log("Chair Task Assigned");
         }
@@ -720,7 +724,7 @@ export const submitToComment = () => {
     let newDaccValue = parseInt(daccMetaValue) - 1;
     await updateMetadata(fileId, "BCRPPdacc", newDaccValue.toString());
     console.log("New DACC Value: "+newDaccValue);
-    //document.location.reload(true);
+    document.location.reload(true);
   }
   const form = document.querySelector('.dacc-comment');
   if (form) {
@@ -760,7 +764,7 @@ export const dataApproval = () => {
 export const dataForm = async () => {
   let files = await getFolderItems(uploadFormFolder);
   const d = new Date();
-  const filename = JSON.parse(localStorage.parms).login.split("@")[0] + "testing" + "_" + d.getDate() + "_" + (d.getMonth()+1) + "_" + d.getFullYear() + ".docx";
+  const filename = JSON.parse(localStorage.parms).login.split("@")[0] + "testing" + "_" + d.getDate() + "_" + (d.getMonth()+1) + "_" + d.getFullYear() + "2.docx";
   const filesinfoldernames = [];
   const filesinfolderids = [];
   for (let i = 0; i < files.entries.length; i++) {
@@ -790,6 +794,12 @@ export const dataForm = async () => {
   // };
 
   async function handleFormSubmit(eventtest) {
+    //const btn = document.getElementById("submitFormButton");
+    const btn = document.activeElement;
+    btn.disabled=true;
+    //console.log(btn);
+    //btn.classList.toggle("buttonsubmit--loading");
+    //btn.class="lazy-loader-spinner";
       eventtest.preventDefault();
   
       const data = new FormData(eventtest.target);
@@ -811,6 +821,8 @@ export const dataForm = async () => {
       // console.log(files.entries);
       await generateWord(formJSON);
       //await assigntasktochair();
+      btn.classList.toggle("buttonsubmit--loading");
+      btn.disabled=false;
   };
 
   async function assigntasktochair() {
@@ -845,6 +857,15 @@ export const dataForm = async () => {
             children: [
               new docx.TextRun({
                 text: jsondata.name,
+                bold: true,
+              }),
+            ],
+          }),
+          new docx.Paragraph({ text: "Keywords: ", heading: docx.HeadingLevel.HEADING_2}),
+          new docx.Paragraph({ alignment: docx.AlignmentType.START, style: { paragraph: { indent: 500},},
+            children: [
+              new docx.TextRun({
+                text: jsondata.keywords,
                 bold: true,
               }),
             ],
@@ -948,7 +969,7 @@ export const dataForm = async () => {
           await assigntasktochair();
         })();
       } else {
-        console.log("Saving File to Box: " + filename);
+        console.log("Saving File to Box: " + filename + jsondata.keywords); // Adding keywords
         (async () => {
           await uploadWordFile(blob, filename, uploadFormFolder);
           await assigntasktochair();
@@ -988,7 +1009,8 @@ const viewFiles = async(files) => {
                         <div class="input-group">
                           <textarea id="message" name="message" rows="6" cols="65"></textarea>
                         </div>
-                        <button type="submit" value="${id}">Send </button>
+                        <button type="submit" value="${id}" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+                          <span class="buttonsubmit__text"> Send </span> </button>
                       </form>
                     </div>
                   </div>
@@ -1025,8 +1047,10 @@ const viewDACCCompletedFiles = async(files, taskids) => {
                         <div class="input-group">
                             <textarea id="message" name="message" rows="6" cols="65"></textarea>
                         </div>
-                        <button type="submit" name="${taskid}" id="${id}" value="approved">Approve</button>
-                        <button type="submit" name="${taskid}" id="${id}" value="rejected">Deny</button>
+                        <button type="submit" name="${taskid}" id="${id}" class="buttonsubmit" value="approved">
+                          <span class="buttonsubmit__text"> Approve </span></button>
+                        <button type="submit" name="${taskid}" id="${id}" class="buttonsubmit" value="rejected">
+                          <span class="buttonsubmit__text"> Deny </span></button>
                       </form>
                     </div>
                   </div>
@@ -1064,7 +1088,8 @@ const viewDACCFiles = async(files, taskids) => {
                         <div class="input-group">
                           <textarea id="message" name="message" rows="6" cols="65"></textarea>
                         </div>
-                        <button type="submit" name="${taskid}" value="${id}">Submit & Complete </button>
+                        <button type="submit" name="${taskid}" value="${id}" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+                          <span class="buttonsubmit__text"> Submit & Complete </span> </button>
                       </form>
                     </div>
                   </div>
