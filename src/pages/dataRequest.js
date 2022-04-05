@@ -299,8 +299,7 @@ export const chairFileView = async() => {
   const response = await getFolderItems('155292358576');
   let filearray = response.entries;
   console.log(filearray);
-  const testfilesincomplete = ["937422848336", "937765611772", "941052347357"];
-  let file = await getFileInfo(testfilesincomplete[0]);
+
   let template = `
   <div class="general-bg padding-bottom-1rem">
     <div class="container body-min-height">
@@ -344,53 +343,14 @@ export const chairFileView = async() => {
             ">
             `;
 
-            for(const id of testfilesincomplete){
-              file = await getFileInfo(id);
+            for(const entry of filearray){
+              let file = await getFileInfo(entry.id);
               template += `
-              <option value='${id}'>
-              
-                <button id='file${id}' class='dropdown-item' 
-              
-                  onclick="const access_token = JSON.parse(localStorage.parms).access_token;
-   
-                    console.log('SHOWING PREVIEW', ${id});
-                    let previewContainer = document.getElementById('boxFilePreview');
-                    var preview = new Box.Preview();
-                    preview.show(${id}, access_token, {
-                      container: previewContainer
-                    });
-              
-              
-              ">${file.name}</button> </option>`;
+              <option value='${entry.id}'>
+              ${file.name}</option>`;
             }
-            template += `
-            <!--div class='dropdown'>
-                  <a class='btn btn-secondary dropdown-toggle' role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false" href="https://nih.app.box.com/file/${file.id}">${file.name}</a> 
-                  <div class='dropdown-menu' aria-labelledby="dropdownMenuLink">
             
-            `;
-            console.log(testfilesincomplete.slice(1,));
-            
-            for (const id of testfilesincomplete.slice(1,)){
-              file = await getFileInfo(id);
-              template += `<button id='file${id}' class='dropdown-item' 
-              
-              onclick="const access_token = JSON.parse(localStorage.parms).access_token;
-   
-              console.log('SHOWING PREVIEW', ${id});
-              let previewContainer = document.getElementById('boxFilePreview');
-              var preview = new Box.Preview();
-              preview.show(${id}, access_token, {
-                container: previewContainer
-              });
-              
-              
-              ">${file.name}</button>`;
-             
-            }
-              
                 template += `
-                  </div-->
               </select>
               </div>
                 
@@ -409,30 +369,21 @@ export const chairFileView = async() => {
               
           </div>
 
-          
-
-
-
-          
-    </div>
     
     <!-- DACCC TAB -->
 
     <div class='tab-pane fade' id='daccCompleted' role='tabpanel' aria-labelledby='daccCompletedTab'>
-
             DACC COMPLETED
           </div>
 
           <div class='tab-pane fade' id='approved' role='tabpanel' aria-labelledby='approvedTab'>
-
-          Approved
+            Approved
         </div>
       </div>
 
     
     
       `;
-    const filesincomplete = ['934945963612', "934537789566"];
     
   await console.log(await searchMetadata());
 
@@ -445,6 +396,8 @@ export const chairFileView = async() => {
   //commentSubmit();
   showPreview(testfilesincomplete[0]);
   //previewButtons(testfilesincomplete);
+
+  //Switch Tabs
   document.getElementById('toBeCompletedTab').addEventListener('click', (e) => {
     e.preventDefault();
     console.log('toBeCompleted Tab clicked');
