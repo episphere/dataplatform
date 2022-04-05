@@ -641,7 +641,7 @@ export const createFileTask = async (fileId) => {
     }
 }
 
-export const createCompleteTask = async (fileId) => {
+export const createCompleteTask = async (fileId, message) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
         const response = await fetch(`https://api.box.com/2.0/tasks`, {
@@ -655,7 +655,8 @@ export const createCompleteTask = async (fileId) => {
                     id: fileId.toString(),
                     type: "file"
                 },
-                action: "complete"
+                action: "complete",
+                message: message
             })
         });
         if (response.status === 401) {
@@ -1207,9 +1208,9 @@ export const numberWithCommas = (x) => {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-export const emailforChair = ['kopchickbp@nih.gov', 'ahearntu@nih.gov', 'wraynr@nih.gov']
+export const emailforChair = ['kopchickbp@nih.gov']//, 'ahearntu@nih.gov', 'wraynr@nih.gov']
 
-export const emailforDACC = ['wraynr@nih.gov', 'kopchickbp@nih.gov']//, 'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
+export const emailforDACC = ['kopchickbp@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
 
 export const publicDataFileId = 697309514903; //Unknown
 
