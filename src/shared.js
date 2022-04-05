@@ -1208,9 +1208,9 @@ export const numberWithCommas = (x) => {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-export const emailforChair = ['kopchickbp@nih.gov']//, 'ahearntu@nih.gov', 'wraynr@nih.gov']
+export const emailforChair = ['ahearntu@nih.gov', 'kopchickbp@nih.gov']//, 'ahearntu@nih.gov', 'wraynr@nih.gov']
 
-export const emailforDACC = ['kopchickbp@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
+export const emailforDACC = ['kopchickbp@nih.gov', 'wraynr@nih.gov', 'mukopadhyays2@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
 
 export const publicDataFileId = 697309514903; //Unknown
 
