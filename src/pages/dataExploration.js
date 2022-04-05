@@ -19,21 +19,21 @@ import {
     addEventMissingnessFilterBarToggle
 } from '../event.js';
 
+import { pageNavBar } from '../components/navBarMenuItems.js';
+
 export const dataSummary = (pageHeader, showPages, showUpdateButton, publicAccess) => {
     return `
         <div class="general-bg">
             <div class="container body-min-height">
-                <div class="main-summary-row white-bg div-border">
-                ${publicAccess ? `
-                    <button class="sub-menu-btn"><a class="nav-link black-font font-size-14" href="#data_exploration/dictionary"> <strong>Dictionary</strong></a></button>
-                `: `
-                    <button class="sub-menu-btn"><a class="nav-link active black-font font-size-14" href="#data_exploration/summary"><strong>Summary Statistics</strong></a></button>
-                    <!---${location.origin.match(applicationURLs.prod) ? ``:`
-                        <button class="sub-menu-btn"><a class="nav-link black-font font-size-14" href="#data_exploration/subset"> <strong>Subset Statistics</strong></a></button>
-                    `}--->
-                    <button class="sub-menu-btn"><a class="nav-link black-font font-size-14" href="#data_exploration/dictionary"> <strong>Dictionary</strong></a></button>
-                `} 
-                </div>
+        
+            
+                
+                ${publicAccess ? 
+                    pageNavBar('data_exploration', 'dictionary', 'Dictionary') :
+                   pageNavBar('data_exploration', 'summary', 'Summary Statistics', 'Dictionary')
+
+                } 
+                
                 <div class="main-summary-row">
                     <div class="row align-left w-100 m-0">
                         <h1 class="col page-header pl-0 pt-2">${pageHeader}</h1>
@@ -54,16 +54,7 @@ export const dataSummary = (pageHeader, showPages, showUpdateButton, publicAcces
                                 </div>
                             </div>
                         `: ``}
-                        <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Filter
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#"></a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-  </div>
-</div>
+                
                     </div>
                 </div>
                 
@@ -91,7 +82,6 @@ export const dataSummaryStatisticsTemplate = () => {
                 <strong class="side-panel-header font-size-17">Filter</strong>
             </div>
             <div id="cardContent" class="card-body">
-                <button>Show Filters</button>
                 <div id="allFilters" class="align-left"></div>
             </div>
         </div>

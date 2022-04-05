@@ -1,7 +1,7 @@
 // import { createFileTask, assignTask, updateTaskAssignment } from '../shared.js';
 import { searchMetadata, metadataTemplates, createMetadata, getTaskList, updateTaskAssignment, uploadFile, uploadWordFile, getFolderItems, uploadWordFileVersion, emailforChair, emailforDACC, uploadFormFolder, assignTask, createFileTask, getFileInfo, numberWithCommas, hideAnimation} from '../shared.js';
 import { addEventToggleCollapsePanelBtn } from './description.js';
-import { showPreviews } from '../components/boxPreview.js';
+import { showPreview, previewButtons, showPreviews } from '../components/boxPreview.js';
 import { pageNavBar } from '../components/navBarMenuItems.js';
 // Require additional changes regarding data
 //import * as docx from "docx";
@@ -43,7 +43,7 @@ export const dataAccess = (activeTab, showDescripton) => {
     let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
     let navBarItems = '';
     if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu", 'test');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");
     }
     else if(authChair) {
       navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
@@ -98,7 +98,7 @@ export const formSection = (activeTab, showDescripton) => {
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
-  navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu", "test");
+  navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");
   }
   else if(authChair) {
     navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
@@ -263,7 +263,7 @@ export const chairSection = (activeTab) => {
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
-  navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu", "test");
+  navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");
   }
   else if(authChair) {
     navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
@@ -293,7 +293,8 @@ export const chairFileView = async() => {
   const response = await getFolderItems('155292358576');
   let filearray = response.entries;
   console.log(filearray);
-
+  const testfilesincomplete = ["937422848336"];
+  let file = await getFileInfo(testfilesincomplete[0]);
   let template = `
   <div class="general-bg padding-bottom-1rem">
     <div class="container body-min-height">
@@ -302,108 +303,121 @@ export const chairFileView = async() => {
               <h1 class="page-header">DACC Access Only</h1>
           </div>
       </div>
+
+  
     <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
-    <h2 class="page-header">To Be Completed</h2>
-    <ul>
-      `;
-    const filesincomplete = ['934945963612', "934537789566","937143456496"];
-    const filescompleted = [];
-    const filesapproved = [];
-    for(let obj of filearray){
-      let id = obj.id;
-      //console.log(id);
-      let tasklist = await getTaskList(id);
-      let entries = tasklist.entries;
-      //console.log(entries.length !== 0);
-      if(entries.length !== 0) {
-        for(let item of entries){
-          if(item.is_completed == false){
-            //console.log(item.task_assignment_collection);
-            for(let taskassignment of item.task_assignment_collection.entries){
-              if(taskassignment.status=='incomplete' && taskassignment.assigned_to.login==JSON.parse(localStorage.parms).login){
-                console.log(taskassignment.assigned_at);
-                if (!filesincomplete.includes(id)) {
-                  filesincomplete.push(id);
-                  //console.log("id pushed" + id);
-                }
-              }
+    <ul class='nav nav-tabs mb-3' role='tablist'>
+      <li class='nav-item' role='presentation'>
+        <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> To Be Completed </a>
+      </li>
+      <li class='nav-item' role='presentation'>
+         <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'> DACC Completed </a>
+      </li>
+      <li class='nav-item' role='presentation'>
+         <a class='nav-link' id='approvedTab' href='#approved' data-mdb-toggle="tab" role='tab' aria-controls='approved' aria-selected='true'> Approved </a>
+      </li>
+      
+    </ul>
+        <div class='tab-content'>
+          <div class='tab-pane fade show active' id='toBeCompleted' role='tabpanel' aria-labeledby='toBeCompletedTab'> 
+            
+
+            <div class='card-body'>
+            <div class='card-title'>
+            <div class='dropdown'>
+                  <a class='btn btn-secondary dropdown-toggle' role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false" href="https://nih.app.box.com/file/${file.id}">${file.name}</a> 
+                  <div class='dropdown-menu' aria-labelledby="dropdownMenuLink">
+            
+            `;
+
+            for (const id of testfilesincomplete.slice(1,)){
+              file = await getFileInfo(id);
+              template += `<button id='file${id}' class='dropdown-item'>${file.name}</button>`;
+             
             }
-          }
-          if(item.is_completed == true){
-            for(let taskassignment of item.task_assignment_collection.entries){
-              if(taskassignment.status=='approved'){
-                  filesapproved.push(id);
-              }
-              else if (taskassignment.status=='completed') {
-                filescompleted.push(id);
-              }
-            }
-          } 
-        }
-      }
-    };
-  for (const id of filesincomplete){
-    let fileinfo = await getFileInfo(id)
-    template += `
-                <div class="card mt-1 mb-1 align-left">
-                  <div style="padding: 10px" aria-expanded="false" id="heading${id}">
-                    <div class = "row">
-                      <div class="col-md-4 card-title"><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></div>
-                        <div class="col-md-1">
-                            <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${id}">
-                                <i class="fas fa-caret-down fa-2x"></i>
-                            </button>
-                        </div>
-                      </div>
-                    </div>
+              
+                template += `
                   </div>
-                  <div id="study${id}" class="collapse" aria-labelledby="heading${id}">
+              </div>
+                
+                <div id='boxFilePreview' class="preview-container"></div>
                     <div class="card-body comment-submit" style="padding-left: 10px;background-color:#f6f6f6;">
                     <form>
                       <label for"message">Enter Comments</label>
                       <div class="input-group">
                         <textarea id="message" name="message" rows="6" cols="65"></textarea>
                       </div>
-                      <button type="submit" value="send">Send Comment</button>
+                      <button class='btn btn-primary' type="submit" value="send">Send Comment</button>
                     </form>
-                    <!---<div class="preview-container" style="height:400px;width:575px"></div>--->
+                    
                     </div>
                   </div>
-                </div>
-                  `
-  }
- 
-  template += `</ul>
-  <h2 class="page-header">DACC Completed</h2>
-  <ul>
-  `
-  for (const id of filescompleted){
-    let fileinfo = await getFileInfo(id)
-    template += `
-                  <li><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></li>
-                  `
-  }
+              
+          </div>
 
-  template += `</ul>
-  <h2 class="page-header">Approved</h2>
-  <ul>
-  `
-  for (const id of filesapproved){
-    let fileinfo = await getFileInfo(id)
-    template += `
-                  <li><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></li>
-                  `
-  }
+          
 
-  template += `
-  </div></div></div>`;
+
+
+          
+    </div>
+    
+    <!-- DACCC TAB -->
+
+    <div class='tab-pane fade' id='daccCompleted' role='tabpanel' aria-labelledby='daccCompletedTab'>
+
+            DACC COMPLETED
+          </div>
+
+          <div class='tab-pane fade' id='approved' role='tabpanel' aria-labelledby='approvedTab'>
+
+          Approved
+        </div>
+      </div>
+
+    
+    
+      `;
+    const filesincomplete = ['934945963612', "934537789566"];
+    
   await console.log(await searchMetadata());
+
+ 
   document.getElementById('chairFileView').innerHTML = template;
+  
   //addEventPreviewFile();
   addEventToggleCollapsePanelBtn();
   //viewFile();
   commentSubmit();
-  showPreviews(filesincomplete);
+  showPreview(testfilesincomplete[0]);
+  //previewButtons(testfilesincomplete);
+  document.getElementById('toBeCompletedTab').addEventListener('click', (e) => {
+    e.preventDefault();
+    console.log('toBeCompleted Tab clicked');
+    document.getElementById('approved').classList.remove('show', 'active');
+    document.getElementById('daccCompleted').classList.remove('show', 'active');
+    document.getElementById('toBeCompleted').classList.add('show', 'active');
+
+
+})
+  document.getElementById('daccCompletedTab').addEventListener('click', (e) => {
+    e.preventDefault();
+    console.log('daccCompleted Tab clicked');
+    document.getElementById('approved').classList.remove('show', 'active');
+    document.getElementById('toBeCompleted').classList.remove('show', 'active');
+    document.getElementById('daccCompleted').classList.add('show', 'active');
+
+
+})
+  document.getElementById('approvedTab').addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('Approved Tab clicked');
+      document.getElementById('toBeCompleted').classList.remove('show', 'active');
+      document.getElementById('daccCompleted').classList.remove('show', 'active');
+      document.getElementById('approved').classList.add('show', 'active');
+
+
+  })
 }
 
 export const commentSubmit = () => {
@@ -464,7 +478,7 @@ export const daccSection = (activeTab) => {
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
-  navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu", "test");
+  navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");
   }
   else if(authChair) {
     navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');

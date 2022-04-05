@@ -3,7 +3,7 @@ import { getPublicFile, numberWithCommas, publicDataFileId } from "./../shared.j
 import { pageNavBar } from '../components/navBarMenuItems.js';
 
 export const aboutConfluence = (activeTab, showDescripton) => {
-    let navBarItems = showDescripton ? pageNavBar('about', activeTab, 'Overview', 'Description of Studies', 'test') : `<div id='overview'></div>`;
+    let navBarItems = showDescripton ? pageNavBar('about', activeTab, 'Overview', 'Description of Studies') : `<div id='overview'></div>`;
     let template = `
         <div class="general-bg body-min-height padding-bottom-1rem">
             <div class="container">
