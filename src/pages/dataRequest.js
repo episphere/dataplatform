@@ -521,7 +521,7 @@ export const commentApproveReject = () => {
       await createComment(fileId, message);
       await updateTaskAssignment(taskAssignment, approval, message);
       await updateMetadata(fileId, "BCRPPchair", "0");
-      //document.location.reload(true);
+      document.location.reload(true);
   }
 
   const adform = document.querySelector('.approvedeny')
