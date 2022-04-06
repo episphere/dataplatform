@@ -43,16 +43,17 @@ export const dataAccess = (activeTab, showDescripton) => {
     let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
     let navBarItems = '';
     if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");//, "test");
-    }
-    else if(authChair) {
-      navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
-    }
-    else if(authDacc){
-      navBarItems = pageNavBar('Overview', 'Submission Form', 'DACC Menu');
-    }
-    else {
-      navBarItems = pageNavBar('Overview', 'Submission Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', 'DACC Menu');//, "test");
+    console.log('DACC and Chair');
+    } else if(authChair) {
+      navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
+      console.log('Chair');
+    } else if(authDacc){
+      navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
+      console.log('DACC');
+    } else {
+      navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
+      console.log('Niether');
     }
     let template = `
         <div class="general-bg body-min-height padding-bottom-1rem">
@@ -103,13 +104,13 @@ export const formSection = (activeTab, showDescripton) => {
   navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");//, "test");
   }
   else if(authChair) {
-    navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab,'Overview', 'Submission Form', 'Chair Menu');
   }
   else if(authDacc){
-    navBarItems = pageNavBar('Overview', 'Submission Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab,'Overview', 'Submission Form', 'DACC Menu');
   }
   else {
-    navBarItems = pageNavBar('Overview', 'Submission Form');
+    navBarItems = pageNavBar('data_access', activeTab,'Overview', 'Submission Form');
   }
   let template = `
       <div class="general-bg body-min-height padding-bottom-1rem">
@@ -270,13 +271,13 @@ export const chairSection = (activeTab) => {
   navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");//, "test");
   }
   else if(authChair) {
-    navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
   }
   else if(authDacc){
-    navBarItems = pageNavBar('Overview', 'Submission Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
   }
   else {
-    navBarItems = pageNavBar('Overview', 'Submission Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
   }
   let template = `
       <div class="general-bg body-min-height padding-bottom-1rem">
@@ -477,9 +478,9 @@ export const submitToDacc = () => {
     console.log("Meta Data Updated");
     document.location.reload(true);
   }
-  const form = document.querySelector('.dacc-submit');
-  if (form) {
-  form.addEventListener('submit', submitDacc);
+  const sdform = document.querySelector('.dacc-submit');
+  if (sdform) {
+  sdform.addEventListener('submit', submitDacc);
   }
 }
 
@@ -514,17 +515,18 @@ export const commentApproveReject = () => {
       let fileId = btn.id;
       let approval = e.submitter.value;
       let message = e.target[0].value;
-      console.log(approval);
+      console.log(message);
       let task = await getTask(taskId);
       let taskAssignment = task.task_assignment_collection.entries[0].id;
+      await createComment(fileId, message);
       await updateTaskAssignment(taskAssignment, approval, message);
       await updateMetadata(fileId, "BCRPPchair", "0");
-      document.location.reload();
+      //document.location.reload(true);
   }
 
-  const form = document.querySelector('.approvedeny')
-  if (form) {
-  form.addEventListener('submit', approveComment)
+  const adform = document.querySelector('.approvedeny')
+  if (adform) {
+  adform.addEventListener('submit', approveComment)
   }
 }
 
@@ -569,13 +571,13 @@ export const daccSection = (activeTab) => {
   navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");//, "test");
   }
   else if(authChair) {
-    navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
   }
   else if(authDacc){
-    navBarItems = pageNavBar('Overview', 'Submission Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
   }
   else {
-    navBarItems = pageNavBar('Overview', 'Submission Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
   }
   let template = `
       <div class="general-bg body-min-height padding-bottom-1rem">
@@ -687,7 +689,7 @@ export const daccFileView = async() => {
   </div></div></div>`;
   document.getElementById('daccFileView').innerHTML = template;
   showPreviews(filesincomplete);
-  addEventToggleCollapsePanelBtn();
+  //addEventToggleCollapsePanelBtn();
   submitToComment();
 }
 
@@ -706,6 +708,7 @@ export const submitToComment = () => {
     //let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
     await createComment(fileId, message);
     await updateTaskAssignment(taskId, "completed");
+    console.log(daccMetaValue);
     if (daccMetaValue == 1) {
       await updateMetadata(fileId, "BCRPPchair", "3");
       console.log("New Chair Value: 3");
@@ -726,9 +729,9 @@ export const submitToComment = () => {
     console.log("New DACC Value: "+newDaccValue);
     document.location.reload(true);
   }
-  const form = document.querySelector('.dacc-comment');
-  if (form) {
-    form.addEventListener('submit', submitComment);
+  const dcform = document.querySelector('.dacc-comment');
+  if (dcform) {
+    dcform.addEventListener('submit', submitComment);
   }
 }
 
