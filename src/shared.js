@@ -475,7 +475,7 @@ export const getCurrentUser = async () => {
         const access_token = JSON.parse(localStorage.parms).access_token;
         const response = await fetch(`https://api.box.com/2.0/users/me`, {
             headers: {
-                Authorization: "Bearer "+access_token
+                Authorization: "Bearer " + access_token
             }
         });
         if(response.status === 401){

@@ -1,7 +1,7 @@
 // import { createFileTask, assignTask, updateTaskAssignment } from '../shared.js';
 import { createComment, createCompleteTask, updateMetadata, getMetadata, searchMetadata, createMetadata, getTaskList, updateTaskAssignment, uploadFile, uploadWordFile, getFolderItems, uploadWordFileVersion, emailforChair, emailforDACC, uploadFormFolder, assignTask, createFileTask, getFileInfo, numberWithCommas, hideAnimation, getTask, consortiumSelection} from '../shared.js';
 import { addEventToggleCollapsePanelBtn } from './description.js';
-import { showPreview, previewButtons, showPreviews } from '../components/boxPreview.js';
+import { showPreview } from '../components/boxPreview.js';
 import { pageNavBar } from '../components/navBarMenuItems.js';
 // Require additional changes regarding data
 //import * as docx from "docx";
@@ -302,6 +302,43 @@ export const chairFileView = async() => {
   let filearray = response.entries;
   console.log(filearray);
 
+  const filesincomplete = [];
+  const filescompleted = [];
+  const filesapproved = [];
+
+  for(let obj of filearray){
+    let id = obj.id;
+    //console.log(id);
+    let tasklist = await getTaskList(id);
+    let entries = tasklist.entries;
+    //console.log(entries.length !== 0);
+    if(entries.length !== 0) {
+      for(let item of entries){
+        if(item.is_completed == false){
+          //console.log(item.task_assignment_collection);
+          for(let taskassignment of item.task_assignment_collection.entries){
+            if(taskassignment.status=='incomplete' && taskassignment.assigned_to.login==JSON.parse(localStorage.parms).login){
+              console.log(taskassignment.assigned_at);
+              if (!filesincomplete.includes(id)) {
+                filesincomplete.push(id);
+                //console.log("id pushed" + id);
+              }
+            }
+          }
+        }
+        if(item.is_completed == true){
+          for(let taskassignment of item.task_assignment_collection.entries){
+            if(taskassignment.status=='approved'){
+                filesapproved.push(id);
+            }
+            else if (taskassignment.status=='completed') {
+              filescompleted.push(id);
+            }
+          }
+        } 
+      }
+    }
+  };
   let template = `
   <div class="general-bg padding-bottom-1rem">
     <div class="container body-min-height">
@@ -345,10 +382,10 @@ export const chairFileView = async() => {
             ">
             `;
 
-            for(const entry of filearray){
-              let file = await getFileInfo(entry.id);
+            for(const id of filesincomplete){
+              let file = await getFileInfo(id);
               template += `
-              <option value='${entry.id}'>
+              <option value='${id}'>
               ${file.name}</option>`;
             }
             
@@ -356,17 +393,7 @@ export const chairFileView = async() => {
               </select>
               </div>
                 
-                <div id='boxFilePreview' class="preview-container"></div>
-                    <div class="card-body comment-submit" style="padding-left: 10px;background-color:#f6f6f6;">
-                    <form>
-                      <label for"message">Enter Comments</label>
-                      <div class="input-group">
-                        <textarea id="message" name="message" rows="6" cols="65"></textarea>
-                      </div>
-                      <button class='btn btn-primary' type="submit" value="send">Send Comment</button>
-                    </form>
-                    
-                    </div>
+                
                   </div>
               
           </div>
@@ -375,15 +402,85 @@ export const chairFileView = async() => {
     <!-- DACCC TAB -->
 
     <div class='tab-pane fade' id='daccCompleted' role='tabpanel' aria-labelledby='daccCompletedTab'>
-            DACC COMPLETED
+    <div class='card-body'>
+    <div class='card-title'>
+    <select onchange="
+    const access_token = JSON.parse(localStorage.parms).access_token;
+
+            console.log('SHOWING PREVIEW', this.value);
+            let previewContainer = document.getElementById('boxFilePreview');
+            var preview = new Box.Preview();
+            preview.show(this.value, access_token, {
+              container: previewContainer
+            });
+    
+    
+    ">
+    `;
+
+    for(const id of filescompleted){
+      let file = await getFileInfo(id);
+      template += `
+      <option value='${id}'>
+      ${file.name}</option>`;
+    }
+    
+        template += `
+      </select>
+      </div>
+        
+        
           </div>
+      
+  </div>
+          
 
           <div class='tab-pane fade' id='approved' role='tabpanel' aria-labelledby='approvedTab'>
-            Approved
+          <div class='card-body'>
+          <div class='card-title'>
+          <select onchange="
+          const access_token = JSON.parse(localStorage.parms).access_token;
+      
+                  console.log('SHOWING PREVIEW', this.value);
+                  let previewContainer = document.getElementById('boxFilePreview');
+                  var preview = new Box.Preview();
+                  preview.show(this.value, access_token, {
+                    container: previewContainer
+                  });
+          
+          
+          ">
+          `;
+      
+          for(const id of filesapproved){
+            let file = await getFileInfo(id);
+            template += `
+            <option value='${id}'>
+            ${file.name}</option>`;
+          }
+          
+              template += `
+            </select>
+            </div>
+              
+              
+                </div>
+            
         </div>
+        <div id='boxFilePreview' class="preview-container"></div>
+      <div class="card-body comment-submit" style="padding-left: 10px;background-color:#f6f6f6;">
+      <form>
+        <label for"message">Enter Comments</label>
+        <div class="input-group">
+          <textarea id="message" name="message" rows="6" cols="65"></textarea>
+        </div>
+        <button class='btn btn-primary' type="submit" value="send">Send Comment</button>
+      </form>
+      
+      </div>
       </div>
 
-    
+      
     
       `;
     
@@ -397,14 +494,20 @@ export const chairFileView = async() => {
   //viewFile();
   //commentSubmit();
   showPreview(filearray[0].id);
-  //previewButtons(testfilesincomplete);
+
 
   //Switch Tabs
   document.getElementById('toBeCompletedTab').addEventListener('click', (e) => {
     e.preventDefault();
     console.log('toBeCompleted Tab clicked');
+    
+    document.getElementById('approvedTab').classList.remove('active');
     document.getElementById('approved').classList.remove('show', 'active');
+
+    document.getElementById('daccCompletedTab').classList.remove('active');
     document.getElementById('daccCompleted').classList.remove('show', 'active');
+    
+    document.getElementById('toBeCompletedTab').classList.add('active');
     document.getElementById('toBeCompleted').classList.add('show', 'active');
 
 
@@ -412,18 +515,31 @@ export const chairFileView = async() => {
   document.getElementById('daccCompletedTab').addEventListener('click', (e) => {
     e.preventDefault();
     console.log('daccCompleted Tab clicked');
+    
+    document.getElementById('approvedTab').classList.remove('active');
     document.getElementById('approved').classList.remove('show', 'active');
+
+    document.getElementById('toBeCompletedTab').classList.remove('active');
     document.getElementById('toBeCompleted').classList.remove('show', 'active');
+    
+    document.getElementById('daccCompletedTab').classList.add('active');
     document.getElementById('daccCompleted').classList.add('show', 'active');
 
 
 })
   document.getElementById('approvedTab').addEventListener('click', (e) => {
       e.preventDefault();
-      console.log('Approved Tab clicked');
+      console.log('approved Tab clicked');
+
+      document.getElementById('toBeCompletedTab').classList.remove('active');
       document.getElementById('toBeCompleted').classList.remove('show', 'active');
+
+      document.getElementById('daccCompletedTab').classList.remove('active');
       document.getElementById('daccCompleted').classList.remove('show', 'active');
+
+
       document.getElementById('approved').classList.add('show', 'active');
+      document.getElementById('approvedTab').classList.add('active');
 
 
   })
