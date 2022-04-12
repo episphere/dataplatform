@@ -302,43 +302,41 @@ export const chairFileView = async() => {
   let filearray = response.entries;
   console.log(filearray);
 
-  const filesincomplete = [];
+  const filesincomplete = []; 
+  const filesinprogress = [];
   const filescompleted = [];
   const filesapproved = [];
-
+  const taskApproveDeny = [];
   for(let obj of filearray){
     let id = obj.id;
     //console.log(id);
-    let tasklist = await getTaskList(id);
-    let entries = tasklist.entries;
-    //console.log(entries.length !== 0);
-    if(entries.length !== 0) {
+    let metaArray =  await getMetadata(id);
+    let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
+    let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
+    //console.log("Chair Value: "+chairMetaValue);
+    //console.log("DACC Value: "+daccMetaValue);
+
+    if(chairMetaValue == 1 && daccMetaValue == 0) {
+      filesincomplete.push(id);
+    }
+    if(chairMetaValue == 2 && daccMetaValue != 0){
+      filesinprogress.push(id);
+    }
+    if(chairMetaValue == 3 && daccMetaValue == 0){
+      filescompleted.push(id);
+      let tasklist = await getTaskList(id);
+      let entries = tasklist.entries;
       for(let item of entries){
         if(item.is_completed == false){
-          //console.log(item.task_assignment_collection);
-          for(let taskassignment of item.task_assignment_collection.entries){
-            if(taskassignment.status=='incomplete' && taskassignment.assigned_to.login==JSON.parse(localStorage.parms).login){
-              console.log(taskassignment.assigned_at);
-              if (!filesincomplete.includes(id)) {
-                filesincomplete.push(id);
-                //console.log("id pushed" + id);
-              }
-            }
-          }
+          taskApproveDeny.push(item.id);
         }
-        if(item.is_completed == true){
-          for(let taskassignment of item.task_assignment_collection.entries){
-            if(taskassignment.status=='approved'){
-                filesapproved.push(id);
-            }
-            else if (taskassignment.status=='completed') {
-              filescompleted.push(id);
-            }
-          }
-        } 
       }
     }
+    if(chairMetaValue == 0){
+      filesapproved.push(id);
+    }
   };
+  
   let template = `
   <div class="general-bg padding-bottom-1rem">
     <div class="container body-min-height">
@@ -493,12 +491,13 @@ export const chairFileView = async() => {
   addEventToggleCollapsePanelBtn();
   //viewFile();
   //commentSubmit();
-  showPreview(filearray[0].id);
+  showPreview(filesincomplete[0]);
 
 
   //Switch Tabs
   document.getElementById('toBeCompletedTab').addEventListener('click', (e) => {
     e.preventDefault();
+    showPreview(filesincomplete[0]);
     console.log('toBeCompleted Tab clicked');
     
     document.getElementById('approvedTab').classList.remove('active');
@@ -514,6 +513,7 @@ export const chairFileView = async() => {
 })
   document.getElementById('daccCompletedTab').addEventListener('click', (e) => {
     e.preventDefault();
+    showPreview(filescompleted[0]);
     console.log('daccCompleted Tab clicked');
     
     document.getElementById('approvedTab').classList.remove('active');
@@ -530,6 +530,7 @@ export const chairFileView = async() => {
   document.getElementById('approvedTab').addEventListener('click', (e) => {
       e.preventDefault();
       console.log('approved Tab clicked');
+      showPreview(filesapproved[0]);
 
       document.getElementById('toBeCompletedTab').classList.remove('active');
       document.getElementById('toBeCompleted').classList.remove('show', 'active');
@@ -685,6 +686,7 @@ export const daccSection = (activeTab) => {
 export const daccFileView = async() => {
   const response = await getFolderItems('155292358576');
   let filearray = response.entries;
+  console.log(filearray);
 
   let template = `
   <div class="general-bg padding-bottom-1rem">
@@ -695,9 +697,17 @@ export const daccFileView = async() => {
           </div>
       </div>
     <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
-    <h2 class="page-header">To Be Completed</h2>
-    <ul>
-      `;
+    <ul class='nav nav-tabs mb-3' role='tablist'>
+      <li class='nav-item' role='presentation'>
+        <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> To Be Completed </a>
+      </li>
+      <li class='nav-item' role='presentation'>
+         <a class='nav-link' id='completedTab' href='#completed' data-mdb-toggle="tab" role='tab' aria-controls='completed' aria-selected='true'>Completed</a>
+      </li>
+   
+      
+    </ul>`;
+      
     const filesincomplete = [];
     const filescompleted = [];
     const tasksincomplete = [];
@@ -713,6 +723,7 @@ export const daccFileView = async() => {
       if(daccMetaValue != 0 && chairMetaValue == 2) {
         let tasklist = await getTaskList(id);
         let entries = tasklist.entries;
+
         if(entries.length !== 0) {
           for(let item of entries){
             if(item.is_completed == false){
@@ -738,6 +749,7 @@ export const daccFileView = async() => {
       if(chairMetaValue == 3) {
         let tasklist = await getTaskList(id);
         let entries = tasklist.entries;
+
         if(entries.length !== 0) {
           for(let item of entries){
             if(item.is_completed == false){
@@ -754,31 +766,163 @@ export const daccFileView = async() => {
         }
       }
     };
-  template += `<div class="card mt-1 mb-1 align-left">`
-  template += await viewDACCFiles(filesincomplete, tasksincomplete);
-  // for (const id of filesincomplete){
+  // template += `<div class="card mt-1 mb-1 align-left">`
+  // template += await viewDACCFiles(filesincomplete, tasksincomplete);
+  // // for (const id of filesincomplete){
+  // //   let fileinfo = await getFileInfo(id)
+  // //   template += `
+  // //                 <li><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></li>
+  // //                 `
+  // // }
+  // template += `</div></ul>
+  // <h2 class="page-header">Completed</h2>
+  // <ul>
+  // `
+  // for (const id of filescompleted){
   //   let fileinfo = await getFileInfo(id)
   //   template += `
   //                 <li><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></li>
   //                 `
   // }
-  template += `</div></ul>
-  <h2 class="page-header">Completed</h2>
-  <ul>
-  `
-  for (const id of filescompleted){
-    let fileinfo = await getFileInfo(id)
-    template += `
-                  <li><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></li>
-                  `
-  }
 
+  // template += `
+  // </div></div></div>`;
+  template += "<div class='tab-content'>";
+  if(filesincomplete.length > 0 ){
   template += `
-  </div></div></div>`;
+  <div class='tab-pane fade show active' id='toBeCompleted' role='tabpanel' aria-labeledby='toBeCompletedTab'> 
+  <div class='card-body'>
+  <div class='card-title'>
+  <select onchange="
+  const access_token = JSON.parse(localStorage.parms).access_token;
+
+          console.log('SHOWING PREVIEW', this.value);
+          let previewContainer = document.getElementById('boxFilePreview');
+          var preview = new Box.Preview();
+          preview.show(this.value, access_token, {
+            container: previewContainer
+          });
+  
+  
+  ">
+  `;
+
+  for(const id of filesincomplete){
+    let file = await getFileInfo(id);
+    template += `
+    <option value='${id}'>
+    ${file.name}</option>`;
+  }
+  
+      template += `
+    </select>
+    </div>
+      
+      
+        </div>
+  </div>`
+}
+
+else {
+  
+  template += `
+  <div class='tab-pane fade show active' id='toBeCompleted' role='tabpanel' aria-labeledby='toBeCompletedTab'> 
+  No files to show.
+  </div>
+  `  
+}
+
+if(filescompleted.length > 0){
+  template += `
+  <div class='tab-pane fade' id='completed' role='tabpanel' aria-labeledby='completedTab'> 
+  <div class='card-body'>
+  <div class='card-title'>
+  <select onchange="
+  const access_token = JSON.parse(localStorage.parms).access_token;
+
+          console.log('SHOWING PREVIEW', this.value);
+          let previewContainer = document.getElementById('boxFilePreview');
+          var preview = new Box.Preview();
+          preview.show(this.value, access_token, {
+            container: previewContainer
+          });
+  
+  
+  ">
+  `;
+
+  for(const id of filesincomplete){
+    let file = await getFileInfo(id);
+    template += `
+    <option value='${id}'>
+    ${file.name}</option>`;
+  }
+  
+      template += `
+    </select>
+    </div>
+      
+      
+        </div>
+    
+  </div>`
+}
+
+else {
+ template += `<div class='tab-pane fade' id='completed' role='tabpanel' aria-labeledby='completedTab'> 
+  No files to show.
+  
+  </div>
+  `
+}
+
+if(filescompleted.length > 0 && filesincomplete.length > 0) {
+  template += `
+  <div id='boxFilePreview' class="preview-container"></div>
+      <div class="card-body comment-submit" style="padding-left: 10px;background-color:#f6f6f6;">
+      <form>
+        <label for"message">Enter Comments</label>
+        <div class="input-group">
+          <textarea id="message" name="message" rows="6" cols="65"></textarea>
+        </div>
+        <button class='btn btn-primary' type="submit" value="send">Send Comment</button>
+      </form>
+      
+      </div>
+</div>
+  `;
+}
   document.getElementById('daccFileView').innerHTML = template;
-  showPreviews(filesincomplete);
+
   addEventToggleCollapsePanelBtn();
   submitToComment();
+
+    //Switch Tabs
+    document.getElementById('toBeCompletedTab').addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('toBeCompleted Tab clicked');
+  
+      document.getElementById('completedTab').classList.remove('active');
+      document.getElementById('completed').classList.remove('show', 'active');
+      
+      document.getElementById('toBeCompletedTab').classList.add('active');
+      document.getElementById('toBeCompleted').classList.add('show', 'active');
+  
+  
+  })
+    document.getElementById('completedTab').addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('completed Tab clicked');
+      
+      document.getElementById('toBeCompletedTab').classList.remove('active');
+      document.getElementById('toBeCompleted').classList.remove('show', 'active');
+      
+      document.getElementById('completedTab').classList.add('active');
+      document.getElementById('completed').classList.add('show', 'active');
+  
+  
+  })
+
 }
 
 export const submitToComment = () => {
@@ -1186,5 +1330,5 @@ const viewDACCFiles = async(files, taskids) => {
                   `
     ival += 1;
   };
-  return(template);
+  return template;
 }
