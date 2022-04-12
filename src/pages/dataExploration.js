@@ -19,6 +19,8 @@ import {
     addEventMissingnessFilterBarToggle
 } from '../event.js';
 
+import { pageNavBar } from '../components/navBarMenuItems.js';
+
 export const dataSummary = (pageHeader, showPages, subCases, showUpdateButton, publicAccess) => {
     return `
         <div class="general-bg">

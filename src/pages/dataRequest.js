@@ -353,10 +353,13 @@ export const chairFileView = async() => {
         <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> To Be Completed </a>
       </li>
       <li class='nav-item' role='presentation'>
+         <a class='nav-link' id='inProgressTab' href='#inProgress' data-mdb-toggle="tab" role='tab' aria-controls='inProgress' aria-selected='true'> In Progress </a>
+      </li>
+      <li class='nav-item' role='presentation'>
          <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'> DACC Completed </a>
       </li>
       <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='approvedTab' href='#approved' data-mdb-toggle="tab" role='tab' aria-controls='approved' aria-selected='true'> Approved </a>
+         <a class='nav-link' id='approvedTab' href='#approved' data-mdb-toggle="tab" role='tab' aria-controls='approved' aria-selected='true'> Completed </a>
       </li>
       
     </ul>
@@ -395,6 +398,41 @@ export const chairFileView = async() => {
                   </div>
               
           </div>
+
+          <div class='tab-pane fade' id='inProgress' role='tabpanel' aria-labeledby='inProgressTab'> 
+            
+
+          <div class='card-body'>
+          <div class='card-title'>
+          <select onchange="
+          const access_token = JSON.parse(localStorage.parms).access_token;
+ 
+                  console.log('SHOWING PREVIEW', this.value);
+                  let previewContainer = document.getElementById('boxFilePreview');
+                  var preview = new Box.Preview();
+                  preview.show(this.value, access_token, {
+                    container: previewContainer
+                  });
+          
+          
+          ">
+          `;
+
+          for(const id of filesinprogress){
+            let file = await getFileInfo(id);
+            template += `
+            <option value='${id}'>
+            ${file.name}</option>`;
+          }
+          
+              template += `
+            </select>
+            </div>
+              
+              
+                </div>
+            
+        </div>
 
     
     <!-- DACCC TAB -->
@@ -502,12 +540,34 @@ export const chairFileView = async() => {
     
     document.getElementById('approvedTab').classList.remove('active');
     document.getElementById('approved').classList.remove('show', 'active');
+    
+    document.getElementById('inProgressTab').classList.remove('active');
+    document.getElementById('inProgress').classList.remove('show', 'active');
 
     document.getElementById('daccCompletedTab').classList.remove('active');
     document.getElementById('daccCompleted').classList.remove('show', 'active');
     
     document.getElementById('toBeCompletedTab').classList.add('active');
     document.getElementById('toBeCompleted').classList.add('show', 'active');
+
+
+})
+document.getElementById('inProgressTab').addEventListener('click', (e) => {
+  e.preventDefault();
+  //showPreview(filesinprogress[0]);
+  console.log('inProgress Tab clicked');
+  
+  document.getElementById('approvedTab').classList.remove('active');
+  document.getElementById('approved').classList.remove('show', 'active');
+  
+  document.getElementById('toBeCompletedTab').classList.remove('active');
+  document.getElementById('toBeCompleted').classList.remove('show', 'active');
+
+  document.getElementById('daccCompletedTab').classList.remove('active');
+  document.getElementById('daccCompleted').classList.remove('show', 'active');
+  
+  document.getElementById('inProgressTab').classList.add('active');
+  document.getElementById('inProgress').classList.add('show', 'active');
 
 
 })
@@ -518,6 +578,9 @@ export const chairFileView = async() => {
     
     document.getElementById('approvedTab').classList.remove('active');
     document.getElementById('approved').classList.remove('show', 'active');
+    
+    document.getElementById('inProgressTab').classList.remove('active');
+    document.getElementById('inProgress').classList.remove('show', 'active');
 
     document.getElementById('toBeCompletedTab').classList.remove('active');
     document.getElementById('toBeCompleted').classList.remove('show', 'active');
@@ -534,7 +597,10 @@ export const chairFileView = async() => {
 
       document.getElementById('toBeCompletedTab').classList.remove('active');
       document.getElementById('toBeCompleted').classList.remove('show', 'active');
-
+      
+      document.getElementById('inProgressTab').classList.remove('active');
+      document.getElementById('inProgress').classList.remove('show', 'active');
+      
       document.getElementById('daccCompletedTab').classList.remove('active');
       document.getElementById('daccCompleted').classList.remove('show', 'active');
 
