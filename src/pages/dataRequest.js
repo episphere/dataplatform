@@ -302,6 +302,32 @@ export const chairFileView = async() => {
   let filearray = response.entries;
   console.log(filearray);
 
+  let template = `
+  <div class="general-bg padding-bottom-1rem">
+    <div class="container body-min-height">
+      <div class="main-summary-row">
+          <div class="align-left">
+              <h1 class="page-header">Chair Access Only</h1>
+          </div>
+      </div>
+
+  
+    <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
+    <ul class='nav nav-tabs mb-3' role='tablist'>
+      <li class='nav-item' role='presentation'>
+        <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> To Be Completed </a>
+      </li>
+      <li class='nav-item' role='presentation'>
+         <a class='nav-link' id='inProgressTab' href='#inProgress' data-mdb-toggle="tab" role='tab' aria-controls='inProgress' aria-selected='true'> In Progress </a>
+      </li>
+      <li class='nav-item' role='presentation'>
+         <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'> DACC Completed </a>
+      </li>
+      <li class='nav-item' role='presentation'>
+         <a class='nav-link' id='approvedTab' href='#approved' data-mdb-toggle="tab" role='tab' aria-controls='approved' aria-selected='true'> Completed </a>
+      </li>
+      
+    </ul>`;
   const filesincomplete = []; 
   const filesinprogress = [];
   const filescompleted = [];
@@ -337,69 +363,54 @@ export const chairFileView = async() => {
     }
   };
   
-  let template = `
-  <div class="general-bg padding-bottom-1rem">
-    <div class="container body-min-height">
-      <div class="main-summary-row">
-          <div class="align-left">
-              <h1 class="page-header">Chair Access Only</h1>
-          </div>
-      </div>
 
+  template +=  "<div class='tab-content'>";
+  if(filesincomplete.length != 0 ){
+    template += `
+    <div class='tab-pane fade show active' id='toBeCompleted' role='tabpanel' aria-labeledby='toBeCompletedTab'> 
+    <div class='card-body'>
+    <div class='card-title'>
+    <select onchange="
+    const access_token = JSON.parse(localStorage.parms).access_token;
   
-    <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
-    <ul class='nav nav-tabs mb-3' role='tablist'>
-      <li class='nav-item' role='presentation'>
-        <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> To Be Completed </a>
-      </li>
-      <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='inProgressTab' href='#inProgress' data-mdb-toggle="tab" role='tab' aria-controls='inProgress' aria-selected='true'> In Progress </a>
-      </li>
-      <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'> DACC Completed </a>
-      </li>
-      <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='approvedTab' href='#approved' data-mdb-toggle="tab" role='tab' aria-controls='approved' aria-selected='true'> Completed </a>
-      </li>
-      
-    </ul>
-        <div class='tab-content'>
-          <div class='tab-pane fade show active' id='toBeCompleted' role='tabpanel' aria-labeledby='toBeCompletedTab'> 
-            
-
-            <div class='card-body'>
-            <div class='card-title'>
-            <select onchange="
-            const access_token = JSON.parse(localStorage.parms).access_token;
-   
-                    console.log('SHOWING PREVIEW', this.value);
-                    let previewContainer = document.getElementById('boxFilePreview');
-                    var preview = new Box.Preview();
-                    preview.show(this.value, access_token, {
-                      container: previewContainer
-                    });
-            
-            
-            ">
-            `;
-
-            for(const id of filesincomplete){
-              let file = await getFileInfo(id);
-              template += `
-              <option value='${id}'>
-              ${file.name}</option>`;
-            }
-            
-                template += `
-              </select>
-              </div>
-                
-                
-                  </div>
-              
+            console.log('SHOWING PREVIEW', this.value);
+            let previewContainer = document.getElementById('boxFilePreview');
+            var preview = new Box.Preview();
+            preview.show(this.value, access_token, {
+              container: previewContainer
+            });
+    
+    
+    ">
+    `;
+  
+    for(const id of filesincomplete){
+      let file = await getFileInfo(id);
+      template += `
+      <option value='${id}'>
+      ${file.name}</option>`;
+    }
+    
+        template += `
+      </select>
+      </div>
+        
+        
           </div>
+    </div>`
+  }
+  
+  else {
+    
+    template += `
+    <div class='tab-pane fade show active' id='toBeCompleted' role='tabpanel' aria-labeledby='toBeCompletedTab'> 
+    No files to show.
+    </div>
+    `  
+  }
 
-          <div class='tab-pane fade' id='inProgress' role='tabpanel' aria-labeledby='inProgressTab'> 
+  if(filesinprogress.length != 0){
+    template += `<div class='tab-pane fade' id='inProgress' role='tabpanel' aria-labeledby='inProgressTab'> 
             
 
           <div class='card-body'>
@@ -432,78 +443,105 @@ export const chairFileView = async() => {
               
                 </div>
             
-        </div>
+        </div>`
 
     
-    <!-- DACCC TAB -->
+  }
 
-    <div class='tab-pane fade' id='daccCompleted' role='tabpanel' aria-labelledby='daccCompletedTab'>
-    <div class='card-body'>
-    <div class='card-title'>
-    <select onchange="
-    const access_token = JSON.parse(localStorage.parms).access_token;
+  else {
+template += `<div class='tab-pane fade' id='inProgress' role='tabpanel' aria-labeledby='inProgressTab'> 
+      No files to show.              
 
-            console.log('SHOWING PREVIEW', this.value);
-            let previewContainer = document.getElementById('boxFilePreview');
-            var preview = new Box.Preview();
-            preview.show(this.value, access_token, {
-              container: previewContainer
-            });
-    
-    
-    ">
-    `;
+</div>
 
-    for(const id of filescompleted){
-      let file = await getFileInfo(id);
-      template += `
-      <option value='${id}'>
-      ${file.name}</option>`;
-    }
-    
+`
+
+  }
+
+  if (filescompleted.length != 0) {
+    template += `<div class='tab-pane fade' id='daccCompleted' role='tabpanel' aria-labelledby='daccCompletedTab'>
+      <div class='card-body'>
+      <div class='card-title'>
+      <select onchange="
+      const access_token = JSON.parse(localStorage.parms).access_token;
+  
+              console.log('SHOWING PREVIEW', this.value);
+              let previewContainer = document.getElementById('boxFilePreview');
+              var preview = new Box.Preview();
+              preview.show(this.value, access_token, {
+                container: previewContainer
+              });
+      
+      
+      ">
+      `;
+  
+      for(const id of filescompleted){
+        let file = await getFileInfo(id);
         template += `
-      </select>
-      </div>
-        
-        
-          </div>
+        <option value='${id}'>
+        ${file.name}</option>`;
+      }
       
-  </div>
-          
-
-          <div class='tab-pane fade' id='approved' role='tabpanel' aria-labelledby='approvedTab'>
-          <div class='card-body'>
-          <div class='card-title'>
-          <select onchange="
-          const access_token = JSON.parse(localStorage.parms).access_token;
-      
-                  console.log('SHOWING PREVIEW', this.value);
-                  let previewContainer = document.getElementById('boxFilePreview');
-                  var preview = new Box.Preview();
-                  preview.show(this.value, access_token, {
-                    container: previewContainer
-                  });
-          
-          
-          ">
-          `;
-      
-          for(const id of filesapproved){
-            let file = await getFileInfo(id);
-            template += `
-            <option value='${id}'>
-            ${file.name}</option>`;
-          }
-          
-              template += `
-            </select>
-            </div>
-              
-              
-                </div>
-            
+          template += `
+        </select>
         </div>
-        <div id='boxFilePreview' class="preview-container"></div>
+          
+          
+            </div>
+        
+    </div>`
+  }
+
+  else{
+    template += `<div class='tab-pane fade' id='daccCompleted' role='tabpanel' aria-labelledby='daccCompletedTab'>
+            No files to show.            
+    </div>
+    `
+  }
+
+  if(filesapproved.length != 0){
+    template += `<div class='tab-pane fade' id='approved' role='tabpanel' aria-labelledby='approvedTab'>
+            <div class='card-body'>
+            <div class='card-title'>
+            <select onchange="
+            const access_token = JSON.parse(localStorage.parms).access_token;
+        
+                    console.log('SHOWING PREVIEW', this.value);
+                    let previewContainer = document.getElementById('boxFilePreview');
+                    var preview = new Box.Preview();
+                    preview.show(this.value, access_token, {
+                      container: previewContainer
+                    });
+            
+            
+            ">
+            `;
+        
+            for(const id of filesapproved){
+              let file = await getFileInfo(id);
+              template += `
+              <option value='${id}'>
+              ${file.name}</option>`;
+            }
+            
+                template += `
+              </select>
+              </div>
+                
+                
+                  </div>
+              
+          </div>`
+  }
+  else {
+    template += `<div class='tab-pane fade' id='approved' role='tabpanel' aria-labelledby='approvedTab'>
+              No files to show.            
+    </div>
+    
+    `
+  }
+  template += `<div id='filePreview'> <div id='boxFilePreview' class="preview-container"></div>
       <div class="card-body comment-submit" style="padding-left: 10px;background-color:#f6f6f6;">
       <form>
         <label for"message">Enter Comments</label>
@@ -515,10 +553,162 @@ export const chairFileView = async() => {
       
       </div>
       </div>
+      </div>`
+  //         <div class='tab-pane fade show active' id='toBeCompleted' role='tabpanel' aria-labeledby='toBeCompletedTab'> 
+            
+
+  //           <div class='card-body'>
+  //           <div class='card-title'>
+  //           <select onchange="
+  //           const access_token = JSON.parse(localStorage.parms).access_token;
+   
+  //                   console.log('SHOWING PREVIEW', this.value);
+  //                   let previewContainer = document.getElementById('boxFilePreview');
+  //                   var preview = new Box.Preview();
+  //                   preview.show(this.value, access_token, {
+  //                     container: previewContainer
+  //                   });
+            
+            
+  //           ">
+  //           `;
+
+  //           for(const id of filesincomplete){
+  //             let file = await getFileInfo(id);
+  //             template += `
+  //             <option value='${id}'>
+  //             ${file.name}</option>`;
+  //           }
+            
+  //               template += `
+  //             </select>
+  //             </div>
+                
+                
+  //                 </div>
+              
+  //         </div>
+
+  //         <div class='tab-pane fade' id='inProgress' role='tabpanel' aria-labeledby='inProgressTab'> 
+            
+
+  //         <div class='card-body'>
+  //         <div class='card-title'>
+  //         <select onchange="
+  //         const access_token = JSON.parse(localStorage.parms).access_token;
+ 
+  //                 console.log('SHOWING PREVIEW', this.value);
+  //                 let previewContainer = document.getElementById('boxFilePreview');
+  //                 var preview = new Box.Preview();
+  //                 preview.show(this.value, access_token, {
+  //                   container: previewContainer
+  //                 });
+          
+          
+  //         ">
+  //         `;
+
+  //         for(const id of filesinprogress){
+  //           let file = await getFileInfo(id);
+  //           template += `
+  //           <option value='${id}'>
+  //           ${file.name}</option>`;
+  //         }
+          
+  //             template += `
+  //           </select>
+  //           </div>
+              
+              
+  //               </div>
+            
+  //       </div>
+
+    
+  //   <!-- DACCC TAB -->
+
+  //   <div class='tab-pane fade' id='daccCompleted' role='tabpanel' aria-labelledby='daccCompletedTab'>
+  //   <div class='card-body'>
+  //   <div class='card-title'>
+  //   <select onchange="
+  //   const access_token = JSON.parse(localStorage.parms).access_token;
+
+  //           console.log('SHOWING PREVIEW', this.value);
+  //           let previewContainer = document.getElementById('boxFilePreview');
+  //           var preview = new Box.Preview();
+  //           preview.show(this.value, access_token, {
+  //             container: previewContainer
+  //           });
+    
+    
+  //   ">
+  //   `;
+
+  //   for(const id of filescompleted){
+  //     let file = await getFileInfo(id);
+  //     template += `
+  //     <option value='${id}'>
+  //     ${file.name}</option>`;
+  //   }
+    
+  //       template += `
+  //     </select>
+  //     </div>
+        
+        
+  //         </div>
+      
+  // </div>
+          
+
+  //         <div class='tab-pane fade' id='approved' role='tabpanel' aria-labelledby='approvedTab'>
+  //         <div class='card-body'>
+  //         <div class='card-title'>
+  //         <select onchange="
+  //         const access_token = JSON.parse(localStorage.parms).access_token;
+      
+  //                 console.log('SHOWING PREVIEW', this.value);
+  //                 let previewContainer = document.getElementById('boxFilePreview');
+  //                 var preview = new Box.Preview();
+  //                 preview.show(this.value, access_token, {
+  //                   container: previewContainer
+  //                 });
+          
+          
+  //         ">
+  //         `;
+      
+  //         for(const id of filesapproved){
+  //           let file = await getFileInfo(id);
+  //           template += `
+  //           <option value='${id}'>
+  //           ${file.name}</option>`;
+  //         }
+          
+  //             template += `
+  //           </select>
+  //           </div>
+              
+              
+  //               </div>
+            
+  //       </div>
+  //       <div id='boxFilePreview' class="preview-container"></div>
+  //     <div class="card-body comment-submit" style="padding-left: 10px;background-color:#f6f6f6;">
+  //     <form>
+  //       <label for"message">Enter Comments</label>
+  //       <div class="input-group">
+  //         <textarea id="message" name="message" rows="6" cols="65"></textarea>
+  //       </div>
+  //       <button class='btn btn-primary' type="submit" value="send">Send Comment</button>
+  //     </form>
+      
+  //     </div>
+  //     </div>
 
       
     
-      `;
+  //     `;
     
   await console.log(await searchMetadata());
 
@@ -529,13 +719,28 @@ export const chairFileView = async() => {
   addEventToggleCollapsePanelBtn();
   //viewFile();
   //commentSubmit();
+  if(filesincomplete.length != 0){
   showPreview(filesincomplete[0]);
-
+  }
 
   //Switch Tabs
+  const boxPreview = document.getElementById('filePreview');
   document.getElementById('toBeCompletedTab').addEventListener('click', (e) => {
     e.preventDefault();
+    
+    if(filesincomplete.length != 0){
+    
+    
+    
+    if (!boxPreview.classList.contains('d-block')){
+      boxPreview.classList.add('d-block');
+    }
     showPreview(filesincomplete[0]);
+    }
+    else {
+      boxPreview.classList.remove('d-block');
+      boxPreview.classList.add('d-none');
+    }
     console.log('toBeCompleted Tab clicked');
     
     document.getElementById('approvedTab').classList.remove('active');
@@ -554,7 +759,19 @@ export const chairFileView = async() => {
 })
 document.getElementById('inProgressTab').addEventListener('click', (e) => {
   e.preventDefault();
-  //showPreview(filesinprogress[0]);
+  if(filesinprogress.length != 0){
+    
+    
+    
+    if (!boxPreview.classList.contains('d-block')){
+      boxPreview.classList.add('d-block');
+    }
+    showPreview(filesinprogress[0]);
+    }
+    else {
+      boxPreview.classList.remove('d-block');
+      boxPreview.classList.add('d-none');
+    }
   console.log('inProgress Tab clicked');
   
   document.getElementById('approvedTab').classList.remove('active');
@@ -573,7 +790,19 @@ document.getElementById('inProgressTab').addEventListener('click', (e) => {
 })
   document.getElementById('daccCompletedTab').addEventListener('click', (e) => {
     e.preventDefault();
-    showPreview(filescompleted[0]);
+    if(filescompleted.length != 0){
+    
+    
+    
+      if (!boxPreview.classList.contains('d-block')){
+        boxPreview.classList.add('d-block');
+      }
+      showPreview(filescompleted[0]);
+      }
+      else {
+        boxPreview.classList.remove('d-block');
+        boxPreview.classList.add('d-none');
+      }
     console.log('daccCompleted Tab clicked');
     
     document.getElementById('approvedTab').classList.remove('active');
@@ -592,8 +821,21 @@ document.getElementById('inProgressTab').addEventListener('click', (e) => {
 })
   document.getElementById('approvedTab').addEventListener('click', (e) => {
       e.preventDefault();
+      if(filesapproved.length != 0){
+    
+    
+    
+        if (!boxPreview.classList.contains('d-block')){
+          boxPreview.classList.add('d-block');
+        }
+        showPreview(filesapproved[0]);
+        }
+        else {
+          boxPreview.classList.remove('d-block');
+          boxPreview.classList.add('d-none');
+        }
       console.log('approved Tab clicked');
-      showPreview(filesapproved[0]);
+      
 
       document.getElementById('toBeCompletedTab').classList.remove('active');
       document.getElementById('toBeCompleted').classList.remove('show', 'active');
