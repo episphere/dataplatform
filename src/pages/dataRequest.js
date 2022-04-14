@@ -356,7 +356,7 @@ export const chairFileView = async () => {
   const taskApproveDeny = [];
   for (let obj of filearray) {
     let id = obj.id;
-    //console.log(id);
+    console.log(id);
     let metaArray = await getMetadata(id);
     let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
     let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
@@ -411,20 +411,17 @@ export const chairFileView = async () => {
  
   template += `<div id='filePreview'> <div id='boxFilePreview' class="preview-container"></div>
       <div class="card-body comment-submit" style="padding-left: 10px;background-color:#f6f6f6;">
-      <form>
+      <!---<form>
         <label for"message">Enter Comments</label>
         <div class="input-group">
           <textarea id="message" name="message" rows="6" cols="65"></textarea>
         </div>
         <button class='btn btn-primary' type="submit" value="send">Send Comment</button>
-      </form>
+      </form>--->
       
       </div>
       </div>
       </div>`;
-
-  await console.log(await searchMetadata());
-
 
   document.getElementById('chairFileView').innerHTML = template;
 
@@ -556,8 +553,6 @@ export const chairFileView = async () => {
 
     document.getElementById('approved').classList.add('show', 'active');
     document.getElementById('approvedTab').classList.add('active');
-
-
   })
 }
 

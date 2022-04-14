@@ -99,11 +99,11 @@ export const renderForm = () => {
 export function renderFilePreviewDropdown(files){
     let template = '';
 if(!Array.isArray(files)){
-    console.log('NOt an array');
+    console.log('Not an array');
     return
 }
 if(files.length != 0){
-    console.log('Param 1 is array');
+    console.log('Param is array length: ' + files.length);
     template += `<div class='card-body'>
             <div class='card-title'>
             <select onchange="
@@ -115,13 +115,11 @@ if(files.length != 0){
                     preview.show(this.value, access_token, {
                       container: previewContainer
                     });
-            
-            
             ">
             `;
 
     for (const file of files) { 
-      console.log('File', file);
+      //console.log('File', file);
       template += `
               <option value='${file.id}'>
               ${file.name}</option>`;
@@ -143,7 +141,7 @@ if(files.length != 0){
     `
   }
 
-  console.log(template);
+  //console.log(template);
   
   return template;
   
