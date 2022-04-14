@@ -1,19 +1,67 @@
-import { showAnimation, removeActiveClass, uploadFile, createFolder, getCollaboration, addNewCollaborator, removeBoxCollaborator, notificationTemplate, updateBoxCollaborator, getFolderItems, consortiumSelection, filterStudies, filterDataTypes, filterFiles, copyFile, hideAnimation, getFileAccessStats, uploadFileVersion, getFile, csv2Json, json2csv, publicDataFileId, summaryStatsFileId, getFileInfo, missingnessStatsFileId, assignNavbarActive, reSizePlots } from './shared.js';
-import { renderDataSummary } from './pages/about.js';
-import { variables } from './variables.js';
-import { template as dataGovernanceTemplate, addFields, dataGovernanceLazyLoad, dataGovernanceCollaboration, dataGovernanceProjects } from './pages/dataGovernance.js';
-import { myProjectsTemplate } from './pages/myProjects.js';
-import { createProjectModal } from './components/modal.js';
-import { getSelectedStudies, renderAllCasesCharts, renderAllCharts, updateCounts } from './visualization.js';
+import {
+    showAnimation,
+    removeActiveClass,
+    uploadFile,
+    createFolder,
+    getCollaboration,
+    addNewCollaborator,
+    removeBoxCollaborator,
+    notificationTemplate,
+    updateBoxCollaborator,
+    getFolderItems,
+    consortiumSelection,
+    filterStudies,
+    filterDataTypes,
+    filterFiles,
+    copyFile,
+    hideAnimation,
+    getFileAccessStats,
+    uploadFileVersion,
+    getFile,
+    csv2Json,
+    json2csv,
+    publicDataFileId,
+    summaryStatsFileId,
+    getFileInfo,
+    missingnessStatsFileId,
+    assignNavbarActive,
+    reSizePlots
+} from './shared.js';
+import {
+    renderDataSummary
+} from './pages/about.js';
+import {
+    variables
+} from './variables.js';
+import {
+    template as dataGovernanceTemplate,
+    addFields,
+    dataGovernanceLazyLoad,
+    dataGovernanceCollaboration,
+    dataGovernanceProjects
+} from './pages/dataGovernance.js';
+import {
+    myProjectsTemplate
+} from './pages/myProjects.js';
+import {
+    createProjectModal
+} from './components/modal.js';
+import {
+    getSelectedStudies,
+    renderAllCasesCharts,
+    renderAllCharts,
+    updateCounts
+} from './visualization.js';
 
+import { showPreview } from './components/boxPreview.js'; 
 let top = 0;
 
 export const addEventStudyRadioBtn = () => {
     const createStudyRadio = document.getElementsByName('createStudyRadio');
     Array.from(createStudyRadio).forEach(element => {
         element.addEventListener('click', () => {
-            if(element.checked){
-                if(element.value === 'no'){
+            if (element.checked) {
+                if (element.value === 'no') {
                     const studyFormElements = document.getElementById('studyFormElements');
                     const selectConsortiaUIS = document.getElementById('selectConsortiaUIS');
                     studyFormElements.innerHTML = `
@@ -26,9 +74,8 @@ export const addEventStudyRadioBtn = () => {
                             <input type="file" class="form-control-file" id="uploadDataUIS" name="dataFile" required>
                         </div>
                     `;
-                    if(selectConsortiaUIS.value) selectConsortiaUIS.dispatchEvent(new Event('change'));
-                }
-                else{
+                    if (selectConsortiaUIS.value) selectConsortiaUIS.dispatchEvent(new Event('change'));
+                } else {
                     const studyFormElements = document.getElementById('studyFormElements');
                     studyFormElements.innerHTML = `
                         <div class="form-group">
@@ -48,33 +95,33 @@ export const addEventStudyRadioBtn = () => {
 
 export const addEventConsortiaSelect = () => {
     const element = document.getElementById('selectConsortiaUIS');
-    if(!element) return
+    if (!element) return
     element.addEventListener('change', async () => {
         const selectStudyUIS = document.getElementById('selectStudyUIS');
-        if(!selectStudyUIS) return;
+        if (!selectStudyUIS) return;
         const value = element.value;
-        if(!value) {
+        if (!value) {
             Array.from(selectStudyUIS.options).forEach(option => {
                 selectStudyUIS.remove(option);
             })
             return;
         }
-        
+
         let entries = (await getFolderItems(value)).entries;
-        
+
         // check if study document exists
         const documentExists = entries.filter(dt => dt.name.trim().toLowerCase() === 'BCRPP data from studies');
-        if(documentExists.length === 1){
+        if (documentExists.length === 1) {
             entries = (await getFolderItems(documentExists[0].id)).entries;
         }
-        
+
         selectStudyUIS.innerHTML = '';
         const firstOption = document.createElement('option');
         firstOption.value = '';
         firstOption.text = '-- Select folder --'
         selectStudyUIS.appendChild(firstOption);
         entries = filterStudies(entries);
-        for(let obj of entries){
+        for (let obj of entries) {
             const option = document.createElement('option');
             option.value = obj.id;
             option.text = obj.name;
@@ -85,13 +132,13 @@ export const addEventConsortiaSelect = () => {
 
 export const addEventUploadStudyForm = () => {
     const form = document.getElementById('uploadStudyForm');
-    if(!form) return;
+    if (!form) return;
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const file = document.getElementById('uploadDataUIS').files[0]; 
+        const file = document.getElementById('uploadDataUIS').files[0];
         const fileName = file.name;
-        const fileType = fileName.slice(fileName.lastIndexOf('.')+1, fileName.length);
-        if(fileType !== 'txt') {
+        const fileType = fileName.slice(fileName.lastIndexOf('.') + 1, fileName.length);
+        if (fileType !== 'txt') {
             alert('File type not supported!');
             return;
         }
@@ -101,14 +148,14 @@ export const addEventUploadStudyForm = () => {
         const newStudyName = document.getElementById('newStudyName');
         const studyName = newStudyName ? newStudyName.value : study.options[study.selectedIndex].text;
         const r = confirm(`Upload ${fileName} in ${consortiaText} >> ${studyName}?`);
-        if(r){
+        if (r) {
             document.getElementById('submitBtn').classList.add('btn-disbaled');
             //document.getElementById('submitBtn').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Performing QAQC...`;
-            
+
             let fileReader = new FileReader();
-            fileReader.onload = function(fileLoadedEvent){
+            fileReader.onload = function (fileLoadedEvent) {
                 const textFromFileLoaded = fileLoadedEvent.target.result;
-                
+
                 performQAQC(textFromFileLoaded, fileName);
             };
             fileReader.readAsText(file, "UTF-8");
@@ -122,64 +169,64 @@ const separateData = async (qaqcFileName, textFromFileLoaded, fileName) => {
     const study = document.getElementById('selectStudyUIS');
     const newStudyName = document.getElementById('newStudyName');
     let studyId;
-    if(study){
+    if (study) {
         studyId = study.value;
-    }
-    else if (newStudyName) {
+    } else if (newStudyName) {
         //document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Creating new folder...`;
         const entries = (await getFolderItems(consortiaId)).entries;
         const studyFolders = entries.filter(dt => dt.type === 'folder' && dt.name.trim().toLowerCase() === 'bcrpp data from studies');
         const response = await createFolder(`${studyFolders.length === 0 ? consortiaId : studyFolders[0].id}`, newStudyName.value);
-        if(response.status !== 201 ) return
+        if (response.status !== 201) return
         const data = await response.json();
         studyId = data.id;
     }
     const dataEntries = (await getFolderItems(studyId)).entries;
     //document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Checking folders...`;
-    let logFolderID = '', cDataFolderID = '';//, pDataFolderID = '', rfDataFolderID = '', stDataFolderID = '';
+    let logFolderID = '',
+        cDataFolderID = ''; //, pDataFolderID = '', rfDataFolderID = '', stDataFolderID = '';
     logFolderID = await existsOrCreateNewFolder(dataEntries, studyId, 'Submission_Logs');
     cDataFolderID = await existsOrCreateNewFolder(dataEntries, studyId, 'Core Data');
     //pDataFolderID = await existsOrCreateNewFolder(dataEntries, studyId, 'Incident Breast Cancer Data');
     //rfDataFolderID = await existsOrCreateNewFolder(dataEntries, studyId, 'Mammographic Density Data');
     //stDataFolderID = await existsOrCreateNewFolder(dataEntries, studyId, 'Summary Results');
     //document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Separating data...`;
-    let rows = textFromFileLoaded.split(/\n/g).map(tx=>tx.split(/\t/g));
+    let rows = textFromFileLoaded.split(/\n/g).map(tx => tx.split(/\t/g));
     const headings = rows[0];
     rows.splice(0, 1);
     let obj = rows.map(el => {
         let obj = {};
         for (let i = 0; i < el.length; i++) {
-        obj[headings[i].trim()] = el[i];
+            obj[headings[i].trim()] = el[i];
         }
         return obj;
     });
-    
+
     const masterFile = variables.masterFile;
     const core = masterFile.core.map(att => att.toLowerCase());
     //const pathology = masterFile.pathology.map(att => att.toLowerCase());
     //const riskFactor = masterFile.riskFactor.map(att => att.toLowerCase());
     //const survivalTreatment = masterFile.survivalAndTreatment.map(att => att.toLowerCase());
-    
+
     let coreData = [];
     //let pathologyData = [];
     //let rfData = [];
     //let stData = [];
-    
+
     obj.forEach(data => {
         let cObj = {};
         //let pObj = {};
         //let rfObj = {};
         //let stObj = {};
 
-        for(const key in data){
-            if(core.indexOf(key.toLowerCase()) !== -1){
+        for (const key in data) {
+            if (core.indexOf(key.toLowerCase()) !== -1) {
                 cObj[key] = data[key];
             }
 
             // if(pathology.indexOf(key.toLowerCase()) !== -1){
             //     pObj[key] = data[key];
             // }
-            
+
             // if(riskFactor.indexOf(key.toLowerCase()) !== -1){
             //     rfObj[key] = data[key];
             // }
@@ -189,7 +236,7 @@ const separateData = async (qaqcFileName, textFromFileLoaded, fileName) => {
             // }
         }
 
-        if(Object.keys(cObj).length > 0) coreData.push(cObj);
+        if (Object.keys(cObj).length > 0) coreData.push(cObj);
         // if(Object.keys(pObj).length > 0) pathologyData.push(pObj);
         // if(Object.keys(rfObj).length > 0) rfData.push(rfObj);
         // if(Object.keys(stObj).length > 0) stData.push(stObj);
@@ -197,7 +244,7 @@ const separateData = async (qaqcFileName, textFromFileLoaded, fileName) => {
     // Upload Data
     //document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading data...`;
     const response1 = await uploadFile(coreData, `${fileName.slice(0, fileName.lastIndexOf('.'))}_Core_Data.json`, cDataFolderID);
-    
+
     // if(response1.status === 409) {
     //     const conflictFileId = response1.json.context_info.conflicts.id;
     //     document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading new version...`;
@@ -226,17 +273,16 @@ const separateData = async (qaqcFileName, textFromFileLoaded, fileName) => {
     //document.getElementById('continueSubmission').innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading QAQC report...`;
     //const elHtml = document.getElementById('qaqcSubmissionReport').innerHTML;
     //await uploadFile(elHtml, qaqcFileName, logFolderID, true)
-    
+
     location.reload();
 }
 
 const existsOrCreateNewFolder = async (dataEntries, studyId, folderName) => {
     const folderExists = dataEntries.filter(dt => dt.type === "folder" && dt.name === folderName);
     let ID = '';
-    if(folderExists.length === 0) {
+    if (folderExists.length === 0) {
         ID = (await (await createFolder(studyId, folderName)).json()).id;
-    }
-    else {
+    } else {
         ID = folderExists[0].id;
     }
     return ID;
@@ -248,9 +294,9 @@ const performQAQC = async (textFromFileLoaded, fileName) => {
     //         ${runQAQC(dataForQAQC(textFromFileLoaded))}
     //     </div>
     // `;
-    
+
     // const submitBtn = document.getElementById('submitBtn');
-    
+
     // const newBtn = document.createElement('button');
     // newBtn.id = "continueSubmission";
     // newBtn.classList = ["btn btn-light"];
@@ -268,7 +314,7 @@ const performQAQC = async (textFromFileLoaded, fileName) => {
     //const closeBtn = submitBtn.parentNode.querySelectorAll('[data-dismiss="modal"]')[0];
     //closeBtn.parentNode.replaceChild(downloadAndClose, closeBtn)
     //submitBtn.parentNode.replaceChild(newBtn, submitBtn);
-    
+
     const fileNameQAQC = `${fileName.substr(0, fileName.lastIndexOf('.'))}_qaqc_${new Date().toISOString()}.html`
     //addEventDownloadQAQCReport(fileNameQAQC);
     addEventContinueSubmission(fileNameQAQC, textFromFileLoaded, fileName);
@@ -282,7 +328,7 @@ const addEventDownloadQAQCReport = (fileName) => {
         const mimeType = 'text/html';
 
         link.setAttribute('download', fileName);
-        link.setAttribute('href', 'data:' + mimeType  +  ';charset=utf-8,' + encodeURIComponent(elHtml));
+        link.setAttribute('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(elHtml));
         link.click();
 
         replaceBtns();
@@ -322,23 +368,27 @@ const addEventContinueSubmission = (qaqcFileName, textFromFileLoaded, fileName) 
 
 const dataForQAQC = (txt) => {
     let data = {};
-    if(txt.slice(0,1)=='['){txt='{'+txt+'}'}
-    if(txt.slice(0,1)=='{'){
+    if (txt.slice(0, 1) == '[') {
+        txt = '{' + txt + '}'
+    }
+    if (txt.slice(0, 1) == '{') {
         data = JSON.parse(txt);
         return data
-    }else{
-        let arr =txt.split(/[\r\n]+/g).map(row=>{  // data array
+    } else {
+        let arr = txt.split(/[\r\n]+/g).map(row => { // data array
             //if(row[0]=='    '){row='undefined   '+row}
             return row.replace(/"/g, '').split(/[,\t]/g) // split csv and tsv alike
         })
-        if(arr.slice(-1).toLocaleString()==""){arr.pop()}
+        if (arr.slice(-1).toLocaleString() == "") {
+            arr.pop()
+        }
         const labels = arr[0]
         labels.forEach((label) => {
             data[label] = []
         })
-        arr.slice(1).forEach((row,i) => {
-            labels.forEach((label,j) => {
-                data[label][i]=row[j]
+        arr.slice(1).forEach((row, i) => {
+            labels.forEach((label, j) => {
+                data[label][i] = row[j]
             })
         })
         labels.forEach(label => {
@@ -349,18 +399,18 @@ const dataForQAQC = (txt) => {
 }
 
 const numberType = aa => { // try to fit numeric typing
-    let tp='number'
-    aa.forEach(a=>{
-        if(!((a==parseFloat(a))||(a=='undefined')||(a==''))){
-            tp='string'
+    let tp = 'number'
+    aa.forEach(a => {
+        if (!((a == parseFloat(a)) || (a == 'undefined') || (a == ''))) {
+            tp = 'string'
         }
     })
-    if(tp=='number'){
-        aa=aa.map(a=>{
-            if(a=='undefined'||a==''){
-                a=undefined
-            }else{
-                a=parseFloat(a)
+    if (tp == 'number') {
+        aa = aa.map(a => {
+            if (a == 'undefined' || a == '') {
+                a = undefined
+            } else {
+                a = parseFloat(a)
             }
             return a
         })
@@ -373,7 +423,7 @@ export const addEventShowAllCollaborator = () => {
     const btn2 = document.getElementById('listCollaborators');
     const folderToShare = document.getElementById('folderToShare');
     btn2.addEventListener('click', async () => {
-        if(btn2.classList.contains('active-tab')) return;
+        if (btn2.classList.contains('active-tab')) return;
         const ID = folderToShare.dataset.folderId;
         const folderName = folderToShare.dataset.folderName;
         const type = folderToShare.dataset.objectType;
@@ -381,13 +431,13 @@ export const addEventShowAllCollaborator = () => {
         btn1.classList.remove('active-tab');
         const collaboratorModalBody = document.getElementById('collaboratorModalBody');
         collaboratorModalBody.innerHTML = ``;
-        const response = await getCollaboration(ID,`${type}s`);
+        const response = await getCollaboration(ID, `${type}s`);
         const userPermission = checkPermissionLevel(response);
         let table = '';
         let allEntries = [];
-        if(response && response.entries.length > 0){
+        if (response && response.entries.length > 0) {
             let entries = response.entries;
-            
+
             entries.forEach(entry => {
                 const name = !entry.invite_email ? entry.accessible_by.name : '';
                 const email = !entry.invite_email ? entry.accessible_by.login : entry.invite_email;
@@ -397,7 +447,16 @@ export const addEventShowAllCollaborator = () => {
                 // const folderName = entry.item.name;
                 const addedBy = `${entry.created_by.name}`;
                 const addedAt = (new Date(entry.created_at)).toLocaleString();
-                allEntries.push({name, email, role, status, addedBy, addedAt, id, folderName});
+                allEntries.push({
+                    name,
+                    email,
+                    role,
+                    status,
+                    addedBy,
+                    addedAt,
+                    id,
+                    folderName
+                });
             });
             allEntries = allEntries.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : ((b.name.toLowerCase() > a.name.toLowerCase()) ? -1 : 0));
 
@@ -415,8 +474,7 @@ export const addEventShowAllCollaborator = () => {
                 </div>
                 <table id="collaboratorsList" class="table table-borderless table-striped collaborator-table"></table>
             `;
-        }
-        else{
+        } else {
             table = 'Collaborators not found!'
         }
         collaboratorModalBody.innerHTML = `
@@ -431,11 +489,11 @@ export const addEventShowAllCollaborator = () => {
 };
 
 const renderCollaboratorsList = (allEntries, userPermission) => {
-    if(allEntries.length === 0 ) {
+    if (allEntries.length === 0) {
         document.getElementById('collaboratorsList').innerHTML = 'Collaborators not found!';
         return;
     }
-    if(!document.getElementById('collaboratorsList')) return;
+    if (!document.getElementById('collaboratorsList')) return;
     let table = `
         <thead>
             <tr>
@@ -457,7 +515,15 @@ const renderCollaboratorsList = (allEntries, userPermission) => {
 const renderCollaboratorListTBody = (allEntries, userPermission) => {
     let tbody = '';
     allEntries.forEach(entry => {
-        const { name, email, role, addedBy, addedAt, id, folderName} = entry;
+        const {
+            name,
+            email,
+            role,
+            addedBy,
+            addedAt,
+            id,
+            folderName
+        } = entry;
         const userName = JSON.parse(localStorage.parms).name
         tbody += `<tr>
                     <td title="${name}">${name.length > 20 ? `${name.slice(0, 20)}...` : `${name}`}</td>
@@ -481,13 +547,12 @@ const addEventSortTable = (allEntries, userPermission) => {
         element.addEventListener('click', () => {
             const columnName = element.dataset.columnName;
             const orderBy = element.dataset.orderBy;
-            if(orderBy === 'desc') {
+            if (orderBy === 'desc') {
                 element.dataset.orderBy = 'asc';
-                renderCollaboratorListTBody(allEntries.sort((a,b) => (a[columnName] < b[columnName]) ? 1 : ((b[columnName] < a[columnName]) ? -1 : 0)), userPermission)
-            }
-            else{
+                renderCollaboratorListTBody(allEntries.sort((a, b) => (a[columnName] < b[columnName]) ? 1 : ((b[columnName] < a[columnName]) ? -1 : 0)), userPermission)
+            } else {
                 element.dataset.orderBy = 'desc';
-                renderCollaboratorListTBody(allEntries.sort((a,b) => (a[columnName] > b[columnName]) ? 1 : ((b[columnName] > a[columnName]) ? -1 : 0)), userPermission)
+                renderCollaboratorListTBody(allEntries.sort((a, b) => (a[columnName] > b[columnName]) ? 1 : ((b[columnName] > a[columnName]) ? -1 : 0)), userPermission)
             }
         })
     })
@@ -498,7 +563,7 @@ const addEventSearchCollaborators = (allEntries, userPermission) => {
     let filteredEntries = allEntries;
     search.addEventListener('input', () => {
         const searchValue = search.value.trim().toLowerCase();
-        if(searchValue.length < 3) {
+        if (searchValue.length < 3) {
             filteredEntries = allEntries;
             filteredEntries = filteredEntries.map(dt => {
                 dt['name'] = dt['name'].replace(/(<b>)|(<\/b>)/g, '');
@@ -519,9 +584,9 @@ const addEventSearchCollaborators = (allEntries, userPermission) => {
 }
 
 const updatePermissionsOptions = (userPermission, role) => {
-    if ( userPermission === 'owner') return `<option ${role === 'co-owner' ? `selected` : ``} value="co-owner">co-owner</option><option ${role === 'editor' ? `selected` : ``} value="editor">editor</option><option ${role === 'viewer' ? `selected` : ``} value="viewer">viewer</option><option ${role === 'uploader' ? `selected` : ``} value="uploader">uploader</option>`
-    else if ( userPermission === 'co-owner') return `<option ${role === 'co-owner' ? `selected` : ``} value="co-owner">co-owner</option><option ${role === 'editor' ? `selected` : ``} value="editor">editor</option><option ${role === 'viewer' ? `selected` : ``} value="viewer">viewer</option><option ${role === 'uploader' ? `selected` : ``} value="uploader">uploader</option>`
-    else if ( userPermission === 'editor' && role !== 'co-owner' && role !== 'owner') return `<option ${role === 'editor' ? `selected` : ``} value="editor">editor</option><option ${role === 'viewer' ? `selected` : ``} value="viewer">viewer</option><option ${role === 'uploader' ? `selected` : ``} value="uploader">uploader</option>`;
+    if (userPermission === 'owner') return `<option ${role === 'co-owner' ? `selected` : ``} value="co-owner">co-owner</option><option ${role === 'editor' ? `selected` : ``} value="editor">editor</option><option ${role === 'viewer' ? `selected` : ``} value="viewer">viewer</option><option ${role === 'uploader' ? `selected` : ``} value="uploader">uploader</option>`
+    else if (userPermission === 'co-owner') return `<option ${role === 'co-owner' ? `selected` : ``} value="co-owner">co-owner</option><option ${role === 'editor' ? `selected` : ``} value="editor">editor</option><option ${role === 'viewer' ? `selected` : ``} value="viewer">viewer</option><option ${role === 'uploader' ? `selected` : ``} value="uploader">uploader</option>`
+    else if (userPermission === 'editor' && role !== 'co-owner' && role !== 'owner') return `<option ${role === 'editor' ? `selected` : ``} value="editor">editor</option><option ${role === 'viewer' ? `selected` : ``} value="viewer">viewer</option><option ${role === 'uploader' ? `selected` : ``} value="uploader">uploader</option>`;
     else return null;
 }
 
@@ -536,19 +601,17 @@ const addEventUpdateCollaborator = () => {
             const name = element.dataset.collaboratorName;
             const login = element.dataset.collaboratorLogin;
             const r = confirm(`Update Collaborator ${name || login} Role as ${newRole}?`);
-            if(r){
+            if (r) {
                 const response = await updateBoxCollaborator(id, newRole);
-                if(response.status === 200) {
-                    top = top+2;
+                if (response.status === 200) {
+                    top = top + 2;
                     let template = notificationTemplate(top, `<span class="successMsg">Collaborator Updated</span>`, `Collaborator ${ name || login} role updated as ${newRole} successfully!`);
                     showNotification.innerHTML = template;
                     addEventHideNotification();
+                } else {
+                    element.value = prevRole;
                 }
-                else{
-                    element.value = prevRole;    
-                }
-            }
-            else{
+            } else {
                 element.value = prevRole;
             }
         })
@@ -565,10 +628,10 @@ const addEventRemoveCollaborator = () => {
             const email = element.dataset.email;
             const name = element.dataset.collaboratorName;
             const r = confirm(`Remove Collaborator ${ name || email} from ${folderName}?`);
-            if(r){
+            if (r) {
                 const response = await removeBoxCollaborator(id);
-                if(response.status === 204){
-                    top = top+2;
+                if (response.status === 204) {
+                    top = top + 2;
                     let template = notificationTemplate(top, `<span class="successMsg">Collaborator Removed</span>`, `Collaborator ${ name || email} removed from ${folderName} successfully!`);
                     element.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode);
                     showNotification.innerHTML = template;
@@ -580,14 +643,13 @@ const addEventRemoveCollaborator = () => {
 }
 
 const checkPermissionLevel = (data) => {
-    if(data.entries.length === 0) return null;
+    if (data.entries.length === 0) return null;
     const login = localStorage.parms && JSON.parse(localStorage.parms).login ? JSON.parse(localStorage.parms).login : undefined;
     const array = data.entries.filter(d => d.accessible_by && d.accessible_by.login === login);
-    if(array.length === 0){
+    if (array.length === 0) {
         const newArray = data.entries.filter(d => d.created_by && d.created_by.login === login);
-        if(newArray.length > 0) return 'owner';
-    }
-    else {
+        if (newArray.length > 0) return 'owner';
+    } else {
         return array[0].role;
     }
     return null;
@@ -627,10 +689,10 @@ export const addEventAddNewCollaborator = () => {
 
         const addMoreEmail = document.getElementById('addMoreEmail');
         addMoreEmail.addEventListener('click', () => {
-            const counter = parseInt(addMoreEmail.dataset.counter)+1;
+            const counter = parseInt(addMoreEmail.dataset.counter) + 1;
             addMoreEmail.dataset.counter = counter;
             document.getElementById('collaboratorEmails').insertAdjacentHTML("beforeend", addFields(counter));
-            if(counter === 5) addMoreEmail.disabled = true;
+            if (counter === 5) addMoreEmail.disabled = true;
         });
 
         addEventCollaboratorForm(ID, type, name);
@@ -643,18 +705,18 @@ const addEventCollaboratorForm = (ID, type, name) => {
         e.preventDefault();
         const showNotification = document.getElementById('showNotification');
         let template = '';
-        for(let i = 1; i <= 5; i++){
+        for (let i = 1; i <= 5; i++) {
             const email = document.getElementById(`shareFolderEmail${i}`);
             const role = document.getElementById(`folderRole${i}`);
-            if(email && role){
+            if (email && role) {
                 const emails = email.value.split(',');
-                for(let index = 0; index < emails.length; index++){
+                for (let index = 0; index < emails.length; index++) {
                     const login = emails[index].trim();
                     const response = await addNewCollaborator(ID, type, login, role.value.toLowerCase());
-                    top = top+2;
-                    if(response.status === 200 || response.status === 201) {
+                    top = top + 2;
+                    if (response.status === 200 || response.status === 201) {
                         template += notificationTemplate(top, `<span class="successMsg">Added new collaborator</span>`, `${login} added to ${name} as ${role.value} successfully!`)
-                    }else{
+                    } else {
                         template += notificationTemplate(top, `<span class="errorMsg">Error!</span>`, `Could not add ${login} to ${name} as ${role.value}, <span class="errorMsg">${(await response.json()).message}</span>!!`);
                     }
                 }
@@ -670,30 +732,32 @@ const addEventHideNotification = () => {
     Array.from(hideNotification).forEach(btn => {
         btn.addEventListener('click', () => {
             btn.parentNode.parentNode.parentNode.removeChild(btn.parentNode.parentNode);
-            if(top >= 2) top = top-2;
+            if (top >= 2) top = top - 2;
         });
-        setTimeout(() => { btn.dispatchEvent(new Event('click')) }, 8000);
+        setTimeout(() => {
+            btn.dispatchEvent(new Event('click'))
+        }, 8000);
     });
 }
 
 export const addEventDataGovernanceNavBar = (bool) => {
     const dataGovernanceElement = document.getElementById('dataGovernance');
-    if(!dataGovernanceElement) return;
+    if (!dataGovernanceElement) return;
     dataGovernanceElement.addEventListener('click', async () => {
         // if(dataGovernanceElement.classList.contains('navbar-active')) return;
         showAnimation();
-        assignNavbarActive(dataGovernanceElement, 2 );
+        assignNavbarActive(dataGovernanceElement, 2);
         document.title = 'BCRPP - Data Governance';
         const confluenceDiv = document.getElementById('confluenceDiv');
         // if(bool){
-            confluenceDiv.classList.add('general-bg');
+        confluenceDiv.classList.add('general-bg');
 
-            const containerDiv = document.createElement('div');
-            containerDiv.classList = ['container padding-bottom-1rem'];
+        const containerDiv = document.createElement('div');
+        containerDiv.classList = ['container padding-bottom-1rem'];
 
-            const headerDiv = document.createElement('div');
-            headerDiv.classList = ['main-summary-row'];
-            headerDiv.innerHTML = `<div class="align-left">
+        const headerDiv = document.createElement('div');
+        headerDiv.classList = ['main-summary-row'];
+        headerDiv.innerHTML = `<div class="align-left">
                                         <h1 class="page-header">Data Governance</h1>
                                     </div>`
 
@@ -704,48 +768,48 @@ export const addEventDataGovernanceNavBar = (bool) => {
         //                         </button>
         //                         ${createProjectModal()}`;
 
-            const divRow = document.createElement('div');
-            divRow.classList = ['main-summary-row white-bg div-border'];
-            divRow.id = 'dataGovernanceMain'
-            
-            const div1 = document.createElement('div');
-            div1.classList = ['col-lg-6 align-left'];
-            div1.innerHTML = await dataGovernanceTemplate();
-            hideAnimation();
-            divRow.appendChild(div1);
+        const divRow = document.createElement('div');
+        divRow.classList = ['main-summary-row white-bg div-border'];
+        divRow.id = 'dataGovernanceMain'
 
-            // const div2 = document.createElement('div');
-            // div2.classList = ['col-lg-6 align-left'];
-            // div2.id = 'dataGovernanceProjects';
-            // divRow.appendChild(div2);
+        const div1 = document.createElement('div');
+        div1.classList = ['col-lg-6 align-left'];
+        div1.innerHTML = await dataGovernanceTemplate();
+        hideAnimation();
+        divRow.appendChild(div1);
 
-            confluenceDiv.innerHTML = ``;
-            containerDiv.appendChild(headerDiv)
-            // containerDiv.appendChild(btnDiv)
-            containerDiv.appendChild(divRow)
-            confluenceDiv.appendChild(containerDiv);
+        // const div2 = document.createElement('div');
+        // div2.classList = ['col-lg-6 align-left'];
+        // div2.id = 'dataGovernanceProjects';
+        // divRow.appendChild(div2);
+
+        confluenceDiv.innerHTML = ``;
+        containerDiv.appendChild(headerDiv)
+        // containerDiv.appendChild(btnDiv)
+        containerDiv.appendChild(divRow)
+        confluenceDiv.appendChild(containerDiv);
         //     dataGovernanceProjects();
-            dataGovernanceLazyLoad();
+        dataGovernanceLazyLoad();
         // }
         // else{
-            // confluenceDiv.innerHTML = ``;
+        // confluenceDiv.innerHTML = ``;
 
-            // const btnDiv = document.createElement('div');
-            // btnDiv.classList = ['align-left create-project-btn'];
-            // btnDiv.innerHTML = `<button id="createProjectBtn" title="Create project" data-toggle="modal" data-target="#createProjectModal" class="btn btn-light">
-            //                         <i class="fas fa-project-diagram"></i> Create project
-            //                     </button>
-            //                     ${createProjectModal()}`;
-            
-            // const div = document.createElement('div');
-            // div.classList = ['align-left'];
-            // div.innerHTML = await dataGovernanceTemplate();
-            // hideAnimation();
-            // confluenceDiv.appendChild(btnDiv);
-            // confluenceDiv.appendChild(div);
-            // dataGovernanceLazyLoad();
+        // const btnDiv = document.createElement('div');
+        // btnDiv.classList = ['align-left create-project-btn'];
+        // btnDiv.innerHTML = `<button id="createProjectBtn" title="Create project" data-toggle="modal" data-target="#createProjectModal" class="btn btn-light">
+        //                         <i class="fas fa-project-diagram"></i> Create project
+        //                     </button>
+        //                     ${createProjectModal()}`;
+
+        // const div = document.createElement('div');
+        // div.classList = ['align-left'];
+        // div.innerHTML = await dataGovernanceTemplate();
+        // hideAnimation();
+        // confluenceDiv.appendChild(btnDiv);
+        // confluenceDiv.appendChild(div);
+        // dataGovernanceLazyLoad();
         // }
-        
+
         // addEventCreateProjectBtn();
         dataGovernanceCollaboration();
     });
@@ -787,10 +851,10 @@ const addEventCreateProjectBtn = () => {
         `
         const addMoreEmail = document.getElementById('addMoreEmail');
         addMoreEmail.addEventListener('click', () => {
-            const counter = parseInt(addMoreEmail.dataset.counter)+1;
+            const counter = parseInt(addMoreEmail.dataset.counter) + 1;
             addMoreEmail.dataset.counter = counter;
             document.getElementById('collaboratorEmails').insertAdjacentHTML("beforeend", addFields(counter));
-            if(counter === 5) addMoreEmail.disabled = true;
+            if (counter === 5) addMoreEmail.disabled = true;
         });
         addEventCPCSelect();
         addEventcreateProjectForm();
@@ -801,40 +865,39 @@ const addEventcreateProjectForm = () => {
     const form = document.getElementById('createProjectForm');
     form.addEventListener('submit', async e => {
         e.preventDefault();
-        const projectName = 'Confluence_'+document.getElementById('newProjectName').value+'_Project';
+        const projectName = 'Confluence_' + document.getElementById('newProjectName').value + '_Project';
         const fileId = document.getElementById('CPFSelect').value;
-        
+
         const showNotification = document.getElementById('showNotification');
         let template = '';
         const folder = await createFolder(0, projectName)
-        if(folder.status === 201) {
+        if (folder.status === 201) {
             const parent = await folder.json();
             const copied = await copyFile(fileId, parent.id);
-            if(copied.status === 201) {
-                for(let i = 1; i <= 5; i++){
+            if (copied.status === 201) {
+                for (let i = 1; i <= 5; i++) {
                     const email = document.getElementById(`shareFolderEmail${i}`);
                     const role = document.getElementById(`folderRole${i}`);
-                    if(email && role){
+                    if (email && role) {
                         const emails = email.value.split(',');
-                        for(let index = 0; index < emails.length; index++){
+                        for (let index = 0; index < emails.length; index++) {
                             const login = emails[index].trim();
                             const response = await addNewCollaborator(parent.id, 'folder', login, role.value.toLowerCase());
-                            top = top+2;
-                            if(response.status === 200 || response.status === 201) {
+                            top = top + 2;
+                            if (response.status === 200 || response.status === 201) {
                                 template += notificationTemplate(top, `<span class="successMsg">Added new collaborator</span>`, `${login} added to ${projectName} as ${role.value} successfully!`);
                                 dataGovernanceProjects();
-                            }else{
+                            } else {
                                 template += notificationTemplate(top, `<span class="errorMsg">Error!</span>`, `Could not add ${login} to ${projectName} as ${role.value}, <span class="errorMsg">${(await response.json()).message}</span>!!`);
                             }
-                            
+
                         }
                     }
-                }        
-            }else{
+                }
+            } else {
                 template += notificationTemplate(top, `<span class="errorMsg">Error!</span>`, `Could not copy file to ${projectName}, <span class="errorMsg">${(await copied.json()).message}</span>!!`);
             }
-        }
-        else{
+        } else {
             template += notificationTemplate(top, `<span class="errorMsg">Error!</span>`, `Could not create ${projectName}, <span class="errorMsg">${(await folder.json()).message}</span>!!`);
         }
         showNotification.innerHTML = template;
@@ -848,27 +911,27 @@ const addEventCPCSelect = () => {
         document.getElementById('studySelection').innerHTML = '';
         document.getElementById('dataTypeSelection').innerHTML = '';
         document.getElementById('fileSelection').innerHTML = '';
-        if(select.value === "") return;
+        if (select.value === "") return;
         const ID = select.value;
         let response = await getFolderItems(ID);
-        if(response.entries.length === 0) return;
+        if (response.entries.length === 0) return;
         // check if study document exists
         const documentExists = response.entries.filter(dt => dt.name.trim().toLowerCase() === 'BCRPP data from studies');
-        if(documentExists.length === 1){
+        if (documentExists.length === 1) {
             response = (await getFolderItems(documentExists[0].id));
         }
         const array = filterStudies(response.entries);
-        if(array.length === 0) return '';
+        if (array.length === 0) return '';
         let template = '';
         template += '<strong>Select study</strong> <span class="required">*</span><select id="CPSSelect" class="form-control" required>'
         array.forEach((obj, index) => {
-            if(index === 0) template += '<option value=""> -- Select study -- </option>'
+            if (index === 0) template += '<option value=""> -- Select study -- </option>'
             template += `<option value="${obj.id}">${obj.name}</option>`;
         });
         template += '</select>';
         document.getElementById('studySelection').innerHTML = template;
         addEventCPSSelect();
-        
+
     });
 }
 
@@ -877,16 +940,16 @@ const addEventCPSSelect = () => {
     select.addEventListener('change', async () => {
         document.getElementById('dataTypeSelection').innerHTML = '';
         document.getElementById('fileSelection').innerHTML = '';
-        if(select.value === "") return;
+        if (select.value === "") return;
         const ID = select.value;
         const response = await getFolderItems(ID);
-        if(response.entries.length === 0) return;
+        if (response.entries.length === 0) return;
         const array = filterDataTypes(response.entries);
-        if(array.length === 0) return '';
+        if (array.length === 0) return '';
         let template = '';
         template += '<strong>Select data type</strong> <span class="required">*</span><select id="CPDTSelect" class="form-control" required>'
         array.forEach((obj, index) => {
-            if(index === 0) template += '<option value=""> -- Select data type -- </option>'
+            if (index === 0) template += '<option value=""> -- Select data type -- </option>'
             template += `<option value="${obj.id}">${obj.name}</option>`;
         });
         template += '</select>';
@@ -899,17 +962,17 @@ const addEventCPDTSelect = () => {
     const select = document.getElementById('CPDTSelect');
     select.addEventListener('change', async () => {
         document.getElementById('fileSelection').innerHTML = '';
-        if(select.value === "") return;
-        
+        if (select.value === "") return;
+
         const ID = select.value;
         const response = await getFolderItems(ID);
-        if(response.entries.length === 0) return;
+        if (response.entries.length === 0) return;
         const array = filterFiles(response.entries);
-        if(array.length === 0) return '';
+        if (array.length === 0) return '';
         let template = '';
         template += '<strong>Select file</strong> <span class="required">*</span><select id="CPFSelect" class="form-control" required>'
         array.forEach((obj, index) => {
-            if(index === 0) template += '<option value=""> -- Select file -- </option>'
+            if (index === 0) template += '<option value=""> -- Select file -- </option>'
             template += `<option value="${obj.id}">${obj.name}</option>`;
         });
         template += '</select>';
@@ -921,7 +984,7 @@ const addEventCPDTSelect = () => {
 export const addEventMyProjects = () => {
     const myProjects = document.getElementById('myProjects');
     myProjects.addEventListener('click', async () => {
-        if(myProjects.classList.contains('navbar-active')) return;
+        if (myProjects.classList.contains('navbar-active')) return;
         showAnimation();
         assignNavbarActive(myProjects, 2);
         document.title = 'BCRPP - My Projects';
@@ -939,22 +1002,25 @@ export const addEventCopyToClipboard = () => {
             if (!navigator.clipboard) {
                 const textArea = document.createElement("textarea");
                 textArea.value = data;
-                textArea.style.position="fixed";  //avoid scrolling to bottom
+                textArea.style.position = "fixed"; //avoid scrolling to bottom
                 document.body.appendChild(textArea);
                 textArea.focus();
                 textArea.select();
                 const copied = document.execCommand('copy');
-                if(copied){
+                if (copied) {
                     elem.innerHTML = `<i class="fas fa-check"></i>`;
-                    setTimeout(()=> {elem.innerHTML = `<i class="far fa-copy">`}, 5000);
+                    setTimeout(() => {
+                        elem.innerHTML = `<i class="far fa-copy">`
+                    }, 5000);
                 }
                 document.body.removeChild(textArea);
-            }
-            else {
-                navigator.clipboard.writeText(data).then(function() {
+            } else {
+                navigator.clipboard.writeText(data).then(function () {
                     elem.innerHTML = `<i class="fas fa-check"></i>`;
-                    setTimeout(()=> {elem.innerHTML = `<i class="far fa-copy">`}, 5000);
-                }, function(err) {
+                    setTimeout(() => {
+                        elem.innerHTML = `<i class="far fa-copy">`
+                    }, 5000);
+                }, function (err) {
                     console.error('Async: Could not copy text: ', err);
                 });
             }
@@ -1006,70 +1072,70 @@ export const addEventVariableDefinitions = () => {
             const variable = element.dataset.variable;
             let variableName = '';
             let definition = '';
-            if(variable === 'studyDesign') {
-                variableName = 'Study design'; 
+            if (variable === 'studyDesign') {
+                variableName = 'Study design';
                 definition = "Study type classified as ‘population based’ or ‘non-population based’";
             }
-            if(variable === 'status') {
-                variableName = 'Case-control status'; 
+            if (variable === 'status') {
+                variableName = 'Case-control status';
                 definition = "Number of subjects with a reported diagnosis of invasive breast cancer or in situ breast cancer and number of subjects without a breast cancer diagnosis";
             }
-            if(variable === 'ethnicity') {
-                variableName = 'Ethnicity'; 
+            if (variable === 'ethnicity') {
+                variableName = 'Ethnicity';
                 definition = "Ethnic descent";
             }
-            if(variable === 'race') {
-                variableName = 'race'; 
+            if (variable === 'race') {
+                variableName = 'race';
                 definition = "Race";
             }
-            if(variable === 'study') {
-                variableName = 'Study'; 
+            if (variable === 'study') {
+                variableName = 'Study';
                 definition = "Study";
             }
-            if(variable === 'ageInt') {
-                variableName = 'Age'; 
+            if (variable === 'ageInt') {
+                variableName = 'Age';
                 definition = "Age at interview/questionnaire for controls and cases";
             }
-            if(variable === 'famHist') {
-                variableName = 'Family history'; 
+            if (variable === 'famHist') {
+                variableName = 'Family history';
                 definition = "Family history of breast cancer in a first degree relative";
             }
-            if(variable === 'ER_statusIndex') {
-                variableName = 'ER status'; 
+            if (variable === 'ER_statusIndex') {
+                variableName = 'ER status';
                 definition = "Estrogen receptor status of breast cancer tumor";
             }
-            if(variable === 'chip') {
-                variableName = 'Genotyping chip'; 
+            if (variable === 'chip') {
+                variableName = 'Genotyping chip';
                 definition = "Filter data according to subjects genotyped by the confluence chips or other genotyping chips";
             }
-            if(variable === 'subsetStatistics') {
-                variableName = 'Subset statistics'; 
+            if (variable === 'subsetStatistics') {
+                variableName = 'Subset statistics';
                 definition = "This plot shows the number of subjects with data available on variables selected on the bottom left panel. You can filter the numbers shown by case-control status and study by selecting filters on the top left panel.";
             }
-            if(variable === 'allSubjects') {
-                variableName = 'All Subjects'; 
+            if (variable === 'allSubjects') {
+                variableName = 'All Subjects';
                 definition = "All subjects in the set with data on any of the selected variables.";
             }
-            if(variable === 'completeSet') {
-                variableName = 'Complete set'; 
+            if (variable === 'completeSet') {
+                variableName = 'Complete set';
                 definition = "Number of subjects with data on all selected variables.";
             }
-            if(variable === 'midsetTopBars') {
-                variableName = 'Top bars'; 
+            if (variable === 'midsetTopBars') {
+                variableName = 'Top bars';
                 definition = "Number of subjects with data on each of the selected variable (irrespective of the others).";
             }
-            if(variable === 'midsetSideBars') {
-                variableName = 'Side bars'; 
+            if (variable === 'midsetSideBars') {
+                variableName = 'Side bars';
                 definition = "Number of subjects with data on a combination 2 or more selected variables.";
             }
-            if(variable === 'midsetSideBars') {
-                variableName = 'Side bars'; 
+            if (variable === 'midsetSideBars') {
+                variableName = 'Side bars';
                 definition = "Number of subjects with data on a combination 2 or more selected variables.";
             }
 
             const header = document.getElementById('confluenceModalHeader');
             const body = document.getElementById('confluenceModalBody');
-            
+
             header.innerHTML = `<h5 class="modal-title">${variableName}</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -1081,11 +1147,11 @@ export const addEventVariableDefinitions = () => {
 
 export const addEventUpdateSummaryStatsData = () => {
     const btn = document.getElementById('updateSummaryStatsData');
-    if(!btn) return;
+    if (!btn) return;
     btn.addEventListener('click', async () => {
         const header = document.getElementById('confluenceModalHeader');
         const body = document.getElementById('confluenceModalBody');
-        
+
         header.innerHTML = `<h5 class="modal-title">Update data</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -1094,7 +1160,7 @@ export const addEventUpdateSummaryStatsData = () => {
         let template = '<form id="updateSummaryStatsForm">';
         template += `<label>Select data type</label></br> <div style="padding-left:40px"><input type="radio" required value="summary" name="summarydataType"> Summary data</div><div style="padding-left:40px"><input value="missingness" required type="radio" name="summarydataType"> Missingness data</div>`
         template += '</br><div id="summaryDataFolderList"></div>'
-        
+
         template += '<div class="modal-footer"><button type="submit" class="btn btn-outline-primary">Update data</button></div>'
         template += '</form>';
         body.innerHTML = template;
@@ -1111,10 +1177,9 @@ const addEventDataTypeRadio = () => {
             let template = '';
             const response = await getFolderItems(106289683820);
             let summaryFolder = [];
-            if(dataType === 'summary') {
+            if (dataType === 'summary') {
                 summaryFolder = response.entries.filter(dt => dt.type === 'folder' && /_summary_statistics/i.test(dt.name) === true);
-            }
-            else {
+            } else {
                 summaryFolder = response.entries.filter(dt => dt.type === 'folder' && /_missingness_statistics/i.test(dt.name) === true);
             }
             template += `Select data folder(s)`
@@ -1138,7 +1203,7 @@ const addEventSummaryFolderSelection = () => {
     const elements = document.getElementsByClassName('update-summary-stats-btn');
     Array.from(elements).forEach(element => {
         element.addEventListener('click', () => {
-            if(element.classList.contains('active-filter')) element.classList.remove('active-filter');
+            if (element.classList.contains('active-filter')) element.classList.remove('active-filter');
             else element.classList.add('active-filter');
         })
     })
@@ -1153,45 +1218,45 @@ const addEventUpdateSummaryStatsForm = () => {
         form.querySelectorAll('[type="submit"]')[0].innerHTML = 'Updating...';
         const selectedBtn = form.querySelectorAll('.active-filter');
         const folderIds = Array.from(selectedBtn).map(btn => parseInt(btn.dataset.folderId));
-        if(folderIds.length === 0) return;
+        if (folderIds.length === 0) return;
         let masterArray = [];
         let publicDataObj = {};
         let allHeaders = [];
-        for(let id of folderIds){
+        for (let id of folderIds) {
             const response = await getFolderItems(id);
             let file = [];
-            if(dataType === 'summary') file = response.entries.filter(dt => dt.type === 'file' && /_summary_statistics.csv/i.test(dt.name) === true);
+            if (dataType === 'summary') file = response.entries.filter(dt => dt.type === 'file' && /_summary_statistics.csv/i.test(dt.name) === true);
             else file = response.entries.filter(dt => dt.type === 'file' && /_missingness_statistics.csv/i.test(dt.name) === true);
-            if(file.length === 0) return;
+            if (file.length === 0) return;
             form.querySelectorAll('[type="submit"]')[0].innerHTML = `Processing ${file[0].name}...`;
             const csv = await getFile(file[0].id);
             const responseData = csv2Json(csv);
             const jsonArray = responseData.data;
             allHeaders = allHeaders.concat(responseData.headers)
-            if(dataType === 'summary') {
+            if (dataType === 'summary') {
                 const uniqueStudies = [];
                 jsonArray.forEach(obj => {
                     const consortium = obj.consortium === 'NCI' ? 'NCI-DCEG' : obj.consortium;
-                    if(publicDataObj[consortium] === undefined) {
+                    if (publicDataObj[consortium] === undefined) {
                         publicDataObj[consortium] = {};
                         publicDataObj[consortium].name = consortium;
                         publicDataObj[consortium].studies = 0;
                         publicDataObj[consortium].cases = 0;
                         publicDataObj[consortium].controls = 0;
                     }
-                    if(uniqueStudies.indexOf(obj.study) === -1) {
+                    if (uniqueStudies.indexOf(obj.study) === -1) {
                         uniqueStudies.push(obj.study);
                         publicDataObj[consortium].studies += 1;
                     }
-                    if(obj.status === 'case') publicDataObj[consortium].cases += parseInt(obj.statusTotal);
-                    if(obj.status === 'control') publicDataObj[consortium].controls += parseInt(obj.statusTotal);
+                    if (obj.status === 'case') publicDataObj[consortium].cases += parseInt(obj.statusTotal);
+                    if (obj.status === 'control') publicDataObj[consortium].controls += parseInt(obj.statusTotal);
                 })
             }
             masterArray = masterArray.concat(jsonArray);
         }
         const finalHeaders = allHeaders.filter((item, pos) => allHeaders.indexOf(item) === pos);
         const masterCSV = json2csv(masterArray, finalHeaders);
-        if(dataType === 'summary') {
+        if (dataType === 'summary') {
             publicDataObj['dataModifiedAt'] = new Date().toISOString();
             await uploadFileVersion(masterCSV, summaryStatsFileId, 'text/csv');
             // await uploadFileVersion(publicDataObj, publicDataFileId, 'application/json');
@@ -1199,8 +1264,7 @@ const addEventUpdateSummaryStatsForm = () => {
             form.innerHTML = JSON.stringify(publicDataObj, null, 2);
             await getFile(summaryStatsFileId);
             await getFileInfo(summaryStatsFileId);
-        }
-        else {
+        } else {
             await uploadFileVersion(masterCSV, missingnessStatsFileId, 'text/csv');
             form.querySelectorAll('[type="submit"]')[0].classList.remove('disabled');
             await getFile(missingnessStatsFileId);
@@ -1218,7 +1282,7 @@ export const addEventFilterBarToggle = () => {
     const button = document.getElementById('filterBarToggle');
     button.addEventListener('click', () => {
         const child = Array.from(button.childNodes)[0];
-        if(child.classList.contains('fa-caret-left')) {
+        if (child.classList.contains('fa-caret-left')) {
             reSizePlots();
             child.classList.remove('fa-caret-left');
             child.classList.add('fa-caret-right');
@@ -1228,8 +1292,7 @@ export const addEventFilterBarToggle = () => {
             document.getElementById('summaryStatsCharts').classList.add('col-xl-12');
             document.getElementById('dataLastModified').classList.remove('offset-xl-2')
             document.getElementById('dataLastModified').classList.remove('padding-left-20')
-        }
-        else {
+        } else {
             reSizePlots();
             child.classList.remove('fa-caret-right');
             child.classList.add('fa-caret-left');
@@ -1247,7 +1310,7 @@ export const addEventMissingnessFilterBarToggle = () => {
     const button = document.getElementById('filterBarToggle');
     button.addEventListener('click', () => {
         const child = button.querySelector('.fas');
-        if(child.classList.contains('fa-caret-left')) {
+        if (child.classList.contains('fa-caret-left')) {
             reSizePlots();
             child.classList.remove('fa-caret-left');
             child.classList.add('fa-caret-right');
@@ -1255,8 +1318,7 @@ export const addEventMissingnessFilterBarToggle = () => {
             document.getElementById('missingnessTable').parentNode.classList = ['col-xl-12 padding-right-zero padding-left-zero'];
             document.getElementById('dataLastModified').classList.remove('offset-xl-2');
             document.getElementById('dataLastModified').classList.remove('pl-4');
-        }
-        else {
+        } else {
             reSizePlots();
             child.classList.remove('fa-caret-right');
             child.classList.add('fa-caret-left');
@@ -1308,13 +1370,12 @@ export const addEventSummaryStatsFilterForm = (jsonData, headers) => {
     });
 
     const elements = document.getElementsByClassName('select-consortium');
-    Array.from(elements).forEach((el,index) => {
+    Array.from(elements).forEach((el, index) => {
         el.addEventListener('click', () => {
-            if(el.checked){
+            if (el.checked) {
                 Array.from(el.parentNode.parentNode.querySelectorAll('.select-study')).forEach(btns => btns.checked = true);
-            }
-            else {
-                Array.from(el.parentNode.parentNode.querySelectorAll('.select-study')).forEach(btns => btns.checked =  false);
+            } else {
+                Array.from(el.parentNode.parentNode.querySelectorAll('.select-study')).forEach(btns => btns.checked = false);
             }
             filterData(jsonData, headers);
         })
@@ -1343,7 +1404,7 @@ const filterData = (jsonData, headers) => {
     const subCasesFilter = Array.from(document.getElementById('subcasesSelection').options).filter(op => op.selected)[0].textContent;
     let finalData = jsonData;
     let onlyCIMBA = false;
-    
+
     // const consortiumTypeSelection = document.getElementById('consortiumTypeSelection');
     // if(consortiumTypeSelection.value === 'cimba') {
     //     Array.from(document.getElementsByClassName('consortium-ul')).forEach(ele => {
@@ -1369,29 +1430,29 @@ const filterData = (jsonData, headers) => {
 
     let selectedConsortia = [];
     Array.from(document.getElementsByClassName('select-consortium')).forEach(dt => {
-        if(dt.checked) selectedConsortia.push(dt.dataset.consortia);
+        if (dt.checked) selectedConsortia.push(dt.dataset.consortia);
     });
     const array = getSelectedStudies();
-    
+
     // if(gender !== 'all') {
     //     finalData = finalData.filter(dt => dt['sex'] === gender);
     // }
     // if(chip !== 'all') {
     //     finalData = finalData.filter(dt => dt['chip'] === chip);
     // }
-    if(ethnicity !== 'all') {
+    if (ethnicity !== 'all') {
         finalData = finalData.filter(dt => dt['ethnicity'] === ethnicity);
     }
-    if(study !== 'all') {
+    if (study !== 'all') {
         finalData = finalData.filter(dt => dt['study'] === study);
     }
-    if(race !== 'all') {
+    if (race !== 'all') {
         finalData = finalData.filter(dt => dt['race'] === race);
     }
 
     updateCounts(finalData);
 
-    if(array.length > 0){
+    if (array.length > 0) {
         finalData = finalData.filter(dt => array.indexOf(`${dt.consortium}@#$${dt.study}`) !== -1);
     }
     const selectedStudies = array.map(s => s.split('@#$')[1]);
@@ -1400,10 +1461,9 @@ const filterData = (jsonData, headers) => {
     //     <span class="font-bold">Genotyping chip: </span>${chipFilter}${selectedStudies.length > 0 ? `
     //     <span class="vertical-line"></span><span class="font-bold">Study: </span>${selectedStudies[0]} ${selectedStudies.length > 1 ? `and <span class="other-variable-count">${selectedStudies.length-1} other</span>`:``}
     // `:``}`
-    if(subCases == 'all') {
+    if (subCases == 'all') {
         renderAllCharts(finalData);
-    }
-    else renderAllCasesCharts(finalData);
+    } else renderAllCasesCharts(finalData);
     //renderAllCharts(finalData);
     //renderAllCasesCharts(finalData);
 }
@@ -1415,25 +1475,77 @@ export const addEventConsortiaFilter = (d) => {
             const selectedConsortium = Array.from(checkboxs).filter(dt => dt.checked).map(dt => dt.dataset.consortia);
             let data = JSON.parse(JSON.stringify(d))
             delete data['dataModifiedAt'];
-            if(selectedConsortium.length > 0) {
+            if (selectedConsortium.length > 0) {
                 const newData = Object.values(data).filter(dt => selectedConsortium.includes(dt.name));
-                let totalConsortia = 0, totalWomen = 0, totalPatients = 0;
+                let totalConsortia = 0,
+                    totalWomen = 0,
+                    totalPatients = 0;
                 newData.forEach(obj => {
                     totalConsortia++;
                     totalPatients += obj.numPatients;
                     totalWomen += obj.numWomen;
                 });
-                renderDataSummary({totalConsortia, totalPatients, totalWomen}, true);
-            }
-            else {
-                let totalConsortia = 0, totalWomen = 0, totalPatients = 0;
+                renderDataSummary({
+                    totalConsortia,
+                    totalPatients,
+                    totalWomen
+                }, true);
+            } else {
+                let totalConsortia = 0,
+                    totalWomen = 0,
+                    totalPatients = 0;
                 Object.values(data).forEach(obj => {
                     totalConsortia++;
                     totalPatients += obj.numPatients;
                     totalWomen += obj.numWomen;
                 });
-                renderDataSummary({totalConsortia, totalPatients, totalWomen}, true);
+                renderDataSummary({
+                    totalConsortia,
+                    totalPatients,
+                    totalWomen
+                }, true);
             }
         })
     })
 }
+
+export function switchTabs(show, hide, files) {
+    try {
+        if (!Array.isArray(hide)) {
+            console.log('tabs not in an array');
+            return;
+        } else if (!Array.isArray(files)) {
+            console.log('files not in an array');
+            return;
+        } else {
+            const boxPreview = document.getElementById('filePreview');
+            document.getElementById(show + 'Tab').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log(show, 'Tab clicked');
+                    if (files.length != 0) {
+
+                        if (!boxPreview.classList.contains('d-block')) {
+                            boxPreview.classList.add('d-block');
+                        }
+                        showPreview(files[0]);
+                    } else {
+                        boxPreview.classList.remove('d-block');
+                        boxPreview.classList.add('d-none');
+                    }
+
+
+                    for (const tab of hide) {
+                        console.log(tab + 'Tab');
+                        document.getElementById(tab + 'Tab').classList.remove('active');
+                        document.getElementById(tab).classList.remove('show', 'active');
+                    }
+                    document.getElementById(show + 'Tab').classList.add('active');
+                    document.getElementById(show).classList.add('show', 'active');
+                    return;
+                })
+            }
+        } catch (err) {
+            console.log(err);
+            return;
+        }
+    }

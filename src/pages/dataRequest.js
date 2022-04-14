@@ -33,6 +33,7 @@ import {
   pageNavBar
 } from '../components/navBarMenuItems.js';
 import { renderFilePreviewDropdown } from '../components/elements.js';
+import { switchTabs } from '../event.js';
 // Require additional changes regarding data
 //import * as docx from "docx";
 
@@ -437,129 +438,74 @@ export const chairFileView = async () => {
   }
 
   //Switch Tabs
-  const boxPreview = document.getElementById('filePreview');
-  document.getElementById('toBeCompletedTab').addEventListener('click', (e) => {
-    e.preventDefault();
+  switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'approved'], filesincomplete);
+  switchTabs('inProgress', ['toBeCompleted', 'daccCompleted', 'approved'], filesinprogress);
+  switchTabs('daccCompleted', ['inProgress', 'toBeCompleted', 'approved'], filescompleted);
+  switchTabs('approved', ['inProgress', 'daccCompleted', 'toBeCompleted'], filesapproved);
 
-    if (filesincomplete.length != 0) {
-
-      if (!boxPreview.classList.contains('d-block')) {
-        boxPreview.classList.add('d-block');
-      }
-      showPreview(filesincomplete[0]);
-    } else {
-      boxPreview.classList.remove('d-block');
-      boxPreview.classList.add('d-none');
-    }
-    console.log('toBeCompleted Tab clicked');
-
-    document.getElementById('approvedTab').classList.remove('active');
-    document.getElementById('approved').classList.remove('show', 'active');
-
-    document.getElementById('inProgressTab').classList.remove('active');
-    document.getElementById('inProgress').classList.remove('show', 'active');
-
-    document.getElementById('daccCompletedTab').classList.remove('active');
-    document.getElementById('daccCompleted').classList.remove('show', 'active');
-
-    document.getElementById('toBeCompletedTab').classList.add('active');
-    document.getElementById('toBeCompleted').classList.add('show', 'active');
-
-
-  })
-  document.getElementById('inProgressTab').addEventListener('click', (e) => {
-    e.preventDefault();
-    if (filesinprogress.length != 0) {
-
-
-
-      if (!boxPreview.classList.contains('d-block')) {
-        boxPreview.classList.add('d-block');
-      }
-      showPreview(filesinprogress[0]);
-    } else {
-      boxPreview.classList.remove('d-block');
-      boxPreview.classList.add('d-none');
-    }
-    console.log('inProgress Tab clicked');
-
-    document.getElementById('approvedTab').classList.remove('active');
-    document.getElementById('approved').classList.remove('show', 'active');
-
-    document.getElementById('toBeCompletedTab').classList.remove('active');
-    document.getElementById('toBeCompleted').classList.remove('show', 'active');
-
-    document.getElementById('daccCompletedTab').classList.remove('active');
-    document.getElementById('daccCompleted').classList.remove('show', 'active');
-
-    document.getElementById('inProgressTab').classList.add('active');
-    document.getElementById('inProgress').classList.add('show', 'active');
-
-
-  })
-  document.getElementById('daccCompletedTab').addEventListener('click', (e) => {
-    e.preventDefault();
-    if (filescompleted.length != 0) {
-
-
-
-      if (!boxPreview.classList.contains('d-block')) {
-        boxPreview.classList.add('d-block');
-      }
-      showPreview(filescompleted[0]);
-    } else {
-      boxPreview.classList.remove('d-block');
-      boxPreview.classList.add('d-none');
-    }
-    console.log('daccCompleted Tab clicked');
-
-    document.getElementById('approvedTab').classList.remove('active');
-    document.getElementById('approved').classList.remove('show', 'active');
-
-    document.getElementById('inProgressTab').classList.remove('active');
-    document.getElementById('inProgress').classList.remove('show', 'active');
-
-    document.getElementById('toBeCompletedTab').classList.remove('active');
-    document.getElementById('toBeCompleted').classList.remove('show', 'active');
-
-    document.getElementById('daccCompletedTab').classList.add('active');
-    document.getElementById('daccCompleted').classList.add('show', 'active');
-
-
-  })
-  document.getElementById('approvedTab').addEventListener('click', (e) => {
-    e.preventDefault();
-    if (filesapproved.length != 0) {
-
-
-
-      if (!boxPreview.classList.contains('d-block')) {
-        boxPreview.classList.add('d-block');
-      }
-      showPreview(filesapproved[0]);
-    } else {
-      boxPreview.classList.remove('d-block');
-      boxPreview.classList.add('d-none');
-    }
-    console.log('approved Tab clicked');
-
-
-    document.getElementById('toBeCompletedTab').classList.remove('active');
-    document.getElementById('toBeCompleted').classList.remove('show', 'active');
-
-    document.getElementById('inProgressTab').classList.remove('active');
-    document.getElementById('inProgress').classList.remove('show', 'active');
-
-    document.getElementById('daccCompletedTab').classList.remove('active');
-    document.getElementById('daccCompleted').classList.remove('show', 'active');
-
-
-    document.getElementById('approved').classList.add('show', 'active');
-    document.getElementById('approvedTab').classList.add('active');
-
-
-  })
 }
+
+  // document.getElementById('inProgressTab').addEventListener('click', (e) => {
+  //   e.preventDefault();
+  //   if (filesinprogress.length != 0) {
+
+
+
+  //     if (!boxPreview.classList.contains('d-block')) {
+  //       boxPreview.classList.add('d-block');
+  //     }
+  //     showPreview(filesinprogress[0]);
+  //   } else {
+  //     boxPreview.classList.remove('d-block');
+  //     boxPreview.classList.add('d-none');
+  //   }
+  //   console.log('inProgress Tab clicked');
+
+
+
+
+  // })
+  // document.getElementById('daccCompletedTab').addEventListener('click', (e) => {
+  //   e.preventDefault();
+  //   if (filescompleted.length != 0) {
+
+
+
+  //     if (!boxPreview.classList.contains('d-block')) {
+  //       boxPreview.classList.add('d-block');
+  //     }
+  //     showPreview(filescompleted[0]);
+  //   } else {
+  //     boxPreview.classList.remove('d-block');
+  //     boxPreview.classList.add('d-none');
+  //   }
+  //   console.log('daccCompleted Tab clicked');
+
+
+
+
+  // })
+  // document.getElementById('approvedTab').addEventListener('click', (e) => {
+  //   e.preventDefault();
+  //   if (filesapproved.length != 0) {
+
+
+
+  //     if (!boxPreview.classList.contains('d-block')) {
+  //       boxPreview.classList.add('d-block');
+  //     }
+  //     showPreview(filesapproved[0]);
+  //   } else {
+  //     boxPreview.classList.remove('d-block');
+  //     boxPreview.classList.add('d-none');
+  //   }
+  //   console.log('approved Tab clicked');
+
+
+
+
+  // })
+
 
 export const submitToDacc = () => {
   let submitDacc = async (e) => {
