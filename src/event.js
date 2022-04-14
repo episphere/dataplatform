@@ -53,7 +53,9 @@ import {
     updateCounts
 } from './visualization.js';
 
-import { showPreview } from './components/boxPreview.js'; 
+import {
+    showPreview
+} from './components/boxPreview.js';
 let top = 0;
 
 export const addEventStudyRadioBtn = () => {
@@ -1520,32 +1522,33 @@ export function switchTabs(show, hide, files) {
         } else {
             const boxPreview = document.getElementById('filePreview');
             document.getElementById(show + 'Tab').addEventListener('click', (e) => {
-                    e.preventDefault();
-                    console.log(show, 'Tab clicked');
+                e.preventDefault();
+                console.log(show, 'Tab clicked');
+                if (boxPreview !== null) {
                     if (files.length != 0) {
 
                         if (!boxPreview.classList.contains('d-block')) {
                             boxPreview.classList.add('d-block');
                         }
-                        showPreview(files[0]);
+                        showPreview(files[0].id);
                     } else {
                         boxPreview.classList.remove('d-block');
                         boxPreview.classList.add('d-none');
                     }
+                }
 
-
-                    for (const tab of hide) {
-                        console.log(tab + 'Tab');
-                        document.getElementById(tab + 'Tab').classList.remove('active');
-                        document.getElementById(tab).classList.remove('show', 'active');
-                    }
-                    document.getElementById(show + 'Tab').classList.add('active');
-                    document.getElementById(show).classList.add('show', 'active');
-                    return;
-                })
-            }
-        } catch (err) {
-            console.log(err);
-            return;
+                for (const tab of hide) {
+                    console.log(tab + 'Tab');
+                    document.getElementById(tab + 'Tab').classList.remove('active');
+                    document.getElementById(tab).classList.remove('show', 'active');
+                }
+                document.getElementById(show + 'Tab').classList.add('active');
+                document.getElementById(show).classList.add('show', 'active');
+                return;
+            })
         }
+    } catch (err) {
+        console.log(err);
+        return;
     }
+}
