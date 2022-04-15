@@ -79,13 +79,13 @@ export const dataAccess = (activeTab, showDescripton) => {
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
-    navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('Overview', 'Submission Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('Overview', 'Submission Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
   }
   let template = `
 
@@ -137,11 +137,11 @@ export const formSection = (activeTab, showDescripton) => {
 
     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");
   } else if (authChair) {
-    navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('Overview', 'Submission Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('Overview', 'Submission Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
   }
   let template = `
       <div class="general-bg body-min-height padding-bottom-1rem">
@@ -301,11 +301,11 @@ export const chairSection = (activeTab) => {
   if (authDacc && authChair) {
     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");
   } else if (authChair) {
-    navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('Overview', 'Submission Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('Overview', 'Submission Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
   }
   let template = `
       <div class="general-bg body-min-height padding-bottom-1rem">
@@ -634,11 +634,11 @@ export const daccSection = (activeTab) => {
   if (authDacc && authChair) {
     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");
   } else if (authChair) {
-    navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('Overview', 'Submission Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('Overview', 'Submission Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
   }
   let template = `
 <div class="general-bg body-min-height padding-bottom-1rem">
