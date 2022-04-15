@@ -5,17 +5,19 @@ function createBoxPreview(id) {
     return node;
 }
 
-export function showPreviews(ids) {
+export function showPreview(id) {
   const access_token = JSON.parse(localStorage.parms).access_token;
-  for (const id of ids) {
-    let previewContainer = createBoxPreview(id);
+   
     console.log("SHOWING PREVIEW", id);
-    let section = document.getElementById(`study${id}`);
-    section.insertBefore(previewContainer, section.firstChild);
-    previewContainer.parentElement.style.display = 'block';
+    let previewContainer = document.getElementById('boxFilePreview');
     var preview = new Box.Preview();
     preview.show(id, access_token, {
-      container: previewContainer,
+      container: previewContainer
     });
-  }
+  
+}
+
+export function updatePreview(id){
+  const access_token = JSON.parse(localStorage.parms).access_token;
+  
 }

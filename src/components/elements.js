@@ -1,4 +1,6 @@
 import { config } from "../config.js";
+import { template } from "../pages/dataGovernance.js";
+import { getFileInfo } from "../shared.js";
 
 export const studyDropDownTemplate = (entries) => {
     let template = '';
@@ -92,4 +94,52 @@ export const renderForm = () => {
             </form>
         </div>
     `;
+}
+
+export function renderFilePreviewDropdown(files){
+    let template = '';
+if(!Array.isArray(files)){
+    console.log('Not an array');
+    return
+}
+if(files.length != 0){
+    console.log('Param is array length: ' + files.length);
+    template += `<div class='card-body'>
+            <div class='card-title'>
+            <select id='selectedDoc' onchange="
+            const access_token = JSON.parse(localStorage.parms).access_token;
+        
+                    console.log('SHOWING PREVIEW', this.value);
+                    let previewContainer = document.getElementById('boxFilePreview');
+                    var preview = new Box.Preview();
+                    preview.show(this.value, access_token, {
+                      container: previewContainer
+                    });
+            ">
+            `;
+
+    for (const file of files) { 
+      //console.log('File', file);
+      template += `
+              <option value='${file.id}'>
+              ${file.name}</option>`;
+    }
+
+    template += `
+              </select>
+              </div>
+            </div>  
+          </div>`
+  } else {
+    template += `
+              No files to show.            
+    </div>
+    
+    `
+  }
+
+  //console.log(template);
+  
+  return template;
+  
 }
