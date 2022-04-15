@@ -1547,6 +1547,12 @@ export function switchTabs(show, hide, files) {
                             document.getElementById('sendtodaccButton').style.display="none";
                             document.getElementById('finalChairDecision').style.display="none";
                             }
+                        if (show == 'dacctoBeCompleted'){
+                            document.getElementById('daccComment').style.display="block";
+                        }
+                        if (show == 'completed'){
+                            document.getElementById('daccComment').style.display="none";
+                        }
                     } else {
                         boxPreview.classList.remove('d-block');
                         boxPreview.classList.add('d-none');
@@ -1554,7 +1560,7 @@ export function switchTabs(show, hide, files) {
                 }
 
                 for (const tab of hide) {
-                    console.log(tab + 'Tab');
+                    //console.log(tab + 'Tab');
                     document.getElementById(tab + 'Tab').classList.remove('active');
                     document.getElementById(tab).classList.remove('show', 'active');
                 }
