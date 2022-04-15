@@ -377,6 +377,7 @@ export const chairFileView = async () => {
         if (chairMetaValue == 3 && daccMetaValue == 0) {
           filescompleted.push(obj);
           let tasklist = await getTaskList(id);
+          console.log(tasklist.entries);
           let entries = tasklist.entries;
           for (let item of entries) {
             if (item.is_completed == false) {
@@ -390,7 +391,7 @@ export const chairFileView = async () => {
       };
 
 
-      template += "<div class='tab-content'>";
+      template += "<div class='tab-content' id='selectedTab'>";
 
       template += `<div class='tab-pane fade show active' 
                   id='toBeCompleted' role='tabpanel' 
@@ -414,30 +415,81 @@ export const chairFileView = async () => {
       template += renderFilePreviewDropdown(filesapproved)
 
       if (filescompleted.length != 0 || filesinprogress.length != 0 ||
-        filesincomplete.length != 0 || filesapproved.length != 0) {
-        template += `<div id='filePreview'> <div id='boxFilePreview' class="preview-container"></div>
-      <div class="card-body comment-submit" style="padding-left: 10px;background-color:#f6f6f6;">
-      <!---<form>
-        <label for"message">Enter Comments</label>
-        <div class="input-group">
-          <textarea id="message" name="message" rows="6" cols="65"></textarea>
-        </div>
-        <button class='btn btn-primary' type="submit" value="send">Send Comment</button>
-      </form>--->
-      
-      </div>
-      </div>
-      </div>`;
-        }
+          filesincomplete.length != 0 || filesapproved.length != 0) {
+         template += `<div id='filePreview'> 
+                      <div id='boxFilePreview' class="preview-container"></div>
+                        <div id='sendtodaccButton' class="card-body dacc-submit" style="padding-left: 10px; background-color:#f6f6f6; display:block">
+                          <form>
+                            <label for"message">Send to DACC</label>
+                            <div class="input-group">
+                              <textarea id="message" name="message" rows="6" cols="65"></textarea>
+                            </div>
+                            <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+                              <span class="buttonsubmit__text"> Send </span> </button>
+                          </form>
+                        </div>
 
-        await console.log(await searchMetadata());
+                        <div id='finalChairDecision' class="card-body approvedeny" style="padding-left: 10px;background-color:#f6f6f6; display:none">
+                          <form>
+                            <label for="message">Enter Message for Submitter</label>
+                            <div class="input-group">
+                                <textarea id="message" name="message" rows="6" cols="65"></textarea>
+                            </div>
+                            <button type="submit" class="buttonsubmit" value="approved">
+                              <span class="buttonsubmit__text"> Approve </span></button>
+                            <button type="submit" class="buttonsubmit" value="rejected">
+                              <span class="buttonsubmit__text"> Deny </span></button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  `
+      }
+
+      // if (filescompleted.length != 0 || filesinprogress.length != 0 ||
+      //   filesincomplete.length != 0 || filesapproved.length != 0) {
+      //   template += `<div id='filePreview'> <div id='boxFilePreview' class="preview-container"></div>
+      //   <div id = class="card-body comment-submit" style="padding-left: 10px;background-color:#f6f6f6;">
+      // <form>
+      //   <label for"message">Enter Comments</label>
+      //   <div class="input-group">
+      //     <textarea id="message" name="message" rows="6" cols="65"></textarea>
+      //   </div>
+      //   <button class='btn btn-primary' type="submit" value="send">Send Comment</button>
+      // </form>
+      
+      // </div>
+      // </div>
+      // </div>`;
+      //   }
+
+        //await console.log(await searchMetadata());
 
         document.getElementById('chairFileView').innerHTML = template;
 
+        //   if (filesincomplete.length != 0) {
+        //     document.getElementById('filePreview').innerHTML += `
+        //                   <div id='boxFilePreview' class="preview-container"></div>
+        //                     <div class="card-body dacc-submit" aria-labeledby='toBeCompletedTab' style="padding-left: 10px;background-color:#f6f6f6;">
+        //                       <form>
+        //                         <label for"message">Send to DACC</label>
+        //                         <div class="input-group">
+        //                           <textarea id="message" name="message" rows="6" cols="65"></textarea>
+        //                         </div>
+        //                         <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+        //                           <span class="buttonsubmit__text"> Send </span> </button>
+        //                       </form>
+        //                     </div>
+        //                   </div>
+        //                   `
+        // }
+
+        //console.log(document.getElementById('selectedDoc').value);
         //addEventPreviewFile();
-        addEventToggleCollapsePanelBtn();
+        //addEventToggleCollapsePanelBtn();
         //viewFile();
-        //commentSubmit();
+        submitToDacc();
+        commentApproveReject();
         if (filesincomplete.length != 0) {
           showPreview(filesincomplete[0].id);
         }
@@ -451,802 +503,818 @@ export const chairFileView = async () => {
       }
 
 
-      export const submitToDacc = () => {
-        let submitDacc = async (e) => {
-          const btn = document.activeElement;
-          btn.disabled = true;
-          e.preventDefault();
-          let fileId = e.submitter.value;
-          let message = e.target[0].value;
-          console.log(fileId);
-          console.log(message);
-          await createCompleteTask(fileId, message);
-          let tasklist = await getTaskList(fileId);
-          let tasktodacc = tasklist.entries[0].id;
-          console.log(emailforDACC.length.toString());
-          for (let i = 0, daccemaillength = emailforDACC.length; i < daccemaillength; i++) {
-            await assignTask(tasktodacc, emailforDACC[i]);
-            console.log("Task assigned to " + emailforDACC[i]);
+export const submitToDacc = () => {
+  let submitDacc = async (e) => {
+    const btn = document.activeElement;
+    btn.disabled=true;
+    e.preventDefault();
+    let fileId = document.getElementById('selectedDoc').value//e.submitter.value;
+    let message = e.target[0].value;
+    console.log(fileId);
+    console.log(message);
+    await createCompleteTask(fileId, message);
+    let tasklist = await getTaskList(fileId);
+    let tasktodacc = tasklist.entries[0].id;
+    console.log(emailforDACC.length.toString());
+    for (let i=0, daccemaillength=emailforDACC.length; i < daccemaillength; i++ ) {
+      await assignTask(tasktodacc, emailforDACC[i]);
+      console.log("Task assigned to "+ emailforDACC[i]);
+    }
+    await updateMetadata(fileId, "BCRPPchair", '2');
+    await updateMetadata(fileId, "BCRPPdacc", emailforDACC.length.toString());
+    console.log("Meta Data Updated");
+    document.location.reload(true);
+  }
+  const sdform = document.querySelector('.dacc-submit');
+  if (sdform) {
+  sdform.addEventListener('submit', submitDacc);
+  }
+}
+
+// export const commentSubmit = () => {
+//   let approveComment = async (e) => {
+//     e.preventDefault();
+//     //let fileId = e.submitter.fileId;
+//     let fileId = e.submitter.value;
+//     let message = e.target[0].value;
+//     console.log(e);
+//     console.log(fileId);
+//     console.log(message);
+//     //console.log(fileId);
+
+//     // let taskList = await getTaskList(fileId);
+//     // console.log(taskList)
+//     // let taskAssignment = taskList.entries[0].task_assignment_collection.entries[0];
+
+//     // console.log(await updateTaskAssignment(taskAssignment.id, approval, message))
+//   }
+
+//   const form = document.querySelector('.approvedeny')
+//   form.addEventListener('submit', approveComment)
+// }
+
+export const commentApproveReject = () => {
+  let approveComment = async (e) => {
+    e.preventDefault();
+    const btn = document.activeElement;
+    btn.disabled = true;
+    //let taskId = btn.name;
+    let fileId = document.getElementById('selectedDoc').value;
+    let tasklist = await getTaskList(fileId);
+    console.log(tasklist);
+    let entries = tasklist.entries;
+      if (entries.length !== 0) {
+        for (let item of entries) {
+          if (item.is_completed == false && item.action == 'review') {
+            for (let taskassignment of item.task_assignment_collection.entries) {
+              if (taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
+                  var taskId = taskassignment.id;
+                  console.log(taskId);
+              }
+            }
           }
-          await updateMetadata(fileId, "BCRPPchair", '2');
-          await updateMetadata(fileId, "BCRPPdacc", emailforDACC.length.toString());
-          console.log("Meta Data Updated");
-          document.location.reload(true);
-        }
-        const form = document.querySelector('.dacc-submit');
-        if (form) {
-          form.addEventListener('submit', submitDacc);
         }
       }
+    let approval = e.submitter.value;
+    let message = e.target[0].value;
+    console.log(approval);
+    //let task = await getTask(taskId);
+    //let taskAssignment = task.task_assignment_collection.entries[0].id;
+    await updateTaskAssignment(taskId, approval, message);
+    await updateMetadata(fileId, "BCRPPchair", "0");
+    document.location.reload();
+  }
 
-      export const commentSubmit = () => {
-        let approveComment = async (e) => {
-          e.preventDefault();
-          //let fileId = e.submitter.fileId;
-          let fileId = e.submitter.value;
-          let message = e.target[0].value;
-          console.log(e);
-          console.log(fileId);
-          console.log(message);
-          //console.log(fileId);
+  const form = document.querySelector('.approvedeny')
+  if (form) {
+    form.addEventListener('submit', approveComment)
+  }
+}
 
-          // let taskList = await getTaskList(fileId);
-          // console.log(taskList)
-          // let taskAssignment = taskList.entries[0].task_assignment_collection.entries[0];
+const viewFile = () => {
+  var preview = new Box.Preview();
+  preview.show(id, JSON.parse(localStorage.parms).access_token, {
+    container: '.preview-container',
+    showDownload: true
+  });
+}
 
-          // console.log(await updateTaskAssignment(taskAssignment.id, approval, message))
+const addEventPreviewFile = () => {
+  const btns = Array.from(document.querySelectorAll('.preview-file'));
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const header = document.getElementById('confluencePreviewerModalHeader');
+      const body = document.getElementById('confluencePreviewerModalBody');
+      header.innerHTML = `<h5 class="modal-title">File preview</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>`;
+      const fileId = btn.dataset.fileId;
+      console.log(fileId);
+      filePreviewer(fileId, '#confluencePreviewerModalBody');
+    })
+  })
+}
+
+export const filePreviewer = (fileId, divId) => {
+  const access_token = JSON.parse(localStorage.parms).access_token;
+  const preview = new Box.Preview();
+  preview.show(fileId, access_token, {
+    container: divId
+  });
+}
+
+export const daccSection = (activeTab) => {
+  let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+  let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+  let navBarItems = '';
+  if (authDacc && authChair) {
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");
+  } else if (authChair) {
+    navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
+  } else if (authDacc) {
+    navBarItems = pageNavBar('Overview', 'Submission Form', 'DACC Menu');
+  } else {
+    navBarItems = pageNavBar('Overview', 'Submission Form');
+  }
+  let template = `
+<div class="general-bg body-min-height padding-bottom-1rem">
+    <div class="container">
+      ${navBarItems}
+    
+</div>
+`;
+  template += `
+<div id="daccFileView" class="align-left"></div>
+</div>
+`;
+
+  return template
+}
+
+export const daccFileView = async () => {
+  const response = await getFolderItems('155292358576');
+  let filearray = response.entries;
+  console.log(filearray);
+
+  let template = `
+<div class="general-bg padding-bottom-1rem">
+<div class="container body-min-height">
+<div class="main-summary-row">
+    <div class="align-left">
+        <h1 class="page-header">DACC Access Only</h1>
+    </div>
+</div>
+<div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
+<ul class='nav nav-tabs mb-3' role='tablist'>
+<li class='nav-item' role='presentation'>
+  <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> To Be Completed </a>
+</li>
+<li class='nav-item' role='presentation'>
+    <a class='nav-link' id='completedTab' href='#completed' data-mdb-toggle="tab" role='tab' aria-controls='completed' aria-selected='true'>Completed</a>
+</li>
+
+
+</ul>`;
+
+  const filesincomplete = [];
+  const filescompleted = [];
+  const tasksincomplete = [];
+  const taskscompleted = [];
+  for (let obj of filearray) {
+    let id = obj.id;
+    //console.log(id);
+    let metaArray = await getMetadata(id);
+    let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
+    let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
+    //console.log("DACC Value: "+daccMetaValue);
+
+    if (daccMetaValue != 0 && chairMetaValue == 2) {
+      let tasklist = await getTaskList(id);
+      let entries = tasklist.entries;
+
+      if (entries.length !== 0) {
+        for (let item of entries) {
+          if (item.is_completed == false) {
+            for (let taskassignment of item.task_assignment_collection.entries) {
+              if (taskassignment.status == 'incomplete' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
+                console.log(taskassignment.assigned_at);
+                if (!filesincomplete.includes(id)) {
+                  filesincomplete.push(obj);
+                  tasksincomplete.push(taskassignment.id);
+                }
+              } else if (taskassignment.status == 'completed' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
+                if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
+                  filescompleted.push(obj);
+                  taskscompleted.push(taskassignment.id);
+                }
+              }
+            }
+          }
         }
-
-        const form = document.querySelector('.approvedeny')
-        form.addEventListener('submit', approveComment)
       }
+    }
+    if (chairMetaValue == 3) {
+      let tasklist = await getTaskList(id);
+      let entries = tasklist.entries;
 
-      export const commentApproveReject = () => {
-        let approveComment = async (e) => {
-          e.preventDefault();
-          const btn = document.activeElement;
-          btn.disabled = true;
-          let taskId = btn.name;
-          let fileId = btn.id;
-          let approval = e.submitter.value;
-          let message = e.target[0].value;
-          console.log(approval);
-          let task = await getTask(taskId);
-          let taskAssignment = task.task_assignment_collection.entries[0].id;
-          await updateTaskAssignment(taskAssignment, approval, message);
-          await updateMetadata(fileId, "BCRPPchair", "0");
-          document.location.reload();
-        }
-
-        const form = document.querySelector('.approvedeny')
-        if (form) {
-          form.addEventListener('submit', approveComment)
+      if (entries.length !== 0) {
+        for (let item of entries) {
+          for (let taskassignment of item.task_assignment_collection.entries) {
+            if (taskassignment.status == 'completed' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
+              if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
+                filescompleted.push(obj);
+                taskscompleted.push(taskassignment.id);
+              }
+            }
+          }
         }
       }
+    }
+  };
 
-      const viewFile = () => {
-        var preview = new Box.Preview();
-        preview.show(id, JSON.parse(localStorage.parms).access_token, {
-          container: '.preview-container',
-          showDownload: true
-        });
-      }
+  console.log("incomplete: " + filesincomplete);
+  console.log("complete: " + filescompleted);
+  console.log("tasksincomplete: " + tasksincomplete);
+  console.log("taskscompleted: " + taskscompleted);
 
-      const addEventPreviewFile = () => {
-        const btns = Array.from(document.querySelectorAll('.preview-file'));
-        btns.forEach(btn => {
-          btn.addEventListener('click', () => {
-            const header = document.getElementById('confluencePreviewerModalHeader');
-            const body = document.getElementById('confluencePreviewerModalBody');
-            header.innerHTML = `<h5 class="modal-title">File preview</h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
-                                  </button>`;
-            const fileId = btn.dataset.fileId;
-            console.log(fileId);
-            filePreviewer(fileId, '#confluencePreviewerModalBody');
-          })
-        })
-      }
+  template += "<div class='tab-content'>";
+  
+  template += `<div class='tab-pane fade show active'
+                id='toBeCompleted' role='tabpanel'
+              aria-labeledby='toBeCompletedTab'>`;
+  template += renderFilePreviewDropdown(filesincomplete);
+  template += `<div class='tab-pane fade'
+                id='completed' role='tabpanel'
+                aria-labeledby='completedTab'> `
+  template += renderFilePreviewDropdown(filescompleted);
 
-      export const filePreviewer = (fileId, divId) => {
-        const access_token = JSON.parse(localStorage.parms).access_token;
-        const preview = new Box.Preview();
-        preview.show(fileId, access_token, {
-          container: divId
-        });
-      }
-
-      export const daccSection = (activeTab) => {
-        let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
-        let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
-        let navBarItems = '';
-        if (authDacc && authChair) {
-          navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");
-        } else if (authChair) {
-          navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
-        } else if (authDacc) {
-          navBarItems = pageNavBar('Overview', 'Submission Form', 'DACC Menu');
-        } else {
-          navBarItems = pageNavBar('Overview', 'Submission Form');
-        }
-        let template = `
-      <div class="general-bg body-min-height padding-bottom-1rem">
-          <div class="container">
-            ${navBarItems}
-          
-      </div>
-      `;
-        template += `
-    <div id="daccFileView" class="align-left"></div>
-  </div>
-  `;
-
-        return template
-      }
-
-      export const daccFileView = async () => {
-        const response = await getFolderItems('155292358576');
-        let filearray = response.entries;
-        console.log(filearray);
-
-        let template = `
-  <div class="general-bg padding-bottom-1rem">
-    <div class="container body-min-height">
-      <div class="main-summary-row">
-          <div class="align-left">
-              <h1 class="page-header">DACC Access Only</h1>
+  if (filescompleted.length != 0 || filesincomplete.length != 0) {
+    template += `<div id='filePreview'> 
+    <div id='boxFilePreview' class="preview-container"></div>
+      <div class="card-body dacc-comment" style="padding-left: 10px;background-color:#f6f6f6;">
+        <form>
+          <label for"message">Submit Comment</label>
+          <div class="input-group">
+            <textarea id="message" name="message" rows="6" cols="65"></textarea>
           </div>
+          <button type="submit" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+            <span class="buttonsubmit__text"> Submit & Complete </span> </button>
+        </form>
       </div>
-    <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
-    <ul class='nav nav-tabs mb-3' role='tablist'>
-      <li class='nav-item' role='presentation'>
-        <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> To Be Completed </a>
-      </li>
-      <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='completedTab' href='#completed' data-mdb-toggle="tab" role='tab' aria-controls='completed' aria-selected='true'>Completed</a>
-      </li>
-   
-      
-    </ul>`;
+    </div>
+  </div>`;
+  }
+  document.getElementById('daccFileView').innerHTML = template;
+  //console.log(filesincomplete[0].id);
+  if (filesincomplete.length != 0) {
+    showPreview(filesincomplete[0].id);
+  }
+  //addEventToggleCollapsePanelBtn();
+  submitToComment();
 
-        const filesincomplete = [];
-        const filescompleted = [];
-        const tasksincomplete = [];
-        const taskscompleted = [];
-        for (let obj of filearray) {
-          let id = obj.id;
-          //console.log(id);
-          let metaArray = await getMetadata(id);
-          let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
-          let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
-          //console.log("DACC Value: "+daccMetaValue);
+  //Switch Tabs
+  switchTabs('toBeCompleted', ['completed'], filesincomplete);
+  switchTabs('completed', ['toBeCompleted'], filescompleted);
 
-          if (daccMetaValue != 0 && chairMetaValue == 2) {
-            let tasklist = await getTaskList(id);
-            let entries = tasklist.entries;
+}
 
-            if (entries.length !== 0) {
-              for (let item of entries) {
-                if (item.is_completed == false) {
-                  for (let taskassignment of item.task_assignment_collection.entries) {
-                    if (taskassignment.status == 'incomplete' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
-                      console.log(taskassignment.assigned_at);
-                      if (!filesincomplete.includes(id)) {
-                        filesincomplete.push(id);
-                        tasksincomplete.push(taskassignment.id);
-                      }
-                    } else if (taskassignment.status == 'completed' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
-                      if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
-                        filescompleted.push(id);
-                        taskscompleted.push(taskassignment.id);
-                      }
-                    }
-                  }
-                }
-              }
+export const submitToComment = () => {
+  let submitComment = async (e) => {
+    e.preventDefault();
+    const btn = document.activeElement;
+    btn.disabled = true;
+    //let taskId = btn.name;
+    let fileId = document.getElementById('selectedDoc').value;
+    let message = e.target[0].value;
+    console.log(fileId);
+    console.log(message);
+    let metaArray = await getMetadata(fileId);
+    let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
+    //let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
+    await createComment(fileId, message);
+    let tasklist = await getTaskList(fileId);
+    let entries = tasklist.entries;
+    if (entries.length !== 0) {
+      for (let item of entries) {
+        if (item.is_completed == false) {
+          for (let taskassignment of item.task_assignment_collection.entries) {
+            if (taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
+                var taskId = taskassignment.id;
+                console.log(taskId);
             }
-          }
-          if (chairMetaValue == 3) {
-            let tasklist = await getTaskList(id);
-            let entries = tasklist.entries;
+          }  
+        }
+      }
+    }
+    await updateTaskAssignment(taskId, "completed");
+    if (daccMetaValue == 1) {
+      await updateMetadata(fileId, "BCRPPchair", "3");
+      console.log("New Chair Value: 3");
+      await createFileTask(fileId);
+      console.log("Chair Task Created");
+      let tasklist = await getTaskList(fileId);
+      let entries = tasklist.entries;
+      console.log(entries);
+      for (let item of entries) {
+        if (item.is_completed == false) {
+          await assignTask(item.id, emailforChair[0]);
+          console.log("Chair Task Assigned");
+        }
+      }
+    };
+    let newDaccValue = parseInt(daccMetaValue) - 1;
+    await updateMetadata(fileId, "BCRPPdacc", newDaccValue.toString());
+    console.log("New DACC Value: " + newDaccValue);
+    document.location.reload(true);
+  }
+  const form = document.querySelector('.dacc-comment');
+  if (form) {
+    form.addEventListener('submit', submitComment);
+  }
+}
 
-            if (entries.length !== 0) {
-              for (let item of entries) {
-                if (item.is_completed == false) {
-                  for (let taskassignment of item.task_assignment_collection.entries) {
-                    if (taskassignment.status == 'completed' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
-                      if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
-                        filescompleted.push(id);
-                        taskscompleted.push(taskassignment.id);
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        };
-        // template += `<div class="card mt-1 mb-1 align-left">`
-        // template += await viewDACCFiles(filesincomplete, tasksincomplete);
-        // // for (const id of filesincomplete){
-        // //   let fileinfo = await getFileInfo(id)
-        // //   template += `
-        // //                 <li><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></li>
-        // //                 `
-        // // }
-        // template += `</div></ul>
-        // <h2 class="page-header">Completed</h2>
-        // <ul>
-        // `
-        // for (const id of filescompleted){
-        //   let fileinfo = await getFileInfo(id)
-        //   template += `
-        //                 <li><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></li>
-        //                 `
-        // }
+export const dataApproval = () => {
+  // let files = await getFolderItems(uploadFormFolder);
+  // const filesinfoldernames = [];
+  // const filesinfolderids = [];
+  // for (let i = 0; i < files.entries.length; i++) {
+  //   filesinfoldernames.push(files.entries[i].name);
+  //   filesinfolderids.push(files.entries[i].id);
+  // }
 
-        // template += `
-        // </div></div></div>`;
-        template += "<div class='tab-content'>";
-        
-        template += `<div class='tab-pane fade show active'
-                     id='toBeCompleted' role='tabpanel'
-                    aria-labeledby='toBeCompletedTab'>`;
-        template += renderFilePreviewDropdown(filesincomplete);
-        template += `<div class='tab-pane fade'
-                      id='completed' role='tabpanel'
-                      aria-labeledby='completedTab'> `
-        template += renderFilePreviewDropdown(filescompleted);
+  // let fileId = filesinfolderids[filesinfoldernames.indexOf(filename)];
 
-        if (filescompleted.length != 0 || filesincomplete.length != 0) {
-          template += `<div id='filePreview'> <div id='boxFilePreview' class="preview-container"></div>
-          <div class="card-body comment-submit" style="padding-left: 10px;background-color:#f6f6f6;">
-          <form>
-            <label for"message">Enter Comments</label>
-            <div class="input-group">
-              <textarea id="message" name="message" rows="6" cols="65"></textarea>
+  let approveDoc = async (e) => {
+    e.preventDefault();
+
+    let fileId = 931127106406;
+    let approval = e.submitter.value;
+    let message = e.target[0].value;
+
+    let taskList = await getTaskList(fileId);
+    console.log(taskList)
+    let taskAssignment = taskList.entries[0].task_assignment_collection.entries[0];
+
+    console.log(await updateTaskAssignment(taskAssignment.id, approval, message))
+  }
+
+  const form = document.querySelector('.data-approval')
+  form.addEventListener('submit', approveDoc)
+}
+
+export const dataForm = async () => {
+  let files = await getFolderItems(uploadFormFolder);
+  const d = new Date();
+  const filename = JSON.parse(localStorage.parms).login.split("@")[0] + "testing" + "_" + d.getDate() + "_" + (d.getMonth() + 1) + "_" + d.getFullYear() + "2.docx";
+  const filesinfoldernames = [];
+  const filesinfolderids = [];
+  for (let i = 0; i < files.entries.length; i++) {
+    filesinfoldernames.push(files.entries[i].name);
+    filesinfolderids.push(files.entries[i].id);
+  }
+  //console.log(filesinfolderids);
+
+  // async function assigntasktochair() {
+  //   let files = await getFolderItems(uploadFormFolder);
+  //   const filesinfoldernames = [];
+  //   const filesinfolderids = [];
+  //   for (let i = 0; i < files.entries.length; i++) {
+  //     filesinfoldernames.push(files.entries[i].name);
+  //     filesinfolderids.push(files.entries[i].id);
+  //   }
+
+  //   let fileId = filesinfolderids[filesinfoldernames.indexOf(filename)];
+  //   //console.log(fileId);
+  //   await createFileTask(fileId);
+  //   let tasklist = await getTaskList(fileId);
+  //   console.log(tasklist.entries)
+  //   let tasktochair = tasklist.entries[0].id;
+  //   console.log(emailforChair[0]);
+  //   await assignTask(tasktochair, emailforChair[0]);
+  //   console.log("Chair has been notified: " +  tasktochair);
+  // };
+
+  async function handleFormSubmit(eventtest) {
+    //const btn = document.getElementById("submitFormButton");
+    const btn = document.activeElement;
+    btn.disabled = true;
+    //console.log(btn);
+    //btn.classList.toggle("buttonsubmit--loading");
+    //btn.class="lazy-loader-spinner";
+    eventtest.preventDefault();
+
+    const data = new FormData(eventtest.target);
+
+    const formJSON = Object.fromEntries(data.entries());
+
+    // for multi-selects, we need special handling
+    //formJSON.snacks = data.getAll('snacks');
+
+    const results = document.querySelector('.results pre');
+    results.innerText = JSON.stringify(formJSON, null, 2);
+    //const data2 = JSON.parse(JSON.stringify(formJSON));
+    //console.log(data2)
+    //console.log(formJSON.name)
+    //uploadFile(formJSON, "BCRPPexample.json", uploadFormFolder)
+    // let files = async () =>{
+    //   await console.log(getFolderItems(uploadFormFolder));//149098174998);
+    //  }
+    // console.log(files.entries);
+    await generateWord(formJSON);
+    //await assigntasktochair();
+    btn.classList.toggle("buttonsubmit--loading");
+    btn.disabled = false;
+  };
+
+  async function assigntasktochair() {
+    let files = await getFolderItems(uploadFormFolder);
+    const filesinfoldernames = [];
+    const filesinfolderids = [];
+    for (let i = 0; i < files.entries.length; i++) {
+      filesinfoldernames.push(files.entries[i].name);
+      filesinfolderids.push(files.entries[i].id);
+    }
+
+    let fileId = filesinfolderids[filesinfoldernames.indexOf(filename)];
+    //console.log(fileId);
+    // await createFileTask(fileId);
+    // let tasklist = await getTaskList(fileId);
+    // console.log(tasklist.entries)
+    // let tasktochair = tasklist.entries[0].id;
+    // console.log(emailforChair[0]);
+    // await assignTask(tasktochair, emailforChair[0]);
+    // console.log("Chair has been notified: " +  tasktochair);
+    await createMetadata(fileId);
+  };
+
+  async function generateWord(jsondata) {
+    const doc = new docx.Document({
+      sections: [{
+        properties: {},
+        children: [
+          new docx.Paragraph({
+            text: "BCRPP Data Access Submission",
+            heading: docx.HeadingLevel.TITLE,
+            alignment: docx.AlignmentType.CENTER
+          }),
+          new docx.Paragraph({
+            text: "Investigator(s): ",
+            heading: docx.HeadingLevel.HEADING_2
+          }),
+          new docx.Paragraph({
+            alignment: docx.AlignmentType.START,
+            style: {
+              paragraph: {
+                indent: 500
+              },
+            },
+            children: [
+              new docx.TextRun({
+                text: jsondata.name,
+                bold: true,
+              }),
+            ],
+          }),
+          new docx.Paragraph({
+            text: "Keywords: ",
+            heading: docx.HeadingLevel.HEADING_2
+          }),
+          new docx.Paragraph({
+            alignment: docx.AlignmentType.START,
+            style: {
+              paragraph: {
+                indent: 500
+              },
+            },
+            children: [
+              new docx.TextRun({
+                text: jsondata.keywords,
+                bold: true,
+              }),
+            ],
+          }),
+          new docx.Paragraph({
+            text: "Contact Email: ",
+            heading: docx.HeadingLevel.HEADING_2
+          }),
+          new docx.Paragraph({
+            alignment: docx.AlignmentType.START,
+            style: {
+              paragraph: {
+                indent: {
+                  left: 1440,
+                  hanging: 980
+                },
+              },
+            },
+            children: [
+              new docx.TextRun({
+                text: jsondata.email,
+                bold: true,
+              }),
+            ],
+          }),
+          new docx.Paragraph({
+            text: "Title of Proposed Project: ",
+            heading: docx.HeadingLevel.HEADING_2
+          }),
+          new docx.Paragraph({
+            alignment: docx.AlignmentType.START,
+            style: {
+              paragraph: {
+                indent: {
+                  left: 1440,
+                  hanging: 980
+                },
+              },
+            },
+            children: [
+              new docx.TextRun({
+                text: jsondata.project,
+                bold: true,
+              }),
+            ],
+          }),
+          new docx.Paragraph({
+            text: "Is this an amendment? ",
+            heading: docx.HeadingLevel.HEADING_2
+          }),
+          new docx.Paragraph({
+            alignment: docx.AlignmentType.START,
+            style: {
+              paragraph: {
+                indent: {
+                  left: 1440,
+                  hanging: 980
+                },
+              },
+            },
+            children: [
+              new docx.TextRun({
+                text: jsondata.amendment,
+                bold: true,
+              }),
+            ],
+          }),
+          new docx.Paragraph({
+            text: "Institution: ",
+            heading: docx.HeadingLevel.HEADING_2
+          }),
+          new docx.Paragraph({
+            alignment: docx.AlignmentType.START,
+            style: {
+              paragraph: {
+                indent: {
+                  left: 1440,
+                  hanging: 980
+                },
+              },
+            },
+            children: [
+              new docx.TextRun({
+                text: jsondata.institution,
+                bold: true,
+              }),
+            ],
+          }),
+          new docx.Paragraph({
+            text: "Cohort Requested: ",
+            heading: docx.HeadingLevel.HEADING_2
+          }),
+          new docx.Paragraph({
+            alignment: docx.AlignmentType.START,
+            style: {
+              paragraph: {
+                indent: {
+                  left: 1440,
+                  hanging: 980
+                },
+              },
+            },
+            children: [
+              new docx.TextRun({
+                text: jsondata.cohort,
+                bold: true,
+              }),
+            ],
+          }),
+          new docx.Paragraph({
+            text: "Background/Aims: ",
+            heading: docx.HeadingLevel.HEADING_2
+          }),
+          new docx.Paragraph({
+            alignment: docx.AlignmentType.START,
+            style: {
+              paragraph: {
+                indent: {
+                  left: 1440,
+                  hanging: 980
+                },
+              },
+            },
+            children: [
+              new docx.TextRun({
+                text: jsondata.background,
+                bold: false,
+              }),
+            ],
+          }),
+          new docx.Paragraph({
+            text: "Additional Information: ",
+            heading: docx.HeadingLevel.HEADING_2
+          }),
+          new docx.Paragraph({
+            alignment: docx.AlignmentType.START,
+            style: {
+              paragraph: {
+                indent: {
+                  left: 1440,
+                  hanging: 980
+                },
+              },
+            },
+            children: [
+              new docx.TextRun({
+                text: jsondata.additional,
+                bold: false,
+              }),
+            ],
+          }),
+          new docx.Paragraph({
+            text: "Agreement: ",
+            heading: docx.HeadingLevel.HEADING_2
+          }),
+          new docx.Paragraph({
+            alignment: docx.AlignmentType.START,
+            style: {
+              paragraph: {
+                indent: {
+                  left: 1440,
+                  hanging: 980
+                },
+              },
+            },
+            children: [
+              new docx.TextRun({
+                text: jsondata.confirmation,
+                bold: true,
+              }),
+            ],
+          }),
+        ],
+      }]
+    });
+
+    let files = await getFolderItems(uploadFormFolder);
+    //console.log(files.entries)
+    const filesinfoldernames = [];
+    const filesinfolderids = [];
+    for (let i = 0; i < files.entries.length; i++) {
+      filesinfoldernames.push(files.entries[i].name);
+      filesinfolderids.push(files.entries[i].id);
+    }
+    //console.log(filesinfoldernames);
+
+    docx.Packer.toBlob(doc).then(blob => {
+      console.log(blob);
+      //saveAs(blob, "BCRPPexample.docx");
+      console.log("Document created successfully");
+      //let files = getFolderItems(uploadFormFolder);//149098174998);
+      if (filesinfoldernames.includes(filename)) {
+        console.log(filename + " Exists: Saving New Version");
+        let fileidupdate = filesinfolderids[filesinfoldernames.indexOf(filename)];
+        (async () => {
+          await uploadWordFileVersion(blob, fileidupdate);
+          await assigntasktochair();
+        })();
+      } else {
+        console.log("Saving File to Box: " + filename + jsondata.keywords); // Adding keywords
+        (async () => {
+          await uploadWordFile(blob, filename, uploadFormFolder);
+          await assigntasktochair();
+        })();
+      }
+    });
+  }
+
+  const form = document.querySelector('.contact-form');
+  form.addEventListener('submit', handleFormSubmit);
+  //form.addEventListener('submit', assigntasktochair);
+}
+
+const viewFiles = async (files) => {
+  let template = ``;
+  for (const id of files) {
+    // let check =  await getMetadata(id);
+    // console.log(check);
+    let fileinfo = await getFileInfo(id);
+    template += `
+            <div style="padding: 10px" aria-expanded="false" id="heading${id}">
+              <div class = "row">
+                <div class="col-md-4 card-title"><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></div>
+                  <div class="col-md-1">
+                      <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${id}">
+                          <i class="fas fa-caret-down fa-2x"></i>
+                      </button>
+                  </div>
+                </div>
+              </div>
+            `
+    template += `
+            <div id="study${id}" class="collapse" aria-labelledby="heading${id}">
+              <div class="card-body dacc-submit" style="padding-left: 10px;background-color:#f6f6f6;">
+                <form>
+                  <label for"message">Send to DACC</label>
+                  <div class="input-group">
+                    <textarea id="message" name="message" rows="6" cols="65"></textarea>
+                  </div>
+                  <button type="submit" value="${id}" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+                    <span class="buttonsubmit__text"> Send </span> </button>
+                </form>
+              </div>
             </div>
-            <button class='btn btn-primary' type="submit" value="send">Send Comment</button>
-          </form>
-          
-          </div>
-          </div>
-          </div>`;
-        }
-        document.getElementById('daccFileView').innerHTML = template;
+            `
+  };
+  return (template);
+}
 
-        addEventToggleCollapsePanelBtn();
-        submitToComment();
-
-        //Switch Tabs
-        switchTabs('toBeCompleted', ['completed'], filesincomplete);
-        switchTabs('completed', ['toBeCompleted'], filescompleted);
-
-      }
-
-      export const submitToComment = () => {
-        let submitComment = async (e) => {
-          e.preventDefault();
-          const btn = document.activeElement;
-          btn.disabled = true;
-          let taskId = btn.name;
-          let fileId = e.submitter.value;
-          let message = e.target[0].value;
-          console.log(fileId);
-          console.log(message);
-          let metaArray = await getMetadata(fileId);
-          let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
-          //let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
-          await createComment(fileId, message);
-          await updateTaskAssignment(taskId, "completed");
-          if (daccMetaValue == 1) {
-            await updateMetadata(fileId, "BCRPPchair", "3");
-            console.log("New Chair Value: 3");
-            await createFileTask(fileId);
-            console.log("Chair Task Created");
-            let tasklist = await getTaskList(fileId);
-            let entries = tasklist.entries;
-            console.log(entries);
-            for (let item of entries) {
-              if (item.is_completed == false) {
-                await assignTask(item.id, emailforChair[0]);
-                console.log("Chair Task Assigned");
-              }
-            }
-          };
-          let newDaccValue = parseInt(daccMetaValue) - 1;
-          await updateMetadata(fileId, "BCRPPdacc", newDaccValue.toString());
-          console.log("New DACC Value: " + newDaccValue);
-          document.location.reload(true);
-        }
-        const form = document.querySelector('.dacc-comment');
-        if (form) {
-          form.addEventListener('submit', submitComment);
-        }
-      }
-
-      export const dataApproval = () => {
-        // let files = await getFolderItems(uploadFormFolder);
-        // const filesinfoldernames = [];
-        // const filesinfolderids = [];
-        // for (let i = 0; i < files.entries.length; i++) {
-        //   filesinfoldernames.push(files.entries[i].name);
-        //   filesinfolderids.push(files.entries[i].id);
-        // }
-
-        // let fileId = filesinfolderids[filesinfoldernames.indexOf(filename)];
-
-        let approveDoc = async (e) => {
-          e.preventDefault();
-
-          let fileId = 931127106406;
-          let approval = e.submitter.value;
-          let message = e.target[0].value;
-
-          let taskList = await getTaskList(fileId);
-          console.log(taskList)
-          let taskAssignment = taskList.entries[0].task_assignment_collection.entries[0];
-
-          console.log(await updateTaskAssignment(taskAssignment.id, approval, message))
-        }
-
-        const form = document.querySelector('.data-approval')
-        form.addEventListener('submit', approveDoc)
-      }
-
-      export const dataForm = async () => {
-        let files = await getFolderItems(uploadFormFolder);
-        const d = new Date();
-        const filename = JSON.parse(localStorage.parms).login.split("@")[0] + "testing" + "_" + d.getDate() + "_" + (d.getMonth() + 1) + "_" + d.getFullYear() + "2.docx";
-        const filesinfoldernames = [];
-        const filesinfolderids = [];
-        for (let i = 0; i < files.entries.length; i++) {
-          filesinfoldernames.push(files.entries[i].name);
-          filesinfolderids.push(files.entries[i].id);
-        }
-        //console.log(filesinfolderids);
-
-        // async function assigntasktochair() {
-        //   let files = await getFolderItems(uploadFormFolder);
-        //   const filesinfoldernames = [];
-        //   const filesinfolderids = [];
-        //   for (let i = 0; i < files.entries.length; i++) {
-        //     filesinfoldernames.push(files.entries[i].name);
-        //     filesinfolderids.push(files.entries[i].id);
-        //   }
-
-        //   let fileId = filesinfolderids[filesinfoldernames.indexOf(filename)];
-        //   //console.log(fileId);
-        //   await createFileTask(fileId);
-        //   let tasklist = await getTaskList(fileId);
-        //   console.log(tasklist.entries)
-        //   let tasktochair = tasklist.entries[0].id;
-        //   console.log(emailforChair[0]);
-        //   await assignTask(tasktochair, emailforChair[0]);
-        //   console.log("Chair has been notified: " +  tasktochair);
-        // };
-
-        async function handleFormSubmit(eventtest) {
-          //const btn = document.getElementById("submitFormButton");
-          const btn = document.activeElement;
-          btn.disabled = true;
-          //console.log(btn);
-          //btn.classList.toggle("buttonsubmit--loading");
-          //btn.class="lazy-loader-spinner";
-          eventtest.preventDefault();
-
-          const data = new FormData(eventtest.target);
-
-          const formJSON = Object.fromEntries(data.entries());
-
-          // for multi-selects, we need special handling
-          //formJSON.snacks = data.getAll('snacks');
-
-          const results = document.querySelector('.results pre');
-          results.innerText = JSON.stringify(formJSON, null, 2);
-          //const data2 = JSON.parse(JSON.stringify(formJSON));
-          //console.log(data2)
-          //console.log(formJSON.name)
-          //uploadFile(formJSON, "BCRPPexample.json", uploadFormFolder)
-          // let files = async () =>{
-          //   await console.log(getFolderItems(uploadFormFolder));//149098174998);
-          //  }
-          // console.log(files.entries);
-          await generateWord(formJSON);
-          //await assigntasktochair();
-          btn.classList.toggle("buttonsubmit--loading");
-          btn.disabled = false;
-        };
-
-        async function assigntasktochair() {
-          let files = await getFolderItems(uploadFormFolder);
-          const filesinfoldernames = [];
-          const filesinfolderids = [];
-          for (let i = 0; i < files.entries.length; i++) {
-            filesinfoldernames.push(files.entries[i].name);
-            filesinfolderids.push(files.entries[i].id);
-          }
-
-          let fileId = filesinfolderids[filesinfoldernames.indexOf(filename)];
-          //console.log(fileId);
-          // await createFileTask(fileId);
-          // let tasklist = await getTaskList(fileId);
-          // console.log(tasklist.entries)
-          // let tasktochair = tasklist.entries[0].id;
-          // console.log(emailforChair[0]);
-          // await assignTask(tasktochair, emailforChair[0]);
-          // console.log("Chair has been notified: " +  tasktochair);
-          await createMetadata(fileId);
-        };
-
-        async function generateWord(jsondata) {
-          const doc = new docx.Document({
-            sections: [{
-              properties: {},
-              children: [
-                new docx.Paragraph({
-                  text: "BCRPP Data Access Submission",
-                  heading: docx.HeadingLevel.TITLE,
-                  alignment: docx.AlignmentType.CENTER
-                }),
-                new docx.Paragraph({
-                  text: "Investigator(s): ",
-                  heading: docx.HeadingLevel.HEADING_2
-                }),
-                new docx.Paragraph({
-                  alignment: docx.AlignmentType.START,
-                  style: {
-                    paragraph: {
-                      indent: 500
-                    },
-                  },
-                  children: [
-                    new docx.TextRun({
-                      text: jsondata.name,
-                      bold: true,
-                    }),
-                  ],
-                }),
-                new docx.Paragraph({
-                  text: "Keywords: ",
-                  heading: docx.HeadingLevel.HEADING_2
-                }),
-                new docx.Paragraph({
-                  alignment: docx.AlignmentType.START,
-                  style: {
-                    paragraph: {
-                      indent: 500
-                    },
-                  },
-                  children: [
-                    new docx.TextRun({
-                      text: jsondata.keywords,
-                      bold: true,
-                    }),
-                  ],
-                }),
-                new docx.Paragraph({
-                  text: "Contact Email: ",
-                  heading: docx.HeadingLevel.HEADING_2
-                }),
-                new docx.Paragraph({
-                  alignment: docx.AlignmentType.START,
-                  style: {
-                    paragraph: {
-                      indent: {
-                        left: 1440,
-                        hanging: 980
-                      },
-                    },
-                  },
-                  children: [
-                    new docx.TextRun({
-                      text: jsondata.email,
-                      bold: true,
-                    }),
-                  ],
-                }),
-                new docx.Paragraph({
-                  text: "Title of Proposed Project: ",
-                  heading: docx.HeadingLevel.HEADING_2
-                }),
-                new docx.Paragraph({
-                  alignment: docx.AlignmentType.START,
-                  style: {
-                    paragraph: {
-                      indent: {
-                        left: 1440,
-                        hanging: 980
-                      },
-                    },
-                  },
-                  children: [
-                    new docx.TextRun({
-                      text: jsondata.project,
-                      bold: true,
-                    }),
-                  ],
-                }),
-                new docx.Paragraph({
-                  text: "Is this an amendment? ",
-                  heading: docx.HeadingLevel.HEADING_2
-                }),
-                new docx.Paragraph({
-                  alignment: docx.AlignmentType.START,
-                  style: {
-                    paragraph: {
-                      indent: {
-                        left: 1440,
-                        hanging: 980
-                      },
-                    },
-                  },
-                  children: [
-                    new docx.TextRun({
-                      text: jsondata.amendment,
-                      bold: true,
-                    }),
-                  ],
-                }),
-                new docx.Paragraph({
-                  text: "Institution: ",
-                  heading: docx.HeadingLevel.HEADING_2
-                }),
-                new docx.Paragraph({
-                  alignment: docx.AlignmentType.START,
-                  style: {
-                    paragraph: {
-                      indent: {
-                        left: 1440,
-                        hanging: 980
-                      },
-                    },
-                  },
-                  children: [
-                    new docx.TextRun({
-                      text: jsondata.institution,
-                      bold: true,
-                    }),
-                  ],
-                }),
-                new docx.Paragraph({
-                  text: "Cohort Requested: ",
-                  heading: docx.HeadingLevel.HEADING_2
-                }),
-                new docx.Paragraph({
-                  alignment: docx.AlignmentType.START,
-                  style: {
-                    paragraph: {
-                      indent: {
-                        left: 1440,
-                        hanging: 980
-                      },
-                    },
-                  },
-                  children: [
-                    new docx.TextRun({
-                      text: jsondata.cohort,
-                      bold: true,
-                    }),
-                  ],
-                }),
-                new docx.Paragraph({
-                  text: "Background/Aims: ",
-                  heading: docx.HeadingLevel.HEADING_2
-                }),
-                new docx.Paragraph({
-                  alignment: docx.AlignmentType.START,
-                  style: {
-                    paragraph: {
-                      indent: {
-                        left: 1440,
-                        hanging: 980
-                      },
-                    },
-                  },
-                  children: [
-                    new docx.TextRun({
-                      text: jsondata.background,
-                      bold: false,
-                    }),
-                  ],
-                }),
-                new docx.Paragraph({
-                  text: "Additional Information: ",
-                  heading: docx.HeadingLevel.HEADING_2
-                }),
-                new docx.Paragraph({
-                  alignment: docx.AlignmentType.START,
-                  style: {
-                    paragraph: {
-                      indent: {
-                        left: 1440,
-                        hanging: 980
-                      },
-                    },
-                  },
-                  children: [
-                    new docx.TextRun({
-                      text: jsondata.additional,
-                      bold: false,
-                    }),
-                  ],
-                }),
-                new docx.Paragraph({
-                  text: "Agreement: ",
-                  heading: docx.HeadingLevel.HEADING_2
-                }),
-                new docx.Paragraph({
-                  alignment: docx.AlignmentType.START,
-                  style: {
-                    paragraph: {
-                      indent: {
-                        left: 1440,
-                        hanging: 980
-                      },
-                    },
-                  },
-                  children: [
-                    new docx.TextRun({
-                      text: jsondata.confirmation,
-                      bold: true,
-                    }),
-                  ],
-                }),
-              ],
-            }]
-          });
-
-          let files = await getFolderItems(uploadFormFolder);
-          //console.log(files.entries)
-          const filesinfoldernames = [];
-          const filesinfolderids = [];
-          for (let i = 0; i < files.entries.length; i++) {
-            filesinfoldernames.push(files.entries[i].name);
-            filesinfolderids.push(files.entries[i].id);
-          }
-          //console.log(filesinfoldernames);
-
-          docx.Packer.toBlob(doc).then(blob => {
-            console.log(blob);
-            //saveAs(blob, "BCRPPexample.docx");
-            console.log("Document created successfully");
-            //let files = getFolderItems(uploadFormFolder);//149098174998);
-            if (filesinfoldernames.includes(filename)) {
-              console.log(filename + " Exists: Saving New Version");
-              let fileidupdate = filesinfolderids[filesinfoldernames.indexOf(filename)];
-              (async () => {
-                await uploadWordFileVersion(blob, fileidupdate);
-                await assigntasktochair();
-              })();
-            } else {
-              console.log("Saving File to Box: " + filename + jsondata.keywords); // Adding keywords
-              (async () => {
-                await uploadWordFile(blob, filename, uploadFormFolder);
-                await assigntasktochair();
-              })();
-            }
-          });
-        }
-
-        const form = document.querySelector('.contact-form');
-        form.addEventListener('submit', handleFormSubmit);
-        //form.addEventListener('submit', assigntasktochair);
-      }
-
-      const viewFiles = async (files) => {
-        let template = ``;
-        for (const id of files) {
-          // let check =  await getMetadata(id);
-          // console.log(check);
-          let fileinfo = await getFileInfo(id);
-          template += `
-                  <div style="padding: 10px" aria-expanded="false" id="heading${id}">
-                    <div class = "row">
-                      <div class="col-md-4 card-title"><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></div>
-                        <div class="col-md-1">
-                            <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${id}">
-                                <i class="fas fa-caret-down fa-2x"></i>
-                            </button>
-                        </div>
-                      </div>
-                    </div>
-                  `
-          template += `
-                  <div id="study${id}" class="collapse" aria-labelledby="heading${id}">
-                    <div class="card-body dacc-submit" style="padding-left: 10px;background-color:#f6f6f6;">
-                      <form>
-                        <label for"message">Send to DACC</label>
-                        <div class="input-group">
-                          <textarea id="message" name="message" rows="6" cols="65"></textarea>
-                        </div>
-                        <button type="submit" value="${id}" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
-                          <span class="buttonsubmit__text"> Send </span> </button>
-                      </form>
-                    </div>
+const viewDACCCompletedFiles = async (files, taskids) => {
+  let template = ``;
+  var ival = 0;
+  for (const id of files) {
+    // let check =  await getMetadata(id);
+    // console.log(check);
+    let fileinfo = await getFileInfo(id);
+    let taskid = taskids[ival]
+    template += `
+            <div style="padding: 10px" aria-expanded="false" id="heading${id}">
+              <div class = "row">
+                <div class="col-md-4 card-title"><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></div>
+                  <div class="col-md-1">
+                      <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${id}">
+                          <i class="fas fa-caret-down fa-2x"></i>
+                      </button>
                   </div>
-                  `
-        };
-        return (template);
-      }
-
-      const viewDACCCompletedFiles = async (files, taskids) => {
-        let template = ``;
-        var ival = 0;
-        for (const id of files) {
-          // let check =  await getMetadata(id);
-          // console.log(check);
-          let fileinfo = await getFileInfo(id);
-          let taskid = taskids[ival]
-          template += `
-                  <div style="padding: 10px" aria-expanded="false" id="heading${id}">
-                    <div class = "row">
-                      <div class="col-md-4 card-title"><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></div>
-                        <div class="col-md-1">
-                            <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${id}">
-                                <i class="fas fa-caret-down fa-2x"></i>
-                            </button>
-                        </div>
-                      </div>
-                    </div>
-                  `
-          template += `
-                  <div id="study${id}" class="collapse" aria-labelledby="heading${id}">
-                    <div class="card-body approvedeny" style="padding-left: 10px;background-color:#f6f6f6;">
-                      <form>
-                        <label for="message">Enter Message for Submitter</label>
-                        <div class="input-group">
-                            <textarea id="message" name="message" rows="6" cols="65"></textarea>
-                        </div>
-                        <button type="submit" name="${taskid}" id="${id}" class="buttonsubmit" value="approved">
-                          <span class="buttonsubmit__text"> Approve </span></button>
-                        <button type="submit" name="${taskid}" id="${id}" class="buttonsubmit" value="rejected">
-                          <span class="buttonsubmit__text"> Deny </span></button>
-                      </form>
-                    </div>
+                </div>
+              </div>
+            `
+    template += `
+            <div id="study${id}" class="collapse" aria-labelledby="heading${id}">
+              <div class="card-body approvedeny" style="padding-left: 10px;background-color:#f6f6f6;">
+                <form>
+                  <label for="message">Enter Message for Submitter</label>
+                  <div class="input-group">
+                      <textarea id="message" name="message" rows="6" cols="65"></textarea>
                   </div>
-                  `
-          ival += 1;
-        };
-        return (template);
-      }
+                  <button type="submit" name="${taskid}" id="${id}" class="buttonsubmit" value="approved">
+                    <span class="buttonsubmit__text"> Approve </span></button>
+                  <button type="submit" name="${taskid}" id="${id}" class="buttonsubmit" value="rejected">
+                    <span class="buttonsubmit__text"> Deny </span></button>
+                </form>
+              </div>
+            </div>
+            `
+    ival += 1;
+  };
+  return (template);
+}
 
-      const viewDACCFiles = async (files, taskids) => {
-        let template = ``;
-        var ival = 0;
-        for (const id of files) {
-          // let check =  await getMetadata(id);
-          // console.log(check);
-          let fileinfo = await getFileInfo(id);
-          let taskid = taskids[ival];
-          template += `
-                  <div style="padding: 10px" aria-expanded="false" id="heading${id}">
-                    <div class = "row">
-                      <div class="col-md-4 card-title"><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></div>
-                        <div class="col-md-1">
-                            <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${id}">
-                                <i class="fas fa-caret-down fa-2x"></i>
-                            </button>
-                        </div>
-                      </div>
-                    </div>
-                  `
-          template += `
-                  <div id="study${id}" class="collapse" aria-labelledby="heading${id}">
-                    <div class="card-body dacc-comment" style="padding-left: 10px;background-color:#f6f6f6;">
-                      <form>
-                        <label for"message">Submit Comment</label>
-                        <div class="input-group">
-                          <textarea id="message" name="message" rows="6" cols="65"></textarea>
-                        </div>
-                        <button type="submit" name="${taskid}" value="${id}" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
-                          <span class="buttonsubmit__text"> Submit & Complete </span> </button>
-                      </form>
-                    </div>
+const viewDACCFiles = async (files, taskids) => {
+  let template = ``;
+  var ival = 0;
+  for (const id of files) {
+    // let check =  await getMetadata(id);
+    // console.log(check);
+    let fileinfo = await getFileInfo(id);
+    let taskid = taskids[ival];
+    template += `
+            <div style="padding: 10px" aria-expanded="false" id="heading${id}">
+              <div class = "row">
+                <div class="col-md-4 card-title"><a href="https://nih.app.box.com/file/${id}">${fileinfo.name}</a></div>
+                  <div class="col-md-1">
+                      <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${id}">
+                          <i class="fas fa-caret-down fa-2x"></i>
+                      </button>
                   </div>
-                  `
-          ival += 1;
-        };
-        return template;
-      }
+                </div>
+              </div>
+            `
+    template += `
+            <div id="study${id}" class="collapse" aria-labelledby="heading${id}">
+              <div class="card-body dacc-comment" style="padding-left: 10px;background-color:#f6f6f6;">
+                <form>
+                  <label for"message">Submit Comment</label>
+                  <div class="input-group">
+                    <textarea id="message" name="message" rows="6" cols="65"></textarea>
+                  </div>
+                  <button type="submit" name="${taskid}" value="${id}" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+                    <span class="buttonsubmit__text"> Submit & Complete </span> </button>
+                </form>
+              </div>
+            </div>
+            `
+    ival += 1;
+  };
+  return template;
+}

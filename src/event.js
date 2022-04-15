@@ -1531,6 +1531,22 @@ export function switchTabs(show, hide, files) {
                             boxPreview.classList.add('d-block');
                         }
                         showPreview(files[0].id);
+                        if (show == 'toBeCompleted'){
+                            document.getElementById('sendtodaccButton').style.display="block";
+                            document.getElementById('finalChairDecision').style.display="none";
+                        }  
+                        if (show == 'inProgress'){
+                            document.getElementById('sendtodaccButton').style.display="none";
+                            document.getElementById('finalChairDecision').style.display="none";
+                            }
+                        if (show == 'daccCompleted'){
+                            document.getElementById('sendtodaccButton').style.display="none";
+                            document.getElementById('finalChairDecision').style.display="block";
+                            }
+                        if (show == 'approved'){
+                            document.getElementById('sendtodaccButton').style.display="none";
+                            document.getElementById('finalChairDecision').style.display="none";
+                            }
                     } else {
                         boxPreview.classList.remove('d-block');
                         boxPreview.classList.add('d-none');

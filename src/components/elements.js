@@ -106,7 +106,7 @@ if(files.length != 0){
     console.log('Param is array length: ' + files.length);
     template += `<div class='card-body'>
             <div class='card-title'>
-            <select onchange="
+            <select id='selectedDoc' onchange="
             const access_token = JSON.parse(localStorage.parms).access_token;
         
                     console.log('SHOWING PREVIEW', this.value);
@@ -128,10 +128,7 @@ if(files.length != 0){
     template += `
               </select>
               </div>
-                
-                
-                  </div>
-              
+            </div>  
           </div>`
   } else {
     template += `
