@@ -671,7 +671,7 @@ export const daccFileView = async () => {
 <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
 <ul class='nav nav-tabs mb-3' role='tablist'>
 <li class='nav-item' role='presentation'>
-  <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> To Be Completed </a>
+  <a class='nav-link active' id='dacctoBeCompletedTab' href='#dacctoBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='dacctoBeCompleted' aria-selected='true'> To Be Completed </a>
 </li>
 <li class='nav-item' role='presentation'>
     <a class='nav-link' id='completedTab' href='#completed' data-mdb-toggle="tab" role='tab' aria-controls='completed' aria-selected='true'>Completed</a>
@@ -744,8 +744,8 @@ export const daccFileView = async () => {
   template += "<div class='tab-content'>";
   
   template += `<div class='tab-pane fade show active'
-                id='toBeCompleted' role='tabpanel'
-              aria-labeledby='toBeCompletedTab'>`;
+                id='dacctoBeCompleted' role='tabpanel'
+              aria-labeledby='dacctoBeCompletedTab'>`;
   template += renderFilePreviewDropdown(filesincomplete);
   template += `<div class='tab-pane fade'
                 id='completed' role='tabpanel'
@@ -755,7 +755,7 @@ export const daccFileView = async () => {
   if (filescompleted.length != 0 || filesincomplete.length != 0) {
     template += `<div id='filePreview'> 
     <div id='boxFilePreview' class="preview-container"></div>
-      <div class="card-body dacc-comment" style="padding-left: 10px;background-color:#f6f6f6;">
+      <div id="daccComment" class="card-body dacc-comment" style="padding-left: 10px;background-color:#f6f6f6;">
         <form>
           <label for"message">Submit Comment</label>
           <div class="input-group">
@@ -777,8 +777,8 @@ export const daccFileView = async () => {
   submitToComment();
 
   //Switch Tabs
-  switchTabs('toBeCompleted', ['completed'], filesincomplete);
-  switchTabs('completed', ['toBeCompleted'], filescompleted);
+  switchTabs('dacctoBeCompleted', ['completed'], filesincomplete);
+  switchTabs('completed', ['dacctoBeCompleted'], filescompleted);
 
 }
 
