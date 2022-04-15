@@ -74,6 +74,7 @@ export const dataAccessNotSignedIn = () => {
 }
 
 export const dataAccess = (activeTab, showDescripton) => {
+
   let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
@@ -87,6 +88,7 @@ export const dataAccess = (activeTab, showDescripton) => {
     navBarItems = pageNavBar('Overview', 'Submission Form');
   }
   let template = `
+
         <div class="general-bg body-min-height padding-bottom-1rem">
             <div class="container">
               ${navBarItems}
@@ -132,6 +134,7 @@ export const formSection = (activeTab, showDescripton) => {
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
+
     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");
   } else if (authChair) {
     navBarItems = pageNavBar('Overview', 'Submission Form', 'Chair Menu');
@@ -808,6 +811,7 @@ export const submitToComment = () => {
       }
     }
     await updateTaskAssignment(taskId, "completed");
+    console.log(daccMetaValue);
     if (daccMetaValue == 1) {
       await updateMetadata(fileId, "BCRPPchair", "3");
       console.log("New Chair Value: 3");
@@ -828,9 +832,9 @@ export const submitToComment = () => {
     console.log("New DACC Value: " + newDaccValue);
     document.location.reload(true);
   }
-  const form = document.querySelector('.dacc-comment');
-  if (form) {
-    form.addEventListener('submit', submitComment);
+  const dcform = document.querySelector('.dacc-comment');
+  if (dcform) {
+    dcform.addEventListener('submit', submitComment);
   }
 }
 
@@ -866,7 +870,7 @@ export const dataApproval = () => {
 export const dataForm = async () => {
   let files = await getFolderItems(uploadFormFolder);
   const d = new Date();
-  const filename = JSON.parse(localStorage.parms).login.split("@")[0] + "testing" + "_" + d.getDate() + "_" + (d.getMonth() + 1) + "_" + d.getFullYear() + "2.docx";
+  const filename = JSON.parse(localStorage.parms).login.split("@")[0] + "testing" + "_" + d.getDate() + "_" + (d.getMonth() + 1) + "_" + d.getFullYear() + ".docx";
   const filesinfoldernames = [];
   const filesinfolderids = [];
   for (let i = 0; i < files.entries.length; i++) {
