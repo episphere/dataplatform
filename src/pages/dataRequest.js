@@ -436,24 +436,36 @@ export const chairFileView = async () => {
 
       if (filescompleted.length != 0 || filesinprogress.length != 0 ||
           filesincomplete.length != 0 || filesapproved.length != 0) {
-         template += `<div id='filePreview'> 
-                      <div id='boxFilePreview' class="preview-container"></div>
-                        <div id='sendtodaccButton' class="card-body dacc-submit" style="padding-left: 10px; background-color:#f6f6f6; display:block">
-                          <form>
-                            <label for"message">Send to DACC</label>
-                            <div class="input-group">
-                              <textarea id="message" name="message" rows="6" cols="65"></textarea>
+         template += `<div id='filePreview' class='container'>
+                        
+                          <div id='boxFilePreview' class="preview-container"></div>
+                        
+                        <div class='row'>
+                          <div id='sendtodaccButton' class="card-body dacc-submit col-6" style="padding-left: 10px; background-color:#f6f6f6; display:block">
+                            <form>
+                              <label for"message">Send to DACC</label>
+                              <div class="input-group">
+                                <textarea id="message" name="message" rows="6" cols="50"></textarea>
+                              </div>
+                              <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+                                <span class="buttonsubmit__text"> Send </span> </button>
+                            </form>
+                            
+                          </div>
+                          <div id='fileComments' class='col-6'> 
+                            Comments go here
+                            <ul>
+                              <li>Comment 1</li>
+                              <li>Comment 2</li>
+                              <li>Comment 3</li>
+                            </ul>
                             </div>
-                            <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
-                              <span class="buttonsubmit__text"> Send </span> </button>
-                          </form>
                         </div>
-
                         <div id='finalChairDecision' class="card-body approvedeny" style="padding-left: 10px;background-color:#f6f6f6; display:none">
                           <form>
                             <label for="message">Enter Message for Submitter</label>
                             <div class="input-group">
-                                <textarea id="message" name="message" rows="6" cols="65"></textarea>
+                                <textarea id="message" name="message" rows="6" cols="50"></textarea>
                             </div>
                             <button type="submit" class="buttonsubmit" value="approved">
                               <span class="buttonsubmit__text"> Approve </span></button>
@@ -461,6 +473,8 @@ export const chairFileView = async () => {
                               <span class="buttonsubmit__text"> Deny </span></button>
                           </form>
                         </div>
+
+                        
                       </div>
                     </div>
                   `
@@ -1204,22 +1218,30 @@ export const dataForm = async () => {
       //let files = getFolderItems(uploadFormFolder);//149098174998);
       if (filesinfoldernames.includes(filename)) {
         console.log(filename + " Exists: Saving New Version");
+
         let fileidupdate = filesinfolderids[filesinfoldernames.indexOf(filename)];
         (async () => {
-          await uploadWordFileVersion(blob, fileidupdate);
+          // document.getElementById('modalBody').innerHTML = 'Would'
+          let response = await uploadWordFileVersion(blob, fileidupdate);
           await assigntasktochair();
-          document.getElementById('modalBody').innerHTML = 'File was successfully updated.';
+          document.getElementById('modalBody').innerHTML = `
+          <p>File was successfully updated.</p>
+          <p>Document ID: ${fileidupdate}</p>
+          
+          `;
           $('#popUpModal').modal('show');
 
         })();
       } else {
         console.log("Saving File to Box: " + filename + jsondata.keywords); // Adding keywords
         (async () => {
-          await uploadWordFile(blob, filename, uploadFormFolder);
+          let response = await uploadWordFile(blob, filename, uploadFormFolder);
           await assigntasktochair();
-
+          let fileid = response.entries[0].id;
           //Modal code here
-          document.getElementById('modalBody').innerHTML = 'File was successfully uploaded.';
+          document.getElementById('modalBody').innerHTML = `
+          <p>File was successfully updated.</p>
+          <p>Document ID: ${fileid}</p>`;
           $('#popUpModal').modal('show');
         })();
       }
