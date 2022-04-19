@@ -15,6 +15,9 @@ import {
   emailforChair,
   emailforDACC,
   uploadFormFolder,
+  daccReviewFolder,
+  chairReviewFolder,
+  finalFolder,
   assignTask,
   createFileTask,
   getFileInfo,
@@ -344,18 +347,18 @@ export const chairFileView = async () => {
       // console.log(check.entries["0"]);
       //await updateMetadata("934537789566", "BCRPP_uploading_complete", "changed");
 
-      const response = await getFolderItems('155292358576');
+      const response = await getFolderItems(uploadFormFolder);
       let filearray = response.entries;
       console.log(filearray);
 
       var template = `
-  <div class="general-bg padding-bottom-1rem">
-    <div class="container body-min-height">
-      <div class="main-summary-row">
-          <div class="align-left">
-              <h1 class="page-header">Chair Access Only</h1>
-          </div>
-      </div>
+    <div class="general-bg padding-bottom-1rem">
+      <div class="container body-min-height">
+        <div class="main-summary-row">
+            <div class="align-left">
+                <h1 class="page-header">Chair Access Only</h1>
+            </div>
+        </div>
 
   
     <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
@@ -388,7 +391,9 @@ export const chairFileView = async () => {
         //console.log("Chair Value: "+chairMetaValue);
         //console.log("DACC Value: "+daccMetaValue);
 
-        if (chairMetaValue == 1 && daccMetaValue == 0) {
+        let tasks = await getTaskList(id);
+
+        if (tasks.entries.length == 0) {
           filesincomplete.push(obj);
         }
         if (chairMetaValue == 2 && daccMetaValue != 0) {
@@ -673,7 +678,7 @@ export const daccSection = (activeTab) => {
 }
 
 export const daccFileView = async () => {
-  const response = await getFolderItems('155292358576');
+  const response = await getFolderItems(uploadFormFolder);
   let filearray = response.entries;
   console.log(filearray);
 

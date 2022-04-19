@@ -1211,7 +1211,7 @@ export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov'
 
 export const emailforChair = ['ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
 
-export const emailforDACC = ['mukopadhyays2@nih.gov', 'garciacm@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
+export const emailforDACC = ['kopchickbp@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
 
 export const publicDataFileId = 697309514903; //Unknown
 
@@ -1222,6 +1222,12 @@ export const summaryStatsCasesFileId = 862065772362;//927803436743; //8620657723
 export const missingnessStatsFileId = 653087731560; //Unknown
 
 export const uploadFormFolder = 155292358576;
+
+export const daccReviewFolder = 161192245846;
+
+export const chairReviewFolder = 161191639493;
+
+export const finalFolder = 161192097034;
 
 export const mapReduce = (data, variable) => {
     const filteredData = data.map(dt => parseInt(dt[variable])).filter(dt => isNaN(dt) === false);
