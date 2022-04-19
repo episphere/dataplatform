@@ -39,7 +39,7 @@ import {
   switchTabs
 } from '../event.js';
 // Require additional changes regarding data
-//import * as docx from "docx";
+//import * as docx from "../docx";
 
 export const dataAccessNotSignedIn = () => {
   let template = `
@@ -241,7 +241,24 @@ export const formSection = (activeTab, showDescripton) => {
                               </button>
                             </form>
                           </section>
-                          
+                          <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id='modalBody'>
+        
+      </div>
+      <div class="modal-footer">
+    
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
                           <div class="results">
                           <h2>Form Data</h2>
                           <pre></pre>
@@ -1191,12 +1208,19 @@ export const dataForm = async () => {
         (async () => {
           await uploadWordFileVersion(blob, fileidupdate);
           await assigntasktochair();
+          document.getElementById('modalBody').innerHTML = 'File was successfully updated.';
+          $('#popUpModal').modal('show');
+
         })();
       } else {
         console.log("Saving File to Box: " + filename + jsondata.keywords); // Adding keywords
         (async () => {
           await uploadWordFile(blob, filename, uploadFormFolder);
           await assigntasktochair();
+
+          //Modal code here
+          document.getElementById('modalBody').innerHTML = 'File was successfully uploaded.';
+          $('#popUpModal').modal('show');
         })();
       }
     });
