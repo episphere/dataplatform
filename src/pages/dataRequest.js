@@ -39,7 +39,7 @@ import {
   switchTabs
 } from '../event.js';
 // Require additional changes regarding data
-//import * as docx from "docx";
+//import * as docx from "../docx";
 
 export const dataAccessNotSignedIn = () => {
   let template = `
