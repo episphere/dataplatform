@@ -347,9 +347,21 @@ export const chairFileView = async () => {
       // console.log(check.entries["0"]);
       //await updateMetadata("934537789566", "BCRPP_uploading_complete", "changed");
 
-      const response = await getFolderItems(uploadFormFolder);
-      let filearray = response.entries;
-      console.log(filearray);
+      const responseUpload = await getFolderItems(uploadFormFolder);
+      let filearrayUpload = responseUpload.entries;
+      console.log(filearrayUpload);
+
+      const responseDACC = await getFolderItems(daccReviewFolder);
+      let filearrayDACC = responseDACC.entries;
+      console.log(filearrayDACC)
+
+      const responseChair = await getFolderItems(chairReviewFolder);
+      let filearrayChair = responseChair.entries;
+      console.log(filearrayChair);
+
+      const responseFinal = await getFolderItems(finalFolder);
+      let filearrayFinal = responseFinal.entries;
+      console.log(filearrayFinal);
 
       var template = `
     <div class="general-bg padding-bottom-1rem">
@@ -382,38 +394,62 @@ export const chairFileView = async () => {
       const filescompleted = [];
       const filesapproved = [];
       const taskApproveDeny = [];
-      for (let obj of filearray) {
-        let id = obj.id;
-        //console.log(id);
-        let metaArray = await getMetadata(id);
-        let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
-        let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
-        //console.log("Chair Value: "+chairMetaValue);
-        //console.log("DACC Value: "+daccMetaValue);
-
-        let tasks = await getTaskList(id);
-
-        if (tasks.entries.length == 0) {
-          filesincomplete.push(obj);
-        }
-        if (chairMetaValue == 2 && daccMetaValue != 0) {
-          filesinprogress.push(obj);
-        }
-        if (chairMetaValue == 3 && daccMetaValue == 0) {
-          filescompleted.push(obj);
-          let tasklist = await getTaskList(id);
-          console.log(tasklist.entries);
-          let entries = tasklist.entries;
-          for (let item of entries) {
-            if (item.is_completed == false) {
-              taskApproveDeny.push(item.id);
-            }
-          }
-        }
-        if (chairMetaValue == 0) {
-          filesapproved.push(obj);
-        }
+      for (let obj of filearrayUpload) {
+        //let id = obj.id;
+        filesincomplete.push(obj);
       };
+
+      for (let obj of filearrayDACC) {
+        filesinprogress.push(obj);
+      }
+
+      for (let obj of filearrayChair) {
+        filescompleted.push(obj);
+      }
+
+      for (let obj of filearrayFinal) {
+        filesapproved.push(obj);
+      }
+
+      
+        // //console.log(id);
+        // let metaArray = await getMetadata(id);
+        // let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
+        // let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
+        // //console.log("Chair Value: "+chairMetaValue);
+        // //console.log("DACC Value: "+daccMetaValue);
+
+        // let tasks = await getTaskList(id);
+
+        // if (tasks.entries.length == 0) {
+        //   filesincomplete.push(obj);
+        // }
+        // if (tasks.entries.length != 0) {
+        //   for (let items of tasks.entries) {
+        //     if (items.is_completed == false && items.action == 'review' ) {
+        //       for (let itemtasks of items.task_assignment_collection.entries) {
+        //         if(itemstasks.status == 'incomplete' && itemstasks.assigned_to.login == JSON.parse(localStorage.parms).login)
+        //       }
+        //     }
+
+        //   }
+        //   filesinprogress.push(obj);
+        // }
+        // if (chairMetaValue == 3 && daccMetaValue == 0) {
+        //   filescompleted.push(obj);
+        //   let tasklist = await getTaskList(id);
+        //   console.log(tasklist.entries);
+        //   let entries = tasklist.entries;
+        //   for (let item of entries) {
+        //     if (item.is_completed == false) {
+        //       taskApproveDeny.push(item.id);
+        //     }
+        //   }
+        // }
+        // if (chairMetaValue == 0) {
+        //   filesapproved.push(obj);
+        // }
+      //};
 
 
       template += "<div class='tab-content' id='selectedTab'>";
@@ -678,9 +714,25 @@ export const daccSection = (activeTab) => {
 }
 
 export const daccFileView = async () => {
-  const response = await getFolderItems(uploadFormFolder);
-  let filearray = response.entries;
-  console.log(filearray);
+  // const response = await getFolderItems(uploadFormFolder);
+  // let filearray = response.entries;
+  // console.log(filearray);
+
+  // const responseUpload = await getFolderItems(uploadFormFolder);
+  // let filearrayUpload = responseUpload.entries;
+  // console.log(filearrayUpload);
+
+  const responseDACC = await getFolderItems(daccReviewFolder);
+  let filearrayDACC = responseDACC.entries;
+  console.log(filearrayDACC)
+
+  const responseChair = await getFolderItems(chairReviewFolder);
+  let filearrayChair = responseChair.entries;
+  console.log(filearrayChair);
+
+  const responseFinal = await getFolderItems(finalFolder);
+  let filearrayFinal = responseFinal.entries;
+  console.log(filearrayFinal);
 
   let template = `
 <div class="general-bg padding-bottom-1rem">
@@ -706,62 +758,115 @@ export const daccFileView = async () => {
   const filescompleted = [];
   const tasksincomplete = [];
   const taskscompleted = [];
-  for (let obj of filearray) {
+  for (let obj of filearrayDACC) {
     let id = obj.id;
-    //console.log(id);
-    let metaArray = await getMetadata(id);
-    let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
-    let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
-    //console.log("DACC Value: "+daccMetaValue);
+    let tasks = await getTaskList(id);
 
-    if (daccMetaValue != 0 && chairMetaValue == 2) {
-      let tasklist = await getTaskList(id);
-      let entries = tasklist.entries;
-
-      if (entries.length !== 0) {
-        for (let item of entries) {
-          if (item.is_completed == false) {
-            for (let taskassignment of item.task_assignment_collection.entries) {
-              if (taskassignment.status == 'incomplete' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
-                console.log(taskassignment.assigned_at);
-                if (!filesincomplete.includes(id)) {
-                  filesincomplete.push(obj);
-                  tasksincomplete.push(taskassignment.id);
-                }
-              } else if (taskassignment.status == 'completed' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
-                if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
-                  filescompleted.push(obj);
-                  taskscompleted.push(taskassignment.id);
-                }
-              }
+    if (tasks.entries.length != 0){
+      for (let items of tasks.entries) {
+        if (items.is_completed == false && items.action == 'complete') {
+          for (let itemtasks of items.task_assignment_collection.entries) {
+            if (itemtasks.status == 'incomplete' && itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+              filesincomplete.push(obj);
+            } else if (itemtasks.status == 'complete' && itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+              filescompleted.push(obj);
+            }
+          }
+        } else if (items.is_completed == true && items.action == 'complete') {
+          for (let itemtasks of items.task_assignment_collection.entries) {
+            if (itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+              filescompleted.push(obj);
             }
           }
         }
       }
     }
-    if (chairMetaValue == 3) {
-      let tasklist = await getTaskList(id);
-      let entries = tasklist.entries;
+  }
 
-      if (entries.length !== 0) {
-        for (let item of entries) {
-          for (let taskassignment of item.task_assignment_collection.entries) {
-            if (taskassignment.status == 'completed' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
-              if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
-                filescompleted.push(obj);
-                taskscompleted.push(taskassignment.id);
-              }
-            }
+  for (let obj of filearrayChair) {
+    let id = obj.id;
+    let tasks = await getTaskList(id);
+
+    if (tasks.entries.length != 0){
+      for (let items of tasks.entries) {
+        for (let itemtasks of items.task_assignment_collection.entries) {
+          if (itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+            filescompleted.push(obj)
           }
         }
       }
     }
-  };
+  }
+
+  for (let obj of filearrayFinal) {
+    let id = obj.id;
+    let tasks = await getTaskList(id);
+
+    if (tasks.entries.length != 0){
+      for (let items of tasks.entries) {
+        for (let itemtasks of items.task_assignment_collection.entries) {
+          if (itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+            filescompleted.push(obj)
+          }
+        }
+      }
+    }
+  }
+  //   let id = obj.id;
+  //   //console.log(id);
+  //   let metaArray = await getMetadata(id);
+  //   let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
+  //   let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
+  //   //console.log("DACC Value: "+daccMetaValue);
+
+  //   if (daccMetaValue != 0 && chairMetaValue == 2) {
+  //     let tasklist = await getTaskList(id);
+  //     let entries = tasklist.entries;
+
+  //     if (entries.length !== 0) {
+  //       for (let item of entries) {
+  //         if (item.is_completed == false) {
+  //           for (let taskassignment of item.task_assignment_collection.entries) {
+  //             if (taskassignment.status == 'incomplete' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
+  //               console.log(taskassignment.assigned_at);
+  //               if (!filesincomplete.includes(id)) {
+  //                 filesincomplete.push(obj);
+  //                 tasksincomplete.push(taskassignment.id);
+  //               }
+  //             } else if (taskassignment.status == 'completed' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
+  //               if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
+  //                 filescompleted.push(obj);
+  //                 taskscompleted.push(taskassignment.id);
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //   if (chairMetaValue == 3) {
+  //     let tasklist = await getTaskList(id);
+  //     let entries = tasklist.entries;
+
+  //     if (entries.length !== 0) {
+  //       for (let item of entries) {
+  //         for (let taskassignment of item.task_assignment_collection.entries) {
+  //           if (taskassignment.status == 'completed' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
+  //             if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
+  //               filescompleted.push(obj);
+  //               taskscompleted.push(taskassignment.id);
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // };
 
   console.log("incomplete: " + filesincomplete);
   console.log("complete: " + filescompleted);
-  console.log("tasksincomplete: " + tasksincomplete);
-  console.log("taskscompleted: " + taskscompleted);
+  // console.log("tasksincomplete: " + tasksincomplete);
+  // console.log("taskscompleted: " + taskscompleted);
 
   template += "<div class='tab-content'>";
   
