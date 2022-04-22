@@ -755,23 +755,25 @@ export const createComment = async (id, msg="") => {
 export const listComments = async (id) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
-        const response = await fetch(`https://api.box/com/2.0/files/${id}/comments`, {
+        const response = await fetch(`https://api.box.com/2.0/files/${id}/comments`, {
             method: 'GET',
             headers: {
                 Authorization: "Bearer "+access_token
             },
-            body: JSON.stringify({
-                message: msg.toString(),
-                item: {
-                    type: "file",
-                    id: id.toString()
-                }
+            // body: JSON.stringify({
+            //     message: msg.toString(),
+            //     item: {
+            //         type: "file",
+            //         id: id.toString()
+            //     }
             })
-        });
+        ;
+        
         if(response.status === 401) {
             if((await refreshToken()) === true) return await listComments(id);
         } else {
-            return response
+            
+            return response;
         }
     }
     catch(err) {

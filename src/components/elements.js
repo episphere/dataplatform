@@ -1,6 +1,7 @@
 import { config } from "../config.js";
 import { template } from "../pages/dataGovernance.js";
 import { getFileInfo } from "../shared.js";
+import { listComments } from "../shared.js";
 
 export const studyDropDownTemplate = (entries) => {
     let template = '';
@@ -115,6 +116,7 @@ if(files.length != 0){
                     preview.show(this.value, access_token, {
                       container: previewContainer
                     });
+                    console.log(listComments(this.value));
             ">
             `;
 

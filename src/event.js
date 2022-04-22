@@ -25,7 +25,8 @@ import {
     getFileInfo,
     missingnessStatsFileId,
     assignNavbarActive,
-    reSizePlots
+    reSizePlots,
+    listComments
 } from './shared.js';
 import {
     renderDataSummary
@@ -1531,9 +1532,14 @@ export function switchTabs(show, hide, files) {
                             boxPreview.classList.add('d-block');
                         }
                         showPreview(files[0].id);
+                        let response = async () => { let test = await listComments('945509107663');//files[0].id);
+                            console.log(test);
+                            }
                         if (show == 'toBeCompleted'){
                             document.getElementById('sendtodaccButton').style.display="block";
                             document.getElementById('finalChairDecision').style.display="none";
+                            
+                            // document.getElementById('fileComments').innerHTML = listComments(files[0].id);
                         }  
                         if (show == 'inProgress'){
                             document.getElementById('sendtodaccButton').style.display="none";

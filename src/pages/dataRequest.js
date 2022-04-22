@@ -1,6 +1,7 @@
 // import { createFileTask, assignTask, updateTaskAssignment } from '../shared.js';
 import {
   createComment,
+  listComments,
   createCompleteTask,
   updateMetadata,
   getMetadata,
@@ -436,7 +437,7 @@ export const chairFileView = async () => {
 
       if (filescompleted.length != 0 || filesinprogress.length != 0 ||
           filesincomplete.length != 0 || filesapproved.length != 0) {
-         template += `<div id='filePreview' class='container'>
+         template += `<div id='filePreview'>
                         
                           <div id='boxFilePreview' class="preview-container"></div>
                         
@@ -459,7 +460,7 @@ export const chairFileView = async () => {
                               <li>Comment 2</li>
                               <li>Comment 3</li>
                             </ul>
-                            </div>
+                          </div>
                         </div>
                         <div id='finalChairDecision' class="card-body approvedeny" style="padding-left: 10px;background-color:#f6f6f6; display:none">
                           <form>
@@ -527,13 +528,17 @@ export const chairFileView = async () => {
         if (filesincomplete.length != 0) {
           showPreview(filesincomplete[0].id);
         }
-
+        
         //Switch Tabs
         switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'approved'], filesincomplete);
         switchTabs('inProgress', ['toBeCompleted', 'daccCompleted', 'approved'], filesinprogress);
         switchTabs('daccCompleted', ['inProgress', 'toBeCompleted', 'approved'], filescompleted);
         switchTabs('approved', ['inProgress', 'daccCompleted', 'toBeCompleted'], filesapproved);
 
+        //Comments
+        let test = await listComments('945509107663');//files[0].id);
+        console.log(test);
+                            
       }
 
 
