@@ -15,13 +15,17 @@ import {
   emailforChair,
   emailforDACC,
   uploadFormFolder,
+  daccReviewFolder,
+  chairReviewFolder,
+  finalFolder,
   assignTask,
   createFileTask,
   getFileInfo,
   numberWithCommas,
   hideAnimation,
   getTask,
-  consortiumSelection
+  consortiumSelection,
+  moveFile
 } from '../shared.js';
 import {
   addEventToggleCollapsePanelBtn
@@ -344,18 +348,30 @@ export const chairFileView = async () => {
       // console.log(check.entries["0"]);
       //await updateMetadata("934537789566", "BCRPP_uploading_complete", "changed");
 
-      const response = await getFolderItems('155292358576');
-      let filearray = response.entries;
-      console.log(filearray);
+      const responseUpload = await getFolderItems(uploadFormFolder);
+      let filearrayUpload = responseUpload.entries;
+      console.log(filearrayUpload);
+
+      const responseDACC = await getFolderItems(daccReviewFolder);
+      let filearrayDACC = responseDACC.entries;
+      console.log(filearrayDACC)
+
+      const responseChair = await getFolderItems(chairReviewFolder);
+      let filearrayChair = responseChair.entries;
+      console.log(filearrayChair);
+
+      const responseFinal = await getFolderItems(finalFolder);
+      let filearrayFinal = responseFinal.entries;
+      console.log(filearrayFinal);
 
       var template = `
-  <div class="general-bg padding-bottom-1rem">
-    <div class="container body-min-height">
-      <div class="main-summary-row">
-          <div class="align-left">
-              <h1 class="page-header">Chair Access Only</h1>
-          </div>
-      </div>
+    <div class="general-bg padding-bottom-1rem">
+      <div class="container body-min-height">
+        <div class="main-summary-row">
+            <div class="align-left">
+                <h1 class="page-header">Chair Access Only</h1>
+            </div>
+        </div>
 
   
     <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
@@ -379,36 +395,62 @@ export const chairFileView = async () => {
       const filescompleted = [];
       const filesapproved = [];
       const taskApproveDeny = [];
-      for (let obj of filearray) {
-        let id = obj.id;
-        //console.log(id);
-        let metaArray = await getMetadata(id);
-        let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
-        let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
-        //console.log("Chair Value: "+chairMetaValue);
-        //console.log("DACC Value: "+daccMetaValue);
-
-        if (chairMetaValue == 1 && daccMetaValue == 0) {
-          filesincomplete.push(obj);
-        }
-        if (chairMetaValue == 2 && daccMetaValue != 0) {
-          filesinprogress.push(obj);
-        }
-        if (chairMetaValue == 3 && daccMetaValue == 0) {
-          filescompleted.push(obj);
-          let tasklist = await getTaskList(id);
-          console.log(tasklist.entries);
-          let entries = tasklist.entries;
-          for (let item of entries) {
-            if (item.is_completed == false) {
-              taskApproveDeny.push(item.id);
-            }
-          }
-        }
-        if (chairMetaValue == 0) {
-          filesapproved.push(obj);
-        }
+      for (let obj of filearrayUpload) {
+        //let id = obj.id;
+        filesincomplete.push(obj);
       };
+
+      for (let obj of filearrayDACC) {
+        filesinprogress.push(obj);
+      }
+
+      for (let obj of filearrayChair) {
+        filescompleted.push(obj);
+      }
+
+      for (let obj of filearrayFinal) {
+        filesapproved.push(obj);
+      }
+
+      
+        // //console.log(id);
+        // let metaArray = await getMetadata(id);
+        // let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
+        // let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
+        // //console.log("Chair Value: "+chairMetaValue);
+        // //console.log("DACC Value: "+daccMetaValue);
+
+        // let tasks = await getTaskList(id);
+
+        // if (tasks.entries.length == 0) {
+        //   filesincomplete.push(obj);
+        // }
+        // if (tasks.entries.length != 0) {
+        //   for (let items of tasks.entries) {
+        //     if (items.is_completed == false && items.action == 'review' ) {
+        //       for (let itemtasks of items.task_assignment_collection.entries) {
+        //         if(itemstasks.status == 'incomplete' && itemstasks.assigned_to.login == JSON.parse(localStorage.parms).login)
+        //       }
+        //     }
+
+        //   }
+        //   filesinprogress.push(obj);
+        // }
+        // if (chairMetaValue == 3 && daccMetaValue == 0) {
+        //   filescompleted.push(obj);
+        //   let tasklist = await getTaskList(id);
+        //   console.log(tasklist.entries);
+        //   let entries = tasklist.entries;
+        //   for (let item of entries) {
+        //     if (item.is_completed == false) {
+        //       taskApproveDeny.push(item.id);
+        //     }
+        //   }
+        // }
+        // if (chairMetaValue == 0) {
+        //   filesapproved.push(obj);
+        // }
+      //};
 
 
       template += "<div class='tab-content' id='selectedTab'>";
@@ -522,13 +564,12 @@ export const chairFileView = async () => {
 
       }
 
-
 export const submitToDacc = () => {
   let submitDacc = async (e) => {
     const btn = document.activeElement;
     btn.disabled=true;
     e.preventDefault();
-    let fileId = document.getElementById('selectedDoc').value//e.submitter.value;
+    let fileId = document.querySelector(".tab-content .active #selectedDoc").value//document.getElementById('selectedDoc').value//e.submitter.value;
     let message = e.target[0].value;
     console.log(fileId);
     console.log(message);
@@ -540,9 +581,11 @@ export const submitToDacc = () => {
       await assignTask(tasktodacc, emailforDACC[i]);
       console.log("Task assigned to "+ emailforDACC[i]);
     }
-    await updateMetadata(fileId, "BCRPPchair", '2');
-    await updateMetadata(fileId, "BCRPPdacc", emailforDACC.length.toString());
-    console.log("Meta Data Updated");
+    await moveFile(fileId, daccReviewFolder);
+    console.log('File moved to: ' + daccReviewFolder);
+    // await updateMetadata(fileId, "BCRPPchair", '2');
+    // await updateMetadata(fileId, "BCRPPdacc", emailforDACC.length.toString());
+    // console.log("Meta Data Updated");
     document.location.reload(true);
   }
   const sdform = document.querySelector('.dacc-submit');
@@ -579,7 +622,7 @@ export const commentApproveReject = () => {
     const btn = document.activeElement;
     btn.disabled = true;
     //let taskId = btn.name;
-    let fileId = document.getElementById('selectedDoc').value;
+    let fileId = document.querySelector(".tab-content .active #selectedDoc").value//document.getElementById('selectedDoc').value;
     let tasklist = await getTaskList(fileId);
     console.log(tasklist);
     let entries = tasklist.entries;
@@ -601,8 +644,10 @@ export const commentApproveReject = () => {
     //let task = await getTask(taskId);
     //let taskAssignment = task.task_assignment_collection.entries[0].id;
     await updateTaskAssignment(taskId, approval, message);
-    await updateMetadata(fileId, "BCRPPchair", "0");
-    document.location.reload();
+    // await updateMetadata(fileId, "BCRPPchair", "0");
+    await moveFile(fileId, finalFolder);
+    console.log('File moved to: ' + fileId + ' ' + finalFolder);
+    document.location.reload(true);
   }
 
   const form = document.querySelector('.approvedeny')
@@ -673,9 +718,25 @@ export const daccSection = (activeTab) => {
 }
 
 export const daccFileView = async () => {
-  const response = await getFolderItems('155292358576');
-  let filearray = response.entries;
-  console.log(filearray);
+  // const response = await getFolderItems(uploadFormFolder);
+  // let filearray = response.entries;
+  // console.log(filearray);
+
+  // const responseUpload = await getFolderItems(uploadFormFolder);
+  // let filearrayUpload = responseUpload.entries;
+  // console.log(filearrayUpload);
+
+  const responseDACC = await getFolderItems(daccReviewFolder);
+  let filearrayDACC = responseDACC.entries;
+  console.log(filearrayDACC)
+
+  const responseChair = await getFolderItems(chairReviewFolder);
+  let filearrayChair = responseChair.entries;
+  console.log(filearrayChair);
+
+  const responseFinal = await getFolderItems(finalFolder);
+  let filearrayFinal = responseFinal.entries;
+  console.log(filearrayFinal);
 
   let template = `
 <div class="general-bg padding-bottom-1rem">
@@ -699,66 +760,119 @@ export const daccFileView = async () => {
 
   const filesincomplete = [];
   const filescompleted = [];
-  const tasksincomplete = [];
-  const taskscompleted = [];
-  for (let obj of filearray) {
+  // const tasksincomplete = [];
+  // const taskscompleted = [];
+  for (let obj of filearrayDACC) {
     let id = obj.id;
-    //console.log(id);
-    let metaArray = await getMetadata(id);
-    let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
-    let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
-    //console.log("DACC Value: "+daccMetaValue);
+    let tasks = await getTaskList(id);
 
-    if (daccMetaValue != 0 && chairMetaValue == 2) {
-      let tasklist = await getTaskList(id);
-      let entries = tasklist.entries;
-
-      if (entries.length !== 0) {
-        for (let item of entries) {
-          if (item.is_completed == false) {
-            for (let taskassignment of item.task_assignment_collection.entries) {
-              if (taskassignment.status == 'incomplete' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
-                console.log(taskassignment.assigned_at);
-                if (!filesincomplete.includes(id)) {
-                  filesincomplete.push(obj);
-                  tasksincomplete.push(taskassignment.id);
-                }
-              } else if (taskassignment.status == 'completed' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
-                if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
-                  filescompleted.push(obj);
-                  taskscompleted.push(taskassignment.id);
-                }
-              }
+    if (tasks.entries.length != 0){
+      for (let items of tasks.entries) {
+        if (items.is_completed == false && items.action == 'complete') {
+          for (let itemtasks of items.task_assignment_collection.entries) {
+            if (itemtasks.status == 'incomplete' && itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+              filesincomplete.push(obj);
+            } else if (itemtasks.status == 'complete' && itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+              filescompleted.push(obj);
+            }
+          }
+        } else if (items.is_completed == true && items.action == 'complete') {
+          for (let itemtasks of items.task_assignment_collection.entries) {
+            if (itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+              filescompleted.push(obj);
             }
           }
         }
       }
     }
-    if (chairMetaValue == 3) {
-      let tasklist = await getTaskList(id);
-      let entries = tasklist.entries;
+  }
 
-      if (entries.length !== 0) {
-        for (let item of entries) {
-          for (let taskassignment of item.task_assignment_collection.entries) {
-            if (taskassignment.status == 'completed' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
-              if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
-                filescompleted.push(obj);
-                taskscompleted.push(taskassignment.id);
-              }
-            }
+  for (let obj of filearrayChair) {
+    let id = obj.id;
+    let tasks = await getTaskList(id);
+
+    if (tasks.entries.length != 0){
+      for (let items of tasks.entries) {
+        for (let itemtasks of items.task_assignment_collection.entries) {
+          if (itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+            filescompleted.push(obj)
           }
         }
       }
     }
-  };
+  }
+
+  for (let obj of filearrayFinal) {
+    let id = obj.id;
+    let tasks = await getTaskList(id);
+
+    if (tasks.entries.length != 0){
+      for (let items of tasks.entries) {
+        for (let itemtasks of items.task_assignment_collection.entries) {
+          if (itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+            filescompleted.push(obj)
+          }
+        }
+      }
+    }
+  }
+  //   let id = obj.id;
+  //   //console.log(id);
+  //   let metaArray = await getMetadata(id);
+  //   let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
+  //   let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
+  //   //console.log("DACC Value: "+daccMetaValue);
+
+  //   if (daccMetaValue != 0 && chairMetaValue == 2) {
+  //     let tasklist = await getTaskList(id);
+  //     let entries = tasklist.entries;
+
+  //     if (entries.length !== 0) {
+  //       for (let item of entries) {
+  //         if (item.is_completed == false) {
+  //           for (let taskassignment of item.task_assignment_collection.entries) {
+  //             if (taskassignment.status == 'incomplete' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
+  //               console.log(taskassignment.assigned_at);
+  //               if (!filesincomplete.includes(id)) {
+  //                 filesincomplete.push(obj);
+  //                 tasksincomplete.push(taskassignment.id);
+  //               }
+  //             } else if (taskassignment.status == 'completed' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
+  //               if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
+  //                 filescompleted.push(obj);
+  //                 taskscompleted.push(taskassignment.id);
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //   if (chairMetaValue == 3) {
+  //     let tasklist = await getTaskList(id);
+  //     let entries = tasklist.entries;
+
+  //     if (entries.length !== 0) {
+  //       for (let item of entries) {
+  //         for (let taskassignment of item.task_assignment_collection.entries) {
+  //           if (taskassignment.status == 'completed' && taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
+  //             if (!filesincomplete.includes(id) && !filescompleted.includes(id)) {
+  //               filescompleted.push(obj);
+  //               taskscompleted.push(taskassignment.id);
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // };
 
   console.log("incomplete: " + filesincomplete);
   console.log("complete: " + filescompleted);
-  console.log("tasksincomplete: " + tasksincomplete);
-  console.log("taskscompleted: " + taskscompleted);
+  // console.log("tasksincomplete: " + tasksincomplete);
+  // console.log("taskscompleted: " + taskscompleted);
 
-  template += "<div class='tab-content'>";
+  template += "<div class='tab-content' id='selectedTab'>";
   
   template += `<div class='tab-pane fade show active'
                 id='dacctoBeCompleted' role='tabpanel'
@@ -805,12 +919,12 @@ export const submitToComment = () => {
     const btn = document.activeElement;
     btn.disabled = true;
     //let taskId = btn.name;
-    let fileId = document.getElementById('selectedDoc').value;
+    let fileId = document.querySelector(".tab-content .active #selectedDoc").value//document.getElementById('selectedDoc').value;
     let message = e.target[0].value;
     console.log(fileId);
     console.log(message);
-    let metaArray = await getMetadata(fileId);
-    let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
+    //let metaArray = await getMetadata(fileId);
+    //let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
     //let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
     await createComment(fileId, message);
     let tasklist = await getTaskList(fileId);
@@ -822,31 +936,68 @@ export const submitToComment = () => {
             if (taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
                 var taskId = taskassignment.id;
                 console.log(taskId);
+                await updateTaskAssignment(taskId, "completed");
+                console.log('Task Updated as Completed')
             }
           }  
         }
       }
     }
-    await updateTaskAssignment(taskId, "completed");
-    console.log(daccMetaValue);
-    if (daccMetaValue == 1) {
-      await updateMetadata(fileId, "BCRPPchair", "3");
-      console.log("New Chair Value: 3");
-      await createFileTask(fileId);
-      console.log("Chair Task Created");
-      let tasklist = await getTaskList(fileId);
-      let entries = tasklist.entries;
-      console.log(entries);
+    //await updateTaskAssignment(taskId, "completed");
+    //console.log(daccMetaValue);
+    tasklist = await getTaskList(fileId);
+    entries = tasklist.entries;
+    var numCompletedTasks = 0
+    if (entries.length !== 0) {
       for (let item of entries) {
-        if (item.is_completed == false) {
-          await assignTask(item.id, emailforChair[0]);
-          console.log("Chair Task Assigned");
+        if (item.is_completed == true) {
+          numCompletedTasks += 1;
+        }
+      }
+      if (numCompletedTasks == entries.length) {
+        await moveFile(fileId, chairReviewFolder);
+        console.log('File moved to: ' + chairReviewFolder);
+        await createFileTask(fileId);
+        tasklist = await getTaskList(fileId);
+        entries = tasklist.entries;
+        console.log(entries);
+        for (let item of entries) {
+          if (item.is_completed == false) {
+            await assignTask(item.id, emailforChair[0]);
+            console.log("Chair Task Assigned");
+          }
         }
       }
     };
-    let newDaccValue = parseInt(daccMetaValue) - 1;
-    await updateMetadata(fileId, "BCRPPdacc", newDaccValue.toString());
-    console.log("New DACC Value: " + newDaccValue);
+
+    // if (numCompletedTasks == entries.length) {
+    //   for (let taskassignment of item.task_assignment_collection.entries) {
+    //     if (taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
+    //         var taskId = taskassignment.id;
+    //         console.log(taskId);
+    //         }
+    //       }  
+    //     };
+
+    // if (daccMetaValue == 1) {
+    //   //await updateMetadata(fileId, "BCRPPchair", "3");
+    //   //console.log("New Chair Value: 3");
+    //   await createFileTask(fileId);
+    //   console.log("Chair Task Created");
+    //   let tasklist = await getTaskList(fileId);
+    //   let entries = tasklist.entries;
+    //   console.log(entries);
+    //   for (let item of entries) {
+    //     if (item.is_completed == false) {
+    //       await assignTask(item.id, emailforChair[0]);
+    //       console.log("Chair Task Assigned");
+    //     }
+    //   }
+    // };
+    //let newDaccValue = parseInt(daccMetaValue) - 1;
+    //await updateMetadata(fileId, "BCRPPdacc", newDaccValue.toString());
+    //console.log("New DACC Value: " + newDaccValue);
+    
     document.location.reload(true);
   }
   const dcform = document.querySelector('.dacc-comment');

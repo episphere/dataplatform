@@ -108,7 +108,6 @@ if(files.length != 0){
             <div class='card-title'>
             <select id='selectedDoc' onchange="
             const access_token = JSON.parse(localStorage.parms).access_token;
-        
                     console.log('SHOWING PREVIEW', this.value);
                     let previewContainer = document.getElementById('boxFilePreview');
                     var preview = new Box.Preview();

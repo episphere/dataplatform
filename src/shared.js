@@ -293,6 +293,36 @@ export const copyFile = async (fileId, parentId) => {
     }
 };
 
+export const moveFile = async (fileId, parentId) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        let obj = {
+            "parent": {
+                "id": parentId
+            }
+        };
+        let response = await fetch(`https://api.box.com/2.0/files/${fileId}`, {
+            method: "PUT",
+            headers:{
+                Authorization:"Bearer "+access_token
+            },
+            body: JSON.stringify(obj)
+        });
+        if(response.status === 401){
+            if((await refreshToken()) === true) return await moveFile(fileId, parentId);
+        }
+        else if(response.status === 201){
+            return response;
+        }
+        else{
+            return {status: response.status, statusText: response.statusText};
+        };
+    }
+    catch(err) {
+        if((await refreshToken()) === true) return await moveFile(fileId, parentId);
+    }
+};
+
 export const uploadFile = async (data, fileName, folderId, html) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
@@ -660,13 +690,13 @@ export const createCompleteTask = async (fileId, message) => {
             })
         });
         if (response.status === 401) {
-            if ((await refreshToken()) === true) return await createFileTask(fileId);
+            if ((await refreshToken()) === true) return await createCompleteTask(fileId, message);
         } else {
             return response;
         }
 
     } catch(err) {
-        if((await refreshToken()) === true) return await createFileTask(fileId);
+        if((await refreshToken()) === true) return await createCompleteTask(fileId, message);
     }
 }
 
@@ -755,18 +785,18 @@ export const createComment = async (id, msg="") => {
 export const listComments = async (id) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
-        const response = await fetch(`https://api.box/com/2.0/files/${id}/comments`, {
+        const response = await fetch(`https://api.box.com/2.0/files/${id}/comments`, {
             method: 'GET',
             headers: {
                 Authorization: "Bearer "+access_token
-            },
-            body: JSON.stringify({
-                message: msg.toString(),
-                item: {
-                    type: "file",
-                    id: id.toString()
-                }
-            })
+            }//,
+            // body: JSON.stringify({
+            //     message: msg.toString(),
+            //     item: {
+            //         type: "file",
+            //         id: id.toString()
+            //     }
+            // })
         });
         if(response.status === 401) {
             if((await refreshToken()) === true) return await listComments(id);
@@ -898,7 +928,7 @@ export const searchMetadata = async (res_state) => {
 // export const createMetadata = async (id, res_state, msg="") => {
 //     try {
 //         const access_token = JSON.parse(localStorage.parms).access_token;
-//         const response = await fetch(`https://api.box/com/2.0/comments`, {
+//         const response = await fetch(`https://api.box.com/2.0/comments`, {
 //             method: 'POST',
 //             headers: {
 //                 Authorization: "Bearer "+access_token
@@ -1209,9 +1239,9 @@ export const numberWithCommas = (x) => {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-export const emailforChair = ['ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
+export const emailforChair = ['kopchickbp@nih.gov', 'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
 
-export const emailforDACC = ['mukopadhyays2@nih.gov', 'garciacm@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
+export const emailforDACC = ['kopchickbp@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
 
 export const publicDataFileId = 697309514903; //Unknown
 
@@ -1222,6 +1252,12 @@ export const summaryStatsCasesFileId = 862065772362;//927803436743; //8620657723
 export const missingnessStatsFileId = 653087731560; //Unknown
 
 export const uploadFormFolder = 155292358576;
+
+export const daccReviewFolder = 161192245846;
+
+export const chairReviewFolder = 161191639493;
+
+export const finalFolder = 161192097034;
 
 export const mapReduce = (data, variable) => {
     const filteredData = data.map(dt => parseInt(dt[variable])).filter(dt => isNaN(dt) === false);
