@@ -1532,7 +1532,9 @@ export function switchTabs(show, hide, files) {
                         }
                         showPreview(files[0].id);
                         const $select = document.querySelector('.tab-content .active #selectedDoc');
+                        if ($select) {
                         $select.selectedIndex = 0;
+                        }
                         //document.getElementById('selectedDoc').selectedIndex = 0;
                         //console.log(document.getElementById('selectedDoc').selectedIndex);
                         if (show == 'toBeCompleted'){
