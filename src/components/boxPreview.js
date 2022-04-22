@@ -14,6 +14,7 @@ export function showPreview(id) {
     preview.show(id, access_token, {
       container: previewContainer
     });
+
   } catch(error) {
     console.error(error);
   }

@@ -24,7 +24,8 @@ import {
   numberWithCommas,
   hideAnimation,
   getTask,
-  consortiumSelection
+  consortiumSelection,
+  moveFile
 } from '../shared.js';
 import {
   addEventToggleCollapsePanelBtn
@@ -563,13 +564,12 @@ export const chairFileView = async () => {
 
       }
 
-
 export const submitToDacc = () => {
   let submitDacc = async (e) => {
     const btn = document.activeElement;
     btn.disabled=true;
     e.preventDefault();
-    let fileId = document.getElementById('selectedDoc').value//e.submitter.value;
+    let fileId = document.querySelector(".tab-content .active #selectedDoc").value//document.getElementById('selectedDoc').value//e.submitter.value;
     let message = e.target[0].value;
     console.log(fileId);
     console.log(message);
@@ -581,9 +581,11 @@ export const submitToDacc = () => {
       await assignTask(tasktodacc, emailforDACC[i]);
       console.log("Task assigned to "+ emailforDACC[i]);
     }
-    await updateMetadata(fileId, "BCRPPchair", '2');
-    await updateMetadata(fileId, "BCRPPdacc", emailforDACC.length.toString());
-    console.log("Meta Data Updated");
+    await moveFile(fileId, daccReviewFolder);
+    console.log('File moved to: ' + daccReviewFolder);
+    // await updateMetadata(fileId, "BCRPPchair", '2');
+    // await updateMetadata(fileId, "BCRPPdacc", emailforDACC.length.toString());
+    // console.log("Meta Data Updated");
     document.location.reload(true);
   }
   const sdform = document.querySelector('.dacc-submit');
@@ -620,7 +622,7 @@ export const commentApproveReject = () => {
     const btn = document.activeElement;
     btn.disabled = true;
     //let taskId = btn.name;
-    let fileId = document.getElementById('selectedDoc').value;
+    let fileId = document.querySelector(".tab-content .active #selectedDoc").value//document.getElementById('selectedDoc').value;
     let tasklist = await getTaskList(fileId);
     console.log(tasklist);
     let entries = tasklist.entries;
@@ -642,8 +644,10 @@ export const commentApproveReject = () => {
     //let task = await getTask(taskId);
     //let taskAssignment = task.task_assignment_collection.entries[0].id;
     await updateTaskAssignment(taskId, approval, message);
-    await updateMetadata(fileId, "BCRPPchair", "0");
-    document.location.reload();
+    // await updateMetadata(fileId, "BCRPPchair", "0");
+    await moveFile(fileId, finalFolder);
+    console.log('File moved to: ' + fileId + ' ' + finalFolder);
+    document.location.reload(true);
   }
 
   const form = document.querySelector('.approvedeny')
@@ -756,8 +760,8 @@ export const daccFileView = async () => {
 
   const filesincomplete = [];
   const filescompleted = [];
-  const tasksincomplete = [];
-  const taskscompleted = [];
+  // const tasksincomplete = [];
+  // const taskscompleted = [];
   for (let obj of filearrayDACC) {
     let id = obj.id;
     let tasks = await getTaskList(id);
@@ -868,7 +872,7 @@ export const daccFileView = async () => {
   // console.log("tasksincomplete: " + tasksincomplete);
   // console.log("taskscompleted: " + taskscompleted);
 
-  template += "<div class='tab-content'>";
+  template += "<div class='tab-content' id='selectedTab'>";
   
   template += `<div class='tab-pane fade show active'
                 id='dacctoBeCompleted' role='tabpanel'
@@ -915,12 +919,12 @@ export const submitToComment = () => {
     const btn = document.activeElement;
     btn.disabled = true;
     //let taskId = btn.name;
-    let fileId = document.getElementById('selectedDoc').value;
+    let fileId = document.querySelector(".tab-content .active #selectedDoc").value//document.getElementById('selectedDoc').value;
     let message = e.target[0].value;
     console.log(fileId);
     console.log(message);
-    let metaArray = await getMetadata(fileId);
-    let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
+    //let metaArray = await getMetadata(fileId);
+    //let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
     //let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
     await createComment(fileId, message);
     let tasklist = await getTaskList(fileId);
@@ -932,31 +936,68 @@ export const submitToComment = () => {
             if (taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
                 var taskId = taskassignment.id;
                 console.log(taskId);
+                await updateTaskAssignment(taskId, "completed");
+                console.log('Task Updated as Completed')
             }
           }  
         }
       }
     }
-    await updateTaskAssignment(taskId, "completed");
-    console.log(daccMetaValue);
-    if (daccMetaValue == 1) {
-      await updateMetadata(fileId, "BCRPPchair", "3");
-      console.log("New Chair Value: 3");
-      await createFileTask(fileId);
-      console.log("Chair Task Created");
-      let tasklist = await getTaskList(fileId);
-      let entries = tasklist.entries;
-      console.log(entries);
+    //await updateTaskAssignment(taskId, "completed");
+    //console.log(daccMetaValue);
+    tasklist = await getTaskList(fileId);
+    entries = tasklist.entries;
+    var numCompletedTasks = 0
+    if (entries.length !== 0) {
       for (let item of entries) {
-        if (item.is_completed == false) {
-          await assignTask(item.id, emailforChair[0]);
-          console.log("Chair Task Assigned");
+        if (item.is_completed == true) {
+          numCompletedTasks += 1;
+        }
+      }
+      if (numCompletedTasks == entries.length) {
+        await moveFile(fileId, chairReviewFolder);
+        console.log('File moved to: ' + chairReviewFolder);
+        await createFileTask(fileId);
+        tasklist = await getTaskList(fileId);
+        entries = tasklist.entries;
+        console.log(entries);
+        for (let item of entries) {
+          if (item.is_completed == false) {
+            await assignTask(item.id, emailforChair[0]);
+            console.log("Chair Task Assigned");
+          }
         }
       }
     };
-    let newDaccValue = parseInt(daccMetaValue) - 1;
-    await updateMetadata(fileId, "BCRPPdacc", newDaccValue.toString());
-    console.log("New DACC Value: " + newDaccValue);
+
+    // if (numCompletedTasks == entries.length) {
+    //   for (let taskassignment of item.task_assignment_collection.entries) {
+    //     if (taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
+    //         var taskId = taskassignment.id;
+    //         console.log(taskId);
+    //         }
+    //       }  
+    //     };
+
+    // if (daccMetaValue == 1) {
+    //   //await updateMetadata(fileId, "BCRPPchair", "3");
+    //   //console.log("New Chair Value: 3");
+    //   await createFileTask(fileId);
+    //   console.log("Chair Task Created");
+    //   let tasklist = await getTaskList(fileId);
+    //   let entries = tasklist.entries;
+    //   console.log(entries);
+    //   for (let item of entries) {
+    //     if (item.is_completed == false) {
+    //       await assignTask(item.id, emailforChair[0]);
+    //       console.log("Chair Task Assigned");
+    //     }
+    //   }
+    // };
+    //let newDaccValue = parseInt(daccMetaValue) - 1;
+    //await updateMetadata(fileId, "BCRPPdacc", newDaccValue.toString());
+    //console.log("New DACC Value: " + newDaccValue);
+    
     document.location.reload(true);
   }
   const dcform = document.querySelector('.dacc-comment');
