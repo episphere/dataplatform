@@ -98,44 +98,48 @@ export const renderForm = () => {
 
 export function renderFilePreviewDropdown(files){
     let template = '';
-if(!Array.isArray(files)){
-    console.log('Not an array');
-    return
-}
-if(files.length != 0){
-    console.log('Param is array length: ' + files.length);
-    template += `<div class='card-body'>
-            <div class='card-title'>
-            <select id='selectedDoc' onchange="
-            const access_token = JSON.parse(localStorage.parms).access_token;
-                    console.log('SHOWING PREVIEW', this.value);
-                    let previewContainer = document.getElementById('boxFilePreview');
-                    var preview = new Box.Preview();
-                    preview.show(this.value, access_token, {
-                      container: previewContainer
-                    });
-            ">
+    if(!Array.isArray(files)){
+        console.log('Not an array');
+        return
+    }
+    if(files.length != 0){
+        console.log('Param is array length: ' + files.length);
+        template += `<div class='card-body'>
+                <div class='card-title'>
+                <label for='selectedDoc'><b>Select Document:</b></label>
+                <br>
+                <select id='selectedDoc' onchange="
+                const access_token = JSON.parse(localStorage.parms).access_token;
+                        console.log('SHOWING PREVIEW', this.value);
+                        let previewContainer = document.getElementById('boxFilePreview');
+                        var preview = new Box.Preview();
+                        preview.show(this.value, access_token, {
+                            container: previewContainer,
+                            showDownload: true,
+                            header: 'light'
+                        });
+                ">
             `;
 
-    for (const file of files) { 
-      //console.log('File', file);
-      template += `
-              <option value='${file.id}'>
-              ${file.name}</option>`;
-    }
+        for (const file of files) { 
+        //console.log('File', file);
+        template += `
+                <option value='${file.id}'>
+                ${file.name}</option>`;
+        }
 
-    template += `
-              </select>
-              </div>
-            </div>  
-          </div>`
-  } else {
+        template += `
+                </select>
+                </div>
+                </div>  
+            </div>`
+    } else {
     template += `
               No files to show.            
     </div>
     
     `
-  }
+    }
 
   //console.log(template);
   

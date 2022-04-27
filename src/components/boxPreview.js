@@ -12,7 +12,9 @@ export function showPreview(id) {
     let previewContainer = document.getElementById('boxFilePreview');
     var preview = new Box.Preview();
     preview.show(id, access_token, {
-      container: previewContainer
+      container: previewContainer,
+      showDownload: true,
+      header: 'light'
     });
 
   } catch(error) {
