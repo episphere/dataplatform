@@ -419,22 +419,22 @@ export const chairFileView = async () => {
                   id='toBeCompleted' role='tabpanel' 
                   aria-labeledby='toBeCompletedTab'> `
 
-      template += renderFilePreviewDropdown(filesincomplete);
-      
+      template += renderFilePreviewDropdown(filesincomplete, 'toBeCompleted');
+      //Function to add eventListener for onchange  to SelectedDoc
       template += `<div class='tab-pane fade'
                  id='inProgress' role='tabpanel'
                  aria-labeledby='inProgressTab'> `
-      template += renderFilePreviewDropdown(filesinprogress);
+      template += renderFilePreviewDropdown(filesinprogress, 'inProgress');
 
       template += `<div class='tab-pane fade'
                 id='daccCompleted' role='tabpanel'
                 aria-labelledby='daccCompletedTab'>`
-      template += renderFilePreviewDropdown(filescompleted);
+      template += renderFilePreviewDropdown(filescompleted, 'daccCompleted');
 
       template += `<div class='tab-pane fade' 
                 id='approved' role='tabpanel'
                 aria-labelledby='approvedTab'>`
-      template += renderFilePreviewDropdown(filesapproved)
+      template += renderFilePreviewDropdown(filesapproved, 'approved');
 
       if (filescompleted.length != 0 || filesinprogress.length != 0 ||
           filesincomplete.length != 0 || filesapproved.length != 0) {

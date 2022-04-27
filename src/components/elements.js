@@ -97,7 +97,7 @@ export const renderForm = () => {
     `;
 }
 
-export function renderFilePreviewDropdown(files){
+export function renderFilePreviewDropdown(files, tab){
     let template = '';
 if(!Array.isArray(files)){
     console.log('Not an array');
@@ -107,7 +107,7 @@ if(files.length != 0){
     
     template += `<div class='card-body'>
             <div class='card-title'>
-            <select id='selectedDoc' onchange="
+            <select id='${tab}selectedDoc' onchange="
             const access_token = JSON.parse(localStorage.parms).access_token;
         
                     console.log('SHOWING PREVIEW', this.value);
