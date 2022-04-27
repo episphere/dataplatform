@@ -1,8 +1,8 @@
 // import { createFileTask, assignTask, updateTaskAssignment } from '../shared.js';
 import {
   createComment,
-  listComments,
   createCompleteTask,
+  showComments,
   updateMetadata,
   getMetadata,
   searchMetadata,
@@ -39,6 +39,7 @@ import {
 import {
   switchTabs
 } from '../event.js';
+import { template } from './dataGovernance.js';
 // Require additional changes regarding data
 //import * as docx from "docx";
 
@@ -419,7 +420,7 @@ export const chairFileView = async () => {
                   aria-labeledby='toBeCompletedTab'> `
 
       template += renderFilePreviewDropdown(filesincomplete);
-
+      
       template += `<div class='tab-pane fade'
                  id='inProgress' role='tabpanel'
                  aria-labeledby='inProgressTab'> `
@@ -439,10 +440,10 @@ export const chairFileView = async () => {
           filesincomplete.length != 0 || filesapproved.length != 0) {
          template += `<div id='filePreview'>
                         
-                          <div id='boxFilePreview' class="preview-container"></div>
+                          <div id='boxFilePreview' class="mx-auto preview-container"></div>
                         
-                        <div class='row'>
-                          <div id='sendtodaccButton' class="card-body dacc-submit col-6" style="padding-left: 10px; background-color:#f6f6f6; display:block">
+                        <div class='row card-body'>
+                          <div id='sendtodaccButton' class="col-6">
                             <form>
                               <label for"message">Send to DACC</label>
                               <div class="input-group">
@@ -453,14 +454,7 @@ export const chairFileView = async () => {
                             </form>
                             
                           </div>
-                          <div id='fileComments' class='col-6'> 
-                            Comments go here
-                            <ul>
-                              <li>Comment 1</li>
-                              <li>Comment 2</li>
-                              <li>Comment 3</li>
-                            </ul>
-                          </div>
+                          <div id='fileComments' class='col-6 mt-2'></div>
                         </div>
                         <div id='finalChairDecision' class="card-body approvedeny" style="padding-left: 10px;background-color:#f6f6f6; display:none">
                           <form>
@@ -527,6 +521,8 @@ export const chairFileView = async () => {
         commentApproveReject();
         if (filesincomplete.length != 0) {
           showPreview(filesincomplete[0].id);
+          // showComments(filesincomplete[0].id);
+          showComments('949852152583');
         }
         
         //Switch Tabs
@@ -536,9 +532,9 @@ export const chairFileView = async () => {
         switchTabs('approved', ['inProgress', 'daccCompleted', 'toBeCompleted'], filesapproved);
 
         //Comments
-        let test = await listComments('945509107663');//files[0].id);
-        console.log(test);
-                            
+        // showComments('945813531582');//files[0].id);
+        
+            
       }
 
 
@@ -1373,3 +1369,5 @@ const viewDACCFiles = async (files, taskids) => {
   };
   return template;
 }
+
+

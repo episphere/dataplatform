@@ -2045,3 +2045,8 @@ form {
         transform: rotate(1turn);
     }
 }
+
+#fileComments.scroll {
+    overflow-y: auto;
+    overflow-x: hidden;
+}

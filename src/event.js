@@ -26,7 +26,7 @@ import {
     missingnessStatsFileId,
     assignNavbarActive,
     reSizePlots,
-    listComments
+    showComments
 } from './shared.js';
 import {
     renderDataSummary
@@ -1532,9 +1532,10 @@ export function switchTabs(show, hide, files) {
                             boxPreview.classList.add('d-block');
                         }
                         showPreview(files[0].id);
-                        let response = async () => { let test = await listComments('945509107663');//files[0].id);
-                            console.log(test);
-                            }
+                        showComments(files[0].id);
+                        // let response = async () => { let test = await listComments('945509107663');//files[0].id);
+                        //     console.log(test);
+                        //     }
                         if (show == 'toBeCompleted'){
                             document.getElementById('sendtodaccButton').style.display="block";
                             document.getElementById('finalChairDecision').style.display="none";

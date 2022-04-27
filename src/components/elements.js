@@ -1,7 +1,7 @@
 import { config } from "../config.js";
 import { template } from "../pages/dataGovernance.js";
-import { getFileInfo } from "../shared.js";
-import { listComments } from "../shared.js";
+import { getFileInfo, showComments } from "../shared.js";
+ 
 
 export const studyDropDownTemplate = (entries) => {
     let template = '';
@@ -104,7 +104,7 @@ if(!Array.isArray(files)){
     return
 }
 if(files.length != 0){
-    console.log('Param is array length: ' + files.length);
+    
     template += `<div class='card-body'>
             <div class='card-title'>
             <select id='selectedDoc' onchange="
@@ -116,10 +116,10 @@ if(files.length != 0){
                     preview.show(this.value, access_token, {
                       container: previewContainer
                     });
-                    console.log(listComments(this.value));
+                    
             ">
             `;
-
+    
     for (const file of files) { 
       //console.log('File', file);
       template += `
