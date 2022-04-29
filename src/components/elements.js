@@ -107,7 +107,9 @@ if(files.length != 0){
     
     template += `<div class='card-body'>
             <div class='card-title'>
+            <label for='${tab}selectedDoc'>Choose the file you'd like to preview</label><br>
             <select id='${tab}selectedDoc'>
+            
             `;
     
     for (const file of files) { 

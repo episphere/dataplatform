@@ -758,7 +758,7 @@ export async function showComments(id) {
     let comments = JSON.parse(response).entries;
     
     console.log(comments);
-    let template = "<ul class='align-left'>";
+    let template = "<ul class='align-left'>Comments";
     for(const comment of comments){
       const comment_date = new Date(comment.created_at);
       const date = comment_date.toLocaleDateString()
@@ -1255,7 +1255,7 @@ export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov'
 
 export const emailforChair = ['ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
 
-export const emailforDACC = ['mukopadhyays2@nih.gov', 'garciacm@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
+export const emailforDACC = ['mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
 
 export const publicDataFileId = 697309514903; //Unknown
 

@@ -420,8 +420,6 @@ export const chairFileView = async () => {
                   aria-labeledby='toBeCompletedTab'> `
 
       template += renderFilePreviewDropdown(filesincomplete, 'toBeCompleted');
-      //Function to add eventListener for onchange  to SelectedDoc
-      const tab = 'toBeCompleted';
    
       template += `<div class='tab-pane fade'
                  id='inProgress' role='tabpanel'
