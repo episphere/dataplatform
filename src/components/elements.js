@@ -107,17 +107,7 @@ if(files.length != 0){
     
     template += `<div class='card-body'>
             <div class='card-title'>
-            <select id='${tab}selectedDoc' onchange="
-            const access_token = JSON.parse(localStorage.parms).access_token;
-        
-                    console.log('SHOWING PREVIEW', this.value);
-                    let previewContainer = document.getElementById('boxFilePreview');
-                    var preview = new Box.Preview();
-                    preview.show(this.value, access_token, {
-                      container: previewContainer
-                    });
-                    
-            ">
+            <select id='${tab}selectedDoc'>
             `;
     
     for (const file of files) { 

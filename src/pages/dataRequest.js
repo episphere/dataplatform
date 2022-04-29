@@ -421,6 +421,8 @@ export const chairFileView = async () => {
 
       template += renderFilePreviewDropdown(filesincomplete, 'toBeCompleted');
       //Function to add eventListener for onchange  to SelectedDoc
+      const tab = 'toBeCompleted';
+   
       template += `<div class='tab-pane fade'
                  id='inProgress' role='tabpanel'
                  aria-labeledby='inProgressTab'> `
@@ -440,8 +442,10 @@ export const chairFileView = async () => {
           filesincomplete.length != 0 || filesapproved.length != 0) {
          template += `<div id='filePreview'>
                         
-                          <div id='boxFilePreview' class="mx-auto preview-container"></div>
-                        
+                          <div class='row'>
+                            <div id='boxFilePreview' class="col-8 preview-container"></div>
+                            <div id='fileComments' class='col-4 mt-2'></div>
+                          </div>
                         <div class='row card-body'>
                           <div id='sendtodaccButton' class="col-6">
                             <form>
@@ -454,7 +458,7 @@ export const chairFileView = async () => {
                             </form>
                             
                           </div>
-                          <div id='fileComments' class='col-6 mt-2'></div>
+                         
                         </div>
                         <div id='finalChairDecision' class="card-body approvedeny" style="padding-left: 10px;background-color:#f6f6f6; display:none">
                           <form>
@@ -521,8 +525,8 @@ export const chairFileView = async () => {
         commentApproveReject();
         if (filesincomplete.length != 0) {
           showPreview(filesincomplete[0].id);
-          // showComments(filesincomplete[0].id);
-          showComments('949852152583');
+          showComments(filesincomplete[0].id);
+          // showComments('949852152583');
         }
         
         //Switch Tabs
@@ -530,7 +534,15 @@ export const chairFileView = async () => {
         switchTabs('inProgress', ['toBeCompleted', 'daccCompleted', 'approved'], filesinprogress);
         switchTabs('daccCompleted', ['inProgress', 'toBeCompleted', 'approved'], filescompleted);
         switchTabs('approved', ['inProgress', 'daccCompleted', 'toBeCompleted'], filesapproved);
-
+        
+        //Switch files
+        document.getElementById(`${tab}selectedDoc`).addEventListener('change', (e) => {
+          const file_id = e.target.value
+          console.log(file_id);
+          showPreview(file_id);
+          showComments(file_id);
+        });
+        
         //Comments
         // showComments('945813531582');//files[0].id);
         

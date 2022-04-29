@@ -1512,20 +1512,6 @@ export const addEventConsortiaFilter = (d) => {
     })
 }
 
-export function changeFile(id, tab){
-  document.getElementById(tab)
-  const access_token = JSON.parse(localStorage.parms).access_token;
-  try{ 
-    console.log("SHOWING PREVIEW", id);
-    let previewContainer = document.getElementById('boxFilePreview');
-    var preview = new Box.Preview();
-    preview.show(id, access_token, {
-      container: previewContainer
-    });
-  } catch(error) {
-    console.error(error);
-  }
-}
 
 export function switchTabs(show, hide, files) {
     try {
@@ -1546,6 +1532,8 @@ export function switchTabs(show, hide, files) {
                         if (!boxPreview.classList.contains('d-block')) {
                             boxPreview.classList.add('d-block');
                         }
+                        switchFiles(show);
+                        document.getElementById(show + 'selectedDoc').value = files[0].id;
                         showPreview(files[0].id);
                         showComments(files[0].id);
                         // let response = async () => { let test = await listComments('945509107663');//files[0].id);
@@ -1595,4 +1583,12 @@ export function switchTabs(show, hide, files) {
         console.log(err);
         return;
     }
+}
+
+export function switchFiles(tab) {
+    document.getElementById(`${tab}selectedDoc`).addEventListener('change', (e) => {
+        const file_id = e.target.value
+        showPreview(file_id);
+        showComments(file_id);
+      });
 }
