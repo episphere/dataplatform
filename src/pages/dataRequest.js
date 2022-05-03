@@ -2,6 +2,7 @@
 import {
   createComment,
   createCompleteTask,
+  showComments,
   updateMetadata,
   getMetadata,
   searchMetadata,
@@ -42,6 +43,7 @@ import {
 import {
   switchTabs
 } from '../event.js';
+import { template } from './dataGovernance.js';
 // Require additional changes regarding data
 //import * as docx from "../docx";
 
@@ -459,38 +461,45 @@ export const chairFileView = async () => {
                   id='toBeCompleted' role='tabpanel' 
                   aria-labeledby='toBeCompletedTab'> `
 
-      template += renderFilePreviewDropdown(filesincomplete);
-
+      template += renderFilePreviewDropdown(filesincomplete, 'toBeCompleted');
+   
       template += `<div class='tab-pane fade'
                  id='inProgress' role='tabpanel'
                  aria-labeledby='inProgressTab'> `
-      template += renderFilePreviewDropdown(filesinprogress);
+      template += renderFilePreviewDropdown(filesinprogress, 'inProgress');
 
       template += `<div class='tab-pane fade'
                 id='daccCompleted' role='tabpanel'
                 aria-labelledby='daccCompletedTab'>`
-      template += renderFilePreviewDropdown(filescompleted);
+      template += renderFilePreviewDropdown(filescompleted, 'daccCompleted');
 
       template += `<div class='tab-pane fade' 
                 id='approved' role='tabpanel'
                 aria-labelledby='approvedTab'>`
-      template += renderFilePreviewDropdown(filesapproved)
+      template += renderFilePreviewDropdown(filesapproved, 'approved');
 
       if (filescompleted.length != 0 || filesinprogress.length != 0 ||
           filesincomplete.length != 0 || filesapproved.length != 0) {
-         template += `<div id='filePreview'> 
-                      <div id='boxFilePreview' class="preview-container"></div>
-                        <div id='sendtodaccButton' class="card-body dacc-submit" style="padding-left: 10px; background-color:#f6f6f6; display:block">
-                          <form>
-                            <label for"message">Send to DACC</label>
-                            <div class="input-group">
-                              <textarea id="message" name="message" rows="6" cols="65"></textarea>
-                            </div>
-                            <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
-                              <span class="buttonsubmit__text"> Send </span> </button>
-                          </form>
+         template += `<div id='filePreview'>
+                        
+                          <div class='row'>
+                            <div id='boxFilePreview' class="col-8 preview-container"></div>
+                            <div id='fileComments' class='col-4 mt-2'></div>
+                          </div>
+                        <div class='row card-body'>
+                          <div id='sendtodaccButton' class="col-6">
+                            <form>
+                              <label for"message">Send to DACC</label>
+                              <div class="input-group">
+                                <textarea id="message" name="message" rows="6" cols="50"></textarea>
+                              </div>
+                              <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+                                <span class="buttonsubmit__text"> Send </span> </button>
+                            </form>
+                            
+                          </div>
+                         
                         </div>
-
                         <div id='finalChairDecision' class="card-body approvedeny" style="padding-left: 10px;background-color:#f6f6f6; display:none">
                           <form>
                             <label for="message">Enter Message for Submitter</label>
@@ -503,6 +512,8 @@ export const chairFileView = async () => {
                               <span class="buttonsubmit__text"> Deny </span></button>
                           </form>
                         </div>
+
+                        
                       </div>
                     </div>
                   `
@@ -554,14 +565,29 @@ export const chairFileView = async () => {
         commentApproveReject();
         if (filesincomplete.length != 0) {
           showPreview(filesincomplete[0].id);
+          showComments(filesincomplete[0].id);
+          // showComments('949852152583');
         }
-
+        
         //Switch Tabs
         switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'approved'], filesincomplete);
         switchTabs('inProgress', ['toBeCompleted', 'daccCompleted', 'approved'], filesinprogress);
         switchTabs('daccCompleted', ['inProgress', 'toBeCompleted', 'approved'], filescompleted);
         switchTabs('approved', ['inProgress', 'daccCompleted', 'toBeCompleted'], filesapproved);
-
+        
+        //Switch files
+        let tab = 'toBeCompleted';
+        document.getElementById(`${tab}selectedDoc`).addEventListener('change', (e) => {
+          const file_id = e.target.value
+          console.log(file_id);
+          showPreview(file_id);
+          showComments(file_id);
+        });
+        
+        //Comments
+        // showComments('945813531582');//files[0].id);
+        
+            
       }
 
 export const submitToDacc = () => {
@@ -1355,22 +1381,30 @@ export const dataForm = async () => {
       //let files = getFolderItems(uploadFormFolder);//149098174998);
       if (filesinfoldernames.includes(filename)) {
         console.log(filename + " Exists: Saving New Version");
+
         let fileidupdate = filesinfolderids[filesinfoldernames.indexOf(filename)];
         (async () => {
-          await uploadWordFileVersion(blob, fileidupdate);
+          // document.getElementById('modalBody').innerHTML = 'Would'
+          let response = await uploadWordFileVersion(blob, fileidupdate);
           await assigntasktochair();
-          document.getElementById('modalBody').innerHTML = 'File was successfully updated.';
+          document.getElementById('modalBody').innerHTML = `
+          <p>File was successfully updated.</p>
+          <p>Document ID: ${fileidupdate}</p>
+          
+          `;
           $('#popUpModal').modal('show');
 
         })();
       } else {
         console.log("Saving File to Box: " + filename + jsondata.keywords); // Adding keywords
         (async () => {
-          await uploadWordFile(blob, filename, uploadFormFolder);
+          let response = await uploadWordFile(blob, filename, uploadFormFolder);
           await assigntasktochair();
-
+          let fileid = response.entries[0].id;
           //Modal code here
-          document.getElementById('modalBody').innerHTML = 'File was successfully uploaded.';
+          document.getElementById('modalBody').innerHTML = `
+          <p>File was successfully updated.</p>
+          <p>Document ID: ${fileid}</p>`;
           $('#popUpModal').modal('show');
         })();
       }
@@ -1406,7 +1440,7 @@ const viewFiles = async (files) => {
                 <form>
                   <label for"message">Send to DACC</label>
                   <div class="input-group">
-                    <textarea id="message" name="message" rows="6" cols="65"></textarea>
+                    <textarea id="message" name="message" rows="10" cols="65"></textarea>
                   </div>
                   <button type="submit" value="${id}" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
                     <span class="buttonsubmit__text"> Send </span> </button>
@@ -1497,3 +1531,5 @@ const viewDACCFiles = async (files, taskids) => {
   };
   return template;
 }
+
+

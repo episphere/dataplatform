@@ -25,7 +25,8 @@ import {
     getFileInfo,
     missingnessStatsFileId,
     assignNavbarActive,
-    reSizePlots
+    reSizePlots,
+    showComments
 } from './shared.js';
 import {
     renderDataSummary
@@ -1511,6 +1512,7 @@ export const addEventConsortiaFilter = (d) => {
     })
 }
 
+
 export function switchTabs(show, hide, files) {
     try {
         if (!Array.isArray(hide)) {
@@ -1530,16 +1532,27 @@ export function switchTabs(show, hide, files) {
                         if (!boxPreview.classList.contains('d-block')) {
                             boxPreview.classList.add('d-block');
                         }
+                        switchFiles(show);
+                        document.getElementById(show + 'selectedDoc').value = files[0].id;
                         showPreview(files[0].id);
-                        const $select = document.querySelector('.tab-content .active #selectedDoc');
-                        if ($select) {
-                        $select.selectedIndex = 0;
-                        }
-                        //document.getElementById('selectedDoc').selectedIndex = 0;
-                        //console.log(document.getElementById('selectedDoc').selectedIndex);
+//<<<<<<< comments
+                        showComments(files[0].id);
+                        // let response = async () => { let test = await listComments('945509107663');//files[0].id);
+                        //     console.log(test);
+                        //     }
+//=======
+//                       const $select = document.querySelector('.tab-content .active #selectedDoc');
+//                        if ($select) {
+//                        $select.selectedIndex = 0;
+//                        }
+//                        //document.getElementById('selectedDoc').selectedIndex = 0;
+//                        //console.log(document.getElementById('selectedDoc').selectedIndex);
+//>>>>>>> master
                         if (show == 'toBeCompleted'){
                             document.getElementById('sendtodaccButton').style.display="block";
                             document.getElementById('finalChairDecision').style.display="none";
+                            
+                            // document.getElementById('fileComments').innerHTML = listComments(files[0].id);
                         }  
                         if (show == 'inProgress'){
                             document.getElementById('sendtodaccButton').style.display="none";
@@ -1579,4 +1592,12 @@ export function switchTabs(show, hide, files) {
         console.log(err);
         return;
     }
+}
+
+export function switchFiles(tab) {
+    document.getElementById(`${tab}selectedDoc`).addEventListener('change', (e) => {
+        const file_id = e.target.value
+        showPreview(file_id);
+        showComments(file_id);
+      });
 }

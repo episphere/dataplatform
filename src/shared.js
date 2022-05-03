@@ -781,32 +781,75 @@ export const createComment = async (id, msg="") => {
         if ((await refreshToken()) === true) return await createComment(id, msg);
     }
 }
+export async function showComments(id) {
+    const commentSection = document.getElementById('fileComments');
+    const response = await listComments(id);
+    
+    let comments = JSON.parse(response).entries;
+    
+    console.log(comments);
+    let template = "<ul class='align-left'>Comments";
+    for(const comment of comments){
+      const comment_date = new Date(comment.created_at);
+      const date = comment_date.toLocaleDateString()
+      const time = comment_date.toLocaleTimeString()
+      template += `<div class='w-100 mb-1 p-2'>
+      <h6 class='text-primary small mb-0'>${comment.created_by.name}</h6>
+      <p class='align-left mb-0 text-justify w-90'>${comment.message}</p>
+      <div class='d-flex'>
+        <p class='small mb-0 font-weight-light align-right'>${date} at ${time}</p>
+      </div>  
+      </div>
+
+      <hr class='m-1'>
+      
+      `
+      
+    }
+    template += '</ul>'
+    commentSection.innerHTML = template;
+    return;
+    
+  } 
 
 export const listComments = async (id) => {
     try {
+
         const access_token = JSON.parse(localStorage.parms).access_token;
         const response = await fetch(`https://api.box.com/2.0/files/${id}/comments`, {
+
             method: 'GET',
+
             headers: {
-                Authorization: "Bearer "+access_token
-            }//,
-            // body: JSON.stringify({
-            //     message: msg.toString(),
-            //     item: {
-            //         type: "file",
-            //         id: id.toString()
-            //     }
-            // })
+
+                Authorization: "Bearer "+access_token,
+
+                'Content-Type': 'application/json',
+
+            },
+
+            redirect: 'follow'
+
         });
+
         if(response.status === 401) {
+
             if((await refreshToken()) === true) return await listComments(id);
+
         } else {
-            return response
+
+            return response.text()
+
         }
+
     }
+
     catch(err) {
+
         if ((await refreshToken()) === true) return await listComments(id);
+
     }
+
 }
 
 
@@ -1239,9 +1282,9 @@ export const numberWithCommas = (x) => {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-export const emailforChair = ['ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
+export const emailforChair = ['kopchickbp@nih.gov']//'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
 
-export const emailforDACC = ['mukopadhyays2@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
+export const emailforDACC = ['kopchickbp@nih.gov']//'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
 
 export const publicDataFileId = 697309514903; //Unknown
 

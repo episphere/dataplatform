@@ -1990,7 +1990,7 @@ form {
 
   .preview-container {
     border: 1px solid #eee;
-    height: 1200px;
+    height: 1000px;
     width: 100%;
   }
 
@@ -2044,4 +2044,9 @@ form {
     to {
         transform: rotate(1turn);
     }
+}
+
+#fileComments.scroll {
+    overflow-y: auto;
+    overflow-x: hidden;
 }
