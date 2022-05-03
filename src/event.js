@@ -1536,7 +1536,11 @@ export function switchTabs(show, hide, files) {
                         document.getElementById(show + 'selectedDoc').value = files[0].id;
                         showPreview(files[0].id);
 //<<<<<<< comments
-                        showComments(files[0].id);
+                        console.log(show);
+                        const tabsChair = ['toBeCompleted', 'inProgress', 'daccCompleted', 'approved'];
+                        if (tabsChair.includes(show)){
+                        showComments(files[0].id)
+                        };
                         // let response = async () => { let test = await listComments('945509107663');//files[0].id);
                         //     console.log(test);
                         //     }
@@ -1598,6 +1602,9 @@ export function switchFiles(tab) {
     document.getElementById(`${tab}selectedDoc`).addEventListener('change', (e) => {
         const file_id = e.target.value
         showPreview(file_id);
-        showComments(file_id);
+        const tabsChair = ['toBeCompleted', 'inProgress', 'daccCompleted', 'approved'];
+        if (tabsChair.includes(tab)){
+            showComments(file_id)
+        };
       });
 }

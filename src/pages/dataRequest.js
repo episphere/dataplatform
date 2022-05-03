@@ -486,7 +486,7 @@ export const chairFileView = async () => {
                             <div id='boxFilePreview' class="col-8 preview-container"></div>
                             <div id='fileComments' class='col-4 mt-2'></div>
                           </div>
-                        <div class='row card-body'>
+                        <div class='row card-body dacc-submit'>
                           <div id='sendtodaccButton' class="col-6">
                             <form>
                               <label for"message">Send to DACC</label>
@@ -595,7 +595,7 @@ export const submitToDacc = () => {
     const btn = document.activeElement;
     btn.disabled=true;
     e.preventDefault();
-    let fileId = document.querySelector(".tab-content .active #selectedDoc").value//document.getElementById('selectedDoc').value//e.submitter.value;
+    let fileId = document.querySelector(".tab-content .active #toBeCompletedselectedDoc").value//document.getElementById('selectedDoc').value//e.submitter.value;
     let message = e.target[0].value;
     console.log(fileId);
     console.log(message);
@@ -648,7 +648,7 @@ export const commentApproveReject = () => {
     const btn = document.activeElement;
     btn.disabled = true;
     //let taskId = btn.name;
-    let fileId = document.querySelector(".tab-content .active #selectedDoc").value//document.getElementById('selectedDoc').value;
+    let fileId = document.querySelector(".tab-content .active #daccCompletedselectedDoc").value//document.getElementById('selectedDoc').value;
     let tasklist = await getTaskList(fileId);
     console.log(tasklist);
     let entries = tasklist.entries;
@@ -805,7 +805,9 @@ export const daccFileView = async () => {
         } else if (items.is_completed == true && items.action == 'complete') {
           for (let itemtasks of items.task_assignment_collection.entries) {
             if (itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
-              filescompleted.push(obj);
+              if (!filescompleted.includes(obj)) {
+                filescompleted.push(obj);
+              }
             }
           }
         }
@@ -821,7 +823,9 @@ export const daccFileView = async () => {
       for (let items of tasks.entries) {
         for (let itemtasks of items.task_assignment_collection.entries) {
           if (itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
-            filescompleted.push(obj)
+            if (!filescompleted.includes(obj)) {
+              filescompleted.push(obj);
+            }
           }
         }
       }
@@ -836,7 +840,9 @@ export const daccFileView = async () => {
       for (let items of tasks.entries) {
         for (let itemtasks of items.task_assignment_collection.entries) {
           if (itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
-            filescompleted.push(obj)
+            if (!filescompleted.includes(obj)) {
+              filescompleted.push(obj);
+            }
           }
         }
       }
@@ -903,11 +909,11 @@ export const daccFileView = async () => {
   template += `<div class='tab-pane fade show active'
                 id='dacctoBeCompleted' role='tabpanel'
               aria-labeledby='dacctoBeCompletedTab'>`;
-  template += renderFilePreviewDropdown(filesincomplete);
+  template += renderFilePreviewDropdown(filesincomplete, 'dacctoBeCompleted');
   template += `<div class='tab-pane fade'
                 id='completed' role='tabpanel'
                 aria-labeledby='completedTab'> `
-  template += renderFilePreviewDropdown(filescompleted);
+  template += renderFilePreviewDropdown(filescompleted, 'completed');
 
   if (filescompleted.length != 0 || filesincomplete.length != 0) {
     template += `<div id='filePreview'> 
@@ -945,7 +951,7 @@ export const submitToComment = () => {
     const btn = document.activeElement;
     btn.disabled = true;
     //let taskId = btn.name;
-    let fileId = document.querySelector(".tab-content .active #selectedDoc").value//document.getElementById('selectedDoc').value;
+    let fileId = document.querySelector(".tab-content .active #dacctoBeCompletedselectedDoc").value//document.getElementById('selectedDoc').value;
     let message = e.target[0].value;
     console.log(fileId);
     console.log(message);

@@ -100,10 +100,10 @@ export const renderForm = () => {
 export function renderFilePreviewDropdown(files, tab){
     let template = '';
 //<<<<<<< comments
-//if(!Array.isArray(files)){
-//    console.log('Not an array');
-//    return
-//}
+    if(!Array.isArray(files)){
+    console.log('Not an array');
+    return
+    }
 //if(files.length != 0){
 //   
 //    template += `<div class='card-body'>
@@ -120,17 +120,13 @@ export function renderFilePreviewDropdown(files, tab){
 //              ${file.name}</option>`;
 //    }
 //=======
-    if(!Array.isArray(files)){
-        console.log('Not an array');
-        return
-    }
     if(files.length != 0){
         console.log('Param is array length: ' + files.length);
         template += `<div class='card-body'>
                 <div class='card-title'>
-                <label for='selectedDoc'><b>Select Document:</b></label>
+                <label for='${tab}selectedDoc'><b>Select Document:</b></label>
                 <br>
-                <select id='selectedDoc' onchange="
+                <select id='${tab}selectedDoc' onchange="
                 const access_token = JSON.parse(localStorage.parms).access_token;
                         console.log('SHOWING PREVIEW', this.value);
                         let previewContainer = document.getElementById('boxFilePreview');
