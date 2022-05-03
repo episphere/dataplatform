@@ -1535,10 +1535,19 @@ export function switchTabs(show, hide, files) {
                         switchFiles(show);
                         document.getElementById(show + 'selectedDoc').value = files[0].id;
                         showPreview(files[0].id);
+//<<<<<<< comments
                         showComments(files[0].id);
                         // let response = async () => { let test = await listComments('945509107663');//files[0].id);
                         //     console.log(test);
                         //     }
+//=======
+//                       const $select = document.querySelector('.tab-content .active #selectedDoc');
+//                        if ($select) {
+//                        $select.selectedIndex = 0;
+//                        }
+//                        //document.getElementById('selectedDoc').selectedIndex = 0;
+//                        //console.log(document.getElementById('selectedDoc').selectedIndex);
+//>>>>>>> master
                         if (show == 'toBeCompleted'){
                             document.getElementById('sendtodaccButton').style.display="block";
                             document.getElementById('finalChairDecision').style.display="none";
