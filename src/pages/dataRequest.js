@@ -462,7 +462,7 @@ export const chairFileView = async () => {
                           <form>
                             <label for="message">Enter Message for Submitter</label>
                             <div class="input-group">
-                                <textarea id="message" name="message" rows="6" cols="50"></textarea>
+                                <textarea id="message" name="message" rows="6" cols="65"></textarea>
                             </div>
                             <button type="submit" class="buttonsubmit" value="approved">
                               <span class="buttonsubmit__text"> Approve </span></button>
@@ -534,6 +534,7 @@ export const chairFileView = async () => {
         switchTabs('approved', ['inProgress', 'daccCompleted', 'toBeCompleted'], filesapproved);
         
         //Switch files
+        let tab = 'toBeCompleted';
         document.getElementById(`${tab}selectedDoc`).addEventListener('change', (e) => {
           const file_id = e.target.value
           console.log(file_id);
@@ -1288,7 +1289,7 @@ const viewFiles = async (files) => {
                 <form>
                   <label for"message">Send to DACC</label>
                   <div class="input-group">
-                    <textarea id="message" name="message" rows="6" cols="65"></textarea>
+                    <textarea id="message" name="message" rows="10" cols="65"></textarea>
                   </div>
                   <button type="submit" value="${id}" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
                     <span class="buttonsubmit__text"> Send </span> </button>
