@@ -4,9 +4,16 @@ import { getFolderItems, filterConsortiums, filterStudiesDataTypes, filterProjec
 
 export const template = async () => {
     // const response = await getFolderItems(0);
+<<<<<<< HEAD
     // const array = response.entries.filter(obj => obj.type === 'folder' && obj.id === '137304373658');
     // const array = filterConsortiums(response.entries);
     const array = await getFolderInfo('137304373658');
+=======
+    // const array = response.entries.filter(obj => obj.type === 'folder' && obj.id === '145995765326');
+    // const array = filterConsortiums(response.entries);
+    const array = await getFolderInfo('145995765326'); //BCRP: 145995765326, Confluence: 137304373658
+    console.log(array);
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
     // if(array.length <= 0) return;
     if(!array) return;
     
@@ -14,7 +21,11 @@ export const template = async () => {
     
     template += '<div class="card-body data-governance"><ul class="ul-list-style first-list-item collapsible-items p-0 m-0">';
 
+<<<<<<< HEAD
     // for(let obj of array){
+=======
+    //for(let obj of array){
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
         const ID = array.id;
         const consortiaName = array.name;
         let type = array.type;
@@ -26,7 +37,11 @@ export const template = async () => {
             </button> ${consortiaName}
         </li>
         `
+<<<<<<< HEAD
     // }
+=======
+    //}
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
     template += `</ul></div></div>`
     return template;
 }

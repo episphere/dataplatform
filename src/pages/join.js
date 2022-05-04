@@ -1,5 +1,9 @@
 export const confluenceResources = () => {
+<<<<<<< HEAD
     let template = `
+=======
+   let template = `
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
         <div class="general-bg padding-bottom-1rem">
             <div class="container body-min-height">
                 <div class="main-summary-row">
@@ -44,10 +48,17 @@ export const confluenceResources = () => {
                         <div class="consortia-desc">
                             You can also participate through a direct collaboration with the NCI Division of Cancer Epidemiology and Genetics.
                         </div>
+<<<<<<< HEAD
                         <div class="consortia-desc">
                             For more information:</br>
                             Visit: <a href="https://dceg.cancer.gov/research/cancer-types/breast-cancer/confluence-project" target="__blank">https://dceg.cancer.gov/research/cancer-types/breast-cancer/confluence-project</a></br>
                             Email: <a href="mailto:ConfluenceProject@nih.gov">ConfluenceProject@nih.gov</a>
+=======
+                        <!---<div class="consortia-desc">
+                            For more information:</br>
+                            Visit: <a href="https://dceg.cancer.gov/research/cancer-types/breast-cancer/confluence-project" target="__blank">https://dceg.cancer.gov/research/cancer-types/breast-cancer/confluence-project</a></br>
+                            Email: <a href="mailto:ConfluenceProject@nih.gov">ConfluenceProject@nih.gov</a>--->
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
                         </div>
                     <div>
                 <div>

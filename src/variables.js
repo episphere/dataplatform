@@ -1,5 +1,9 @@
 export const variables = {
+<<<<<<< HEAD
     BCAC: {
+=======
+    BCRPP: {
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
         Carrier_status: {
             'label': 'Carrier status'
         },
@@ -75,11 +79,28 @@ export const variables = {
         },
         bYear: {
             888: "Don't Know",
+<<<<<<< HEAD
             'label': 'Year of birth'
         },
         ageInt: {
             888: "Don't Know",
             'label': 'Age'
+=======
+            'label': 'Birth Year'
+        },
+        dxdate_primary: {
+            888: "Don't Know",
+            'label': 'Year of Diagnosis'
+        },
+        invasive_primary: {
+            888: "Don't Know",
+            'label': 'Breast Cancer Behavior'
+            //'label': 'Count of Cancer Invasiveness'
+        },
+        ageInt: {
+            888: "Don't Know",
+            'label': 'Age at Baseline'
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
         },
         intDate : {
             '08/08/8000': "Don't Know",
@@ -171,7 +192,11 @@ export const variables = {
             0: 'negative',
             1: 'positive',
             888: "Don't Know",
+<<<<<<< HEAD
             'label': 'Estrogen receptor status'
+=======
+            'label': 'Estrogen Receptor Status'
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
         },
         eduCat: {
             'label': 'Highest level of education received'
@@ -181,7 +206,11 @@ export const variables = {
         },
         ageMenarche: {
             888: "Don't Know",
+<<<<<<< HEAD
             'label': 'Age at menarche'
+=======
+            'label': 'Age at Menarche'
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
         },
         mensAgeLast: {
             777: 'Not Applicable (still menstruating)',
@@ -198,11 +227,20 @@ export const variables = {
             0: 'nulliparous',
             1: '1+ full term pregnancies',
             888: "Don't Know",
+<<<<<<< HEAD
             'label': 'Nulliparous v parous'
         },
         parity: {
             888: "Don't Know",
             'label': 'Number of full-term pregnancies'
+=======
+            //'label': 'Nulliparous v parous'
+            'label': 'Parity'
+        },
+        parity: {
+            888: "Don't Know",
+            'label': 'Number of pregnancies (full-term)'
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
         },
         ageFFTP: {
             777: 'Not Applicable',
@@ -233,7 +271,12 @@ export const variables = {
             'label': 'Adult body height'
         },
         BMI: {
+<<<<<<< HEAD
             'label': 'Body mass index at interview/questionnaire in kg'
+=======
+            //'label': 'Body mass index at interview/questionnaire in kg'
+            'label': 'BMI'
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
         },
         OCEver: {
             0: 'never',
@@ -304,7 +347,11 @@ export const variables = {
             2: 'other methods of detection',
             777: 'Not Applicable',
             888: "Don't Know",
+<<<<<<< HEAD
             'label': 'Mode of detection of first breast cancer diagnosis'
+=======
+            'label': 'Mode of Detection of First Breast Cancer Diagnosis'
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
         },
         Index: {
             1: 'ascertained for first tumour',
@@ -341,7 +388,11 @@ export const variables = {
             2: 'moderately differentiated',
             3: 'poorly/un-differentiated',
             888: "Don't Know",
+<<<<<<< HEAD
             'label': 'Histopathological grade'
+=======
+            'label': 'Histopathological Grade'
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
         },
         Grade2: {
             1: 'well differentiated',
@@ -503,12 +554,21 @@ export const variables = {
             888: "Don't Know",
             'label': 'Estrogen receptor status of second tumour'
         },
+<<<<<<< HEAD
         ER_statusIndex: {
             0: 'negative',
             1: 'positive',
             888: "Don't Know",
             'label': 'ER status for cases'
         },
+=======
+        // ER_statusIndex: {
+        //     0: 'negative',
+        //     1: 'positive',
+        //     888: "Don't Know",
+        //     'label': 'ER status for cases'
+        // },
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
         ER_status1_source: {
             0: 'clinical records',
             1: 'IHC stain of whole sections',

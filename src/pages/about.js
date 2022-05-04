@@ -1,5 +1,6 @@
 import { addEventConsortiaFilter } from "../event.js";
 import { getPublicFile, numberWithCommas, publicDataFileId } from "./../shared.js";
+<<<<<<< HEAD
 
 export const aboutConfluence = (activeTab, showDescripton) => {
     let template = `
@@ -10,6 +11,18 @@ export const aboutConfluence = (activeTab, showDescripton) => {
                     <button class="sub-menu-btn"><a class="nav-link ${activeTab !== 'overview' ? 'active': ''} black-font font-size-14" href="#about/description"> <strong>Description of Studies</strong></a></button>
                 </div>`:``}
                 <div id="overview"></div>
+=======
+import { pageNavBar } from '../components/navBarMenuItems.js';
+
+export const aboutConfluence = (activeTab, showDescripton) => {
+    let navBarItems = showDescripton ? pageNavBar('about', activeTab, 'Overview', 'Description of Studies') : `<div id='overview'></div>`;
+    let template = `
+        <div class="general-bg body-min-height padding-bottom-1rem">
+            <div class="container">
+                ${navBarItems}
+                    <!---<button class="sub-menu-btn"><a class="nav-link ${activeTab === 'contact' ? 'active': ''} black-font font-size-14" href="#contact"> <strong>Scientific Committee</strong></a></button>--->
+               
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
             </div>
         </div>
     `;
@@ -21,7 +34,11 @@ export const renderOverView = async () => {
     let template = `
         <div class="main-summary-row">
             <div class="align-left">
+<<<<<<< HEAD
                 <h1 class="page-header">Learn about Confluence</h1>
+=======
+                <h1 class="page-header">Learn about BCRPP</h1>
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
             </div>
         </div>
         <div class="home-page-stats font-size-18">
@@ -29,6 +46,7 @@ export const renderOverView = async () => {
                 <div class="col align-left">
                     </br>
                     <span>
+<<<<<<< HEAD
                         BCRP includes breast cancer case-control studies, case series or clinical trials of female or male breast cancer (invasive or in situ) with the following:
                     </span>
                     </br>
@@ -62,6 +80,26 @@ export const renderOverView = async () => {
                     Email: <a href="mailto:ConfluenceProject@nih.gov">ConfluenceProject@nih.gov</a>
                 </div>
             </div>
+=======
+                    The BCRPP will develop a comprehensive tool that will predict breast cancer risk, overall and by sub-types, across racial/ethnic groups.
+                    </span>
+                    </br></br>
+                    <span>
+                    The BCRPP includes individual level data on over 1.5 million  women from the NCI Cohort Consortium Study and other large cohort studies 
+                    and is harmonizing information on family-history, polygenic risk-scores, anthropometric, life-style and reproductive factors, 
+                    hormonal biomarkers and mammographic density. The aims of the BCRP are:
+                    </span>
+                    </br></br>
+                    <div style="margin-left: 40px"> <b>Aim 1:</b> <i>Develop a comprehensive and multi-ethnic model for estimating absolute risk of breast cancer by incorporating information on known breast cancer risk factors </i> </div>
+                    </br>
+                    <div style="margin-left: 40px"> <b>Aim 2:</b> <i>Extend the multi-ethnic risk model for the risk prediction of estrogen receptor definced breast cancer </i> </div>
+                    </br>
+                    <div style="margin-left: 40px"> <b>Aim 3:</b> <i>Evaluate the validity of the risk models developed in Aim 1 and Aim 2 in integrated health care systems, mammography, registries, and an ongoing risk-based mammographic screening trail in the US </i> </div>
+                    </br>
+                </div>
+            </div>
+            <div class="align-left" id="confluenceDataSummary"></div>
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
         </div>
     `;
     document.getElementById('overview').innerHTML = template;
@@ -78,11 +116,16 @@ const countPublicStatistics = (d, caseControl) => {
     const data = JSON.parse(JSON.stringify(d));
     const element = document.getElementById('confluenceDataSummary');
     let totalConsortia = 0;
+<<<<<<< HEAD
     let totalCases = 0;
     let totalControls = 0;
     let totalStudies = 0;
     let totalBRCA1 = 0;
     let totalBRCA2 = 0;
+=======
+    let totalPatients = 0;
+    let totalWomen = 0;
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
     let summary = 
     `
     </br>
@@ -91,6 +134,7 @@ const countPublicStatistics = (d, caseControl) => {
                 <div class="col-md-2" style="padding: 0px">
                     <div class="custom-border allow-overflow align-left" style="height:100%; padding-left: 5px !important; margin-right: 15px;">
                     <span class="font-size-17 font-bold">Filter</span></br>
+<<<<<<< HEAD
                     ${data['CIMBA'] ? `
                         <div class="form-group pr-1">
                             <label class="filter-label font-size-13" for="overviewConsortiumSelection">Consortium</label>
@@ -102,15 +146,25 @@ const countPublicStatistics = (d, caseControl) => {
                     `:``}
     `
     if(caseControl) delete data['CIMBA'];
+=======
+                    <span class="font-size-15">Cohort:</span></br>
+    `
+    //if(caseControl) delete data['CIMBA'];
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
     for(let key in data) {
         if(!caseControl && key !== 'CIMBA') continue;
         if(key === 'dataModifiedAt') continue;
         ++totalConsortia;
+<<<<<<< HEAD
         totalCases += data[key].cases;
         totalControls += data[key].controls;
         totalStudies += data[key].studies;
         if(data[key].BRCA1) totalBRCA1 += data[key].BRCA1
         if(data[key].BRCA2) totalBRCA2 += data[key].BRCA2
+=======
+        totalPatients += data[key].numPatients;
+        totalWomen += data[key].numWomen;
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
         summary += `<div class="row font-size-16" style="margin:2px 2px;">
             ${key !== 'CIMBA' ? `
                 <input type="checkbox" data-consortia="${data[key].name}" id="label${data[key].name}" class="checkbox-consortia"/>
@@ -127,7 +181,11 @@ const countPublicStatistics = (d, caseControl) => {
     element.innerHTML = summary;
     addEventOverviewConsortiumSelection(d);
     addEventConsortiaFilter(d)
+<<<<<<< HEAD
     renderDataSummary({totalConsortia, totalStudies, totalCases, totalControls, totalBRCA1, totalBRCA2}, caseControl);
+=======
+    renderDataSummary({totalConsortia, totalWomen, totalPatients}, caseControl);
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
 }
 
 const addEventOverviewConsortiumSelection = (data) => {
@@ -135,8 +193,14 @@ const addEventOverviewConsortiumSelection = (data) => {
     if(!select) return;
     select.addEventListener('change', () => {
         const selectedValue = select.value;
+<<<<<<< HEAD
         if(selectedValue === 'cimba') countPublicStatistics(data, false);
         else countPublicStatistics(data, true);
+=======
+        //if(selectedValue === 'cimba') countPublicStatistics(data, false);
+        //else countPublicStatistics(data, true);
+        countPublicStatistics(data, true);
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
     })
 }
 
@@ -144,6 +208,7 @@ export const renderDataSummary = (obj, caseControl) => {
     document.getElementById('renderDataSummaryCounts').innerHTML = `
         <div class="row">
             <div class="col">
+<<<<<<< HEAD
                 <span class="font-size-22">Consortia</span></br>
                 <span class="font-size-32">${numberWithCommas(obj.totalConsortia)}</span>
             </div>
@@ -175,5 +240,19 @@ export const renderDataSummary = (obj, caseControl) => {
                 </div>
             </div>
         `}
+=======
+                <span class="font-size-22">Cohorts</span></br>
+                <span class="font-size-32">${numberWithCommas(obj.totalConsortia)}</span>
+            </div>
+            <div class="col">
+                <span class="font-size-22">Number of Women</span></br>
+                <span class="font-size-32">${numberWithCommas(obj.totalWomen)}</span>
+            </div>
+            <div class="col">
+                <span class="font-size-22">Number of breast cancer patients</span></br>
+                <span class="font-size-32">${numberWithCommas(obj.totalPatients)}</span>
+            </div>
+        </div>
+>>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
     `
 }
