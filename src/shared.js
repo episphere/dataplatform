@@ -2,6 +2,28 @@ import { config } from "./config.js";
 import { logOut } from "./manageAuthentication.js";
 import { confluence } from '../confluence.js';
 
+export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
+
+export const emailforChair = ['ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov'] //'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
+
+export const emailforDACC = ['mukopadhyays2@nih.gov'] //'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
+
+export const publicDataFileId = 697309514903; //Unknown
+
+export const summaryStatsFileId = 861342561526;//908600664259; //Confluence Summary Statistics (691143057533) => Pilot - BCRP_Summary_Results_AllSubjects.csv (861342561526)
+
+export const summaryStatsCasesFileId = 862065772362;//927803436743; //862065772362; //cases => Pilot - BCRP_Summary_Results_Cases.csv
+
+export const missingnessStatsFileId = 653087731560; //Unknown
+
+export const uploadFormFolder = 155292358576;
+
+export const daccReviewFolder = 161192245846;
+
+export const chairReviewFolder = 161191639493;
+
+export const finalFolder = 162221886155 //Currently using Temp Folder. Final Folder:161192097034;
+
 export const getFolderItems = async (id) => {
     try{
         const access_token = JSON.parse(localStorage.parms).access_token;
@@ -1279,28 +1301,6 @@ export const json2other = (json, fields, tsv) => {
 export const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").trim();
 }
-
-export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
-
-export const emailforChair = ['ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov'] //'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
-
-export const emailforDACC = ['mukopadhyays2@nih.gov', 'wraynr@nih.gov'] //'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
-
-export const publicDataFileId = 697309514903; //Unknown
-
-export const summaryStatsFileId = 861342561526;//908600664259; //Confluence Summary Statistics (691143057533) => Pilot - BCRP_Summary_Results_AllSubjects.csv (861342561526)
-
-export const summaryStatsCasesFileId = 862065772362;//927803436743; //862065772362; //cases => Pilot - BCRP_Summary_Results_Cases.csv
-
-export const missingnessStatsFileId = 653087731560; //Unknown
-
-export const uploadFormFolder = 155292358576;
-
-export const daccReviewFolder = 161192245846;
-
-export const chairReviewFolder = 161191639493;
-
-export const finalFolder = 162221886155 //Currently using Temp Folder. Final Folder:161192097034;
 
 export const mapReduce = (data, variable) => {
     const filteredData = data.map(dt => parseInt(dt[variable])).filter(dt => isNaN(dt) === false);
