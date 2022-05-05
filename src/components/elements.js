@@ -149,7 +149,7 @@ export function renderFilePreviewDropdown(files, tab){
     `
     }
 
-  console.log(tab, template);
+//   console.log(tab, template);
   
   return template;
   

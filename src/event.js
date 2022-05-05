@@ -1536,7 +1536,14 @@ export function switchTabs(show, hide, files) {
                         switchFiles(show);
                         document.getElementById(show + 'selectedDoc').value = files[0].id;
                         showPreview(files[0].id);
-                        showComments(files[0].id);
+                        if(show !== 'toBeCompleted'){
+                            document.getElementById('boxFilePreview').classList.add('col-8');
+                            showComments(files[0].id);
+                        }
+                        else {
+                            document.getElementById('fileComments').innerHTML = '';
+                            document.getElementById('boxFilePreview').classList.remove('col-8');
+                        }
                         // let response = async () => { let test = await listComments('945509107663');//files[0].id);
                         //     console.log(test);
                         //     }
@@ -1554,7 +1561,7 @@ export function switchTabs(show, hide, files) {
                             document.getElementById('sendtodaccButton').style.display="none";
                             document.getElementById('finalChairDecision').style.display="block";
                             }
-                        if (show == 'approved'){
+                        if (show == 'accepted'){
                             document.getElementById('sendtodaccButton').style.display="none";
                             document.getElementById('finalChairDecision').style.display="none";
                             }

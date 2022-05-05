@@ -388,9 +388,11 @@ export const chairFileView = async () => {
          <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'> DACC Completed </a>
       </li>
       <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='approvedTab' href='#approved' data-mdb-toggle="tab" role='tab' aria-controls='approved' aria-selected='true'> Completed </a>
+         <a class='nav-link' id='acceptedTab' href='#accepted' data-mdb-toggle="tab" role='tab' aria-controls='accepted' aria-selected='true'> Accepted </a>
       </li>
-      
+      <!--li class='nav-item' role='presentation'>
+         <a class='nav-link' id='deniedTab' href='#denied' data-mdb-toggle="tab" role='tab' aria-controls='denied' aria-selected='true'> Denied </a>
+      </li-->
     </ul>`;
       const filesincomplete = [];
       const filesinprogress = [];
@@ -474,9 +476,14 @@ export const chairFileView = async () => {
       template += renderFilePreviewDropdown(filescompleted, 'daccCompleted');
 
       template += `<div class='tab-pane fade' 
-                id='approved' role='tabpanel'
-                aria-labelledby='approvedTab'>`
-      template += renderFilePreviewDropdown(filesapproved, 'approved');
+                id='accepted' role='tabpanel'
+                aria-labelledby='acceptedTab'>`
+      template += renderFilePreviewDropdown(filesapproved, 'accepted');
+
+      // template += `<div class='tab-pane fade' 
+      //           id='accepted' role='tabpanel'
+      //           aria-labelledby='acceptedTab'>`
+      // template += renderFilePreviewDropdown(filesapproved, 'denied');
 
       if (filescompleted.length != 0 || filesinprogress.length != 0 ||
           filesincomplete.length != 0 || filesapproved.length != 0) {
@@ -565,7 +572,8 @@ export const chairFileView = async () => {
         commentApproveReject();
         if (filesincomplete.length != 0) {
           showPreview(filesincomplete[0].id);
-          showComments(filesincomplete[0].id);
+          document.getElementById('boxFilePreview').classList.remove('col-8');
+          // showComments(filesincomplete[0].id);
           // showComments('949852152583');
         }
         else {
@@ -574,10 +582,11 @@ export const chairFileView = async () => {
         }
         
         //Switch Tabs
-        switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'approved'], filesincomplete);
-        switchTabs('inProgress', ['toBeCompleted', 'daccCompleted', 'approved'], filesinprogress);
-        switchTabs('daccCompleted', ['inProgress', 'toBeCompleted', 'approved'], filescompleted);
-        switchTabs('approved', ['inProgress', 'daccCompleted', 'toBeCompleted'], filesapproved);
+        switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'accepted'], filesincomplete);
+        switchTabs('inProgress', ['toBeCompleted', 'daccCompleted', 'accepted'], filesinprogress);
+        switchTabs('daccCompleted', ['inProgress', 'toBeCompleted', 'accepted'], filescompleted);
+        switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted'], filesapproved);
+        // switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesapproved);
         
         //Switch files
         // let tab = 'toBeCompleted';
