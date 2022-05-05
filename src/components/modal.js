@@ -37,11 +37,7 @@ export const uploadInStudy = async (id) => {
                         <div id="uploadErrorReport"></div>
                     </div>
                     <div class="modal-footer">
-<<<<<<< HEAD
-                        <button type="submit" title="Submit" class="btn btn-light" id="submitBtn">run QAQC</button>
-=======
                         <button type="submit" title="Submit" class="btn btn-light" id="submitBtn">Submit</button>
->>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
                         <button type="button" title="Close" class="btn btn-dark" data-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -82,12 +78,6 @@ export const fileVersionsModal = () => {
     </div>`
 }
 
-<<<<<<< HEAD
-
-const createConsortiaOptions = async () => {
-    let template = ``;
-    const response = await getFolderItems(0);
-=======
 export const submissionModal = () => {
     let template = `<div class="modal fade" id="submissionModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -106,7 +96,6 @@ export const submissionModal = () => {
 const createConsortiaOptions = async () => {
     let template = ``;
     const response = await getFolderItems('145996351913'); //Should be 0 if users given access to just folder in studies
->>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
     const array = filterConsortiums(response.entries);
     for(let consortia of array){
         const bool = checkDataSubmissionPermissionLevel(await getCollaboration(consortia.id, `${consortia.type}s`), JSON.parse(localStorage.parms).login);

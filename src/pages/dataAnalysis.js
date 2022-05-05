@@ -10,20 +10,12 @@ export const dataAnalysisTemplate = () => {
                 <div class="data-submission div-border font-size-18">
                     <div class="row data-analysis">
                         <div class="col-lg-6 allow-overflow">
-<<<<<<< HEAD
-                            <h4>Video explaining how to connect Box backend for BCRP researchers</h4>
-=======
                             <h4>Video explaining how to connect Box backend for BCRPP researchers</h4>
->>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
                             <iframe class="sub-div-shadow" width="100%" height="400px" src="https://www.youtube.com/embed/YtmpNfkvjdI" frameborder="0" 
                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                         <div class="col-lg-6 allow-overflow">
-<<<<<<< HEAD
-                            <h4>Steps to connect Box backend for BCRP researchers</h4>
-=======
                             <h4>Steps to connect Box backend for BCRPP researchers</h4>
->>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
                             <ol>
                                 <li>Copy the File ID. This will be used in the R boxr package</li>
                                 <li>In Rstudio, run the following commands:</li>

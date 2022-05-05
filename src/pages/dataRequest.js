@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-// Require additional changes regarding data
-export const template = () => {
-    return `
-=======
 // import { createFileTask, assignTask, updateTaskAssignment } from '../shared.js';
 import {
   createComment,
@@ -108,7 +103,6 @@ export const dataAccess = (activeTab, showDescripton) => {
         `;
 
   template += `
->>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
         <div class="general-bg padding-bottom-1rem">
             <div class="container body-min-height">
                 <div class="main-summary-row">
@@ -118,35 +112,15 @@ export const dataAccess = (activeTab, showDescripton) => {
                 </div>
                 <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
                     <div class="row m-0">
-<<<<<<< HEAD
-                        The Breast Cancer Risk Prediction Project is currently generating genotyping data and harmonizing risk factor and clinical data. Data is expected to be available for request in late 2022. Data access will be facilitated through this platform, in accordance to the data transfer agreements signed between participating studies (originator) and the BCRPP Data Coordinating Center (DCC) at the Division of Cancer Epidemiology and Genetics at the National Cancer Institute.
-                    </div></br>
-                    <div class="row m-0 align-center">
-                        <img src="./static/images/data_request.PNG" alt="Overview of data sharing and access in Confluence" style="margin:auto">
-=======
 
                         The Breast Cancer Risk Prediction Project is currently harmonizing risk factor and clinical data from participating cohorts. Data is expected to be available for request in late 2022. Data access will be facilitated through this platform, in accordance to the data transfer agreements signed between participating studies (originator) and the BCRPP Data Coordinating Center (DCC) at the Division of Cancer Epidemiology and Genetics at the National Cancer Institute.
 
->>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0
                     </div></br>
                     <div class="row m-0">
                         The following data access procedures are planned:
                     </div>
                     <div class="row m-0">
                         <ul>
-<<<<<<< HEAD
-                            <li>Researcher submits a study concept describing the project, including variables of interest, via the BCRPP Data Platform. This request will be sent via the platform to the relevant BCRPP data access coordinating committee (DACC) which governs the requested data.</li>
-                            <li>After approval by the  DACC, individual studies contributing data are notified and given a time period to opt-out their study from the approved project.</li>
-                            <li>After the opt-out period has elapsed, the researcher's institution signs a data transfer agreement (DTA) for the study concept with the BCRPP DCC.</li>
-                            <li>Upon DTA signatures, the DCC will provide access of the approved data to researchers.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-}
-=======
                             <li>Researcher submits a study concept describing the project, including variables of interest, via the BCRPP Data Platform. This request will be sent via the platform to the BCRPP data access coordinating committee (DACC), which governs the requested data.</li>
                             <li>After approval by the DACC, individual studies contributing data are notified and given a time period to opt-out their study from the approved project.</li>
                             <li>After the opt-out period has elapsed, the researcher's institution signs a data transfer agreement (DTA) for the study concept with the BCRPP DCC.</li>
@@ -594,6 +568,10 @@ export const chairFileView = async () => {
           showComments(filesincomplete[0].id);
           // showComments('949852152583');
         }
+        else {
+          document.getElementById('filePreview').classList.remove('d-block');
+          document.getElementById('filePreview').classList.add('d-none');
+        }
         
         //Switch Tabs
         switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'approved'], filesincomplete);
@@ -602,13 +580,13 @@ export const chairFileView = async () => {
         switchTabs('approved', ['inProgress', 'daccCompleted', 'toBeCompleted'], filesapproved);
         
         //Switch files
-        let tab = 'toBeCompleted';
-        document.getElementById(`${tab}selectedDoc`).addEventListener('change', (e) => {
-          const file_id = e.target.value
-          console.log(file_id);
-          showPreview(file_id);
-          showComments(file_id);
-        });
+        // let tab = 'toBeCompleted';
+        // document.getElementById(`${tab}selectedDoc`).addEventListener('change', (e) => {
+        //   const file_id = e.target.value
+        //   console.log(file_id);
+        //   showPreview(file_id);
+        //   showComments(file_id);
+        // });
         
         //Comments
         // showComments('945813531582');//files[0].id);
@@ -943,7 +921,8 @@ export const daccFileView = async () => {
 
   if (filescompleted.length != 0 || filesincomplete.length != 0) {
     template += `<div id='filePreview'> 
-    <div id='boxFilePreview' class="preview-container"></div>
+    <div id='boxFilePreview' class="col-8 preview-container"></div>
+      <div id='fileComments' class='col-4 mt-2'></div>
       <div id="daccComment" class="card-body dacc-comment" style="padding-left: 10px;background-color:#f6f6f6;">
         <form>
           <label for"message">Submit Comment</label>
@@ -954,13 +933,13 @@ export const daccFileView = async () => {
             <span class="buttonsubmit__text"> Submit & Complete </span> </button>
         </form>
       </div>
-    </div>
   </div>`;
   }
   document.getElementById('daccFileView').innerHTML = template;
   //console.log(filesincomplete[0].id);
   if (filesincomplete.length != 0) {
     showPreview(filesincomplete[0].id);
+    showComments(filesincomplete[0].id);
   }
   //addEventToggleCollapsePanelBtn();
   submitToComment();
@@ -969,6 +948,14 @@ export const daccFileView = async () => {
   switchTabs('dacctoBeCompleted', ['completed'], filesincomplete);
   switchTabs('completed', ['dacctoBeCompleted'], filescompleted);
 
+  //Switch files
+  // let tab = 'dacctoBeCompleted';
+  // document.getElementById(`${tab}selectedDoc`).addEventListener('change', (e) => {
+  //   const file_id = e.target.value
+  //   console.log(file_id);
+  //   showPreview(file_id);
+  //   showComments(file_id);
+  // });
 }
 
 export const submitToComment = () => {
@@ -1565,4 +1552,3 @@ const viewDACCFiles = async (files, taskids) => {
 }
 
 
->>>>>>> df8652ba0de17b240c6db0b0c288b31c7efabce0

@@ -99,7 +99,6 @@ export const renderForm = () => {
 
 export function renderFilePreviewDropdown(files, tab){
     let template = '';
-//<<<<<<< comments
     if(!Array.isArray(files)){
     console.log('Not an array');
     return
@@ -126,17 +125,7 @@ export function renderFilePreviewDropdown(files, tab){
                 <div class='card-title'>
                 <label for='${tab}selectedDoc'><b>Select Document:</b></label>
                 <br>
-                <select id='${tab}selectedDoc' onchange="
-                const access_token = JSON.parse(localStorage.parms).access_token;
-                        console.log('SHOWING PREVIEW', this.value);
-                        let previewContainer = document.getElementById('boxFilePreview');
-                        var preview = new Box.Preview();
-                        preview.show(this.value, access_token, {
-                            container: previewContainer,
-                            showDownload: true,
-                            header: 'light'
-                        });
-                ">
+                <select id='${tab}selectedDoc'>
             `;
 
         for (const file of files) { 
@@ -160,7 +149,7 @@ export function renderFilePreviewDropdown(files, tab){
     `
     }
 
-  //console.log(template);
+  console.log(tab, template);
   
   return template;
   
