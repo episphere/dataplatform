@@ -24,6 +24,12 @@ export const chairReviewFolder = 161191639493;
 
 export const finalFolder = 162221886155 //Currently using Temp Folder. Final Folder:161192097034;
 
+export const acceptedFolder = 162222239448;
+
+export const deniedFolder = 162221803333;
+
+export const submitterFolder = 162222418449;
+
 export const getFolderItems = async (id) => {
     try{
         const access_token = JSON.parse(localStorage.parms).access_token;
