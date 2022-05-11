@@ -120,7 +120,7 @@ export function renderFilePreviewDropdown(files, tab){
 //    }
 //=======
     if(files.length != 0){
-        console.log('Param is array length: ' + files.length);
+        //console.log('Param is array length: ' + files.length);
         template += `<div class='card-body'>
                 <div class='card-title'>
                 <label for='${tab}selectedDoc'><b>Select Document:</b></label>

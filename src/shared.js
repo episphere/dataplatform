@@ -4,9 +4,9 @@ import { confluence } from '../confluence.js';
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-export const emailforChair = ['ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov'] //'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
+export const emailforChair = ['kopchickbp@nih.gov', 'wraynr@nih.gov'] //'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
 
-export const emailforDACC = ['mukopadhyays2@nih.gov'] //'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
+export const emailforDACC = ['kopchickbp@nih.gov'] //'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
 
 export const publicDataFileId = 697309514903; //Unknown
 
@@ -274,13 +274,14 @@ export const createFolder = async (folderId, folderName) => {
             headers:{
                 Authorization:"Bearer "+access_token
             },
-            body: JSON.stringify(obj)
+            body: JSON.stringify(obj),
+            redirect: 'follow'
         });
         if(response.status === 401){
             if((await refreshToken()) === true) return await createFolder(folderId, foldername);
         }
         else if(response.status === 201){
-            return response;
+            return response.json();
         }
         else{
             return {status: response.status, statusText: response.statusText};
@@ -304,13 +305,14 @@ export const copyFile = async (fileId, parentId) => {
             headers:{
                 Authorization:"Bearer "+access_token
             },
-            body: JSON.stringify(obj)
+            body: JSON.stringify(obj),
+            redirect: 'follow'
         });
         if(response.status === 401){
             if((await refreshToken()) === true) return await copyFile(fileId, parentId);
         }
         else if(response.status === 201){
-            return response;
+            return response.json();
         }
         else{
             return {status: response.status, statusText: response.statusText};
@@ -815,7 +817,7 @@ export async function showComments(id) {
     
     let comments = JSON.parse(response).entries;
     
-    console.log(comments);
+    //console.log(comments);
     let template = "<ul class='align-left'>Comments";
     for(const comment of comments){
       const comment_date = new Date(comment.created_at);

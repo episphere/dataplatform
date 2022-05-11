@@ -26,7 +26,14 @@ import {
   hideAnimation,
   getTask,
   consortiumSelection,
-  moveFile
+  moveFile,
+  acceptedFolder,
+  deniedFolder,
+  createFolder,
+  copyFile,
+  submitterFolder,
+  listComments,
+  addNewCollaborator
 } from '../shared.js';
 import {
   addEventToggleCollapsePanelBtn
@@ -342,19 +349,27 @@ export const chairFileView = async () => {
 
       const responseUpload = await getFolderItems(uploadFormFolder);
       let filearrayUpload = responseUpload.entries;
-      console.log(filearrayUpload);
+      //console.log(filearrayUpload);
 
       const responseDACC = await getFolderItems(daccReviewFolder);
       let filearrayDACC = responseDACC.entries;
-      console.log(filearrayDACC)
+      //console.log(filearrayDACC)
 
       const responseChair = await getFolderItems(chairReviewFolder);
       let filearrayChair = responseChair.entries;
-      console.log(filearrayChair);
+      //console.log(filearrayChair);
 
-      const responseFinal = await getFolderItems(finalFolder);
-      let filearrayFinal = responseFinal.entries;
-      console.log(filearrayFinal);
+      // const responseFinal = await getFolderItems(finalFolder);
+      // let filearrayFinal = responseFinal.entries;
+      // console.log(filearrayFinal);
+
+      const responseAccepted = await getFolderItems(acceptedFolder);
+      let filearrayAccepted = responseAccepted.entries;
+      //console.log(filearrayAccepted);
+
+      const responseDenied = await getFolderItems(deniedFolder);
+      let filearrayDenied = responseDenied.entries;
+      //console.log(filearrayDenied);
 
       var template = `
     <div class="general-bg padding-bottom-1rem">
@@ -380,14 +395,16 @@ export const chairFileView = async () => {
       <li class='nav-item' role='presentation'>
          <a class='nav-link' id='acceptedTab' href='#accepted' data-mdb-toggle="tab" role='tab' aria-controls='accepted' aria-selected='true'> Accepted </a>
       </li>
-      <!--li class='nav-item' role='presentation'>
+      <li class='nav-item' role='presentation'>
          <a class='nav-link' id='deniedTab' href='#denied' data-mdb-toggle="tab" role='tab' aria-controls='denied' aria-selected='true'> Denied </a>
-      </li-->
+      </li>
     </ul>`;
       const filesincomplete = [];
       const filesinprogress = [];
       const filescompleted = [];
       const filesapproved = [];
+      const filesaccepted = [];
+      const filesdenied = [];
       const taskApproveDeny = [];
       for (let obj of filearrayUpload) {
         //let id = obj.id;
@@ -402,8 +419,16 @@ export const chairFileView = async () => {
         filescompleted.push(obj);
       }
 
-      for (let obj of filearrayFinal) {
-        filesapproved.push(obj);
+      // for (let obj of filearrayFinal) {
+      //   filesapproved.push(obj);
+      // }
+
+      for (let obj of filearrayAccepted) {
+        filesaccepted.push(obj);
+      }
+
+      for (let obj of filearrayDenied) {
+        filesdenied.push(obj);
       }
 
       template += "<div class='tab-content' id='selectedTab'>";
@@ -427,10 +452,15 @@ export const chairFileView = async () => {
       template += `<div class='tab-pane fade' 
                 id='accepted' role='tabpanel'
                 aria-labelledby='acceptedTab'>`
-      template += renderFilePreviewDropdown(filesapproved, 'accepted');
+      template += renderFilePreviewDropdown(filesaccepted, 'accepted');
+
+      template += `<div class='tab-pane fade' 
+                id='denied' role='tabpanel'
+                aria-labelledby='deniedTab'>`
+      template += renderFilePreviewDropdown(filesdenied, 'denied');
 
       if (filescompleted.length != 0 || filesinprogress.length != 0 ||
-          filesincomplete.length != 0 || filesapproved.length != 0) {
+          filesincomplete.length != 0 || filesaccepted.length != 0 || filesdenied.length !=0) {
          template += `<div id='filePreview'>
                         
                           <div class='row'>
@@ -483,10 +513,11 @@ export const chairFileView = async () => {
         }
         
         //Switch Tabs
-        switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'accepted'], filesincomplete);
-        switchTabs('inProgress', ['toBeCompleted', 'daccCompleted', 'accepted'], filesinprogress);
-        switchTabs('daccCompleted', ['inProgress', 'toBeCompleted', 'accepted'], filescompleted);
-        switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted'], filesapproved);      
+        switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'accepted', 'denied'], filesincomplete);
+        switchTabs('inProgress', ['toBeCompleted', 'daccCompleted', 'accepted', 'denied'], filesinprogress);
+        switchTabs('daccCompleted', ['inProgress', 'toBeCompleted', 'accepted', 'denied'], filescompleted);
+        switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted', 'denied'], filesaccepted);
+        switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);     
       }
 
 export const submitToDacc = () => {
@@ -524,7 +555,7 @@ export const commentApproveReject = () => {
     //let taskId = btn.name;
     let fileId = document.querySelector(".tab-content .active #daccCompletedselectedDoc").value//document.getElementById('selectedDoc').value;
     let tasklist = await getTaskList(fileId);
-    console.log(tasklist);
+    //console.log(tasklist);
     let entries = tasklist.entries;
       if (entries.length !== 0) {
         for (let item of entries) {
@@ -532,7 +563,7 @@ export const commentApproveReject = () => {
             for (let taskassignment of item.task_assignment_collection.entries) {
               if (taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
                   var taskId = taskassignment.id;
-                  console.log(taskId);
+                  //console.log(taskId);
               }
             }
           }
@@ -540,13 +571,60 @@ export const commentApproveReject = () => {
       }
     let approval = e.submitter.value;
     let message = e.target[0].value;
-    console.log(approval);
-    //let task = await getTask(taskId);
-    //let taskAssignment = task.task_assignment_collection.entries[0].id;
+    //console.log(approval);
     await updateTaskAssignment(taskId, approval, message);
-    // await updateMetadata(fileId, "BCRPPchair", "0");
-    await moveFile(fileId, finalFolder);
-    console.log('File moved to: ' + fileId + ' ' + finalFolder);
+    await createComment(fileId, message);
+    let fileInfo = await getFileInfo(fileId);
+    let uploaderName = fileInfo.created_by.login
+    console.log(uploaderName);
+    if (approval == 'approved') {
+      await moveFile(fileId, acceptedFolder);
+      console.log("File moved to approved folder");
+    } else if (approval =='rejected') {
+      await moveFile(fileId, deniedFolder);
+      console.log("File moved to denied folder");
+    }
+
+    let folderItems = await getFolderItems(submitterFolder);
+    //console.log(folderItems);
+    let folderEntries = folderItems.entries;
+    let folderID = 'none';
+    console.log(folderEntries);
+    for (let obj of folderEntries) {
+      console.log(obj.name);
+      if (obj.name == uploaderName) {
+        folderID = obj.id
+        console.log('Folder found: ' + folderID);
+      }
+    };
+    console.log(folderID);
+    let cpFileId = '';
+    if (folderID == 'none') {
+      console.log('No folder found');
+      const newFolder = await createFolder(submitterFolder, uploaderName);
+      //console.log(newFolder);
+      console.log('New Folder created: ' + newFolder.id);
+      await addNewCollaborator(newFolder.id, "folder", uploaderName, "viewer");
+      const cpFile = await copyFile(fileId, newFolder.id);
+      cpFileId = cpFile.id;
+      console.log(cpFileId);
+    } else {
+      const cpFile = await copyFile(fileId, folderID);
+      cpFileId = cpFile.id;
+      //console.log(cpFileId);
+      console.log('File copied to folder');
+    };
+    //console.log(cpFileId);
+    await createComment(cpFileId, 'This file was ' + approval); 
+    const response = await listComments(fileId);
+    let comments = JSON.parse(response).entries;
+    for(const comment of comments){
+      const message = comment.message;
+      // console.log(message);
+      // console.log(cpFileId.id);
+      await createComment(cpFileId, message);
+    }
+    
     document.location.reload(true);
   }
 
@@ -621,15 +699,23 @@ export const daccFileView = async () => {
 
   const responseDACC = await getFolderItems(daccReviewFolder);
   let filearrayDACC = responseDACC.entries;
-  console.log(filearrayDACC)
+  //console.log(filearrayDACC)
 
   const responseChair = await getFolderItems(chairReviewFolder);
   let filearrayChair = responseChair.entries;
-  console.log(filearrayChair);
+  //console.log(filearrayChair);
 
-  const responseFinal = await getFolderItems(finalFolder);
-  let filearrayFinal = responseFinal.entries;
-  console.log(filearrayFinal);
+  // const responseFinal = await getFolderItems(finalFolder);
+  // let filearrayFinal = responseFinal.entries;
+  // console.log(filearrayFinal);
+
+  const responseAccepted = await getFolderItems(acceptedFolder);
+  let filearrayAccepted = responseAccepted.entries;
+  //console.log(filearrayAccepted);
+
+  const responseDenied = await getFolderItems(deniedFolder);
+  let filearrayDenied = responseDenied.entries;
+  //console.log(filearrayDenied);
 
   let template = `
 <div class="general-bg padding-bottom-1rem">
@@ -697,7 +783,7 @@ export const daccFileView = async () => {
     }
   }
 
-  for (let obj of filearrayFinal) {
+  for (let obj of filearrayAccepted) {
     let id = obj.id;
     let tasks = await getTaskList(id);
 
@@ -714,8 +800,25 @@ export const daccFileView = async () => {
     }
   }
 
-  console.log("incomplete: " + filesincomplete);
-  console.log("complete: " + filescompleted);
+  for (let obj of filearrayDenied) {
+    let id = obj.id;
+    let tasks = await getTaskList(id);
+
+    if (tasks.entries.length != 0){
+      for (let items of tasks.entries) {
+        for (let itemtasks of items.task_assignment_collection.entries) {
+          if (itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+            if (!filescompleted.includes(obj)) {
+              filescompleted.push(obj);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  //console.log("incomplete: " + filesincomplete);
+  //console.log("complete: " + filescompleted);
 
   template += "<div class='tab-content' id='selectedTab'>";
   
