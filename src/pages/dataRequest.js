@@ -43,7 +43,9 @@ import {
 import {
   switchTabs
 } from '../event.js';
-import { template } from './dataGovernance.js';
+import {
+  template
+} from './dataGovernance.js';
 // Require additional changes regarding data
 //import * as docx from "../docx";
 
@@ -346,27 +348,27 @@ export const chairSection = (activeTab) => {
 }
 
 export const chairFileView = async () => {
-      // let check =  await getMetadata("937143456496");
-      // console.log(check.entries["0"]);
-      //await updateMetadata("934537789566", "BCRPP_uploading_complete", "changed");
+  // let check =  await getMetadata("937143456496");
+  // console.log(check.entries["0"]);
+  //await updateMetadata("934537789566", "BCRPP_uploading_complete", "changed");
 
-      const responseUpload = await getFolderItems(uploadFormFolder);
-      let filearrayUpload = responseUpload.entries;
-      console.log(filearrayUpload);
+  const responseUpload = await getFolderItems(uploadFormFolder);
+  let filearrayUpload = responseUpload.entries;
+  console.log(filearrayUpload);
 
-      const responseDACC = await getFolderItems(daccReviewFolder);
-      let filearrayDACC = responseDACC.entries;
-      console.log(filearrayDACC)
+  const responseDACC = await getFolderItems(daccReviewFolder);
+  let filearrayDACC = responseDACC.entries;
+  console.log(filearrayDACC)
 
-      const responseChair = await getFolderItems(chairReviewFolder);
-      let filearrayChair = responseChair.entries;
-      console.log(filearrayChair);
+  const responseChair = await getFolderItems(chairReviewFolder);
+  let filearrayChair = responseChair.entries;
+  console.log(filearrayChair);
 
-      const responseFinal = await getFolderItems(finalFolder);
-      let filearrayFinal = responseFinal.entries;
-      console.log(filearrayFinal);
+  const responseFinal = await getFolderItems(finalFolder);
+  let filearrayFinal = responseFinal.entries;
+  console.log(filearrayFinal);
 
-      var template = `
+  var template = `
     <div class="general-bg padding-bottom-1rem">
       <div class="container body-min-height">
         <div class="main-summary-row">
@@ -394,100 +396,100 @@ export const chairFileView = async () => {
          <a class='nav-link' id='deniedTab' href='#denied' data-mdb-toggle="tab" role='tab' aria-controls='denied' aria-selected='true'> Denied </a>
       </li-->
     </ul>`;
-      const filesincomplete = [];
-      const filesinprogress = [];
-      const filescompleted = [];
-      const filesapproved = [];
-      const taskApproveDeny = [];
-      for (let obj of filearrayUpload) {
-        //let id = obj.id;
-        filesincomplete.push(obj);
-      };
+  const filesincomplete = [];
+  const filesinprogress = [];
+  const filescompleted = [];
+  const filesapproved = [];
+  const taskApproveDeny = [];
+  for (let obj of filearrayUpload) {
+    //let id = obj.id;
+    filesincomplete.push(obj);
+  };
 
-      for (let obj of filearrayDACC) {
-        filesinprogress.push(obj);
-      }
+  for (let obj of filearrayDACC) {
+    filesinprogress.push(obj);
+  }
 
-      for (let obj of filearrayChair) {
-        filescompleted.push(obj);
-      }
+  for (let obj of filearrayChair) {
+    filescompleted.push(obj);
+  }
 
-      for (let obj of filearrayFinal) {
-        filesapproved.push(obj);
-      }
-
-      
-        // //console.log(id);
-        // let metaArray = await getMetadata(id);
-        // let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
-        // let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
-        // //console.log("Chair Value: "+chairMetaValue);
-        // //console.log("DACC Value: "+daccMetaValue);
-
-        // let tasks = await getTaskList(id);
-
-        // if (tasks.entries.length == 0) {
-        //   filesincomplete.push(obj);
-        // }
-        // if (tasks.entries.length != 0) {
-        //   for (let items of tasks.entries) {
-        //     if (items.is_completed == false && items.action == 'review' ) {
-        //       for (let itemtasks of items.task_assignment_collection.entries) {
-        //         if(itemstasks.status == 'incomplete' && itemstasks.assigned_to.login == JSON.parse(localStorage.parms).login)
-        //       }
-        //     }
-
-        //   }
-        //   filesinprogress.push(obj);
-        // }
-        // if (chairMetaValue == 3 && daccMetaValue == 0) {
-        //   filescompleted.push(obj);
-        //   let tasklist = await getTaskList(id);
-        //   console.log(tasklist.entries);
-        //   let entries = tasklist.entries;
-        //   for (let item of entries) {
-        //     if (item.is_completed == false) {
-        //       taskApproveDeny.push(item.id);
-        //     }
-        //   }
-        // }
-        // if (chairMetaValue == 0) {
-        //   filesapproved.push(obj);
-        // }
-      //};
+  for (let obj of filearrayFinal) {
+    filesapproved.push(obj);
+  }
 
 
-      template += "<div class='tab-content' id='selectedTab'>";
+  // //console.log(id);
+  // let metaArray = await getMetadata(id);
+  // let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
+  // let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
+  // //console.log("Chair Value: "+chairMetaValue);
+  // //console.log("DACC Value: "+daccMetaValue);
 
-      template += `<div class='tab-pane fade show active' 
+  // let tasks = await getTaskList(id);
+
+  // if (tasks.entries.length == 0) {
+  //   filesincomplete.push(obj);
+  // }
+  // if (tasks.entries.length != 0) {
+  //   for (let items of tasks.entries) {
+  //     if (items.is_completed == false && items.action == 'review' ) {
+  //       for (let itemtasks of items.task_assignment_collection.entries) {
+  //         if(itemstasks.status == 'incomplete' && itemstasks.assigned_to.login == JSON.parse(localStorage.parms).login)
+  //       }
+  //     }
+
+  //   }
+  //   filesinprogress.push(obj);
+  // }
+  // if (chairMetaValue == 3 && daccMetaValue == 0) {
+  //   filescompleted.push(obj);
+  //   let tasklist = await getTaskList(id);
+  //   console.log(tasklist.entries);
+  //   let entries = tasklist.entries;
+  //   for (let item of entries) {
+  //     if (item.is_completed == false) {
+  //       taskApproveDeny.push(item.id);
+  //     }
+  //   }
+  // }
+  // if (chairMetaValue == 0) {
+  //   filesapproved.push(obj);
+  // }
+  //};
+
+
+  template += "<div class='tab-content' id='selectedTab'>";
+
+  template += `<div class='tab-pane fade show active' 
                   id='toBeCompleted' role='tabpanel' 
                   aria-labeledby='toBeCompletedTab'> `
 
-      template += renderFilePreviewDropdown(filesincomplete, 'toBeCompleted');
-   
-      template += `<div class='tab-pane fade'
+  template += renderFilePreviewDropdown(filesincomplete, 'toBeCompleted');
+
+  template += `<div class='tab-pane fade'
                  id='inProgress' role='tabpanel'
                  aria-labeledby='inProgressTab'> `
-      template += renderFilePreviewDropdown(filesinprogress, 'inProgress');
+  template += renderFilePreviewDropdown(filesinprogress, 'inProgress');
 
-      template += `<div class='tab-pane fade'
+  template += `<div class='tab-pane fade'
                 id='daccCompleted' role='tabpanel'
                 aria-labelledby='daccCompletedTab'>`
-      template += renderFilePreviewDropdown(filescompleted, 'daccCompleted');
+  template += renderFilePreviewDropdown(filescompleted, 'daccCompleted');
 
-      template += `<div class='tab-pane fade' 
+  template += `<div class='tab-pane fade' 
                 id='accepted' role='tabpanel'
                 aria-labelledby='acceptedTab'>`
-      template += renderFilePreviewDropdown(filesapproved, 'accepted');
+  template += renderFilePreviewDropdown(filesapproved, 'accepted');
 
-      // template += `<div class='tab-pane fade' 
-      //           id='accepted' role='tabpanel'
-      //           aria-labelledby='acceptedTab'>`
-      // template += renderFilePreviewDropdown(filesapproved, 'denied');
+  // template += `<div class='tab-pane fade' 
+  //           id='accepted' role='tabpanel'
+  //           aria-labelledby='acceptedTab'>`
+  // template += renderFilePreviewDropdown(filesapproved, 'denied');
 
-      if (filescompleted.length != 0 || filesinprogress.length != 0 ||
-          filesincomplete.length != 0 || filesapproved.length != 0) {
-         template += `<div id='filePreview'>
+  if (filescompleted.length != 0 || filesinprogress.length != 0 ||
+    filesincomplete.length != 0 || filesapproved.length != 0) {
+    template += `<div id='filePreview'>
                         
                           <div class='row'>
                             <div id='boxFilePreview' class="col-8 preview-container"></div>
@@ -524,91 +526,90 @@ export const chairFileView = async () => {
                       </div>
                     </div>
                   `
-      }
+  }
 
-      // if (filescompleted.length != 0 || filesinprogress.length != 0 ||
-      //   filesincomplete.length != 0 || filesapproved.length != 0) {
-      //   template += `<div id='filePreview'> <div id='boxFilePreview' class="preview-container"></div>
-      //   <div id = class="card-body comment-submit" style="padding-left: 10px;background-color:#f6f6f6;">
-      // <form>
-      //   <label for"message">Enter Comments</label>
-      //   <div class="input-group">
-      //     <textarea id="message" name="message" rows="6" cols="65"></textarea>
-      //   </div>
-      //   <button class='btn btn-primary' type="submit" value="send">Send Comment</button>
-      // </form>
-      
-      // </div>
-      // </div>
-      // </div>`;
-      //   }
+  // if (filescompleted.length != 0 || filesinprogress.length != 0 ||
+  //   filesincomplete.length != 0 || filesapproved.length != 0) {
+  //   template += `<div id='filePreview'> <div id='boxFilePreview' class="preview-container"></div>
+  //   <div id = class="card-body comment-submit" style="padding-left: 10px;background-color:#f6f6f6;">
+  // <form>
+  //   <label for"message">Enter Comments</label>
+  //   <div class="input-group">
+  //     <textarea id="message" name="message" rows="6" cols="65"></textarea>
+  //   </div>
+  //   <button class='btn btn-primary' type="submit" value="send">Send Comment</button>
+  // </form>
 
-        //await console.log(await searchMetadata());
+  // </div>
+  // </div>
+  // </div>`;
+  //   }
 
-        document.getElementById('chairFileView').innerHTML = template;
+  //await console.log(await searchMetadata());
 
-        //   if (filesincomplete.length != 0) {
-        //     document.getElementById('filePreview').innerHTML += `
-        //                   <div id='boxFilePreview' class="preview-container"></div>
-        //                     <div class="card-body dacc-submit" aria-labeledby='toBeCompletedTab' style="padding-left: 10px;background-color:#f6f6f6;">
-        //                       <form>
-        //                         <label for"message">Send to DACC</label>
-        //                         <div class="input-group">
-        //                           <textarea id="message" name="message" rows="6" cols="65"></textarea>
-        //                         </div>
-        //                         <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
-        //                           <span class="buttonsubmit__text"> Send </span> </button>
-        //                       </form>
-        //                     </div>
-        //                   </div>
-        //                   `
-        // }
+  document.getElementById('chairFileView').innerHTML = template;
 
-        //console.log(document.getElementById('selectedDoc').value);
-        //addEventPreviewFile();
-        //addEventToggleCollapsePanelBtn();
-        //viewFile();
-        submitToDacc();
-        commentApproveReject();
-        if (filesincomplete.length != 0) {
-          showPreview(filesincomplete[0].id);
-          document.getElementById('boxFilePreview').classList.remove('col-8');
-          // showComments(filesincomplete[0].id);
-          // showComments('949852152583');
-        }
-        else {
-          document.getElementById('filePreview').classList.remove('d-block');
-          document.getElementById('filePreview').classList.add('d-none');
-        }
-        
-        //Switch Tabs
-        switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'accepted'], filesincomplete);
-        switchTabs('inProgress', ['toBeCompleted', 'daccCompleted', 'accepted'], filesinprogress);
-        switchTabs('daccCompleted', ['inProgress', 'toBeCompleted', 'accepted'], filescompleted);
-        switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted'], filesapproved);
-        // switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesapproved);
-        
-        //Switch files
-        // let tab = 'toBeCompleted';
-        // document.getElementById(`${tab}selectedDoc`).addEventListener('change', (e) => {
-        //   const file_id = e.target.value
-        //   console.log(file_id);
-        //   showPreview(file_id);
-        //   showComments(file_id);
-        // });
-        
-        //Comments
-        // showComments('945813531582');//files[0].id);
-        
-            
-      }
+  //   if (filesincomplete.length != 0) {
+  //     document.getElementById('filePreview').innerHTML += `
+  //                   <div id='boxFilePreview' class="preview-container"></div>
+  //                     <div class="card-body dacc-submit" aria-labeledby='toBeCompletedTab' style="padding-left: 10px;background-color:#f6f6f6;">
+  //                       <form>
+  //                         <label for"message">Send to DACC</label>
+  //                         <div class="input-group">
+  //                           <textarea id="message" name="message" rows="6" cols="65"></textarea>
+  //                         </div>
+  //                         <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+  //                           <span class="buttonsubmit__text"> Send </span> </button>
+  //                       </form>
+  //                     </div>
+  //                   </div>
+  //                   `
+  // }
+
+  //console.log(document.getElementById('selectedDoc').value);
+  //addEventPreviewFile();
+  //addEventToggleCollapsePanelBtn();
+  //viewFile();
+  submitToDacc();
+  commentApproveReject();
+  if (filesincomplete.length != 0) {
+    showPreview(filesincomplete[0].id);
+    document.getElementById('boxFilePreview').classList.remove('col-8');
+    // showComments(filesincomplete[0].id);
+    // showComments('949852152583');
+  } else {
+    document.getElementById('filePreview').classList.remove('d-block');
+    document.getElementById('filePreview').classList.add('d-none');
+  }
+
+  //Switch Tabs
+  switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'accepted'], filesincomplete);
+  switchTabs('inProgress', ['toBeCompleted', 'daccCompleted', 'accepted'], filesinprogress);
+  switchTabs('daccCompleted', ['inProgress', 'toBeCompleted', 'accepted'], filescompleted);
+  switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted'], filesapproved);
+  // switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesapproved);
+
+  //Switch files
+  // let tab = 'toBeCompleted';
+  // document.getElementById(`${tab}selectedDoc`).addEventListener('change', (e) => {
+  //   const file_id = e.target.value
+  //   console.log(file_id);
+  //   showPreview(file_id);
+  //   showComments(file_id);
+  // });
+
+  //Comments
+  // showComments('945813531582');//files[0].id);
+
+
+}
 
 export const submitToDacc = () => {
   let submitDacc = async (e) => {
     const btn = document.activeElement;
-    btn.disabled=true;
+    btn.disabled = true;
     e.preventDefault();
-    let fileId = document.querySelector(".tab-content .active #toBeCompletedselectedDoc").value//document.getElementById('selectedDoc').value//e.submitter.value;
+    let fileId = document.querySelector(".tab-content .active #toBeCompletedselectedDoc").value //document.getElementById('selectedDoc').value//e.submitter.value;
     let message = e.target[0].value;
     console.log(fileId);
     console.log(message);
@@ -616,9 +617,9 @@ export const submitToDacc = () => {
     let tasklist = await getTaskList(fileId);
     let tasktodacc = tasklist.entries[0].id;
     console.log(emailforDACC.length.toString());
-    for (let i=0, daccemaillength=emailforDACC.length; i < daccemaillength; i++ ) {
+    for (let i = 0, daccemaillength = emailforDACC.length; i < daccemaillength; i++) {
       await assignTask(tasktodacc, emailforDACC[i]);
-      console.log("Task assigned to "+ emailforDACC[i]);
+      console.log("Task assigned to " + emailforDACC[i]);
     }
     await moveFile(fileId, daccReviewFolder);
     console.log('File moved to: ' + daccReviewFolder);
@@ -629,7 +630,7 @@ export const submitToDacc = () => {
   }
   const sdform = document.querySelector('.dacc-submit');
   if (sdform) {
-  sdform.addEventListener('submit', submitDacc);
+    sdform.addEventListener('submit', submitDacc);
   }
 }
 
@@ -661,22 +662,22 @@ export const commentApproveReject = () => {
     const btn = document.activeElement;
     btn.disabled = true;
     //let taskId = btn.name;
-    let fileId = document.querySelector(".tab-content .active #daccCompletedselectedDoc").value//document.getElementById('selectedDoc').value;
+    let fileId = document.querySelector(".tab-content .active #daccCompletedselectedDoc").value //document.getElementById('selectedDoc').value;
     let tasklist = await getTaskList(fileId);
     console.log(tasklist);
     let entries = tasklist.entries;
-      if (entries.length !== 0) {
-        for (let item of entries) {
-          if (item.is_completed == false && item.action == 'review') {
-            for (let taskassignment of item.task_assignment_collection.entries) {
-              if (taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
-                  var taskId = taskassignment.id;
-                  console.log(taskId);
-              }
+    if (entries.length !== 0) {
+      for (let item of entries) {
+        if (item.is_completed == false && item.action == 'review') {
+          for (let taskassignment of item.task_assignment_collection.entries) {
+            if (taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
+              var taskId = taskassignment.id;
+              console.log(taskId);
             }
           }
         }
       }
+    }
     let approval = e.submitter.value;
     let message = e.target[0].value;
     console.log(approval);
@@ -805,7 +806,7 @@ export const daccFileView = async () => {
     let id = obj.id;
     let tasks = await getTaskList(id);
 
-    if (tasks.entries.length != 0){
+    if (tasks.entries.length != 0) {
       for (let items of tasks.entries) {
         if (items.is_completed == false && items.action == 'complete') {
           for (let itemtasks of items.task_assignment_collection.entries) {
@@ -832,7 +833,7 @@ export const daccFileView = async () => {
     let id = obj.id;
     let tasks = await getTaskList(id);
 
-    if (tasks.entries.length != 0){
+    if (tasks.entries.length != 0) {
       for (let items of tasks.entries) {
         for (let itemtasks of items.task_assignment_collection.entries) {
           if (itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
@@ -849,7 +850,7 @@ export const daccFileView = async () => {
     let id = obj.id;
     let tasks = await getTaskList(id);
 
-    if (tasks.entries.length != 0){
+    if (tasks.entries.length != 0) {
       for (let items of tasks.entries) {
         for (let itemtasks of items.task_assignment_collection.entries) {
           if (itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
@@ -918,7 +919,7 @@ export const daccFileView = async () => {
   // console.log("taskscompleted: " + taskscompleted);
 
   template += "<div class='tab-content' id='selectedTab'>";
-  
+
   template += `<div class='tab-pane fade show active'
                 id='dacctoBeCompleted' role='tabpanel'
               aria-labeledby='dacctoBeCompletedTab'>`;
@@ -929,9 +930,13 @@ export const daccFileView = async () => {
   template += renderFilePreviewDropdown(filescompleted, 'completed');
 
   if (filescompleted.length != 0 || filesincomplete.length != 0) {
-    template += `<div id='filePreview'> 
+    template += `
+    <div id='filePreview'> 
+    <div class='row'>
     <div id='boxFilePreview' class="col-8 preview-container"></div>
       <div id='fileComments' class='col-4 mt-2'></div>
+      </div>
+      
       <div id="daccComment" class="card-body dacc-comment" style="padding-left: 10px;background-color:#f6f6f6;">
         <form>
           <label for"message">Submit Comment</label>
@@ -973,7 +978,7 @@ export const submitToComment = () => {
     const btn = document.activeElement;
     btn.disabled = true;
     //let taskId = btn.name;
-    let fileId = document.querySelector(".tab-content .active #dacctoBeCompletedselectedDoc").value//document.getElementById('selectedDoc').value;
+    let fileId = document.querySelector(".tab-content .active #dacctoBeCompletedselectedDoc").value //document.getElementById('selectedDoc').value;
     let message = e.target[0].value;
     console.log(fileId);
     console.log(message);
@@ -988,12 +993,12 @@ export const submitToComment = () => {
         if (item.is_completed == false) {
           for (let taskassignment of item.task_assignment_collection.entries) {
             if (taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
-                var taskId = taskassignment.id;
-                console.log(taskId);
-                await updateTaskAssignment(taskId, "completed");
-                console.log('Task Updated as Completed')
+              var taskId = taskassignment.id;
+              console.log(taskId);
+              await updateTaskAssignment(taskId, "completed");
+              console.log('Task Updated as Completed')
             }
-          }  
+          }
         }
       }
     }
@@ -1051,7 +1056,7 @@ export const submitToComment = () => {
     //let newDaccValue = parseInt(daccMetaValue) - 1;
     //await updateMetadata(fileId, "BCRPPdacc", newDaccValue.toString());
     //console.log("New DACC Value: " + newDaccValue);
-    
+
     document.location.reload(true);
   }
   const dcform = document.querySelector('.dacc-comment');
@@ -1559,5 +1564,3 @@ const viewDACCFiles = async (files, taskids) => {
   };
   return template;
 }
-
-
