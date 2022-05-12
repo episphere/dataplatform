@@ -24,6 +24,12 @@ export const chairReviewFolder = 161191639493;
 
 export const finalFolder = 162221886155 //Currently using Temp Folder. Final Folder:161192097034;
 
+export const acceptedFolder = 162222239448;
+
+export const deniedFolder = 162221803333;
+
+export const submitterFolder = 162222418449;
+
 export const getFolderItems = async (id) => {
     try{
         const access_token = JSON.parse(localStorage.parms).access_token;
@@ -268,13 +274,14 @@ export const createFolder = async (folderId, folderName) => {
             headers:{
                 Authorization:"Bearer "+access_token
             },
-            body: JSON.stringify(obj)
+            body: JSON.stringify(obj),
+            redirect: 'follow'
         });
         if(response.status === 401){
             if((await refreshToken()) === true) return await createFolder(folderId, foldername);
         }
         else if(response.status === 201){
-            return response;
+            return response.json();
         }
         else{
             return {status: response.status, statusText: response.statusText};
@@ -298,13 +305,14 @@ export const copyFile = async (fileId, parentId) => {
             headers:{
                 Authorization:"Bearer "+access_token
             },
-            body: JSON.stringify(obj)
+            body: JSON.stringify(obj),
+            redirect: 'follow'
         });
         if(response.status === 401){
             if((await refreshToken()) === true) return await copyFile(fileId, parentId);
         }
         else if(response.status === 201){
-            return response;
+            return response.json();
         }
         else{
             return {status: response.status, statusText: response.statusText};
@@ -809,7 +817,7 @@ export async function showComments(id) {
     
     let comments = JSON.parse(response).entries;
     
-    console.log(comments);
+    //console.log(comments);
     let template = "<ul class='align-left'>Comments";
     for(const comment of comments){
       const comment_date = new Date(comment.created_at);
