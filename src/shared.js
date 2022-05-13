@@ -10,7 +10,7 @@ export const emailforDACC = ['mukopadhyays2@nih.gov'] //'mukopadhyays2@nih.gov',
 
 export const publicDataFileId = 697309514903; //Unknown
 
-export const summaryStatsFileId = 861342561526;//908600664259; //Confluence Summary Statistics (691143057533) => Pilot - BCRP_Summary_Results_AllSubjects.csv (861342561526)
+export const summaryStatsFileId = 956943662666;//861342561526;//908600664259; //Confluence Summary Statistics (691143057533) => Pilot - BCRP_Summary_Results_AllSubjects.csv (861342561526)
 
 export const summaryStatsCasesFileId = 862065772362;//927803436743; //862065772362; //cases => Pilot - BCRP_Summary_Results_Cases.csv
 
@@ -1214,25 +1214,25 @@ export const csvJSON = (csv) => {
         for(let j = 0; j<headers.length; j++){
             let value = headers[j];
             if(value === 'age_LT20') value = '<20';
-            if(value === 'age20_29') value = '20 to 29';
-            if(value === 'age30_39') value = '30 to 39';
-            if(value === 'age40_49') value = '40 to 49';
-            if(value === 'age50_59') value = '50 to 59';
-            if(value === 'age60_69') value = '60 to 69';
-            if(value === 'age70_79') value = '70 to 79';
-            if(value === 'age80_89') value = '80 to 89';
-            if(value === 'age90_99') value = '90 to 99';
-            if(value === 'age_GT99') value = '>99';
-            if(value === 'birth_year1900_1909') value = '1900-1909';
-            if(value === 'birth_year1910_1919') value = '1910-1919';
-            if(value === 'birth_year1920_1929') value = '1920-1929';
-            if(value === 'birth_year1930_1939') value = '1930-1939';
-            if(value === 'birth_year1940_1949') value = '1940-1949';
-            if(value === 'birth_year1950_1959') value = '1950-1959';
-            if(value === 'birth_year1960_1969') value = '1960-1969';
-            if(value === 'birth_year1970_1979') value = '1970-1979';
-            if(value === 'birth_year1980_1989') value = '1980-1989';
-            if(value === 'birth_year1990_1999') value = '1990-1999';
+            if(value === 'age_20_29') value = '20 to 29';
+            if(value === 'age_30_39') value = '30 to 39';
+            if(value === 'age_40_49') value = '40 to 49';
+            if(value === 'age_50_59') value = '50 to 59';
+            if(value === 'age_60_69') value = '60 to 69';
+            if(value === 'age_70_79') value = '70 to 79';
+            if(value === 'age_80_89') value = '80 to 89';
+            if(value === 'age_90_99') value = '90 to 99';
+            if(value === 'age_GE100') value = '>99';
+            if(value === 'birth_year_1900_1909') value = '1900-1909';
+            if(value === 'birth_year_1910_1919') value = '1910-1919';
+            if(value === 'birth_year_1920_1929') value = '1920-1929';
+            if(value === 'birth_year_1930_1939') value = '1930-1939';
+            if(value === 'birth_year_1940_1949') value = '1940-1949';
+            if(value === 'birth_year_1950_1959') value = '1950-1959';
+            if(value === 'birth_year_1960_1969') value = '1960-1969';
+            if(value === 'birth_year_1970_1979') value = '1970-1979';
+            if(value === 'birth_year_1980_1989') value = '1980-1989';
+            if(value === 'birth_year_1990_1999') value = '1990-1999';
             obj[value] = currentline[j];
         }
         if(obj.study !== undefined) {
