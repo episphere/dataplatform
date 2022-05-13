@@ -138,6 +138,7 @@ export const confluence = async () => {
             dataFormElement.addEventListener('click', () => {
                 if (dataFormElement.classList.contains('navbar-active')) return;
                 const element = document.getElementById('dataForm');
+                showAnimation();
                 if(!element) return;
                 if(element.classList.contains('navbar-active')) return;
                 document.title = 'BCRPP - Data Form';
@@ -154,6 +155,7 @@ export const confluence = async () => {
             chairViewElement.addEventListener('click', () => {
                 if (chairViewElement.classList.contains('navbar-active')) return;
                 const element = document.getElementById('chairView');
+                showAnimation();
                 if(!element) return;
                 if(element.classList.contains('navbar-active')) return;
                 document.title = 'BCRPP - Chair View';
@@ -163,13 +165,14 @@ export const confluence = async () => {
                 chairFileView();
                 //hideAnimation();
                 //dataForm();
-                hideAnimation();
+                //hideAnimation();
             })
         }
         if(daccViewElement){
             daccViewElement.addEventListener('click', () => {
                 if (daccViewElement.classList.contains('navbar-active')) return;
                 const element = document.getElementById('daccView');
+                showAnimation();
                 if(!element) return;
                 if(element.classList.contains('navbar-active')) return;
                 document.title = 'BCRPP - DACC View';
@@ -179,7 +182,7 @@ export const confluence = async () => {
                 daccFileView();
                 //hideAnimation();
                 //dataForm();
-                hideAnimation();
+                //hideAnimation();
             })
         }
 
@@ -355,9 +358,10 @@ const manageRouter = async () => {
 
     else if (hash === '#data_access/daccView'){
         const daccViewElement = document.getElementById('daccView');
+        showAnimation();
+        console.log('hello world');
         if (!daccViewElement) return;
         if(daccViewElement.classList.contains('navbar-active')) return;
-        showAnimation();
         assignNavbarActive(daccViewElement, 1);
         document.title = 'BCRPP - DACC View';
         confluenceDiv.innerHTML = daccSection();
