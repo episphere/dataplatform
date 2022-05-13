@@ -399,77 +399,32 @@ export const chairFileView = async () => {
          <a class='nav-link' id='deniedTab' href='#denied' data-mdb-toggle="tab" role='tab' aria-controls='denied' aria-selected='true'> Denied </a>
       </li>
     </ul>`;
-      const filesincomplete = [];
-      const filesinprogress = [];
-      const filescompleted = [];
-      const filesapproved = [];
-      const filesaccepted = [];
-      const filesdenied = [];
-      const taskApproveDeny = [];
-      for (let obj of filearrayUpload) {
-        //let id = obj.id;
-        filesincomplete.push(obj);
-      };
 
-  for (let obj of filearrayDACC) {
-    filesinprogress.push(obj);
-  }
+    const filesincomplete = [];
+    const filesinprogress = [];
+    const filescompleted = [];
+    const filesaccepted = [];
+    const filesdenied = [];
+    for (let obj of filearrayUpload) {
+      //let id = obj.id;
+      filesincomplete.push(obj);
+    };
 
-  for (let obj of filearrayChair) {
-    filescompleted.push(obj);
-  }
+    for (let obj of filearrayDACC) {
+      filesinprogress.push(obj);
+    }
 
-      // for (let obj of filearrayFinal) {
-      //   filesapproved.push(obj);
-      // }
+    for (let obj of filearrayChair) {
+      filescompleted.push(obj);
+    }
 
-      for (let obj of filearrayAccepted) {
-        filesaccepted.push(obj);
-      }
+    for (let obj of filearrayAccepted) {
+      filesaccepted.push(obj);
+    }
 
-      for (let obj of filearrayDenied) {
-        filesdenied.push(obj);
-      }
-
-  // //console.log(id);
-  // let metaArray = await getMetadata(id);
-  // let chairMetaValue = metaArray.entries["0"]["BCRPPchair"];
-  // let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
-  // //console.log("Chair Value: "+chairMetaValue);
-  // //console.log("DACC Value: "+daccMetaValue);
-
-  // let tasks = await getTaskList(id);
-
-  // if (tasks.entries.length == 0) {
-  //   filesincomplete.push(obj);
-  // }
-  // if (tasks.entries.length != 0) {
-  //   for (let items of tasks.entries) {
-  //     if (items.is_completed == false && items.action == 'review' ) {
-  //       for (let itemtasks of items.task_assignment_collection.entries) {
-  //         if(itemstasks.status == 'incomplete' && itemstasks.assigned_to.login == JSON.parse(localStorage.parms).login)
-  //       }
-  //     }
-
-  //   }
-  //   filesinprogress.push(obj);
-  // }
-  // if (chairMetaValue == 3 && daccMetaValue == 0) {
-  //   filescompleted.push(obj);
-  //   let tasklist = await getTaskList(id);
-  //   console.log(tasklist.entries);
-  //   let entries = tasklist.entries;
-  //   for (let item of entries) {
-  //     if (item.is_completed == false) {
-  //       taskApproveDeny.push(item.id);
-  //     }
-  //   }
-  // }
-  // if (chairMetaValue == 0) {
-  //   filesapproved.push(obj);
-  // }
-  //};
-
+    for (let obj of filearrayDenied) {
+      filesdenied.push(obj);
+    }
 
   template += "<div class='tab-content' id='selectedTab'>";
 
@@ -492,52 +447,52 @@ export const chairFileView = async () => {
   template += `<div class='tab-pane fade' 
                 id='accepted' role='tabpanel'
                 aria-labelledby='acceptedTab'>`
-      template += renderFilePreviewDropdown(filesaccepted, 'accepted');
+  template += renderFilePreviewDropdown(filesaccepted, 'accepted');
 
-      template += `<div class='tab-pane fade' 
-                id='denied' role='tabpanel'
-                aria-labelledby='deniedTab'>`
-      template += renderFilePreviewDropdown(filesdenied, 'denied');
+  template += `<div class='tab-pane fade' 
+            id='denied' role='tabpanel'
+            aria-labelledby='deniedTab'>`
+  template += renderFilePreviewDropdown(filesdenied, 'denied');
 
-      if (filescompleted.length != 0 || filesinprogress.length != 0 ||
-          filesincomplete.length != 0 || filesaccepted.length != 0 || filesdenied.length !=0) {
-         template += `<div id='filePreview'>
-                        
-                          <div class='row'>
-                            <div id='boxFilePreview' class="col-8 preview-container"></div>
-                            <div id='fileComments' class='col-4 mt-2'></div>
+  if (filescompleted.length != 0 || filesinprogress.length != 0 ||
+      filesincomplete.length != 0 || filesaccepted.length != 0 || filesdenied.length !=0) {
+      template += `<div id='filePreview'>
+                    
+                      <div class='row'>
+                        <div id='boxFilePreview' class="col-8 preview-container"></div>
+                        <div id='fileComments' class='col-4 mt-2'></div>
+                      </div>
+                    <div class='row card-body dacc-submit'>
+                      <div id='sendtodaccButton' class="col-6">
+                        <form>
+                          <label for"message">Send to DACC</label>
+                          <div class="input-group">
+                            <textarea id="message" name="message" rows="6" cols="50"></textarea>
                           </div>
-                        <div class='row card-body dacc-submit'>
-                          <div id='sendtodaccButton' class="col-6">
-                            <form>
-                              <label for"message">Send to DACC</label>
-                              <div class="input-group">
-                                <textarea id="message" name="message" rows="6" cols="50"></textarea>
-                              </div>
-                              <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
-                                <span class="buttonsubmit__text"> Send </span> </button>
-                            </form>
-                            
-                          </div>
-                         
-                        </div>
-                        <div id='finalChairDecision' class="card-body approvedeny" style="padding-left: 10px;background-color:#f6f6f6; display:none">
-                          <form>
-                            <label for="message">Enter Message for Submitter</label>
-                            <div class="input-group">
-                                <textarea id="message" name="message" rows="6" cols="65"></textarea>
-                            </div>
-                            <button type="submit" class="buttonsubmit" value="approved">
-                              <span class="buttonsubmit__text"> Approve </span></button>
-                            <button type="submit" class="buttonsubmit" value="rejected">
-                              <span class="buttonsubmit__text"> Deny </span></button>
-                          </form>
-                        </div>
-
+                          <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+                            <span class="buttonsubmit__text"> Send </span> </button>
+                        </form>
                         
                       </div>
+                      
                     </div>
-                  `
+                    <div id='finalChairDecision' class="card-body approvedeny" style="padding-left: 10px;background-color:#f6f6f6; display:none">
+                      <form>
+                        <label for="message">Enter Message for Submitter</label>
+                        <div class="input-group">
+                            <textarea id="message" name="message" rows="6" cols="65"></textarea>
+                        </div>
+                        <button type="submit" class="buttonsubmit" value="approved">
+                          <span class="buttonsubmit__text"> Approve </span></button>
+                        <button type="submit" class="buttonsubmit" value="rejected">
+                          <span class="buttonsubmit__text"> Deny </span></button>
+                      </form>
+                    </div>
+
+                    
+                  </div>
+                </div>
+              `
   }
 
         document.getElementById('chairFileView').innerHTML = template;
@@ -557,7 +512,9 @@ export const chairFileView = async () => {
         switchTabs('inProgress', ['toBeCompleted', 'daccCompleted', 'accepted', 'denied'], filesinprogress);
         switchTabs('daccCompleted', ['inProgress', 'toBeCompleted', 'accepted', 'denied'], filescompleted);
         switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted', 'denied'], filesaccepted);
-        switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);     
+        switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
+        
+        hideAnimation();
       }
 
 export const submitToDacc = () => {
@@ -721,19 +678,19 @@ export const daccSection = (activeTab) => {
     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
   }
   let template = `
-<div class="general-bg body-min-height padding-bottom-1rem">
-    <div class="container">
-      ${navBarItems}
-    
-</div>
-`;
-  template += `
-<div id="daccFileView" class="align-left"></div>
-</div>
-`;
+              <div class="general-bg body-min-height padding-bottom-1rem">
+                  <div class="container">
+                    ${navBarItems}
+                  
+              </div>
+              `;
+                template += `
+              <div id="daccFileView" class="align-left"></div>
+              </div>
+              `;
 
-  return template
-}
+    return template
+  }
 
 export const daccFileView = async () => {
 
@@ -758,24 +715,24 @@ export const daccFileView = async () => {
   //console.log(filearrayDenied);
 
   let template = `
-<div class="general-bg padding-bottom-1rem">
-<div class="container body-min-height">
-<div class="main-summary-row">
-    <div class="align-left">
-        <h1 class="page-header">DACC Access Only</h1>
-    </div>
-</div>
-<div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
-<ul class='nav nav-tabs mb-3' role='tablist'>
-<li class='nav-item' role='presentation'>
-  <a class='nav-link active' id='dacctoBeCompletedTab' href='#dacctoBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='dacctoBeCompleted' aria-selected='true'> To Be Completed </a>
-</li>
-<li class='nav-item' role='presentation'>
-    <a class='nav-link' id='completedTab' href='#completed' data-mdb-toggle="tab" role='tab' aria-controls='completed' aria-selected='true'>Completed</a>
-</li>
+            <div class="general-bg padding-bottom-1rem">
+            <div class="container body-min-height">
+            <div class="main-summary-row">
+                <div class="align-left">
+                    <h1 class="page-header">DACC Access Only</h1>
+                </div>
+            </div>
+            <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
+            <ul class='nav nav-tabs mb-3' role='tablist'>
+            <li class='nav-item' role='presentation'>
+              <a class='nav-link active' id='dacctoBeCompletedTab' href='#dacctoBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='dacctoBeCompleted' aria-selected='true'> To Be Completed </a>
+            </li>
+            <li class='nav-item' role='presentation'>
+                <a class='nav-link' id='completedTab' href='#completed' data-mdb-toggle="tab" role='tab' aria-controls='completed' aria-selected='true'>Completed</a>
+            </li>
 
 
-</ul>`;
+            </ul>`;
 
   const filesincomplete = [];
   const filescompleted = [];
@@ -895,12 +852,17 @@ export const daccFileView = async () => {
   if (filesincomplete.length != 0) {
     showPreview(filesincomplete[0].id);
     showComments(filesincomplete[0].id);
-  }
+  } else {
+    document.getElementById('filePreview').classList.remove('d-block');
+    document.getElementById('filePreview').classList.add('d-none');
+  };
+
   submitToComment();
 
   //Switch Tabs
   switchTabs('dacctoBeCompleted', ['completed'], filesincomplete);
   switchTabs('completed', ['dacctoBeCompleted'], filescompleted);
+  hideAnimation();
 }
 
 export const submitToComment = () => {

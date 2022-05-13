@@ -71,10 +71,15 @@ const allFilters = (jsonData, headers) => {
                 <label class="filter-label font-size-13" for="studySelection">Cohort</label>
                 <select class="form-control font-size-15" id="studySelection" data-variable='study'>
                     <option selected value='all'>All</option>
-                    <option value='NHS'>NHS</option>
+                    <option value='CTS'>CTS</option>
+                    <option value='CSDLH'>CSDLH</option>
                     <option value='NHS2'>NHS2</option>
+                    <option value='NHS'>NHS</option>
+                    <option value='PLCO'>PLCO</option>
                     <option value='CPS2'>CPS2</option>
                     <option value='CPS3'>CPS3</option>
+                    <option value='CARET'>CARET</option>
+                    <option value='WHI'>WHI</option>
                 </select>
             </div>
     `;
@@ -389,7 +394,7 @@ const generateMenarcheBarChart = (parameter, id, labelID, jsonData, chartRow) =>
     const data = [
         {
             x: ["≤12", "13", "14", "15", ">15", "Unknown"],
-            y: [mapReduce(jsonData, 'agemenarcheLE12'), mapReduce(jsonData, 'agemenarche13'), mapReduce(jsonData, 'agemenarche14'), mapReduce(jsonData, 'agemenarche15'), mapReduce(jsonData, 'agemenarcheGT15'), mapReduce(jsonData, 'agemenarcheDK')],
+            y: [mapReduce(jsonData, 'agemenarche_LE12'), mapReduce(jsonData, 'agemenarche_13'), mapReduce(jsonData, 'agemenarche_14'), mapReduce(jsonData, 'agemenarche_15'), mapReduce(jsonData, 'agemenarche_GT15'), mapReduce(jsonData, 'agemenarcheDK')],
             marker:{
                 color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe']
             },
@@ -414,7 +419,7 @@ const generateParityBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     const data = [
         {
             x: ["Nullparous","Parous","Unknown"],
-            y: [mapReduce(jsonData, 'parous0'), mapReduce(jsonData, 'parous1'), mapReduce(jsonData, 'parousDK')],
+            y: [mapReduce(jsonData, 'parous_0'), mapReduce(jsonData, 'parous_1'), mapReduce(jsonData, 'parous_DK')],
             marker:{
                 color: ['#8bc1e8', '#319fbe', '#8bc1e8']
             },
@@ -438,10 +443,10 @@ const generatePregnaciesBarChart = (parameter, id, labelID, jsonData, chartRow) 
     document.getElementById(chartRow).appendChild(div);
     const data = [
         {
-            x: ["1", "2", "3", "4", "5", "6+", "Unknown"],
-            y: [mapReduce(jsonData, 'parity1'), mapReduce(jsonData, 'parity2'), mapReduce(jsonData, 'parity3'), mapReduce(jsonData, 'parity4'), mapReduce(jsonData, 'parity5'), mapReduce(jsonData, 'parity6+'), mapReduce(jsonData, 'parityDK')],
+            x: ["0","1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "Unknown"],
+            y: [mapReduce(jsonData, 'parity_0'), mapReduce(jsonData, 'parity_1'), mapReduce(jsonData, 'parity_2'), mapReduce(jsonData, 'parity_3'), mapReduce(jsonData, 'parity_4'), mapReduce(jsonData, 'parity_5'), mapReduce(jsonData, 'parity_6'), mapReduce(jsonData, 'parity_7'), mapReduce(jsonData, 'parity_8'), mapReduce(jsonData, 'parity_9'), mapReduce(jsonData, 'parity_10'), mapReduce(jsonData, 'parity_11'), mapReduce(jsonData, 'parity_12'), mapReduce(jsonData, 'parity_13'), mapReduce(jsonData, 'parity_DK')],
             marker:{
-                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8']
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8']
             },
           type: 'bar'
         }
@@ -464,7 +469,7 @@ const generateBMIBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     const data = [
         {
             x: ["<18.5", "18.5 to 24.9", "25.0 to 29.9", "30.0 to 34.9", "35.0 to 39.9", ">40.0", "Unkown"],
-            y: [mapReduce(jsonData, 'bmiLT18_5'), mapReduce(jsonData, 'bmi18_5_24_9'), mapReduce(jsonData, 'bmi25_0_29_9'), mapReduce(jsonData, 'bmi30_0_34_9'), mapReduce(jsonData, 'bmi35_0_39_9'), mapReduce(jsonData, 'bmiGE40_0'), mapReduce(jsonData, 'bmiDK')],
+            y: [mapReduce(jsonData, 'bmi_LT18_5'), mapReduce(jsonData, 'bmi_18_5_24_9'), mapReduce(jsonData, 'bmi_25_0_29_9'), mapReduce(jsonData, 'bmi_30_0_34_9'), mapReduce(jsonData, 'bmi_35_0_39_9'), mapReduce(jsonData, 'bmi_GE40_0'), mapReduce(jsonData, 'bmi_DK')],
             marker:{
                 color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8']
             },
