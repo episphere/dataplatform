@@ -54,17 +54,7 @@ export const dataSummary = (pageHeader, showPages, subCases, showUpdateButton, p
                                 </div>
                             </div>
                         `: ``}
-                        ${subCases ? `
-                            <div class="ml-auto mt-3 mb-1" id="classSelect">
-                                <div class="col-md-12 p-0 form-group">
-                                    <!---<label class="filter-label font-size-13" for="subcasesSelection">Selection</label>--->
-                                    <select class="form-control font-size-15" id="subcasesSelection" data-variable='subcases'>
-                                        <option selected value='all'>All Subjects</option>
-                                        <option value='cases'>Cases</option>
-                                    </select>
-                                </div>
-                            </div>
-                        `: ``}
+                       
                     </div>
                 </div>
                 
