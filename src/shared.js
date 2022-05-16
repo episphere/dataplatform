@@ -218,7 +218,7 @@ catch(err){
         }
     }
 
-    console.log('Cleint ID + Server Secret', clt.client_id, clt.server_id);
+    console.log('Client ID + Server Secret', clt.client_id, clt.server_id);
 }
 
 export const refreshToken = async () => {
