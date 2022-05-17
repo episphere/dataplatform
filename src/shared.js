@@ -201,10 +201,14 @@ export const storeAccessToken = async () => {
         };
 
         const response = await fetch("https://api.box.com/oauth2/token", requestOptions);
+        if (response.status === 400) {
+            //window.history.replaceState({},'', './#home');
+            console.log(response);
+            storeAccessToken();
+        }
         // .then(response => response.text())
         // .then(result => console.log(result))
         // .catch(error => console.log('error', error));
-        console.log(response);
 //         let url = `https://api.box.com/oauth2/token`;
         
 //         const response = await fetch(url, {
