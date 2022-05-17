@@ -194,7 +194,9 @@ export const storeAccessToken = async () => {
                 method: 'POST',
                 body: `grant_type=authorization_code&code=${parms.code}&client_id=${clt.client_id}&client_secret=${clt.server_id}`
             });
-        
+            if (response.status) {
+                console.log(response);
+            }
             if (response.status && response.status === 200) {
                 localStorage.parms = JSON.stringify(await response.json());
                 window.history.replaceState({}, '', './#home');
