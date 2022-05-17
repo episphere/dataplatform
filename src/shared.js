@@ -202,9 +202,8 @@ export const storeAccessToken = async () => {
 
         const response = await fetch("https://api.box.com/oauth2/token", requestOptions);
         if (response.status === 400) {
-            window.history.replaceState({},'', './#home');
-            console.log(response);
-            storeAccessToken();
+            //window.history.replaceState({},'', './#home');
+            console.log(response.body);
         }
         // .then(response => response.text())
         // .then(result => console.log(result))
