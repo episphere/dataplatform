@@ -203,7 +203,7 @@ export const storeAccessToken = async () => {
         const response = await fetch("https://api.box.com/oauth2/token", requestOptions)
             .catch(error => console.log('error', error));
         if (response.status === 400) {
-            //window.history.replaceState({},'', './#home');
+            window.history.replaceState({},'', './#home');
             console.log(response);
         }
         // .then(response => response.text())
@@ -220,7 +220,7 @@ export const storeAccessToken = async () => {
 //         });
         if(response.status && response.status === 200) {
             localStorage.parms = JSON.stringify(await response.json());
-            window.history.replaceState({},'', './#home');
+            //window.history.replaceState({},'', './#home');
             confluence();
             document.getElementById('loginBoxAppDev').hidden = true;
             document.getElementById('loginBoxAppStage').hidden = true;
