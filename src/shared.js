@@ -184,7 +184,7 @@ export const storeAccessToken = async () => {
 
         document.getElementById('confluenceDiv').innerHTML = '';
         let url = `https://api.box.com/oauth2/token/`;
-
+        console.log('Client ID + Server Secret', clt.client_id, clt.server_id);
         try {
             const response = await fetch(url, {
                 headers: {
@@ -204,11 +204,10 @@ export const storeAccessToken = async () => {
                 document.getElementById('loginBoxAppProd').hidden = true;
             }
        
-    } 
-catch(err){
-    console.log('HTTP error on token fetch', err);
-}
-} else {
+        } catch(err){
+        console.log('HTTP error on token fetch', err);
+        }
+    } else {
         if (localStorage.parms) {
             confluence.parms = JSON.parse(localStorage.parms)
             if (confluence.parms.access_token === undefined) {
@@ -217,8 +216,6 @@ catch(err){
             }
         }
     }
-
-    console.log('Client ID + Server Secret', clt.client_id, clt.server_id);
 }
 
 export const refreshToken = async () => {
