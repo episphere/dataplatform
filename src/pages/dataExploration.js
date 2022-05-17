@@ -53,8 +53,7 @@ export const dataSummary = (pageHeader, showPages, subCases, showUpdateButton, p
                                     </div>
                                 </div>
                             </div>
-                        `: ``}
-                       
+                        `: ``}   
                     </div>
                 </div>
                 

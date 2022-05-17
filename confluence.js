@@ -44,7 +44,7 @@ export const confluence = async () => {
         if (location.origin.match(applicationURLs.stage)) loginBoxAppStage.hidden = false;
         if (location.origin.match(applicationURLs.prod)) loginBoxAppProd.hidden = false;
         if (location.origin.match('episphere')) loginBoxAppEpisphere.hidden = false;
-        storeAccessToken();
+        await storeAccessToken();
         manageRouter();
     }
     if (localStorage.parms && JSON.parse(localStorage.parms).access_token) {
@@ -80,14 +80,14 @@ export const confluence = async () => {
             addEventUploadStudyForm();
             hideAnimation();
         });
-        dataSummaryElement.addEventListener('click', () => {
+        dataSummaryElement.addEventListener('click', async () => {
             if (dataSummaryElement.classList.contains('navbar-active')) return;
             showAnimation();
             assignNavbarActive(dataSummaryElement, 1)
             document.title = 'BCRPP - Summary Statistics';
             confluenceDiv.innerHTML = dataSummary('Summary Statistics', false, true, true);
-            addEventUpdateSummaryStatsData();
-            dataSummaryStatisticsTemplate();
+            await addEventUpdateSummaryStatsData();
+            await dataSummaryStatisticsTemplate();
             // if(document.getElementById('dataSummaryFilter')) document.getElementById('dataSummaryFilter').addEventListener('click', e => {
             //     e.preventDefault();
             //     const header = document.getElementById('confluenceModalHeader');
@@ -98,7 +98,7 @@ export const confluence = async () => {
             //                         </button>`;
             //     body.innerHTML = `<span>Select Consortia or Studies to Display</span>`;
             // })
-            getFileContent();
+            await getFileContent();
             const subcasesSelection = document.getElementById('subcasesSelection');
             subcasesSelection.addEventListener('change', function(event) {
                 if (event.target.value == 'all') getFileContent()

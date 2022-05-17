@@ -21,7 +21,7 @@ export const getFileContent = async () => {
         return;
     };
     renderAllCharts(jsonData, headers);
-    allFilters(jsonData, headers, false);
+    allFilters(jsonData, headers, 'all');
 };
 
 export const getFileContentCases = async () => {
@@ -34,17 +34,39 @@ export const getFileContentCases = async () => {
         return;
     };
     renderAllCasesCharts(jsonData, headers);
-    allFilters(jsonData, headers, false);
+    allFilters(jsonData, headers, 'cases');
 };
 
-const allFilters = (jsonData, headers) => {
+const allFilters = (jsonData, headers, caseSelection) => {
     document.getElementById('allFilters').innerHTML = '';
     const div1 = document.createElement('div')
     div1.classList = ['row select'];
     const obj = aggegrateData(jsonData);
     let template =`
         <div style="width: 100%;">
-            
+        `
+    if (caseSelection === 'all') {
+        template += `<div class="ml-auto mt-3 mb-1" id="classSelect">
+            <div class="col-md-12 p-0 form-group">
+                <label class="filter-label font-size-13" for="subcasesSelection">Population</label>
+                <select class="form-control font-size-15" id="subcasesSelection" data-variable='subcases'>
+                    <option value='all' selected>Full Cohort</option>
+                    <option value='cases'>Cases</option>
+                </select>
+            </div>
+        </div>`} else if (caseSelection === 'cases') {
+            template += `<div class="ml-auto mt-3 mb-1" id="classSelect">
+            <div class="col-md-12 p-0 form-group">
+                <label class="filter-label font-size-13" for="subcasesSelection">Population</label>
+                <select class="form-control font-size-15" id="subcasesSelection" data-variable='subcases'>
+                    <option value='all'>Full Cohort</option>
+                    <option value='cases' selected>Cases</option>
+                </select>
+            </div>
+        </div>`
+        }
+
+    template += `
             <div class="form-group">
                 <label class="filter-label font-size-13" for="ethnicitySelection">Ethnicity</label>
                 <select class="form-control font-size-15" id="ethnicitySelection" data-variable='ethnicity'>
@@ -81,16 +103,6 @@ const allFilters = (jsonData, headers) => {
                     <option value='CARET'>CARET</option>
                     <option value='WHI'>WHI</option>
                 </select>
-            </div>
-
-            <div class="ml-auto mt-3 mb-1" id="classSelect">
-                <div class="col-md-12 p-0 form-group">
-                    <label class="filter-label font-size-13" for="subcasesSelection">Selection</label>
-                    <select class="form-control font-size-15" id="subcasesSelection" data-variable='subcases'>
-                        <option selected value='all'>All Subjects</option>
-                        <option value='cases'>Cases</option>
-                    </select>
-                </div>
             </div>
     `;
     // template += `
@@ -279,7 +291,7 @@ const generateDetectionPrimBarChart = (parameter, id, labelID, jsonData, chartRo
     const data = [
         {
             x: ['Screen-detected','Non-screen detected', 'Unknown'],
-            y: [ mapReduce(jsonData, 'detection_primary11'), mapReduce(jsonData, 'detection_primary12'), mapReduce(jsonData, 'detection_primary1DK') ],
+            y: [ mapReduce(jsonData, 'detection_primary1_nonscreen'), mapReduce(jsonData, 'detection_primary1_screen'), mapReduce(jsonData, 'detection_primary1_DK') ],
             marker:{
                 color: ['#8bc1e8', '#319fbe', '#8bc1e8']
             },
@@ -304,7 +316,7 @@ const generateCancerInvBarChart = (parameter, id, labelID, jsonData, chartRow) =
     const data = [
         {
             x: ['Invasive', 'In-situ', 'Unknown'],
-            y: [ mapReduce(jsonData, 'invasive_primary11'), mapReduce(jsonData, 'invasive_primary12'), mapReduce(jsonData, 'invasive_primary1DK') ],
+            y: [ mapReduce(jsonData, 'invasive_primary1_inv'), mapReduce(jsonData, 'invasive_primary1_insitu'), mapReduce(jsonData, 'invasive_primary1_DK') ],
             marker:{
                 color: ['#8bc1e8', '#319fbe', '#8bc1e8']
             },
@@ -329,7 +341,7 @@ const generateERTumorStatusBarChart = (parameter, id, labelID, jsonData, chartRo
     const data = [
         {
             x: ['Negative', 'Positive', 'Unknown'],
-            y: [ mapReduce(jsonData, 'er_primary10'), mapReduce(jsonData, 'er_primary11'), mapReduce(jsonData, 'er_primaryDK') ],
+            y: [ mapReduce(jsonData, 'er_primary1_neg'), mapReduce(jsonData, 'er_primary1_pos'), mapReduce(jsonData, 'er_primary1_DK') ],
             marker:{
                 color: ['#8bc1e8', '#319fbe', '#8bc1e8']
             },
@@ -361,7 +373,7 @@ const generateTumorGradeBarChart = (parameter, id, labelID, jsonData, chartRow) 
     const data = [
         {
             x: ['Well differentiated', 'Moderately differentiated', 'Poorly/un-differentiated', 'Unknown'],
-            y: [ mapReduce(jsonData, 'grade_primary11'), mapReduce(jsonData, 'grade_primary12'), mapReduce(jsonData, 'grade_primary13'), mapReduce(jsonData, 'grade_primary1DK') ],
+            y: [ mapReduce(jsonData, 'grade_primary1_1'), mapReduce(jsonData, 'grade_primary1_2'), mapReduce(jsonData, 'grade_primary1_3'), mapReduce(jsonData, 'grade_primary1_DK') ],
             marker:{
                 color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe']
             },
@@ -565,10 +577,10 @@ const generateYearsDiagBarChart = (parameter, id, labelID, jsonData, chartRow) =
     console.log(jsonData);
     const data = [
         {
-            x: ['1970 to 1979','1980 to 1989', '1990 to 1999', '2000 to 2009', '2010 to 2019', 'Unknown'],
-            y: [mapReduce(jsonData, 'dxdate_primary11970_1979'), mapReduce(jsonData, 'dxdate_primary11980_1989'), mapReduce(jsonData, 'dxdate_primary11990_1999'), mapReduce(jsonData, 'dxdate_primary12000_2009'), mapReduce(jsonData, 'dxdate_primary12010_2019'), mapReduce(jsonData, 'dxdate_primary1DK') ],
+            x: ['1970 to 1979','1980 to 1989', '1990 to 1999', '2000 to 2009', '2010 to 2019', '>2019', 'Unknown'],
+            y: [mapReduce(jsonData, 'dxdate_primary1_1970_1979'), mapReduce(jsonData, 'dxdate_primary1_1980_1989'), mapReduce(jsonData, 'dxdate_primary1_1990_1999'), mapReduce(jsonData, 'dxdate_primary1_2000_2009'), mapReduce(jsonData, 'dxdate_primary1_2010_2019'), mapReduce(jsonData, 'dxdate_primary1_GE2020'), mapReduce(jsonData, 'dxdate_primary1_DK') ],
             marker:{
-                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe']
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8']
             },
           type: 'bar'
         }

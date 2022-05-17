@@ -51,7 +51,9 @@ import {
     getSelectedStudies,
     renderAllCasesCharts,
     renderAllCharts,
-    updateCounts
+    updateCounts,
+    getFileContent,
+    getFileContentCases
 } from './visualization.js';
 
 import {
@@ -1367,9 +1369,15 @@ export const addEventSummaryStatsFilterForm = (jsonData, headers) => {
         filterData(jsonData, headers);
     });
 
+    // const subcasesSelection = document.getElementById('subcasesSelection');
+    // subcasesSelection.addEventListener('change', () => {
+    //     filterData(jsonData, headers);
+    // });
+
     const subcasesSelection = document.getElementById('subcasesSelection');
-    subcasesSelection.addEventListener('change', () => {
-        filterData(jsonData, headers);
+    subcasesSelection.addEventListener('change', function(event) {
+        if (event.target.value == 'all') getFileContent()
+        if (event.target.value == 'cases') getFileContentCases()
     });
 
     const elements = document.getElementsByClassName('select-consortium');
