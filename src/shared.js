@@ -173,53 +173,93 @@ export const getFileVersions = async (id) => {
 
 export const storeAccessToken = async () => {
     let parms = searchParms();
-    console.log('Store Access Token params', parms);
-    if (parms.code) {
+    if(parms.code){
         //exchange code for authorization token
-        let clt = {}
-        if (location.origin.indexOf('localhost') !== -1) clt = config.iniAppLocal;
-        else if (location.origin.indexOf('episphere') !== -1) clt = config.iniAppDev;
-        else if (location.origin.indexOf(applicationURLs.stage) !== -1) clt = config.iniAppStage;
-        else if (location.origin.indexOf(applicationURLs.prod) !== -1) clt = config.iniAppProd;
+        let clt={}
+        if(location.origin.indexOf('localhost') !== -1) clt = config.iniAppLocal;
+        else if(location.origin.indexOf('episphere') !== -1) clt = config.iniAppDev
+        else if(location.origin.indexOf(applicationURLs.stage) !== -1) clt = config.iniAppStage
+        else if(location.origin.indexOf(applicationURLs.prod) !== -1) clt = config.iniAppProd;
 
         document.getElementById('confluenceDiv').innerHTML = '';
         let url = `https://api.box.com/oauth2/token/`;
-        console.log('Client ID + Server Secret', clt.client_id, clt.server_id);
-        console.log(parms.code);
-        try {
-            const response = await fetch(url, {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                method: 'POST',
-                body: `grant_type=authorization_code&code=${parms.code}&client_id=${clt.client_id}&client_secret=${clt.server_id}`
-            });
-            if (response.status) {
-                console.log(response);
-            }
-            if (response.status && response.status === 200) {
-                localStorage.parms = JSON.stringify(await response.json());
-                window.history.replaceState({}, '', './#home');
-                confluence();
-                document.getElementById('loginBoxAppDev').hidden = true;
-                document.getElementById('loginBoxAppStage').hidden = true;
-                document.getElementById('loginBoxAppEpisphere').hidden = true;
-                document.getElementById('loginBoxAppProd').hidden = true;
-            }
-       
-        } catch(err){
-        console.log('HTTP error on token fetch', err);
+        
+        const response = await fetch(url, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method:'POST',
+            body: `grant_type=authorization_code&code=${parms.code}&client_id=${clt.client_id}&client_secret=${clt.server_id}`
+        });
+        if(response.status && response.status === 200) {
+            localStorage.parms = JSON.stringify(await response.json());
+            window.history.replaceState({},'', './#home');
+            confluence();
+            document.getElementById('loginBoxAppDev').hidden = true;
+            document.getElementById('loginBoxAppStage').hidden = true;
+            document.getElementById('loginBoxAppEpisphere').hidden = true;
+            document.getElementById('loginBoxAppProd').hidden = true;
         }
-    } else {
-        if (localStorage.parms) {
-            confluence.parms = JSON.parse(localStorage.parms)
-            if (confluence.parms.access_token === undefined) {
+    }else{
+        if(localStorage.parms){
+            confluence.parms=JSON.parse(localStorage.parms)
+            if(confluence.parms.access_token === undefined){
                 localStorage.clear();
                 alert('access token not found, please contact system administrator')
             }
         }
     }
 }
+
+// export const storeAccessToken = async () => {
+//     let parms = searchParms();
+//     console.log('Store Access Token params', parms);
+//     if (parms.code) {
+//         //exchange code for authorization token
+//         let clt = {}
+//         if (location.origin.indexOf('localhost') !== -1) clt = config.iniAppLocal;
+//         else if (location.origin.indexOf('episphere') !== -1) clt = config.iniAppDev;
+//         else if (location.origin.indexOf(applicationURLs.stage) !== -1) clt = config.iniAppStage;
+//         else if (location.origin.indexOf(applicationURLs.prod) !== -1) clt = config.iniAppProd;
+
+//         document.getElementById('confluenceDiv').innerHTML = '';
+//         let url = `https://api.box.com/oauth2/token/`;
+//         console.log('Client ID + Server Secret', clt.client_id, clt.server_id);
+//         console.log(parms.code);
+//         try {
+//             const response = await fetch(url, {
+//                 headers: {
+//                     'Content-Type': 'application/x-www-form-urlencoded'
+//                 },
+//                 method: 'POST',
+//                 body: `grant_type=authorization_code&code=${parms.code}&client_id=${clt.client_id}&client_secret=${clt.server_id}`
+//             });
+//             if (response.status) {
+//                 console.log(response);
+//             }
+//             if (response.status && response.status === 200) {
+//                 localStorage.parms = JSON.stringify(await response.json());
+//                 window.history.replaceState({}, '', './#home');
+//                 confluence();
+//                 document.getElementById('loginBoxAppDev').hidden = true;
+//                 document.getElementById('loginBoxAppStage').hidden = true;
+//                 document.getElementById('loginBoxAppEpisphere').hidden = true;
+//                 document.getElementById('loginBoxAppProd').hidden = true;
+//             }
+       
+//         } catch(err){
+//         console.log('HTTP error on token fetch', err);
+//         }
+//     } else {
+//         if (localStorage.parms) {
+//             confluence.parms = JSON.parse(localStorage.parms)
+//             if (confluence.parms.access_token === undefined) {
+//                 localStorage.clear();
+//                 alert('access token not found, please contact system administrator');
+//             }
+//         }
+//     }
+// }
 
 export const refreshToken = async () => {
     if (!localStorage.parms) return;
