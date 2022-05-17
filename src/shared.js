@@ -220,7 +220,7 @@ export const storeAccessToken = async () => {
 //         });
         if(response.status && response.status === 200) {
             localStorage.parms = JSON.stringify(await response.json());
-            //window.history.replaceState({},'', './#home');
+            window.history.replaceState({},'', './#home');
             confluence();
             document.getElementById('loginBoxAppDev').hidden = true;
             document.getElementById('loginBoxAppStage').hidden = true;
