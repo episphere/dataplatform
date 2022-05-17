@@ -832,9 +832,9 @@ export const daccFileView = async () => {
     template += `
     <div id='filePreview'> 
     <div class='row'>
-    <div id='boxFilePreview' class="col-8 preview-container"></div>
+      <div id='boxFilePreview' class="col-8 preview-container"></div>
       <div id='fileComments' class='col-4 mt-2'></div>
-      </div>
+    </div>
       
       <div id="daccComment" class="card-body dacc-comment" style="padding-left: 10px;background-color:#f6f6f6;">
         <form>
