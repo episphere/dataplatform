@@ -200,10 +200,11 @@ export const storeAccessToken = async () => {
         redirect: 'follow'
         };
 
-        const response = await fetch("https://api.box.com/oauth2/token", requestOptions);
+        const response = await fetch("https://api.box.com/oauth2/token", requestOptions)
+            .catch(error => console.log('error', error));
         if (response.status === 400) {
             //window.history.replaceState({},'', './#home');
-            console.log(response.body);
+            console.log(response);
         }
         // .then(response => response.text())
         // .then(result => console.log(result))
