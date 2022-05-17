@@ -273,11 +273,25 @@ const generateAgeBarChart = (parameter, id, labelID, jsonData, chartRow) => {
           type: 'bar'
         }
     ];
+    let total = 0;
+    total += mapReduce(jsonData, '<20');
+    total += mapReduce(jsonData, '20 to 29');
+    total += mapReduce(jsonData, '30 to 39');
+    total += mapReduce(jsonData, '40 to 49');
+    total += mapReduce(jsonData, '50 to 59');
+    total += mapReduce(jsonData, '60 to 69');
+    total += mapReduce(jsonData, '70 to 79');
+    total += mapReduce(jsonData, '80 to 89');
+    total += mapReduce(jsonData, '90 to 99');
+    total += mapReduce(jsonData, '>99');
+
     const layout = {
         xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
         yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
         paper_bgcolor: 'rgba(0,0,0,0)',
-        plot_bgcolor: 'rgba(0,0,0,0)'
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        title : total,
+
     };
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
     document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
@@ -407,12 +421,24 @@ const generateBirthBarChart = (parameter, id, labelID, jsonData, chartRow) => {
         }
     ];
 
-    
+    let total = 0;
+    total += mapReduce(jsonData, '1900-1909');
+    total += mapReduce(jsonData, '1910-1919');
+    total += mapReduce(jsonData, '1920-1929');
+    total += mapReduce(jsonData, '1930-1939');
+    total += mapReduce(jsonData, '1940-1949');
+    total += mapReduce(jsonData, '1950-1959');
+    total += mapReduce(jsonData, '1960-1969');
+    total += mapReduce(jsonData, '1970-1979');
+    total += mapReduce(jsonData, '1980-1989');
+    total += mapReduce(jsonData, '1990-1999');
+
     const layout = {
         xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
         yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
         paper_bgcolor: 'rgba(0,0,0,0)',
-        plot_bgcolor: 'rgba(0,0,0,0)'
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        title : total,
     };
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
     document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
