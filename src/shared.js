@@ -199,7 +199,8 @@ export const storeAccessToken = async () => {
         body: urlencoded,
         redirect: 'follow'
         };
-
+        
+        console.log('Auth code: ', parms.code);
         const response = await fetch("https://api.box.com/oauth2/token", requestOptions)
             // .then(response => response.json())
             // .then(result => console.log(result))
