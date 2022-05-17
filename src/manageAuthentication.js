@@ -43,10 +43,10 @@ export const loginAppProd = () => {
 export const logOut = async () => {
     if(!localStorage.parms) return;
     const access_token = JSON.parse(localStorage.parms).access_token;
-    let clt={}
+    let clt={};
     if(location.origin.indexOf('localhost') !== -1) clt = config.iniAppLocal;
-    else if(location.origin.indexOf('episphere') !== -1) clt = config.iniAppDev
-    else if(location.origin.indexOf(applicationURLs.stage) !== -1) clt = config.iniAppStage
+    else if(location.origin.indexOf('episphere') !== -1) clt = config.iniAppDev;
+    else if(location.origin.indexOf(applicationURLs.stage) !== -1) clt = config.iniAppStage;
     else if(location.origin.indexOf(applicationURLs.prod) !== -1) clt = config.iniAppProd;
 
     const response = await fetch(`https://api.box.com/oauth2/revoke`, {
