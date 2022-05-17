@@ -279,7 +279,7 @@ const generateDetectionPrimBarChart = (parameter, id, labelID, jsonData, chartRo
     const data = [
         {
             x: ['Screen-detected','Non-screen detected', 'Unknown'],
-            y: [ mapReduce(jsonData, 'detection_primary11'), mapReduce(jsonData, 'detection_primary12'), mapReduce(jsonData, 'detection_primary1DK') ],
+            y: [ mapReduce(jsonData, 'detection_primary1_nonscreen'), mapReduce(jsonData, 'detection_primary1_screen'), mapReduce(jsonData, 'detection_primary1_DK') ],
             marker:{
                 color: ['#8bc1e8', '#319fbe', '#8bc1e8']
             },
@@ -503,10 +503,10 @@ const generateYearsDiagBarChart = (parameter, id, labelID, jsonData, chartRow) =
     document.getElementById(chartRow).appendChild(div);
     const data = [
         {
-            x: ['1970 to 1979','1980 to 1989', '1990 to 1999', '2000 to 2009', '2010 to 2019', 'Unknown'],
-            y: [mapReduce(jsonData, 'dxdate_primary11970_1979'), mapReduce(jsonData, 'dxdate_primary11980_1989'), mapReduce(jsonData, 'dxdate_primary11990_1999'), mapReduce(jsonData, 'dxdate_primary12000_2009'), mapReduce(jsonData, 'dxdate_primary12010_2019'), mapReduce(jsonData, 'dxdate_primary1DK') ],
+            x: ['1970 to 1979','1980 to 1989', '1990 to 1999', '2000 to 2009', '2010 to 2019', '>2019', 'Unknown'],
+            y: [mapReduce(jsonData, 'dxdate_primary1_1970_1979'), mapReduce(jsonData, 'dxdate_primary1_1980_1989'), mapReduce(jsonData, 'dxdate_primary1_1990_1999'), mapReduce(jsonData, 'dxdate_primary1_2000_2009'), mapReduce(jsonData, 'dxdate_primary1_2010_2019'), mapReduce(jsonData, 'dxdate_primary1_GE2020'), mapReduce(jsonData, 'dxdate_primary1_DK') ],
             marker:{
-                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe']
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8']
             },
           type: 'bar'
         }
