@@ -176,21 +176,44 @@ export const storeAccessToken = async () => {
     if(parms.code){
         //exchange code for authorization token
         let clt={}
-        if(location.origin.indexOf('localhost') !== -1) clt = config.iniAppLocal;
-        else if(location.origin.indexOf('episphere') !== -1) clt = config.iniAppDev
-        else if(location.origin.indexOf(applicationURLs.stage) !== -1) clt = config.iniAppStage
+        if(location.origin.indexOf('episphere') !== -1) clt = config.iniAppDev;
+        else if(location.origin.indexOf('localhost') !== -1) clt = config.iniAppLocal;
+        else if(location.origin.indexOf(applicationURLs.stage) !== -1) clt = config.iniAppStage;
         else if(location.origin.indexOf(applicationURLs.prod) !== -1) clt = config.iniAppProd;
-
+        console.log(parms.code);
         document.getElementById('confluenceDiv').innerHTML = '';
-        let url = `https://api.box.com/oauth2/token/`;
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        //myHeaders.append("Authorization", "Bearer r1Qy6afk7duk0Pmhs7iJPbRBSpNCGCI2");
+
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("grant_type", "authorization_code");
+        urlencoded.append("client_id", clt.client_id);
+        urlencoded.append("client_secret", clt.server_id);
+        urlencoded.append("code", parms.code);
+
+        var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: 'follow'
+        };
+
+        const response = await fetch("https://api.box.com/oauth2/token", requestOptions);
+        // .then(response => response.text())
+        // .then(result => console.log(result))
+        // .catch(error => console.log('error', error));
+        console.log(response);
+//         let url = `https://api.box.com/oauth2/token`;
         
-        const response = await fetch(url, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            method:'POST',
-            body: `grant_type=authorization_code&code=${parms.code}&client_id=${clt.client_id}&client_secret=${clt.server_id}`
-        });
+//         const response = await fetch(url, {
+//             headers: {
+//                 'Content-Type': 'application/x-www-form-urlencoded'
+//             },
+//             method:'POST',
+//             body: `grant_type=authorization_code&code=${parms.code}&client_id=${clt.client_id}&client_secret=${clt.server_id}`
+//         });
         if(response.status && response.status === 200) {
             localStorage.parms = JSON.stringify(await response.json());
             window.history.replaceState({},'', './#home');
@@ -266,11 +289,11 @@ export const refreshToken = async () => {
     const parms = JSON.parse(localStorage.parms);
     let clt = {}
     if (location.origin.indexOf('localhost') !== -1) clt = config.iniAppLocal;
-    else if (location.origin.indexOf('episphere') !== -1) clt = config.iniAppDev
-    else if (location.origin.indexOf(applicationURLs.stage) !== -1) clt = config.iniAppStage
+    else if (location.origin.indexOf('episphere') !== -1) clt = config.iniAppDev;
+    else if (location.origin.indexOf(applicationURLs.stage) !== -1) clt = config.iniAppStage;
     else if (location.origin.indexOf(applicationURLs.prod) !== -1) clt = config.iniAppProd;
 
-    const response = await fetch(`https://api.box.com/oauth2/token/`, {
+    const response = await fetch(`https://api.box.com/oauth2/token`, {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
