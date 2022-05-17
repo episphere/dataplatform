@@ -351,6 +351,13 @@ const generateTumorGradeBarChart = (parameter, id, labelID, jsonData, chartRow) 
     div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
     div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
     document.getElementById(chartRow).appendChild(div);
+    jsonData.forEach((element) => {
+        for(const key in element) {
+            if (key.startsWith('grade_primary1'))
+                if(isNaN(parseInt(element[key])) === false)
+                total += parseInt(element[key]);
+        }
+    } )
     const data = [
         {
             x: ['Well differentiated', 'Moderately differentiated', 'Poorly/un-differentiated', 'Unknown'],
@@ -361,6 +368,7 @@ const generateTumorGradeBarChart = (parameter, id, labelID, jsonData, chartRow) 
           type: 'bar'
         }
     ];
+    
     const layout = {
         xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
         yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
@@ -386,6 +394,8 @@ const generateBirthBarChart = (parameter, id, labelID, jsonData, chartRow) => {
           type: 'bar'
         }
     ];
+
+    
     const layout = {
         xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
         yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
@@ -401,6 +411,16 @@ const generateMenarcheBarChart = (parameter, id, labelID, jsonData, chartRow) =>
     div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
     div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
     document.getElementById(chartRow).appendChild(div);
+    let total = 0;
+    console.log(jsonData);
+    jsonData.forEach((element) => {
+        for(const key in element) {
+            if (key.startsWith('agemenarche') && !key.endsWith('777'))
+                if(isNaN(parseInt(element[key])) === false)
+                total += parseInt(element[key]);
+        }
+    } )
+
     const data = [
         {
             x: ["≤12", "13", "14", "15", ">15", "Unknown"],
@@ -415,7 +435,9 @@ const generateMenarcheBarChart = (parameter, id, labelID, jsonData, chartRow) =>
         xaxis: {type: 'category', fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
         yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
         paper_bgcolor: 'rgba(0,0,0,0)',
-        plot_bgcolor: 'rgba(0,0,0,0)'
+        plot_bgcolor: 'rgba(0,0,0,0)',
+
+        title : total,
     };
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
     document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
@@ -426,6 +448,18 @@ const generateParityBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
     div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
     document.getElementById(chartRow).appendChild(div);
+
+    const filteredData = jsonData.map(dt => parseInt(dt['parous_0'])).filter(dt => isNaN(dt) === false );
+    let total = 0;
+  
+    jsonData.forEach((element) => {
+        for(const key in element) {
+            if (key.startsWith('parous'))
+                if(isNaN(parseInt(element[key])) === false)
+                total += parseInt(element[key]);
+        }
+    } )
+
     const data = [
         {
             x: ["Nullparous","Parous","Unknown"],
@@ -440,7 +474,13 @@ const generateParityBarChart = (parameter, id, labelID, jsonData, chartRow) => {
         xaxis: {type: 'category', fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
         yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
         paper_bgcolor: 'rgba(0,0,0,0)',
-        plot_bgcolor: 'rgba(0,0,0,0)'
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        // annotations : [
+        //     {
+        //         text: total
+        //     }
+        // ]
+        title : total,
     };
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
     document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
@@ -461,11 +501,22 @@ const generatePregnaciesBarChart = (parameter, id, labelID, jsonData, chartRow) 
           type: 'bar'
         }
     ];
+    let total = 0;
+    jsonData.forEach((element) => {
+        for(const key in element) {
+            if (key.startsWith('parity') && !(key.endsWith('14') || key.endsWith('15') || key.endsWith('16') ))
+                if(isNaN(parseInt(element[key])) === false)
+                total += parseInt(element[key]);
+        }
+    } )
     const layout = {
         xaxis: {type: 'category', fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
         yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
         paper_bgcolor: 'rgba(0,0,0,0)',
-        plot_bgcolor: 'rgba(0,0,0,0)'
+        plot_bgcolor: 'rgba(0,0,0,0)',
+
+        title : total,
+
     };
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
     document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
@@ -486,11 +537,21 @@ const generateBMIBarChart = (parameter, id, labelID, jsonData, chartRow) => {
           type: 'bar'
         }
     ];
+    let total = 0;
+    jsonData.forEach((element) => {
+        for(const key in element) {
+            if (key.startsWith('bmi_'))
+                if(isNaN(parseInt(element[key])) === false)
+                total += parseInt(element[key]);
+        }
+    } )
     const layout = {
         xaxis: {type: 'category', fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
         yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
         paper_bgcolor: 'rgba(0,0,0,0)',
-        plot_bgcolor: 'rgba(0,0,0,0)'
+        plot_bgcolor: 'rgba(0,0,0,0)',
+
+        title : total,
     };
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
     document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
@@ -501,6 +562,7 @@ const generateYearsDiagBarChart = (parameter, id, labelID, jsonData, chartRow) =
     div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
     div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
     document.getElementById(chartRow).appendChild(div);
+    console.log(jsonData);
     const data = [
         {
             x: ['1970 to 1979','1980 to 1989', '1990 to 1999', '2000 to 2009', '2010 to 2019', 'Unknown'],
@@ -515,7 +577,12 @@ const generateYearsDiagBarChart = (parameter, id, labelID, jsonData, chartRow) =
         xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
         yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
         paper_bgcolor: 'rgba(0,0,0,0)',
-        plot_bgcolor: 'rgba(0,0,0,0)'
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        annotations: [
+            {
+                text: 'Sample text'
+            }
+        ]
     };
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
     document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;

@@ -218,7 +218,7 @@ catch(err){
         }
     }
 
-    console.log('Client ID + Server Secret', clt.client_id, clt.server_id);
+    // console.log('Client ID + Server Secret', clt.client_id, clt.server_id);
 }
 
 export const refreshToken = async () => {
@@ -1323,6 +1323,7 @@ export const numberWithCommas = (x) => {
 
 export const mapReduce = (data, variable) => {
     const filteredData = data.map(dt => parseInt(dt[variable])).filter(dt => isNaN(dt) === false);
+    // console.log(data, variable, filteredData);
     if (filteredData.length > 0) return filteredData.reduce((a, b) => a + b);
     else return 0;
 }
