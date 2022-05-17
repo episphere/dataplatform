@@ -21,7 +21,7 @@ export const getFileContent = async () => {
         return;
     };
     renderAllCharts(jsonData, headers);
-    allFilters(jsonData, headers, false);
+    allFilters(jsonData, headers, 'all');
 };
 
 export const getFileContentCases = async () => {
@@ -34,17 +34,39 @@ export const getFileContentCases = async () => {
         return;
     };
     renderAllCasesCharts(jsonData, headers);
-    allFilters(jsonData, headers, false);
+    allFilters(jsonData, headers, 'cases');
 };
 
-const allFilters = (jsonData, headers) => {
+const allFilters = (jsonData, headers, caseSelection) => {
     document.getElementById('allFilters').innerHTML = '';
     const div1 = document.createElement('div')
     div1.classList = ['row select'];
     const obj = aggegrateData(jsonData);
     let template =`
         <div style="width: 100%;">
-            
+        `
+    if (caseSelection === 'all') {
+        template += `<div class="ml-auto mt-3 mb-1" id="classSelect">
+            <div class="col-md-12 p-0 form-group">
+                <label class="filter-label font-size-13" for="subcasesSelection">Selection</label>
+                <select class="form-control font-size-15" id="subcasesSelection" data-variable='subcases'>
+                    <option value='all' selected>All Subjects</option>
+                    <option value='cases'>Cases</option>
+                </select>
+            </div>
+        </div>`} else if (caseSelection === 'cases') {
+            template += `<div class="ml-auto mt-3 mb-1" id="classSelect">
+            <div class="col-md-12 p-0 form-group">
+                <label class="filter-label font-size-13" for="subcasesSelection">Selection</label>
+                <select class="form-control font-size-15" id="subcasesSelection" data-variable='subcases'>
+                    <option value='all'>All Subjects</option>
+                    <option value='cases' selected>Cases</option>
+                </select>
+            </div>
+        </div>`
+        }
+
+    template += `
             <div class="form-group">
                 <label class="filter-label font-size-13" for="ethnicitySelection">Ethnicity</label>
                 <select class="form-control font-size-15" id="ethnicitySelection" data-variable='ethnicity'>
@@ -81,16 +103,6 @@ const allFilters = (jsonData, headers) => {
                     <option value='CARET'>CARET</option>
                     <option value='WHI'>WHI</option>
                 </select>
-            </div>
-
-            <div class="ml-auto mt-3 mb-1" id="classSelect">
-                <div class="col-md-12 p-0 form-group">
-                    <label class="filter-label font-size-13" for="subcasesSelection">Selection</label>
-                    <select class="form-control font-size-15" id="subcasesSelection" data-variable='subcases'>
-                        <option selected value='all'>All Subjects</option>
-                        <option value='cases'>Cases</option>
-                    </select>
-                </div>
             </div>
     `;
     // template += `
