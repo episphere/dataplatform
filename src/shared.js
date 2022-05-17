@@ -18,7 +18,7 @@ export const publicDataFileId = 697309514903; //Unknown
 
 export const summaryStatsFileId = 956943662666; //861342561526;//908600664259; //Confluence Summary Statistics (691143057533) => Pilot - BCRP_Summary_Results_AllSubjects.csv (861342561526)
 
-export const summaryStatsCasesFileId = 958869203942;//862065772362; //927803436743; //862065772362; //cases => Pilot - BCRP_Summary_Results_Cases.csv
+export const summaryStatsCasesFileId = 862065772362; //958869203942; //927803436743; //862065772362; //cases => Pilot - BCRP_Summary_Results_Cases.csv
 
 export const missingnessStatsFileId = 653087731560; //Unknown
 

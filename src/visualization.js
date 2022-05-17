@@ -304,7 +304,7 @@ const generateCancerInvBarChart = (parameter, id, labelID, jsonData, chartRow) =
     const data = [
         {
             x: ['Invasive', 'In-situ', 'Unknown'],
-            y: [ mapReduce(jsonData, 'invasive_primary11'), mapReduce(jsonData, 'invasive_primary12'), mapReduce(jsonData, 'invasive_primary1DK') ],
+            y: [ mapReduce(jsonData, 'invasive_primary1_inv'), mapReduce(jsonData, 'invasive_primary1_insitu'), mapReduce(jsonData, 'invasive_primary1_DK') ],
             marker:{
                 color: ['#8bc1e8', '#319fbe', '#8bc1e8']
             },
@@ -329,7 +329,7 @@ const generateERTumorStatusBarChart = (parameter, id, labelID, jsonData, chartRo
     const data = [
         {
             x: ['Negative', 'Positive', 'Unknown'],
-            y: [ mapReduce(jsonData, 'er_primary10'), mapReduce(jsonData, 'er_primary11'), mapReduce(jsonData, 'er_primaryDK') ],
+            y: [ mapReduce(jsonData, 'er_primary1_neg'), mapReduce(jsonData, 'er_primary1_pos'), mapReduce(jsonData, 'er_primary1_DK') ],
             marker:{
                 color: ['#8bc1e8', '#319fbe', '#8bc1e8']
             },
@@ -354,7 +354,7 @@ const generateTumorGradeBarChart = (parameter, id, labelID, jsonData, chartRow) 
     const data = [
         {
             x: ['Well differentiated', 'Moderately differentiated', 'Poorly/un-differentiated', 'Unknown'],
-            y: [ mapReduce(jsonData, 'grade_primary11'), mapReduce(jsonData, 'grade_primary12'), mapReduce(jsonData, 'grade_primary13'), mapReduce(jsonData, 'grade_primary1DK') ],
+            y: [ mapReduce(jsonData, 'grade_primary1_1'), mapReduce(jsonData, 'grade_primary1_2'), mapReduce(jsonData, 'grade_primary1_3'), mapReduce(jsonData, 'grade_primary1_DK') ],
             marker:{
                 color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe']
             },
