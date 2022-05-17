@@ -48,18 +48,18 @@ const allFilters = (jsonData, headers, caseSelection) => {
     if (caseSelection === 'all') {
         template += `<div class="ml-auto mt-3 mb-1" id="classSelect">
             <div class="col-md-12 p-0 form-group">
-                <label class="filter-label font-size-13" for="subcasesSelection">Selection</label>
+                <label class="filter-label font-size-13" for="subcasesSelection">Population</label>
                 <select class="form-control font-size-15" id="subcasesSelection" data-variable='subcases'>
-                    <option value='all' selected>All Subjects</option>
+                    <option value='all' selected>Full Cohort</option>
                     <option value='cases'>Cases</option>
                 </select>
             </div>
         </div>`} else if (caseSelection === 'cases') {
             template += `<div class="ml-auto mt-3 mb-1" id="classSelect">
             <div class="col-md-12 p-0 form-group">
-                <label class="filter-label font-size-13" for="subcasesSelection">Selection</label>
+                <label class="filter-label font-size-13" for="subcasesSelection">Population</label>
                 <select class="form-control font-size-15" id="subcasesSelection" data-variable='subcases'>
-                    <option value='all'>All Subjects</option>
+                    <option value='all'>Full Cohort</option>
                     <option value='cases' selected>Cases</option>
                 </select>
             </div>
