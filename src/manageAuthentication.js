@@ -54,11 +54,8 @@ export const logOut = async () => {
     const response = await fetch(`https://api.box.com/oauth2/revoke`, {
         method: 'POST',
         mode: 'no-cors',
-        body: {'token': access_token,
-               'client_id': clt.client_id,
-               'client_secret' : clt.server_id,
-    }
-});
+        body: `token=${access_token}&client_id=${clt.client_id}&client_secret=${clt.server_id}`
+    });
     delete localStorage.parms;
     // location.reload();
 }
