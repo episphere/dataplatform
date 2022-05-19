@@ -60,5 +60,5 @@ export const logOut = async () => {
     }
 });
     delete localStorage.parms;
-    // location.reload();
+    //location.reload();
 }
