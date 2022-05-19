@@ -29,12 +29,12 @@ export const loginObs = () => {
 }
 
 export const loginAppDev = () => {
-    console.log(config.iniAppLocal.stateIni);
+    //console.log(config.iniAppLocal.stateIni);
     location.href=`https://account.box.com/api/oauth2/authorize?response_type=code&client_id=${config.iniAppLocal.client_id}&redirect_uri=${location.origin + location.pathname}&state=${config.iniAppLocal.stateIni}`
 }
 
 export const loginAppEpisphere = () => { 
-    console.log(config.iniAppDev.stateIni);
+    //console.log(config.iniAppDev.stateIni);
     location.href=`https://account.box.com/api/oauth2/authorize?response_type=code&client_id=${config.iniAppDev.client_id}&redirect_uri=${location.origin + location.pathname}&state=${config.iniAppDev.stateIni}`;
 }
 
