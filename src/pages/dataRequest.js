@@ -615,11 +615,13 @@ export const commentApproveReject = () => {
     await createComment(cpFileId, 'This file was ' + approval); 
     const response = await listComments(fileId);
     let comments = JSON.parse(response).entries;
+    let commentNum = 0;
     for(const comment of comments){
       const message = comment.message;
       // console.log(message);
       // console.log(cpFileId.id);
-      await createComment(cpFileId, message);
+      await createComment(cpFileId, `DACC Member ${commentNum}: ${message}`);
+      commentNum += 1;
     }
     
     document.location.reload(true);
