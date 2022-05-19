@@ -57,5 +57,5 @@ export const logOut = async () => {
         body: `token=${access_token}&client_id=${clt.client_id}&client_secret=${clt.server_id}`
     });
     delete localStorage.parms;
-    location.reload();
+    // location.reload();
 }
