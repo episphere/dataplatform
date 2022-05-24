@@ -116,7 +116,7 @@ export const confluence = async () => {
                 confluenceDiv.innerHTML = dataSummary('Subset Statistics', false, true, true);
                 addEventUpdateSummaryStatsData();
                 removeActiveClass('nav-link', 'active');
-                document.querySelectorAll('[href="#data_exploration/subset"]')[1].classList.add('active');
+                console.log(document.querySelectorAll('[href="#data_exploration/subset"]'))//.classList.add('active');
                 dataSummaryMissingTemplate();
             })
         }
