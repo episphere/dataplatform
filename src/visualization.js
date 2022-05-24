@@ -67,14 +67,7 @@ const allFilters = (jsonData, headers, caseSelection) => {
         }
 
     template += `
-            <div class="form-group">
-                <label class="filter-label font-size-13" for="ethnicitySelection">Ethnicity</label>
-                <select class="form-control font-size-15" id="ethnicitySelection" data-variable='ethnicity'>
-                    <option selected value='all'>All</option>
-                    <option value='Non-Hispanic/Non-Latino'>Non-Hispanic/Non-Latino</option>
-                    <option value='Hispanic/Latino'>Hispanic/Latino</option>
-                </select>
-            </div>
+            
         
             <div class="form-group">
                 <label class="filter-label font-size-13" for="raceSelection">Race</label>
@@ -86,6 +79,15 @@ const allFilters = (jsonData, headers, caseSelection) => {
                     <option value='Native Hawaiian/ Pacific Islander'>Native Hawaiian/ Pacific Islander</option>
                     <option value='Other including multiracial'>Other including multiracial</option>
                     <option value='White'>White</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="filter-label font-size-13" for="ethnicitySelection">Ethnicity</label>
+                <select class="form-control font-size-15" id="ethnicitySelection" data-variable='ethnicity'>
+                    <option selected value='all'>All</option>
+                    <option value='Non-Hispanic/Non-Latino'>Non-Hispanic/Non-Latino</option>
+                    <option value='Hispanic/Latino'>Hispanic/Latino</option>
                 </select>
             </div>
             
