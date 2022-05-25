@@ -267,10 +267,10 @@ const generateAgeBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     document.getElementById(chartRow).appendChild(div);
     const data = [
         {
-            x: ['<20','20 to 29', '30 to 39', '40 to 49', '50 to 59', '60 to 69', '70 to 79', '80 to 89', '>90'],
-            y: [ mapReduce(jsonData, '<20'), mapReduce(jsonData, '20 to 29'), mapReduce(jsonData, '30 to 39'), mapReduce(jsonData, '40 to 49'), mapReduce(jsonData, '50 to 59'), mapReduce(jsonData, '60 to 69'), mapReduce(jsonData, '70 to 79'), mapReduce(jsonData, '80 to 89'), mapReduce(jsonData, '90 to 99') + mapReduce(jsonData, '>99') ],
+            x: ['<20','20 to 29', '30 to 39', '40 to 49', '50 to 59', '60 to 69', '70 to 79', '80 to 89', '>90', 'Unknown'],
+            y: [ mapReduce(jsonData, '<20'), mapReduce(jsonData, '20 to 29'), mapReduce(jsonData, '30 to 39'), mapReduce(jsonData, '40 to 49'), mapReduce(jsonData, '50 to 59'), mapReduce(jsonData, '60 to 69'), mapReduce(jsonData, '70 to 79'), mapReduce(jsonData, '80 to 89'), mapReduce(jsonData, '90 to 99') + mapReduce(jsonData, '>99'), mapReduce(jsonData, 'age_DK') ],
             marker:{
-                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8']
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe']
             },
           type: 'bar'
         }
@@ -286,6 +286,7 @@ const generateAgeBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     total += mapReduce(jsonData, '80 to 89');
     total += mapReduce(jsonData, '90 to 99');
     total += mapReduce(jsonData, '>99');
+    total += mapReduce(jsonData, 'age_DK');
 
     const layout = {
         xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
@@ -379,13 +380,13 @@ const generateTumorGradeBarChart = (parameter, id, labelID, jsonData, chartRow) 
     div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
     div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
     document.getElementById(chartRow).appendChild(div);
-    jsonData.forEach((element) => {
-        for(const key in element) {
-            if (key.startsWith('grade_primary1'))
-                if(isNaN(parseInt(element[key])) === false)
-                total += parseInt(element[key]);
-        }
-    } )
+    // jsonData.forEach((element) => {
+    //     for(const key in element) {
+    //         if (key.startsWith('grade_primary1'))
+    //             if(isNaN(parseInt(element[key])) === false)
+    //             total += parseInt(element[key]);
+    //     }
+    // } )
     const data = [
         {
             x: ['Well differentiated', 'Moderately differentiated', 'Poorly/un-differentiated', 'Unknown'],
@@ -414,16 +415,17 @@ const generateBirthBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     document.getElementById(chartRow).appendChild(div);
     const data = [
         {
-            x: ['1900 to 1909','1910 to 1919', '1920 to 1929', '1930 to 1939', '1940 to 1949', '1950 to 1959', '1960 to 1969', '1970 to 1979', '1980 to 1989', '1990 to 1999'],
-            y: [ mapReduce(jsonData, '1900-1909'), mapReduce(jsonData, '1910-1919'), mapReduce(jsonData, '1920-1929'), mapReduce(jsonData, '1930-1939'), mapReduce(jsonData, '1940-1949'), mapReduce(jsonData, '1950-1959'), mapReduce(jsonData, '1960-1969'), mapReduce(jsonData, '1970-1979'), mapReduce(jsonData, '1980-1989'), mapReduce(jsonData, '1990-1999') ],
+            x: ['<1900', '1900 to 1909','1910 to 1919', '1920 to 1929', '1930 to 1939', '1940 to 1949', '1950 to 1959', '1960 to 1969', '1970 to 1979', '1980 to 1989', '1990 to 1999', '>2000'],
+            y: [ mapReduce(jsonData, 'birth_year_LT1900'), mapReduce(jsonData, '1900-1909'), mapReduce(jsonData, '1910-1919'), mapReduce(jsonData, '1920-1929'), mapReduce(jsonData, '1930-1939'), mapReduce(jsonData, '1940-1949'), mapReduce(jsonData, '1950-1959'), mapReduce(jsonData, '1960-1969'), mapReduce(jsonData, '1970-1979'), mapReduce(jsonData, '1980-1989'), mapReduce(jsonData, '1990-1999'), mapReduce(jsonData, 'birth_year_GE2000'), mapReduce(jsonData, 'birth_year_DK') ],
             marker:{
-                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe']
+                color: ['#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8']
             },
           type: 'bar'
         }
     ];
 
     let total = 0;
+    total += mapReduce(jsonData, 'birth_year_LT1900');
     total += mapReduce(jsonData, '1900-1909');
     total += mapReduce(jsonData, '1910-1919');
     total += mapReduce(jsonData, '1920-1929');
@@ -434,6 +436,8 @@ const generateBirthBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     total += mapReduce(jsonData, '1970-1979');
     total += mapReduce(jsonData, '1980-1989');
     total += mapReduce(jsonData, '1990-1999');
+    total += mapReduce(jsonData, 'birth_year_GE2000');
+    total += mapReduce(jsonData, 'birth_year_DK');
 
     const layout = {
         xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
@@ -455,7 +459,7 @@ const generateMenarcheBarChart = (parameter, id, labelID, jsonData, chartRow) =>
     console.log(jsonData);
     jsonData.forEach((element) => {
         for(const key in element) {
-            if (key.startsWith('agemenarche') && !key.endsWith('777'))
+            if (key.startsWith('agemenarche'))// && !key.endsWith('777'))
                 if(isNaN(parseInt(element[key])) === false)
                 total += parseInt(element[key]);
         }
@@ -463,10 +467,10 @@ const generateMenarcheBarChart = (parameter, id, labelID, jsonData, chartRow) =>
 
     const data = [
         {
-            x: ["≤12", "13", "14", "15", ">15", "Unknown"],
-            y: [mapReduce(jsonData, 'agemenarche_LE12'), mapReduce(jsonData, 'agemenarche_13'), mapReduce(jsonData, 'agemenarche_14'), mapReduce(jsonData, 'agemenarche_15'), mapReduce(jsonData, 'agemenarche_GT15'), mapReduce(jsonData, 'agemenarcheDK')],
+            x: ["≤12", "13", "14", "15", ">15", "Never", "Unknown"],
+            y: [mapReduce(jsonData, 'agemenarche_LE12'), mapReduce(jsonData, 'agemenarche_13'), mapReduce(jsonData, 'agemenarche_14'), mapReduce(jsonData, 'agemenarche_15'), mapReduce(jsonData, 'agemenarche_GT15'), mapReduce(jsonData, 'agemenarche_777'), mapReduce(jsonData, 'agemenarche_DK')],
             marker:{
-                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe']
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8']
             },
           type: 'bar'
         }
@@ -533,10 +537,15 @@ const generatePregnaciesBarChart = (parameter, id, labelID, jsonData, chartRow) 
     document.getElementById(chartRow).appendChild(div);
     const data = [
         {
-            x: ["0","1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "Unknown"],
-            y: [mapReduce(jsonData, 'parity_0'), mapReduce(jsonData, 'parity_1'), mapReduce(jsonData, 'parity_2'), mapReduce(jsonData, 'parity_3'), mapReduce(jsonData, 'parity_4'), mapReduce(jsonData, 'parity_5'), mapReduce(jsonData, 'parity_6'), mapReduce(jsonData, 'parity_7'), mapReduce(jsonData, 'parity_8'), mapReduce(jsonData, 'parity_9'), mapReduce(jsonData, 'parity_10'), mapReduce(jsonData, 'parity_11'), mapReduce(jsonData, 'parity_12'), mapReduce(jsonData, 'parity_13'), mapReduce(jsonData, 'parity_DK')],
+            x: ["0","1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "Unknown"],
+            y: [mapReduce(jsonData, 'parity_0'), mapReduce(jsonData, 'parity_1'), mapReduce(jsonData, 'parity_2'), mapReduce(jsonData, 'parity_3'), 
+            mapReduce(jsonData, 'parity_4'), mapReduce(jsonData, 'parity_5'), mapReduce(jsonData, 'parity_6'), 
+            mapReduce(jsonData, 'parity_7'), mapReduce(jsonData, 'parity_8'), mapReduce(jsonData, 'parity_9'), 
+            mapReduce(jsonData, 'parity_10'), mapReduce(jsonData, 'parity_11'), mapReduce(jsonData, 'parity_12'), 
+            mapReduce(jsonData, 'parity_13'), mapReduce(jsonData, 'parity_14'), mapReduce(jsonData, 'parity_15'),
+            mapReduce(jsonData, 'parity_16'), mapReduce(jsonData, 'parity_DK')],
             marker:{
-                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8']
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8','#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8']
             },
           type: 'bar'
         }
@@ -544,7 +553,7 @@ const generatePregnaciesBarChart = (parameter, id, labelID, jsonData, chartRow) 
     let total = 0;
     jsonData.forEach((element) => {
         for(const key in element) {
-            if (key.startsWith('parity') && !(key.endsWith('14') || key.endsWith('15') || key.endsWith('16') ))
+            if (key.startsWith('parity')) //&& !(key.endsWith('14') || key.endsWith('15') || key.endsWith('16') ))
                 if(isNaN(parseInt(element[key])) === false)
                 total += parseInt(element[key]);
         }
@@ -617,12 +626,7 @@ const generateYearsDiagBarChart = (parameter, id, labelID, jsonData, chartRow) =
         xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
         yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
         paper_bgcolor: 'rgba(0,0,0,0)',
-        plot_bgcolor: 'rgba(0,0,0,0)',
-        annotations: [
-            {
-                text: 'Sample text'
-            }
-        ]
+        plot_bgcolor: 'rgba(0,0,0,0)'
     };
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
     document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
