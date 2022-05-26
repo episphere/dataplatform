@@ -221,7 +221,7 @@ export const renderAllCharts = (data) => {
     
     let totalSubjects = 0;
     data.forEach(value => totalSubjects += parseInt(value.TotalSubjects))
-    document.getElementById('participantCount').innerHTML = `# of participants: ${totalSubjects}`;
+    document.getElementById('participantCount').innerHTML = `# of participants: ${totalSubjects.toLocaleString('en-US')}`;
     
     generateBirthBarChart('bYear', 'dataSummaryVizChart1', 'dataSummaryVizLabel1', finalData, 'chartRow1');
     generateAgeBarChart('ageInt', 'dataSummaryVizChart2', 'dataSummaryVizLabel2', finalData, 'chartRow1');
@@ -238,7 +238,7 @@ export const renderAllCasesCharts = (data) => {
 
     let totalCases = 0;
     data.forEach(value => totalCases += parseInt(value.TotalCases))
-    document.getElementById('participantCount').innerHTML = `# of participants: ${totalCases}`;
+    document.getElementById('participantCount').innerHTML = `# of participants: ${totalCases.toLocaleString('en-US')}`;
     
     let finalData = {};
     finalData = data;
