@@ -137,6 +137,12 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
             if(activeTab === 'dictionary')
                 link.classList.add('active');
         }
+        if(header === 'Subset Statistics'){
+            link.href =  `#${page}/subset`;
+            if(activeTab === 'subset')
+                link.classList.add('active');
+        }
+
 
         
 

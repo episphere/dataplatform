@@ -30,7 +30,7 @@ export const dataSummary = (pageHeader, showPages, subCases, showUpdateButton, p
                 
                 ${publicAccess ? 
                     pageNavBar('data_exploration', 'dictionary', 'Dictionary') :
-                   pageNavBar('data_exploration', 'summary', 'Summary Statistics', 'Dictionary')
+                   pageNavBar('data_exploration', 'summary', 'Summary Statistics', 'Subset Statistics', 'Dictionary')
 
                 } 
                 
