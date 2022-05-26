@@ -78,10 +78,11 @@ export const dataSummaryStatisticsTemplate = () => {
         <div class="card">
             <div class="card-header align-left card-filter-header">
                 <strong class="side-panel-header font-size-17">Filter</strong>
-                <p id='participantCount'></p>
             </div>
             <div id="cardContent" class="card-body">
                 <div id="allFilters" class="align-left"></div>
+                <p id='participantCount'></p>
+
             </div>
         </div>
     </div>

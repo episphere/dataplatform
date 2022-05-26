@@ -2050,3 +2050,8 @@ form {
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+#participantCount{
+    font-size: 18px;
+
+}
