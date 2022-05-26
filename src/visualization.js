@@ -238,7 +238,7 @@ export const renderAllCasesCharts = (data) => {
 
     let totalCases = 0;
     data.forEach(value => totalCases += parseInt(value.TotalCases))
-    document.getElementById('participantCount').innerHTML = `<b># of Participants:</b> ${totalCases.toLocaleString('en-US')}`;
+    document.getElementById('participantCount').innerHTML = `<b>No. of Participants:</b> ${totalCases.toLocaleString('en-US')}`;
     
     let finalData = {};
     finalData = data;
