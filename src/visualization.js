@@ -150,7 +150,11 @@ const allFilters = (jsonData, headers, caseSelection) => {
 
 const aggegrateData = (jsonData) => {
     let obj = {};
+    // obj['totalSubjects'] = 0;
     jsonData.forEach(value => {
+        // console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
+        
+        // console.log('Total subjects', totalSubjects);
         if(obj[value.consortium] === undefined) obj[value.consortium] = {};
         if(obj[value.consortium]){
             if(obj[value.consortium]['consortiumTotal'] === undefined) obj[value.consortium]['consortiumTotal'] = 0;
@@ -161,7 +165,9 @@ const aggegrateData = (jsonData) => {
             }
             obj[value.consortium][value.study].total += parseInt(value.total);
         }
+        // obj['totalSubjects'] += parseInt(value.TotalSubjects);
     });
+    // document.getElementById('participantCount').innerHTML = `# of participants: ${obj.totalSubjects}`;
     return obj;
 }
 
@@ -212,13 +218,22 @@ export const renderAllCharts = (data) => {
     document.getElementById('chartRow2').innerHTML = '';
     let finalData = {};
     finalData = data;
+    
+    let totalSubjects = 0;
+    data.forEach(value => totalSubjects += parseInt(value.TotalSubjects))
+    document.getElementById('participantCount').innerHTML = `# of participants: ${totalSubjects}`;
+    
     generateBirthBarChart('bYear', 'dataSummaryVizChart1', 'dataSummaryVizLabel1', finalData, 'chartRow1');
     generateAgeBarChart('ageInt', 'dataSummaryVizChart2', 'dataSummaryVizLabel2', finalData, 'chartRow1');
     generateMenarcheBarChart('ageMenarche', 'dataSummaryVizChart3', 'dataSummaryVizLabel3', finalData, 'chartRow1');
     generateParityBarChart('parous', 'dataSummaryVizChart4', 'dataSummaryVizLabel4', finalData, 'chartRow2');
     generatePregnaciesBarChart('parity', 'dataSummaryVizChart5', 'dataSummaryVizLabel5', finalData, 'chartRow2');
     generateBMIBarChart('BMI', 'dataSummaryVizChart6', 'dataSummaryVizLabel6', finalData, 'chartRow2');
-    showParticipants();
+    // showParticipants();
+}
+
+export const showParticipants = (data) => {
+
 }
 
 export const renderAllCasesCharts = (data) => {
@@ -276,25 +291,25 @@ const generateAgeBarChart = (parameter, id, labelID, jsonData, chartRow) => {
           type: 'bar'
         }
     ];
-    let total = 0;
-    total += mapReduce(jsonData, '<20');
-    total += mapReduce(jsonData, '20 to 29');
-    total += mapReduce(jsonData, '30 to 39');
-    total += mapReduce(jsonData, '40 to 49');
-    total += mapReduce(jsonData, '50 to 59');
-    total += mapReduce(jsonData, '60 to 69');
-    total += mapReduce(jsonData, '70 to 79');
-    total += mapReduce(jsonData, '80 to 89');
-    total += mapReduce(jsonData, '90 to 99');
-    total += mapReduce(jsonData, '>99');
-    total += mapReduce(jsonData, 'age_DK');
+    // let total = 0;
+    // total += mapReduce(jsonData, '<20');
+    // total += mapReduce(jsonData, '20 to 29');
+    // total += mapReduce(jsonData, '30 to 39');
+    // total += mapReduce(jsonData, '40 to 49');
+    // total += mapReduce(jsonData, '50 to 59');
+    // total += mapReduce(jsonData, '60 to 69');
+    // total += mapReduce(jsonData, '70 to 79');
+    // total += mapReduce(jsonData, '80 to 89');
+    // total += mapReduce(jsonData, '90 to 99');
+    // total += mapReduce(jsonData, '>99');
+    // total += mapReduce(jsonData, 'age_DK');
 
     const layout = {
         xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
         yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
-        title : total,
+        // title : total,
 
     };
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
@@ -425,27 +440,13 @@ const generateBirthBarChart = (parameter, id, labelID, jsonData, chartRow) => {
         }
     ];
 
-    let total = 0;
-    total += mapReduce(jsonData, 'birth_year_LT1900');
-    total += mapReduce(jsonData, '1900-1909');
-    total += mapReduce(jsonData, '1910-1919');
-    total += mapReduce(jsonData, '1920-1929');
-    total += mapReduce(jsonData, '1930-1939');
-    total += mapReduce(jsonData, '1940-1949');
-    total += mapReduce(jsonData, '1950-1959');
-    total += mapReduce(jsonData, '1960-1969');
-    total += mapReduce(jsonData, '1970-1979');
-    total += mapReduce(jsonData, '1980-1989');
-    total += mapReduce(jsonData, '1990-1999');
-    total += mapReduce(jsonData, 'birth_year_GE2000');
-    total += mapReduce(jsonData, 'birth_year_DK');
 
     const layout = {
         xaxis: {fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
         yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
-        title : total,
+        // title : total,
     };
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
     document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
@@ -456,15 +457,7 @@ const generateMenarcheBarChart = (parameter, id, labelID, jsonData, chartRow) =>
     div.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
     div.innerHTML = dataVisulizationCards({cardHeaderId: labelID, cardBodyId: id});
     document.getElementById(chartRow).appendChild(div);
-    let total = 0;
-    console.log(jsonData);
-    jsonData.forEach((element) => {
-        for(const key in element) {
-            if (key.startsWith('agemenarche'))// && !key.endsWith('777'))
-                if(isNaN(parseInt(element[key])) === false)
-                total += parseInt(element[key]);
-        }
-    } )
+
 
     const data = [
         {
@@ -482,7 +475,7 @@ const generateMenarcheBarChart = (parameter, id, labelID, jsonData, chartRow) =>
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
 
-        title : total,
+        // title : total,
     };
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
     document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
@@ -497,13 +490,13 @@ const generateParityBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     const filteredData = jsonData.map(dt => parseInt(dt['parous_0'])).filter(dt => isNaN(dt) === false );
     let total = 0;
   
-    jsonData.forEach((element) => {
-        for(const key in element) {
-            if (key.startsWith('parous'))
-                if(isNaN(parseInt(element[key])) === false)
-                total += parseInt(element[key]);
-        }
-    } )
+    // jsonData.forEach((element) => {
+    //     for(const key in element) {
+    //         if (key.startsWith('parous'))
+    //             if(isNaN(parseInt(element[key])) === false)
+    //             total += parseInt(element[key]);
+    //     }
+    // } )
 
     const data = [
         {
@@ -525,7 +518,7 @@ const generateParityBarChart = (parameter, id, labelID, jsonData, chartRow) => {
         //         text: total
         //     }
         // ]
-        title : total,
+        // title : total,
     };
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
     document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
@@ -552,20 +545,20 @@ const generatePregnaciesBarChart = (parameter, id, labelID, jsonData, chartRow) 
         }
     ];
     let total = 0;
-    jsonData.forEach((element) => {
-        for(const key in element) {
-            if (key.startsWith('parity')) //&& !(key.endsWith('14') || key.endsWith('15') || key.endsWith('16') ))
-                if(isNaN(parseInt(element[key])) === false)
-                total += parseInt(element[key]);
-        }
-    } )
+    // jsonData.forEach((element) => {
+    //     for(const key in element) {
+    //         if (key.startsWith('parity')) //&& !(key.endsWith('14') || key.endsWith('15') || key.endsWith('16') ))
+    //             if(isNaN(parseInt(element[key])) === false)
+    //             total += parseInt(element[key]);
+    //     }
+    // } )
     const layout = {
         xaxis: {type: 'category', fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
         yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
 
-        title : total,
+        // title : total,
 
     };
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
@@ -587,21 +580,21 @@ const generateBMIBarChart = (parameter, id, labelID, jsonData, chartRow) => {
           type: 'bar'
         }
     ];
-    let total = 0;
-    jsonData.forEach((element) => {
-        for(const key in element) {
-            if (key.startsWith('bmi_'))
-                if(isNaN(parseInt(element[key])) === false)
-                total += parseInt(element[key]);
-        }
-    } )
+    // let total = 0;
+    // jsonData.forEach((element) => {
+    //     for(const key in element) {
+    //         if (key.startsWith('bmi_'))
+    //             if(isNaN(parseInt(element[key])) === false)
+    //             total += parseInt(element[key]);
+    //     }
+    // } )
     const layout = {
         xaxis: {type: 'category', fixedrange: true, automargin: true, tickangle: 45, tickfont: {size : plotTextSize}},
         yaxis: {title:`Count`, fixedrange: true, tickformat:',d', tickfont: {size : plotTextSize}},
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
 
-        title : total,
+        // title : total,
     };
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
     document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;

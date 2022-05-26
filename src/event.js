@@ -1460,7 +1460,7 @@ const filterData = (jsonData, headers) => {
     if (race !== 'all') {
         finalData = finalData.filter(dt => dt['race'] === race);
     }
-
+    
     updateCounts(finalData);
 
     if (array.length > 0) {
@@ -1472,6 +1472,11 @@ const filterData = (jsonData, headers) => {
     //     <span class="font-bold">Genotyping chip: </span>${chipFilter}${selectedStudies.length > 0 ? `
     //     <span class="vertical-line"></span><span class="font-bold">Study: </span>${selectedStudies[0]} ${selectedStudies.length > 1 ? `and <span class="other-variable-count">${selectedStudies.length-1} other</span>`:``}
     // `:``}`
+    let totalSubjects = 0;
+    finalData.forEach(value => {
+        console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
+        totalSubjects += value.TotalSubjects;
+    })
     if (subCases == 'all') {
         renderAllCharts(finalData);
     } else renderAllCasesCharts(finalData);

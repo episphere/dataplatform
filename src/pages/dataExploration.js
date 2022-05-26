@@ -78,6 +78,7 @@ export const dataSummaryStatisticsTemplate = () => {
         <div class="card">
             <div class="card-header align-left card-filter-header">
                 <strong class="side-panel-header font-size-17">Filter</strong>
+                <p id='participantCount'></p>
             </div>
             <div id="cardContent" class="card-body">
                 <div id="allFilters" class="align-left"></div>
@@ -155,6 +156,7 @@ const renderFilter = (data, acceptedVariables, headers, status, studies, ancesto
     <div class="card midset-card">
         <div class="card-header align-left card-filter-header">
             <strong class="side-panel-header">Filter</strong>
+            
         </div>
         <div class="card-body" id="cardContent">
             <div id="midsetFilterData" class="row ethnicity-select align-left"></div>
