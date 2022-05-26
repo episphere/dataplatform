@@ -428,6 +428,7 @@ const renderMidsetHeader = (x, y, id) => {
         y,
         marker: {
             color: '#7F7F7F'
+            //color: '#319fbe'
         }
     }];
 
@@ -480,7 +481,7 @@ const renderMidsetPlot = (x, id) => {
         hoverinfo: 'x',
         orientation: 'h',
         marker: {
-            color: '#ef71a8'
+            color: '#8bc1e8'
         }
     }];
 
