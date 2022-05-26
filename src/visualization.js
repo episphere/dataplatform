@@ -229,16 +229,17 @@ export const renderAllCharts = (data) => {
     generateParityBarChart('parous', 'dataSummaryVizChart4', 'dataSummaryVizLabel4', finalData, 'chartRow2');
     generatePregnaciesBarChart('parity', 'dataSummaryVizChart5', 'dataSummaryVizLabel5', finalData, 'chartRow2');
     generateBMIBarChart('BMI', 'dataSummaryVizChart6', 'dataSummaryVizLabel6', finalData, 'chartRow2');
-    // showParticipants();
-}
-
-export const showParticipants = (data) => {
 
 }
 
 export const renderAllCasesCharts = (data) => {
     document.getElementById('chartRow1').innerHTML = '';
     document.getElementById('chartRow2').innerHTML = '';
+
+    let totalCases = 0;
+    data.forEach(value => totalCases += parseInt(value.TotalCases))
+    document.getElementById('participantCount').innerHTML = `# of participants: ${totalCases}`;
+    
     let finalData = {};
     finalData = data;
     generateYearsDiagBarChart('dxdate_primary', 'dataSummaryVizChart1', 'dataSummaryVizLabel1', finalData, 'chartRow1');
