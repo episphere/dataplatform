@@ -25,7 +25,7 @@ export const dataDictionaryTemplate = async () => {
         <button id="filterBarToggle"><i class="fas fa-lg fa-caret-left"></i></button>
         <div class="main-summary-row pl-2" style="min-height: 10px;margin-bottom: 1rem;">
             <div class="col white-bg div-border align-left font-size-17" style="padding: 0.5rem;" id="listFilters">
-                <span class="font-bold">Data Categories:</span> All
+                <span class="font-bold">Categories:</span> All
             </div>
         </div>
         <div class="main-summary-row pl-2">
@@ -81,8 +81,32 @@ const addEventPageBtns = (pageSize, data, headers) => {
 }
 
 const renderDataDictionaryFilters = (dictionary, headers) => {
-    const allVariableType = Object.values(dictionary).map(dt => dt['Sub-Category']);
-    const uniqueType = allVariableType.filter((d,i) => allVariableType.indexOf(d) === i).sort();
+    var coreArray = Object.values(dictionary).filter( function (el)
+        {
+            return el.Category === 'Core'
+        }
+    );
+    var mamArray = Object.values(dictionary).filter( function (el)
+        {
+            return el.Category === 'Mammographic density'
+        }
+    );
+    var incArray = Object.values(dictionary).filter( function (el)
+        {
+            return el.Category === 'Incident Breast Cancer '
+        }
+    );
+    
+    const coreVariableType = coreArray.map(dt => dt['Sub-Category']);
+    const mamVariableType = mamArray.map(dt => dt['Sub-Category']);
+    const incVariableType = incArray.map(dt => dt['Sub-Category']);
+    //const allVariableType = Object.values(dictionary).map(dt => dt['Sub-Category']);
+    //console.log(Object.values(dictionary));
+    //console.log(newArray);
+    //const uniqueType = allVariableType.filter((d,i) => allVariableType.indexOf(d) === i).sort();
+    const coreuniqueType = coreVariableType.filter((d,i) => coreVariableType.indexOf(d) === i).sort();
+    const mamuniqueType = mamVariableType.filter((d,i) => mamVariableType.indexOf(d) === i).sort();
+    const incuniqueType = incVariableType.filter((d,i) => incVariableType.indexOf(d) === i).sort();
 
     let template = '';
     template += `
@@ -101,10 +125,10 @@ const renderDataDictionaryFilters = (dictionary, headers) => {
     <div class="main-summary-row">
         <div style="width: 100%;">
             <div class="form-group" margin:0px>
-                <label class="filter-label font-size-13" for="variableTypeList">Sub-Category</label>
+                <label class="filter-label font-size-13" for="variableTypeList">Baseline</label>
                 <ul class="remove-padding-left font-size-15 allow-overflow" id="variableTypeList">
                 `
-                uniqueType.forEach(vt => {
+                coreuniqueType.forEach(vt => {
                     template += `
                         <li class="filter-list-item">
                             <input type="checkbox" data-variable-type="${vt}" id="label${vt}" class="select-variable-type" style="margin-left: 1px !important;">
@@ -114,6 +138,35 @@ const renderDataDictionaryFilters = (dictionary, headers) => {
                 })
                 template +=`
                 </ul>
+
+                <label class="filter-label font-size-13" for="variableTypeList">Mammographic density</label>
+                <ul class="remove-padding-left font-size-15 allow-overflow" id="variableTypeList">
+                `
+                mamuniqueType.forEach(vt => {
+                    template += `
+                        <li class="filter-list-item">
+                            <input type="checkbox" data-variable-type="${vt}" id="label${vt}" class="select-variable-type" style="margin-left: 1px !important;">
+                            <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(vt, 60)}</label>
+                        </li>
+                    `
+                })
+                template +=`
+                </ul>
+
+                <label class="filter-label font-size-13" for="variableTypeList">Incident Breast Cancer</label>
+                <ul class="remove-padding-left font-size-15 allow-overflow" id="variableTypeList">
+                `
+                incuniqueType.forEach(vt => {
+                    template += `
+                        <li class="filter-list-item">
+                            <input type="checkbox" data-variable-type="${vt}" id="label${vt}" class="select-variable-type" style="margin-left: 1px !important;">
+                            <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(vt, 60)}</label>
+                        </li>
+                    `
+                })
+                template +=`
+                </ul>
+
             </div>
         </div>
     </div>
@@ -168,9 +221,9 @@ const filterDataHandler = (dictionary) => {
     
     document.getElementById('listFilters').innerHTML = `
     ${variableTypeSelection.length > 0 ? `
-        <span class="font-bold">Sub-Category: </span>${variableTypeSelection[0]} ${variableTypeSelection.length > 1 ? `and <span class="other-variable-count">${variableTypeSelection.length-1} other</span>`:``}
+        <span class="font-bold">Category: </span>${variableTypeSelection[0]} ${variableTypeSelection.length > 1 ? `and <span class="other-variable-count">${variableTypeSelection.length-1} other</span>`:``}
     `:`
-        <span class="font-bold">Sub-Category:</span> All`}
+        <span class="font-bold">Category:</span> All`}
     `;
 
     const input = document.getElementById('searchDataDictionary');
@@ -213,7 +266,7 @@ const renderDataDictionary = (dictionary, pageSize, headers) => {
                 <div class="row">
                     <div class="col-md-4 font-bold">Variable <button class="transparent-btn sort-column" data-column-name="Variable Name"><i class="fas fa-sort"></i></button></div>
                     <div class="col-md-5 font-bold">Label <button class="transparent-btn sort-column" data-column-name="Label"><i class="fas fa-sort"></i></button></div>
-                    <div class="col-md-3 font-bold">Sub-Category <button class="transparent-btn sort-column" data-column-name="Sub-Category"><i class="fas fa-sort"></i></button></div>
+                    <div class="col-md-3 font-bold">Category <button class="transparent-btn sort-column" data-column-name="Sub-Category"><i class="fas fa-sort"></i></button></div>
                 </div>
             </div>
             <div class="ml-auto"></div>
@@ -240,7 +293,7 @@ const renderDataDictionary = (dictionary, pageSize, headers) => {
             </div>
             <div id="study${desc['Variable Name'].replace(/(<b>)|(<\/b>)/g, '')}" class="collapse" aria-labelledby="heading${desc['Variable Name']}">
                 <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
-                    ${desc['Category'] ? `<div class="row mb-1 m-0"><div class="col-md-2 pl-2 font-bold">Category</div><div class="col">${desc['Category']}</div></div>`: ``}
+                    <!---${desc['Category'] ? `<div class="row mb-1 m-0"><div class="col-md-2 pl-2 font-bold">Category</div><div class="col">${desc['Category']}</div></div>`: ``} --->
                     ${desc['Coding'] ? `<div class="row mb-1 m-0"><div class="col-md-2 pl-2 font-bold">Coding</div><div class="col">${desc['Coding']}</div></div>`: ``}
                     ${desc['Variable Type'] ? `<div class="row mb-1 m-0"><div class="col-md-2 pl-2 font-bold">Variable Type</div><div class="col">${desc['Variable Type']}</div></div>`: ``}
                 `;
