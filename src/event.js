@@ -1474,7 +1474,7 @@ const filterData = (jsonData, headers) => {
     // `:``}`
     let totalSubjects = 0;
     finalData.forEach(value => {
-        console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
+        //console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
         totalSubjects += value.TotalSubjects;
     })
     if (subCases == 'all') {
