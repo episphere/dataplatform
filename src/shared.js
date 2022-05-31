@@ -28,7 +28,7 @@ export const daccReviewFolder = 161192245846;
 
 export const chairReviewFolder = 161191639493;
 
-export const finalFolder = 162221886155 //Currently using Temp Folder. Final Folder:161192097034;
+//export const finalFolder = 162221886155 //Currently using Temp Folder. Final Folder:161192097034;
 
 export const acceptedFolder = 162222239448;
 

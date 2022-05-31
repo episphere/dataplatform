@@ -18,7 +18,7 @@ import {
   uploadFormFolder,
   daccReviewFolder,
   chairReviewFolder,
-  finalFolder,
+  //finalFolder,
   assignTask,
   createFileTask,
   getFileInfo,
@@ -503,8 +503,13 @@ export const chairFileView = async () => {
           document.getElementById('boxFilePreview').classList.remove('col-8');
         }
         else {
-          document.getElementById('filePreview').classList.remove('d-block');
-          document.getElementById('filePreview').classList.add('d-none');
+          if (typeof classList === 'undefined') {
+            console.log('No files exist');
+          }
+          else {
+            document.getElementById('filePreview').classList.remove('d-block');
+            document.getElementById('filePreview').classList.add('d-none');
+          }
         }
         
         //Switch Tabs
