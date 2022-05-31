@@ -1582,11 +1582,15 @@ export function switchTabs(show, hide, files) {
                             document.getElementById('daccComment').style.display="block";
                         }
                         if (show == 'completed'){
+                            console.log('did this work?');
                             document.getElementById('daccComment').style.display="none";
                         }
                     } else {
                         boxPreview.classList.remove('d-block');
                         boxPreview.classList.add('d-none');
+                        if (show === 'completed'){
+                            document.getElementById('daccComment').style.display="none";
+                        }
                     }
                 }
 

@@ -431,7 +431,6 @@ export const chairFileView = async () => {
   template += `<div class='tab-pane fade show active' 
                   id='toBeCompleted' role='tabpanel' 
                   aria-labeledby='toBeCompletedTab'> `
-
   template += renderFilePreviewDropdown(filesincomplete, 'toBeCompleted');
 
   template += `<div class='tab-pane fade'
@@ -454,46 +453,46 @@ export const chairFileView = async () => {
             aria-labelledby='deniedTab'>`
   template += renderFilePreviewDropdown(filesdenied, 'denied');
 
-  if (filescompleted.length != 0 || filesinprogress.length != 0 ||
-      filesincomplete.length != 0 || filesaccepted.length != 0 || filesdenied.length !=0) {
-      template += `<div id='filePreview'>
-                    
-                      <div class='row'>
-                        <div id='boxFilePreview' class="col-8 preview-container"></div>
-                        <div id='fileComments' class='col-4 mt-2'></div>
-                      </div>
-                    <div class='row card-body dacc-submit'>
-                      <div id='sendtodaccButton' class="col-6">
-                        <form>
-                          <label for"message">Send to DACC</label>
-                          <div class="input-group">
-                            <textarea id="message" name="message" rows="6" cols="50"></textarea>
-                          </div>
-                          <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
-                            <span class="buttonsubmit__text"> Send </span> </button>
-                        </form>
-                        
-                      </div>
-                      
-                    </div>
-                    <div id='finalChairDecision' class="card-body approvedeny" style="padding-left: 10px;background-color:#f6f6f6; display:none">
-                      <form>
-                        <label for="message">Enter Message for Submitter</label>
-                        <div class="input-group">
-                            <textarea id="message" name="message" rows="6" cols="65"></textarea>
-                        </div>
-                        <button type="submit" class="buttonsubmit" value="approved">
-                          <span class="buttonsubmit__text"> Approve </span></button>
-                        <button type="submit" class="buttonsubmit" value="rejected">
-                          <span class="buttonsubmit__text"> Deny </span></button>
-                      </form>
-                    </div>
+  template += `<div id='filePreview'>`
+  if (filescompleted.length !== 0 || filesinprogress.length !== 0 ||
+      filesincomplete.length !== 0 || filesaccepted.length !== 0 || filesdenied.length !== 0) {
+      template += `
+        <div class='row'>
+          <div id='boxFilePreview' class="col-8 preview-container"></div>
+          <div id='fileComments' class='col-4 mt-2'></div>
+        </div>
 
-                    
-                  </div>
-                </div>
-              `
-  }
+        <div class='row card-body dacc-submit'>
+          <div id='sendtodaccButton' class="col-6">
+            <form>
+              <label for"message">Send to DACC</label>
+              <div class="input-group">
+                <textarea id="message" name="message" rows="6" cols="50"></textarea>
+              </div>
+              <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+                <span class="buttonsubmit__text"> Send </span> </button>
+            </form>
+          </div>
+        </div>
+
+        <div id='finalChairDecision' class="card-body approvedeny" style="padding-left: 10px;background-color:#f6f6f6; display:none">
+          <form>
+            <label for="message">Enter Message for Submitter</label>
+            <div class="input-group">
+                <textarea id="message" name="message" rows="6" cols="65"></textarea>
+            </div>
+            <button type="submit" class="buttonsubmit" value="approved">
+              <span class="buttonsubmit__text"> Approve </span></button>
+            <button type="submit" class="buttonsubmit" value="rejected">
+              <span class="buttonsubmit__text"> Deny </span></button>
+          </form>
+        </div>
+        `};
+  template += `
+      </div>
+    </div>
+    `
+  //};
 
         document.getElementById('chairFileView').innerHTML = template;
         submitToDacc();
@@ -503,13 +502,13 @@ export const chairFileView = async () => {
           document.getElementById('boxFilePreview').classList.remove('col-8');
         }
         else {
-          if (typeof classList === 'undefined') {
-            console.log('No files exist');
-          }
-          else {
+          // if (typeof classList === 'undefined') {
+          //   console.log('No files exist');
+          // }
+          // else {
             document.getElementById('filePreview').classList.remove('d-block');
             document.getElementById('filePreview').classList.add('d-none');
-          }
+          //}
         }
         
         //Switch Tabs
@@ -834,34 +833,44 @@ export const daccFileView = async () => {
                 id='completed' role='tabpanel'
                 aria-labeledby='completedTab'> `
   template += renderFilePreviewDropdown(filescompleted, 'completed');
+  template += `<div id='filePreview'`;
 
   if (filescompleted.length != 0 || filesincomplete.length != 0) {
-    template += `
-    <div id='filePreview'> 
-    <div class='row'>
-      <div id='boxFilePreview' class="col-8 preview-container"></div>
-      <div id='fileComments' class='col-4 mt-2'></div>
-    </div>
-      
-      <div id="daccComment" class="card-body dacc-comment" style="padding-left: 10px;background-color:#f6f6f6;">
-        <form>
-          <label for"message">Submit Comment</label>
-          <div class="input-group">
-            <textarea id="message" name="message" rows="6" cols="65"></textarea>
-          </div>
-          <button type="submit" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
-            <span class="buttonsubmit__text"> Submit & Complete </span> </button>
-        </form>
+    template += ` 
+      <div class='row'>
+        <div id='boxFilePreview' class="col-8 preview-container"></div>
+        <div id='fileComments' class='col-4 mt-2'></div>
       </div>
-  </div>`;
-  }
+
+      <div id="daccComment" class="card-body dacc-comment" style="padding-left: 10px;background-color:#f6f6f6;">
+          <form>
+            <label for"message">Submit Comment</label>
+            <div class="input-group">
+              <textarea id="message" name="message" rows="6" cols="65"></textarea>
+            </div>
+            <button type="submit" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+              <span class="buttonsubmit__text"> Submit & Complete </span> </button>
+          </form>
+      </div>`
+    }
+    template += `
+      </div>
+    </div>
+    </div>
+    </div>`
+  //}
   document.getElementById('daccFileView').innerHTML = template;
   if (filesincomplete.length != 0) {
     showPreview(filesincomplete[0].id);
     showComments(filesincomplete[0].id);
   } else {
-    document.getElementById('filePreview').classList.remove('d-block');
-    document.getElementById('filePreview').classList.add('d-none');
+    // if (typeof classList === 'undefined') {
+    //   console.log('No files exist');
+    // }
+    // else {
+      document.getElementById('filePreview').classList.remove('d-block');
+      document.getElementById('filePreview').classList.add('d-none');
+    //}
   };
 
   submitToComment();
