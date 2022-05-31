@@ -1589,7 +1589,9 @@ export function switchTabs(show, hide, files) {
                         boxPreview.classList.remove('d-block');
                         boxPreview.classList.add('d-none');
                         if (show === 'completed'){
-                            document.getElementById('daccComment').style.display="none";
+                            if(document.getElementById('daccComment')){
+                                document.getElementById('daccComment').style.display="none";
+                            }
                         }
                     }
                 }
