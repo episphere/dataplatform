@@ -12,7 +12,7 @@ export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov'
 
 export const emailforChair = ['roger.milne@cancervic.org.au', 'kopchickbp@nih.gov', 'wraynr@nih.gov'] //'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
 
-export const emailforDACC = ['mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov', 'garciacm@nih.gov']//,'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov', 'garciacm@nih.gov'] //'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov']
+export const emailforDACC = ['mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov', 'garciacm@nih.gov', 'kopchickbp@nih.gov']//,'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov', 'garciacm@nih.gov'] //'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov']
 
 export const publicDataFileId = 697309514903; //Unknown
 
