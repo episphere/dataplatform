@@ -10,9 +10,9 @@ import {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-export const emailforChair = ['ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov'] //'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
+export const emailforChair = ['ahearntu@nih.gov', 'Roger.Milne@cancervic.org.au', 'kopchickbp@nih.gov', 'wraynr@nih.gov'] //'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
 
-export const emailforDACC = ['mukopadhyays2@nih.gov'] //'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov']
+export const emailforDACC = ['troisir@nih.gov', 'gaudetmm@nih.gov', 'garciacm@nih.gov','ahearntu@nih.gov', 'kopchickbp@nih.gov']//,'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov', 'garciacm@nih.gov'] //'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov']
 
 export const publicDataFileId = 697309514903; //Unknown
 
@@ -28,7 +28,7 @@ export const daccReviewFolder = 161192245846;
 
 export const chairReviewFolder = 161191639493;
 
-export const finalFolder = 162221886155 //Currently using Temp Folder. Final Folder:161192097034;
+//export const finalFolder = 162221886155 //Currently using Temp Folder. Final Folder:161192097034;
 
 export const acceptedFolder = 162222239448;
 

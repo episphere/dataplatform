@@ -81,13 +81,18 @@ export const dataSummaryStatisticsTemplate = () => {
             </div>
             <div id="cardContent" class="card-body">
                 <div id="allFilters" class="align-left"></div>
-                <p id='participantCount'></p>
-
+                <!---<p id='participantCount'></p>--->
             </div>
         </div>
     </div>
     <div class="col-xl-10 padding-right-zero" id="summaryStatsCharts">
         <button id="filterBarToggle"><i class="fas fa-lg fa-caret-left"></i></button>
+        <div class="main-summary-row pl-2" style="min-height: 10px;margin-bottom: 1rem;">
+            <div class="col white-bg div-border align-left font-size-17" style="padding: 0.5rem;" id="participantCount">
+                <p id='participantCount'></p>
+            </div>
+        </div>
+
         <div class="main-summary-row" id="chartRow1"></div>
         <div class="main-summary-row" id="chartRow2"></div>
 
@@ -423,6 +428,7 @@ const renderMidsetHeader = (x, y, id) => {
         y,
         marker: {
             color: '#7F7F7F'
+            //color: '#319fbe'
         }
     }];
 
@@ -475,7 +481,7 @@ const renderMidsetPlot = (x, id) => {
         hoverinfo: 'x',
         orientation: 'h',
         marker: {
-            color: '#ef71a8'
+            color: '#8bc1e8'
         }
     }];
 

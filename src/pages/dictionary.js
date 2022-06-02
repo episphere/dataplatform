@@ -101,8 +101,6 @@ const renderDataDictionaryFilters = (dictionary, headers) => {
     const mamVariableType = mamArray.map(dt => dt['Sub-Category']);
     const incVariableType = incArray.map(dt => dt['Sub-Category']);
     //const allVariableType = Object.values(dictionary).map(dt => dt['Sub-Category']);
-    //console.log(Object.values(dictionary));
-    //console.log(newArray);
     //const uniqueType = allVariableType.filter((d,i) => allVariableType.indexOf(d) === i).sort();
     const coreuniqueType = coreVariableType.filter((d,i) => coreVariableType.indexOf(d) === i).sort();
     const mamuniqueType = mamVariableType.filter((d,i) => mamVariableType.indexOf(d) === i).sort();

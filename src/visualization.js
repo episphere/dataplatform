@@ -226,7 +226,7 @@ export const renderAllCharts = (data) => {
     
     let totalSubjects = 0;
     data.forEach(value => totalSubjects += parseInt(value.TotalSubjects))
-    document.getElementById('participantCount').innerHTML = `# of participants: ${totalSubjects.toLocaleString('en-US')}`;
+    document.getElementById('participantCount').innerHTML = `<b>No. of Participants:</b> ${totalSubjects.toLocaleString('en-US')}`;
     
     generateBirthBarChart('bYear', 'dataSummaryVizChart1', 'dataSummaryVizLabel1', finalData, 'chartRow1');
     generateAgeBarChart('ageInt', 'dataSummaryVizChart2', 'dataSummaryVizLabel2', finalData, 'chartRow1');
@@ -243,7 +243,7 @@ export const renderAllCasesCharts = (data) => {
 
     let totalCases = 0;
     data.forEach(value => totalCases += parseInt(value.TotalCases))
-    document.getElementById('participantCount').innerHTML = `# of participants: ${totalCases.toLocaleString('en-US')}`;
+    document.getElementById('participantCount').innerHTML = `<b>No. of Participants:</b> ${totalCases.toLocaleString('en-US')}`;
     
     let finalData = {};
     finalData = data;
@@ -473,10 +473,10 @@ const generateMenarcheBarChart = (parameter, id, labelID, jsonData, chartRow) =>
 
     const data = [
         {
-            x: ["≤12", "13", "14", "15", ">15", "Never", "Unknown"],
-            y: [mapReduce(jsonData, 'agemenarche_LE12'), mapReduce(jsonData, 'agemenarche_13'), mapReduce(jsonData, 'agemenarche_14'), mapReduce(jsonData, 'agemenarche_15'), mapReduce(jsonData, 'agemenarche_GT15'), mapReduce(jsonData, 'agemenarche_777'), mapReduce(jsonData, 'agemenarche_DK')],
+            x: ["≤12", "13", "14", "15", ">15", "Unknown"],
+            y: [mapReduce(jsonData, 'agemenarche_LE12'), mapReduce(jsonData, 'agemenarche_13'), mapReduce(jsonData, 'agemenarche_14'), mapReduce(jsonData, 'agemenarche_15'), mapReduce(jsonData, 'agemenarche_GT15'), mapReduce(jsonData, 'agemenarche_777') + mapReduce(jsonData, 'agemenarche_DK')],
             marker:{
-                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8']
+                color: ['#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe', '#8bc1e8', '#319fbe']
             },
           type: 'bar'
         }

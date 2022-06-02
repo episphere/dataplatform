@@ -1474,7 +1474,7 @@ const filterData = (jsonData, headers) => {
     // `:``}`
     let totalSubjects = 0;
     finalData.forEach(value => {
-        console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
+        //console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
         totalSubjects += value.TotalSubjects;
     })
     if (subCases == 'all') {
@@ -1582,11 +1582,17 @@ export function switchTabs(show, hide, files) {
                             document.getElementById('daccComment').style.display="block";
                         }
                         if (show == 'completed'){
+                            console.log('did this work?');
                             document.getElementById('daccComment').style.display="none";
                         }
                     } else {
                         boxPreview.classList.remove('d-block');
                         boxPreview.classList.add('d-none');
+                        if (show === 'completed'){
+                            if(document.getElementById('daccComment')){
+                                document.getElementById('daccComment').style.display="none";
+                            }
+                        }
                     }
                 }
 
