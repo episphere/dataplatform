@@ -900,6 +900,7 @@ export async function showComments(id) {
         const time = comment_date.toLocaleTimeString()
         template += `<div class='w-100 mb-1 p-2'>
       <h6 class='text-primary small mb-0'>${comment.created_by.name}</h6>
+      
       <p class='align-left mb-0 text-justify w-90'>${comment.message}</p>
       <div class='d-flex'>
         <p class='small mb-0 font-weight-light align-right'>${date} at ${time}</p>
