@@ -1,37 +1,61 @@
+
 //create chart objects
-bChart = dc.barChart('#dcPlot');
-var chart = document.getElementById('dcPlot');
+ethnicityChart = dc.rowChart('#ethnicityChart'), 
+    raceChart = dc.rowChart('#raceChart'),
+    birthYearChart = dc.barChart('#birthYearChart')
+;
+// var chart = document.getElementById('dcPlot');
 //load the data
-const data = d3.csv('Pilot - BCRP_Summary_Results_AllSubjects_Edited.csv');
+const data = d3.csv('summaryStats.csv').then(data => {
+
 //create crossfilters
-
-const crossdata = crossfilter(data);
-const all = crossdata.groupAll();
+const ndx = crossfilter(data);
 console.log(data);
+const all = ndx.groupAll();
+console.log(all.value());
 
-const subjectsDimension = crossdata.dimension(d => d.TotalSubjects);
-const groupBySubjects = subjectsDimension.group().reduceSum(d => d.TotalSubjects / 100);
-const ethnicityDimension = crossdata.dimension(d => d.ethnicity);
+//Dimensions and groups
+// const subjectsDim = ndx.dimension(d => d.TotalSubjects);
+// const totalSubjectsGroup = subjectsDim.group();//.reduceSum(d => d.TotalSubjects / 100);
+
+//Race dimension and group
+const raceDim = ndx.dimension(d => d.race);
+const raceGroup = raceDim.group();
+
+//Birth Year dimension and group
+const birthYearDim = ndx.dimension(d => {
+    for( const [key, value] of Object.entries(d)) {
+        if (key.startsWith('birth_year_'))
+            return value;
+    } 
+
+});
+const birthYearGroup = birthYearDim.group();
+
+const ethnicityDim = ndx.dimension(d => d.ethnicity);
+const ethnicityGroup = ethnicityDim.group(); 
 
 
 //Define chart attributes
-bChart.width(800)
-.height(500)
-.group(groupBySubjects)
-.x(d3.scaleLinear().domain([0,10]))
-.dimension(ethnicityDimension)
-.centerBar(true)
-.gap(2)
-.yAxis().ticks(1000000);
 
-bChart.turnOnControls(true);
+ethnicityChart
+.dimension(ethnicityDim)
+.group(ethnicityGroup);
+// // .group(groupBySubjects)
+// .x(d3.scaleLinear().domain([0,100]))
+// .centerBar(true)
+// .gap(2)
 
+raceChart
+.dimension(raceDim)
+.group(raceGroup);
 
-
-
-
-
-
+birthYearChart
+.dimension(birthYearDim)
+.group(birthYearGroup)
+.x(d3.scaleLinear().domain([0,6]).range(['1900', '1999']))
+;
 
 dc.renderAll();
+});
 
