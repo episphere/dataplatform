@@ -855,8 +855,6 @@ export const daccFileView = async () => {
     }
     template += `
       </div>
-    </div>
-    </div>
     </div>`
   //}
   document.getElementById('daccFileView').innerHTML = template;
