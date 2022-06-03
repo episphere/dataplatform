@@ -47,16 +47,16 @@
 
 <body>
     <pre id="data" style="display: none;">
-        race, ethinicity, study, totalSubjects
-        Black, Latino, CTS, 12001
-        Black, Non-Hispanic, CTS, 211
-        Asian-American, Non-Hispanic, CTS, 5463
-        White, Latino, NDS, 27601
-        Black, Latino, CIKS, 21211
-        Asian, Latino, NDS, 642
-        Unknown, Latino, NDS, 2131
-        White, Non-Hispanic, MIS, 25402
-        Pacific-Islander, Latino, NSS, 2101
+        race, ethinicity, study, birth_year_LT1900, birth_year_1900_1909, birth_year_1910_1919, birth_year_1920_1929, birth_year_1930_1939
+        Black, Latino, CTS, 1201, 2021,286, 3,55
+        Black, Non-Hispanic, CTS, 12, ,234, 3,34
+        Asian-American, Non-Hispanic, CTS, 121, 29,12, 21,19
+        White, Latino, NDS, 3, 42,392, 3,64
+        Black, Latino, CIKS, , 26,32, 3,56
+        Asian, Latino, NDS, 12, 234, , 23,31
+        Unknown, Latino, NDS, 201, 27,42, ,9
+        White, Non-Hispanic, MIS, 11,6,52, 13,86
+        Pacific-Islander, Latino, NSS, 121, 21,28, 13,5
     </pre>
     <div id="birthYearChart">
         <span class='reset' style='visibility: hidden;'>
@@ -66,4 +66,4 @@
     <div id="raceChart"></div>
     <div id="ethnicityChart"></div>
 </body>
-<script src="dcPlot.js"></script>
+<script type='module' src="dcPlot.js"></script>
