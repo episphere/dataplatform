@@ -11,13 +11,11 @@ const g = d3.select("body").append("svg")
 
 
 //create chart objects
-// ethnicityChart = dc.rowChart('#ethnicityChart'), 
-//     raceChart = dc.rowChart('#raceChart'),
-const birthYearChart = dc.rowChart('#birthYearChart')
-;
-// var chart = document.getElementById('dcPlot');
-let birthYears = [
-    'birth_year_LT1900', 
+const birthYearChart = dc.barChart('#birthYearChart');
+
+//Birth Year array
+const birthYears = [
+    // 'birth_year_LT1900', 
     'birth_year_1900_1909',
     'birth_year_1910_1919',
     'birth_year_1920_1929',
@@ -28,31 +26,51 @@ let birthYears = [
     'birth_year_1970_1979',
     'birth_year_1980_1989',
     'birth_year_1990_1999',
-    'birth_year_GE2000',
-    'birth_year_DK',
+    // 'birth_year_GE2000',
+    // 'birth_year_DK',
 ];
 //load the data
+
 // Get birthYeardata
 var birthYear = [];
+
+
 
 d3.csv('summaryStats.csv').then(data => {
 console.log(data);
 birthYears.forEach(year => {
-    let temp = {};
-    const filteredData = data.map(d => parseInt(d[year])).filter(dt => isNaN(dt) === false);
-    if (filteredData.length > 0) {
-        temp[year] = filteredData.reduce((a, b) => a + b);
-        birthYear.push(temp);
-    
-    }
-    else { 
-    temp[year] = 0;
-    birthYear.push(temp);;
-    }
-
+            
+            data.map(d => {
+                const temp = {};
+                temp['year'] = year.split('_')[2];
+                console.log(year, d[year] );
+                temp['value'] = d[year];
+                birthYear.push(temp);
+                console.log(birthYear);
+            })
 });
+// birthYears.forEach(year => {
+//     let temp = {};
 
+    // const filteredData = data.map(d => parseInt(d[year])).filter(dt => isNaN(dt) === false);
+    // if (filteredData.length > 0) {
+    //     temp[year] = filteredData.reduce((a, b) => a + b);
+    //     birthYear.push(temp);
+    
+    // }
+    // else { 
+    // temp[year] = 0;
+    // birthYear.push(temp);;
+    // }
+
+// });
+
+birthYear.forEach(d => {
+    d.value = +d.value;
+    d.year = new Date(d.year, 1, 1);
+  });
 console.log(birthYear);
+
 
 //Create crossfilter
 const ndx = crossfilter(birthYear);
@@ -60,20 +78,27 @@ console.log(data);
 const all = ndx.groupAll();
 console.log(all.value());
 
-const birthYearDim = ndx.dimension('birth_year_DK');
-const birthYearGroup = birthYearDim.group();
+const birthYearDim = ndx.dimension(d => d.year.getFullYear());
+const birthYearSumGroup = birthYearDim.group().reduceSum(d => d.value);
 
 const x = d3.scaleLinear().domain([1900, 1999]).range([0, width]);
 let xAxis = d3.axisBottom(x);
 birthYearChart
 .dimension(birthYearDim)
-.group(birthYearGroup)
-// .y(d3.scaleLinear().range([900000, 0]))
-// .x(d3.scaleLinear().domain(['1900', '1999']).range([0, width]));
-
-//const y = d3.scaleLinear().range([d3.max(data.map(d => d.birthYear))])
-
+.group(birthYearSumGroup)
+.y(d3.scaleLinear().domain([0, 200000]))//d3.max(birthYear, d => {
+    // return d.value
+// })]))
+.x(d3.scaleTime().domain(([d3.min(birthYear, d => d.year.getFullYear()), d3.max(birthYear, d => d.year.getFullYear())])))
+.xAxisLabel("Year")
+.yAxisLabel("Total Participants")
+.elasticX(true)
+.brushOn(true)
+.height(800)
+.width(1200)
+.turnOnControls(true)
 ;
+
 
 dc.renderAll();
 });
