@@ -10,9 +10,9 @@ import {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-export const emailforChair = ['wraynr@nih.gov','ahearntu@nih.gov', 'Roger.Milne@cancervic.org.au', 'kopchickbp@nih.gov', 'wraynr@nih.gov'] //'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
+export const emailforChair = ['wraynr@nih.gov', 'ahearntu@nih.gov', 'Roger.Milne@cancervic.org.au', 'kopchickbp@nih.gov', 'wraynr@nih.gov'] //'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
 
-export const emailforDACC = ['wraynr@nih.gov',]//'troisir@nih.gov', 'gaudetmm@nih.gov', 'garciacm@nih.gov','ahearntu@nih.gov', 'kopchickbp@nih.gov']//,'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov', 'garciacm@nih.gov'] //'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov']
+export const emailforDACC = ['wraynr@nih.gov', ] //'troisir@nih.gov', 'gaudetmm@nih.gov', 'garciacm@nih.gov','ahearntu@nih.gov', 'kopchickbp@nih.gov']//,'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov', 'garciacm@nih.gov'] //'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov']
 
 export const publicDataFileId = 697309514903; //Unknown
 
@@ -173,13 +173,13 @@ export const getFileVersions = async (id) => {
 
 export const storeAccessToken = async () => {
     let parms = searchParms();
-    if(parms.code){
+    if (parms.code) {
         //exchange code for authorization token
-        let clt={}
-        if(location.origin.indexOf('episphere') !== -1) clt = config.iniAppDev;
-        else if(location.origin.indexOf('localhost') !== -1) clt = config.iniAppLocal;
-        else if(location.origin.indexOf(applicationURLs.stage) !== -1) clt = config.iniAppStage;
-        else if(location.origin.indexOf(applicationURLs.prod) !== -1) clt = config.iniAppProd;
+        let clt = {}
+        if (location.origin.indexOf('episphere') !== -1) clt = config.iniAppDev;
+        else if (location.origin.indexOf('localhost') !== -1) clt = config.iniAppLocal;
+        else if (location.origin.indexOf(applicationURLs.stage) !== -1) clt = config.iniAppStage;
+        else if (location.origin.indexOf(applicationURLs.prod) !== -1) clt = config.iniAppProd;
         document.getElementById('confluenceDiv').innerHTML = '';
 
         var myHeaders = new Headers();
@@ -193,45 +193,45 @@ export const storeAccessToken = async () => {
         urlencoded.append("code", parms.code);
 
         var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: urlencoded,
-        redirect: 'follow'
+            method: 'POST',
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: 'follow'
         };
-        
+
         console.log('Auth code: ', parms.code);
         const response = await fetch("https://api.box.com/oauth2/token", requestOptions)
-            // .then(response => response.json())
-            // .then(result => console.log(result))
-            // .catch(error => console.log('error', error));
+        // .then(response => response.json())
+        // .then(result => console.log(result))
+        // .catch(error => console.log('error', error));
         if (response.status === 400) {
-            window.history.replaceState({},'', './#home');
+            window.history.replaceState({}, '', './#home');
             console.log('exited with 400');
             console.log(await response.json());
             //console.log(await response.json());
         }
-//         let url = `https://api.box.com/oauth2/token`;
-        
-//         const response = await fetch(url, {
-//             headers: {
-//                 'Content-Type': 'application/x-www-form-urlencoded'
-//             },
-//             method:'POST',
-//             body: `grant_type=authorization_code&code=${parms.code}&client_id=${clt.client_id}&client_secret=${clt.server_id}`
-//         });
-        if(response.status && response.status === 200) {
+        //         let url = `https://api.box.com/oauth2/token`;
+
+        //         const response = await fetch(url, {
+        //             headers: {
+        //                 'Content-Type': 'application/x-www-form-urlencoded'
+        //             },
+        //             method:'POST',
+        //             body: `grant_type=authorization_code&code=${parms.code}&client_id=${clt.client_id}&client_secret=${clt.server_id}`
+        //         });
+        if (response.status && response.status === 200) {
             localStorage.parms = JSON.stringify(await response.json());
-            window.history.replaceState({},'', './#home');
+            window.history.replaceState({}, '', './#home');
             confluence();
             document.getElementById('loginBoxAppDev').hidden = true;
             document.getElementById('loginBoxAppStage').hidden = true;
             document.getElementById('loginBoxAppEpisphere').hidden = true;
             document.getElementById('loginBoxAppProd').hidden = true;
         }
-    }else{
-        if(localStorage.parms){
-            confluence.parms=JSON.parse(localStorage.parms)
-            if(confluence.parms.access_token === undefined){
+    } else {
+        if (localStorage.parms) {
+            confluence.parms = JSON.parse(localStorage.parms)
+            if (confluence.parms.access_token === undefined) {
                 localStorage.clear();
                 alert('access token not found, please contact system administrator')
             }
@@ -274,7 +274,7 @@ export const storeAccessToken = async () => {
 //                 document.getElementById('loginBoxAppEpisphere').hidden = true;
 //                 document.getElementById('loginBoxAppProd').hidden = true;
 //             }
-       
+
 //         } catch(err){
 //         console.log('HTTP error on token fetch', err);
 //         }
@@ -913,11 +913,8 @@ export async function showComments(id) {
                 <div>
                     <input type='checkbox' name='comments' id='${comment.id}' class='mb-0'>
                 </div>
-            </div>
-
-            <div class='row'>
                 <div class=''>
-                    <p class='my-0'>${comment.message}</p>
+                    <p class='my-0' id='comment${comment.id}'>${comment.message}</p>
                 </div>
             </div>
 
@@ -927,24 +924,39 @@ export async function showComments(id) {
             <hr class='my-1'>
         </div>
         `
-    //     template += `<div class='w-100 mb-1 p-2'>
-    //   <h6 class='text-primary small mb-0'>${comment.created_by.name}</h6>
-      
-      
-    //   <p class='align-left mb-0 text-justify w-90'>${comment.message}</p>
-    //   <div class='d-flex'>
-    //     <p class='small mb-0 font-weight-light align-right'>${date} at ${time}</p>
-    //   </div>  
-    //   </div>
+        //     template += `<div class='w-100 mb-1 p-2'>
+        //   <h6 class='text-primary small mb-0'>${comment.created_by.name}</h6>
 
-    //   <hr class='m-1'>
-      
-    //   `
+
+        //   <p class='align-left mb-0 text-justify w-90'>${comment.message}</p>
+        //   <div class='d-flex'>
+        //     <p class='small mb-0 font-weight-light align-right'>${date} at ${time}</p>
+        //   </div>  
+        //   </div>
+
+        //   <hr class='m-1'>
+
+        //   `
 
     }
     template += '</ul>'
     commentSection.innerHTML = template;
+    console.log(JSON.parse(localStorage.parms).login);
+    if (emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1) {
+        for (const comment of comments) {
+            document.getElementById(comment.id).addEventListener('change', copyCommentToClipboard);
+        }
+    }
     return;
+
+}
+
+function copyCommentToClipboard(e) {
+    const commentMsg = document.getElementById('comment' + e.target.id).innerText;
+  
+     /* Copy the text inside the text field */
+    navigator.clipboard.writeText(commentMsg);
+  
 
 }
 
