@@ -10,9 +10,9 @@ import {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-export const emailforChair = ['ahearntu@nih.gov', 'Roger.Milne@cancervic.org.au', 'kopchickbp@nih.gov', 'wraynr@nih.gov'] //'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
+export const emailforChair = ['wraynr@nih.gov','ahearntu@nih.gov', 'Roger.Milne@cancervic.org.au', 'kopchickbp@nih.gov', 'wraynr@nih.gov'] //'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
 
-export const emailforDACC = ['troisir@nih.gov', 'gaudetmm@nih.gov', 'garciacm@nih.gov','ahearntu@nih.gov', 'kopchickbp@nih.gov']//,'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov', 'garciacm@nih.gov'] //'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov']
+export const emailforDACC = ['wraynr@nih.gov',]//'troisir@nih.gov', 'gaudetmm@nih.gov', 'garciacm@nih.gov','ahearntu@nih.gov', 'kopchickbp@nih.gov']//,'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov', 'garciacm@nih.gov'] //'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov']
 
 export const publicDataFileId = 697309514903; //Unknown
 
@@ -893,23 +893,53 @@ export async function showComments(id) {
     let comments = JSON.parse(response).entries;
 
     //console.log(comments);
-    let template = "<ul class='align-left'>Comments";
+    let template = `
+    <div class='comments'>
+    Comments
+    <div class='align-left'>`;
     for (const comment of comments) {
         const comment_date = new Date(comment.created_at);
-        const date = comment_date.toLocaleDateString()
-        const time = comment_date.toLocaleTimeString()
-        template += `<div class='w-100 mb-1 p-2'>
-      <h6 class='text-primary small mb-0'>${comment.created_by.name}</h6>
-      
-      <p class='align-left mb-0 text-justify w-90'>${comment.message}</p>
-      <div class='d-flex'>
-        <p class='small mb-0 font-weight-light align-right'>${date} at ${time}</p>
-      </div>  
-      </div>
+        const date = comment_date.toLocaleDateString();
+        const time = comment_date.toLocaleTimeString();
+        console.log('Comment', comment);
+        template += `
+        <div class='container-fluid'>
+            <div class='row'>
+                <div>
+                    <p class='text-primary small mb-0 align-left'>${comment.created_by.name}</p>
+                </div>
+                <div class='col-8'>
+                </div>
+                <div>
+                    <input type='checkbox' name='comments' id='${comment.id}' class='mb-0'>
+                </div>
+            </div>
 
-      <hr class='m-1'>
+            <div class='row'>
+                <div class=''>
+                    <p class='my-0'>${comment.message}</p>
+                </div>
+            </div>
+
+            <div class='row'>
+                <p class='small mb-0 font-weight-light'>${date} at ${time}</p>
+            </div>
+            <hr class='my-1'>
+        </div>
+        `
+    //     template += `<div class='w-100 mb-1 p-2'>
+    //   <h6 class='text-primary small mb-0'>${comment.created_by.name}</h6>
       
-      `
+      
+    //   <p class='align-left mb-0 text-justify w-90'>${comment.message}</p>
+    //   <div class='d-flex'>
+    //     <p class='small mb-0 font-weight-light align-right'>${date} at ${time}</p>
+    //   </div>  
+    //   </div>
+
+    //   <hr class='m-1'>
+      
+    //   `
 
     }
     template += '</ul>'
