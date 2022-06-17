@@ -17,6 +17,7 @@ import {
   emailforDACC,
   uploadFormFolder,
   daccReviewFolder,
+  daccReviewChairFolder,
   chairReviewFolder,
   //finalFolder,
   assignTask,
@@ -670,8 +671,8 @@ export const commentApproveReject = () => {
     } else if (decision =='rejected') {
       await moveFile(fileId, deniedFolder);
       console.log("File moved to denied folder");
-    } else if (decision =='review') {
-      await moveFile(fileId, daccReviewFolder);
+    } else if (decision =='daccReview') {
+      await moveFile(fileId, daccReviewChairFolder);
       console.log('File moved to Dacc Review folder');
     }
 
