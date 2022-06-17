@@ -895,31 +895,31 @@ export async function showComments(id) {
     let template = `
     <div class='comments'>
     Comments
-    <div class='align-left'>`;
+    <div class='container-fluid'>`;
     for (const comment of comments) {
         const comment_date = new Date(comment.created_at);
         const date = comment_date.toLocaleDateString();
         const time = comment_date.toLocaleTimeString();
         console.log('Comment', comment);
         template += `
-        <div class='container-fluid'>
+        <div>
             <div class='row'>
-                <div>
+                <div class='col-8 p-0'>
                     <p class='text-primary small mb-0 align-left'>${comment.created_by.name}</p>
                 </div>
-                <div class='col-8'/>
-            </div>`;
+            `;
         if(document.getElementById('finalChairDecision').style.display === "block"){
                 template += `
-                <div>
+                <div class='col-4'>
                     <input type='checkbox' name='comments' id='${comment.id}' class='mb-0'>
                 </div>
+                
                 `;
             }
             template +=`    
-            <div>
+            </div>
+            <div class='row'>
                     <p class='my-0' id='comment${comment.id}'>${comment.message}</p>
-                </div>
             </div>
 
             <div class='row'>
