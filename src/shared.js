@@ -907,8 +907,8 @@ export async function showComments(id) {
                 <div>
                     <p class='text-primary small mb-0 align-left'>${comment.created_by.name}</p>
                 </div>
-                <div class='col-8'>
-                </div>`;
+                <div class='col-8'/>
+            </div>`;
         if(document.getElementById('finalChairDecision').style.display === "block"){
                 template += `
                 <div>
@@ -917,7 +917,7 @@ export async function showComments(id) {
                 `;
             }
             template +=`    
-            <div class=''>
+            <div>
                     <p class='my-0' id='comment${comment.id}'>${comment.message}</p>
                 </div>
             </div>
