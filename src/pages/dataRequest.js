@@ -706,16 +706,14 @@ export const commentApproveReject = () => {
     };
     //console.log(cpFileId);
     await createComment(cpFileId, 'This file was ' + decision); 
-    const response = await listComments(fileId);
-    let comments = JSON.parse(response).entries;
-    let commentNum = 0;
-    for(const comment of comments){
-      const message = comment.message;
-      // console.log(message);
-      // console.log(cpFileId.id);
-      await createComment(cpFileId, `DACC Member ${commentNum}: ${message}`);
-      commentNum += 1;
-    }
+    await createComment(cpFileId, message);
+    // for(const comment of comments){
+    //   const message = comment.message;
+    //   // console.log(message);
+    //   // console.log(cpFileId.id);
+    //   await createComment(cpFileId, `DACC Member ${commentNum}: ${message}`);
+    //   commentNum += 1;
+    // }
     
     document.location.reload(true);
   }
