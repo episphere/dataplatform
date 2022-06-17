@@ -703,6 +703,28 @@ export const updateBoxCollaborator = async (id, role) => {
     }
 }
 
+export const deleteTask = async (taskId) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0//tasks/${taskId}`, {
+            method: 'DEL',
+            headers: {
+                Authorization: "Bearer " + access_token,
+            }
+        })
+
+        if (response.status === 401) {
+            if ((await refreshToken()) === true) return await getTaskList(taskId);
+        }
+        if (response.status === 200) {
+            return response.json();
+        } else {
+            return null;
+        }
+    } catch (err) {
+        if ((await refreshToken()) === true) return await deleteTask(taskId);
+    }
+}
 export const getTaskList = async (id) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;

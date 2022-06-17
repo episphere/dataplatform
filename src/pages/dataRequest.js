@@ -34,7 +34,8 @@ import {
   copyFile,
   submitterFolder,
   listComments,
-  addNewCollaborator
+  addNewCollaborator,
+  deleteTask
 } from '../shared.js';
 import {
   addEventToggleCollapsePanelBtn
@@ -604,6 +605,8 @@ export const chairFileView = async () => {
         switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted', 'denied'], filesaccepted);
         switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
         
+        // const tasks = await getTaskList('972355868060');
+        // console.log(tasks.entries);
         
         hideAnimation();
       }
@@ -672,6 +675,7 @@ export const commentApproveReject = () => {
       await moveFile(fileId, deniedFolder);
       console.log("File moved to denied folder");
     } else if (decision =='daccReview') {
+      // await deleteTask()
       await moveFile(fileId, daccReviewChairFolder);
       console.log('File moved to Dacc Review folder');
     }
