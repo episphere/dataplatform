@@ -518,6 +518,7 @@ export const chairFileView = async () => {
         switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted', 'denied'], filesaccepted);
         switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
         
+        
         hideAnimation();
       }
 

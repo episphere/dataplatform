@@ -892,7 +892,6 @@ export async function showComments(id) {
 
     let comments = JSON.parse(response).entries;
 
-    //console.log(comments);
     let template = `
     <div class='comments'>
     Comments
@@ -939,24 +938,32 @@ export async function showComments(id) {
         //   `
 
     }
-    template += '</ul>'
-    commentSection.innerHTML = template;
-    console.log(JSON.parse(localStorage.parms).login);
-    if (emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1) {
-        for (const comment of comments) {
-            document.getElementById(comment.id).addEventListener('change', copyCommentToClipboard);
-        }
+    template += '</div>'
+    if(comments.length >= 0){
+        console.log(commentSection);
+        template += `
+        <input type='button' class='btn-secondary' value='Copy'  id='copyBtn' onclick="
+        const comments = Array.from(document.getElementsByName('comments'));
+    console.log(comments);
+     let copiedComments = [];
+     for(const comment of comments){
+         console.log(comment);
+         console.log(comment.checked);
+
+         if (comment.checked){
+             copiedComments.push(document.getElementById('comment' + comment.id).innerText);
+         }
+     }
+
+     navigator.clipboard.writeText(copiedComments.join('\\n'));
+        "/>
+        `
     }
+    commentSection.innerHTML = template;
+   
+    //Copy comments
+    // document.getElementById('copyBtn').addEventListener('click', copyCommentsToClipboard());
     return;
-
-}
-
-function copyCommentToClipboard(e) {
-    const commentMsg = document.getElementById('comment' + e.target.id).innerText;
-  
-     /* Copy the text inside the text field */
-    navigator.clipboard.writeText(commentMsg);
-  
 
 }
 
