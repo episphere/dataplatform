@@ -908,11 +908,16 @@ export async function showComments(id) {
                     <p class='text-primary small mb-0 align-left'>${comment.created_by.name}</p>
                 </div>
                 <div class='col-8'>
-                </div>
+                </div>`;
+        if(document.getElementById('finalChairDecision').style.display === "block"){
+                template += `
                 <div>
                     <input type='checkbox' name='comments' id='${comment.id}' class='mb-0'>
                 </div>
-                <div class=''>
+                `;
+            }
+            template +=`    
+            <div class=''>
                     <p class='my-0' id='comment${comment.id}'>${comment.message}</p>
                 </div>
             </div>
@@ -939,7 +944,7 @@ export async function showComments(id) {
 
     }
     template += '</div>'
-    if(comments.length >= 0){
+    if(comments.length >= 0 && document.getElementById('finalChairDecision').style.display === "block"){
         console.log(commentSection);
         template += `
         <input type='button' class='btn-secondary' value='Copy'  id='copyBtn' onclick="
@@ -961,8 +966,6 @@ export async function showComments(id) {
     }
     commentSection.innerHTML = template;
    
-    //Copy comments
-    // document.getElementById('copyBtn').addEventListener('click', copyCommentsToClipboard());
     return;
 
 }

@@ -117,8 +117,8 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
                 link.classList.add('active');
         }
         if(header === 'Accepted'){
-            link.href = `#${page}/accepted`
-            if(activeTab === 'accepted')
+            link.href = `#${page}/acceptedStudies`
+            if(activeTab === 'acceptedStudies')
                 link.classList.add('active');
         }
 

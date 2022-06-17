@@ -90,13 +90,13 @@ export const dataAccess = (activeTab, showDescripton) => {
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted','Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form' ,'Accepted');
   }
   let template = `
 
@@ -317,18 +317,101 @@ export const approveRejectSection = () => {
   return template
 }
 
+export const acceptedStudiesSection = (activeTab) => {
+  let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+  let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+  let navBarItems = '';
+  if (authDacc && authChair) {
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', "DACC Menu");
+  } else if (authChair) {
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu');
+  } else if (authDacc) {
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'DACC Menu');
+  } else {
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted');
+  }
+  let template = `
+      <div class="general-bg body-min-height padding-bottom-1rem">
+          <div class="container">
+            ${navBarItems}
+          
+      </div>
+      `;
+  template += `
+    <div id="acceptedStudiesView" class="align-left"></div>
+  </div>
+  `;
+
+  return template
+}
+
+export const acceptedStudiesView = async () => {
+  let template = `
+    <div class="main-summary-row">
+            <div class="row align-left w-100 m-0">
+                <h1 class="col page-header pl-0 pt-2">Learn about BCRPP</h1>
+                <div class="ml-auto allow-overflow mr-2" style="margin:1rem 0" id="pagesContainer"></div>
+                <div class="ml-auto mt-3 mb-3 mr-2" id="pageSizeContainer"></div>
+                <div class="ml-auto mt-3 mb-3" id="downloadContainer">
+                    <div class="col-md-12 p-0 dropdown">
+                        <div class="grid-elements ">
+                            <button title="Download" class="transparent-btn form-control dropdown-toggle dropdown-btn" data-toggle="dropdown" id="downloadDictionary" style="color:#000000 !important">
+                                Download <i class="fas fa-download" style="color:#000000 !important"></i>
+                            </button>
+                            <div class="dropdown-menu navbar-dropdown" aria-labelledby="downloadDictionary">
+                                <button class="transparent-btn dropdown-item dropdown-menu-links" title="Download dictionary as csv" id="downloadDictionaryCSV">CSV</button>
+                                <button class="transparent-btn dropdown-item dropdown-menu-links" title="Download dictionary as tsv" id="downloadDictionaryTSV">TSV</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-summary-row">
+            <div class="col-xl-2 filter-column div-border white-bg align-left p-2" id="summaryFilterSiderBar">
+                <div class="main-summary-row">
+                    <div class="col-xl-12 pl-1 pr-0">
+                        <span class="font-size-17 font-bold">Filter</span>
+                        <div id="filterDataCatalogue" class="align-left"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-10 padding-right-zero font-size-16" id="summaryStatsCharts">
+                <button id="filterBarToggle"><i class="fas fa-lg fa-caret-left"></i></button>
+                <div class="main-summary-row pl-2" style="min-height: 10px;margin-bottom: 1rem;">
+                    <div class="col white-bg div-border align-left font-size-17" style="padding: 0.5rem;" id="listFilters">
+                        <span class="font-bold">Region:</span> All
+                    </div>
+                </div>
+                <div class="main-summary-row pl-2">
+                    <div class="col-xl-12 pb-2 pl-0 pr-0 white-bg div-border">
+                        <div class="pt-0 pl-2 pb-2 pr-2 allow-overflow" style="height: calc(100vh - 190px) !important;min-height: 500px;" id="descriptionBody"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-summary-row">
+            <div class="offset-xl-2 col data-last-modified align-left mt-3 mb-0 pl-4" id="dataLastModified">
+                Data last modified at - LAST MODIFIED DATE
+            </div>
+        </div>`;
+
+        document.getElementById('acceptedStudiesView').innerHTML = template;
+
+}
+
 export const chairSection = (activeTab) => {
   let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', "DACC Menu");
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted');
   }
   let template = `
       <div class="general-bg body-min-height padding-bottom-1rem">
@@ -486,7 +569,7 @@ export const chairFileView = async () => {
             <button type="submit" class="buttonsubmit" value="rejected">
               <span class="buttonsubmit__text"> Deny </span></button>
             <button type="submit" class="buttonsubmit" value="daccReview">
-              <span class="buttonsubmit__text"> Send Back to D </span></button>  
+              <span class="buttonsubmit__text"> Return to DACC </span></button>  
           </form>
         </div>
         `};
@@ -681,13 +764,13 @@ export const daccSection = (activeTab) => {
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', "DACC Menu");
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted');
   }
   let template = `
               <div class="general-bg body-min-height padding-bottom-1rem">
