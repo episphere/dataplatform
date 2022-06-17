@@ -146,13 +146,13 @@ export const formSection = (activeTab, showDescripton) => {
   let navBarItems = '';
   if (authDacc && authChair) {
 
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', "DACC Menu");
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted');
   }
   let template = `
       <div class="general-bg body-min-height padding-bottom-1rem">
@@ -485,6 +485,8 @@ export const chairFileView = async () => {
               <span class="buttonsubmit__text"> Approve </span></button>
             <button type="submit" class="buttonsubmit" value="rejected">
               <span class="buttonsubmit__text"> Deny </span></button>
+            <button type="submit" class="buttonsubmit" value="daccReview">
+              <span class="buttonsubmit__text"> Send Back to D </span></button>  
           </form>
         </div>
         `};
@@ -571,20 +573,23 @@ export const commentApproveReject = () => {
           }
         }
       }
-    let approval = e.submitter.value;
+    let decision = e.submitter.value;
     let message = e.target[0].value;
     //console.log(approval);
-    await updateTaskAssignment(taskId, approval, message);
+    await updateTaskAssignment(taskId, decision, message);
     await createComment(fileId, message);
     let fileInfo = await getFileInfo(fileId);
     let uploaderName = fileInfo.created_by.login
     console.log(uploaderName);
-    if (approval == 'approved') {
+    if (decision == 'approved') {
       await moveFile(fileId, acceptedFolder);
       console.log("File moved to approved folder");
-    } else if (approval =='rejected') {
+    } else if (decision =='rejected') {
       await moveFile(fileId, deniedFolder);
       console.log("File moved to denied folder");
+    } else if (decision =='review') {
+      await moveFile(fileId, daccReviewFolder);
+      console.log('File moved to Dacc Review folder');
     }
 
     let folderItems = await getFolderItems(submitterFolder);
@@ -617,7 +622,7 @@ export const commentApproveReject = () => {
       console.log('File copied to folder');
     };
     //console.log(cpFileId);
-    await createComment(cpFileId, 'This file was ' + approval); 
+    await createComment(cpFileId, 'This file was ' + decision); 
     const response = await listComments(fileId);
     let comments = JSON.parse(response).entries;
     let commentNum = 0;
@@ -735,14 +740,19 @@ export const daccFileView = async () => {
               <a class='nav-link active' id='dacctoBeCompletedTab' href='#dacctoBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='dacctoBeCompleted' aria-selected='true'> To Be Completed </a>
             </li>
             <li class='nav-item' role='presentation'>
+              <a class='nav-link' id='daccReviewTab' href='#daccReview' data-mdb-toggle="tab" role='tab' aria-controls='daccReview' aria-selected='true'>Review </a>
+            </li>
+            <li class='nav-item' role='presentation'>
                 <a class='nav-link' id='completedTab' href='#completed' data-mdb-toggle="tab" role='tab' aria-controls='completed' aria-selected='true'>Completed</a>
             </li>
 
 
             </ul>`;
 
-  const filesincomplete = [];
-  const filescompleted = [];
+  const filesincomplete = [],
+  filescompleted = [],
+  filesreviewed = []
+  ;
   for (let obj of filearrayDACC) {
     let id = obj.id;
     let tasks = await getTaskList(id);
@@ -830,6 +840,12 @@ export const daccFileView = async () => {
                 id='dacctoBeCompleted' role='tabpanel'
               aria-labeledby='dacctoBeCompletedTab'>`;
   template += renderFilePreviewDropdown(filesincomplete, 'dacctoBeCompleted');
+  
+  template += `<div class='tab-pane fade'
+                id='daccReview' role='tabpanel'
+                aria-labeledby='daccReviewTab'> `
+  template += renderFilePreviewDropdown(filesreviewed, 'daccReview');
+
   template += `<div class='tab-pane fade'
                 id='completed' role='tabpanel'
                 aria-labeledby='completedTab'> `
@@ -877,8 +893,9 @@ export const daccFileView = async () => {
   submitToComment();
 
   //Switch Tabs
-  switchTabs('dacctoBeCompleted', ['completed'], filesincomplete);
-  switchTabs('completed', ['dacctoBeCompleted'], filescompleted);
+  switchTabs('dacctoBeCompleted', ['completed', 'daccReview'], filesincomplete);
+  switchTabs('completed', ['dacctoBeCompleted', 'daccReview'], filescompleted);
+  switchTabs('daccReview', ['dacctoBeCompleted', 'completed'], filesreviewed);
   hideAnimation();
 }
 
@@ -952,14 +969,14 @@ export const dataApproval = () => {
     e.preventDefault();
 
     let fileId = 931127106406;
-    let approval = e.submitter.value;
+    let decision = e.submitter.value;
     let message = e.target[0].value;
 
     let taskList = await getTaskList(fileId);
     console.log(taskList)
     let taskAssignment = taskList.entries[0].task_assignment_collection.entries[0];
 
-    console.log(await updateTaskAssignment(taskAssignment.id, approval, message))
+    console.log(await updateTaskAssignment(taskAssignment.id, decision, message))
   }
 
   const form = document.querySelector('.data-approval')

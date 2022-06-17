@@ -1560,30 +1560,34 @@ export function switchTabs(show, hide, files) {
                         // let response = async () => { let test = await listComments('945509107663');//files[0].id);
                         //     console.log(test);
                         //     }
-                        if (show == 'toBeCompleted'){
+                        if (show === 'toBeCompleted'){
                             document.getElementById('sendtodaccButton').style.display="block";
                             document.getElementById('finalChairDecision').style.display="none";
                             
                             // document.getElementById('fileComments').innerHTML = listComments(files[0].id);
                         }  
-                        if (show == 'inProgress'){
+                        if (show === 'inProgress'){
                             document.getElementById('sendtodaccButton').style.display="none";
                             document.getElementById('finalChairDecision').style.display="none";
                             }
-                        if (show == 'daccCompleted'){
+                        if (show === 'daccCompleted'){
                             document.getElementById('sendtodaccButton').style.display="none";
                             document.getElementById('finalChairDecision').style.display="block";
                             }
-                        if (show == 'accepted'){
+                        if (show === 'accepted'){
                             document.getElementById('sendtodaccButton').style.display="none";
                             document.getElementById('finalChairDecision').style.display="none";
                             }
-                        if (show == 'dacctoBeCompleted'){
+                        if (show ==='dacctoBeCompleted'){
                             document.getElementById('daccComment').style.display="block";
                         }
-                        if (show == 'completed'){
+                        if (show === 'completed'){
                             console.log('did this work?');
                             document.getElementById('daccComment').style.display="none";
+                        }
+                        if(show === 'daccReview'){
+                            document.getElementById('boxFilePreview').classList.add('col-8');
+                            showComments(files[0].id);
                         }
                     } else {
                         boxPreview.classList.remove('d-block');
