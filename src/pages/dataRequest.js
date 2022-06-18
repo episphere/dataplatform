@@ -439,6 +439,9 @@ export const chairFileView = async () => {
       const responseDACC = await getFolderItems(daccReviewFolder);
       let filearrayDACC = responseDACC.entries;
       //console.log(filearrayDACC)
+      
+      const responseDACCChairReview = await getFolderItems(daccReviewChairFolder);
+      let filearrayDACCChairReview = responseDACCChairReview.entries;
 
       const responseChair = await getFolderItems(chairReviewFolder);
       let filearrayChair = responseChair.entries;
@@ -499,9 +502,14 @@ export const chairFileView = async () => {
       filesinprogress.push(obj);
     }
 
+    for(let obj of filearrayDACCChairReview){
+      filesinprogress.push(obj);
+    }
+
     for (let obj of filearrayChair) {
       filescompleted.push(obj);
     }
+    
 
     for (let obj of filearrayAccepted) {
       filesaccepted.push(obj);
@@ -605,9 +613,9 @@ export const chairFileView = async () => {
         switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted', 'denied'], filesaccepted);
         switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
         
-        // const tasks = await getTaskList('972355868060');
-        // console.log(tasks.entries);
-        
+        const tasks = await getTaskList('972355868060');
+        console.log(tasks.entries);
+        // deleteTask("16176514085");
         hideAnimation();
       }
 
@@ -795,6 +803,9 @@ export const daccFileView = async () => {
   const responseDACC = await getFolderItems(daccReviewFolder);
   let filearrayDACC = responseDACC.entries;
   //console.log(filearrayDACC)
+  
+  const responseDACCChairReview = await getFolderItems(daccReviewChairFolder);
+  let filearrayDACCChairReview = responseDACCChairReview.entries;
 
   const responseChair = await getFolderItems(chairReviewFolder);
   let filearrayChair = responseChair.entries;
@@ -917,6 +928,9 @@ export const daccFileView = async () => {
     }
   }
 
+  for(const obj of filearrayDACCChairReview){
+    filesreviewed.push(obj);
+  }
   //console.log("incomplete: " + filesincomplete);
   //console.log("complete: " + filescompleted);
 
@@ -938,7 +952,7 @@ export const daccFileView = async () => {
   template += renderFilePreviewDropdown(filescompleted, 'completed');
   template += `<div id='filePreview'`;
 
-  if (filescompleted.length != 0 || filesincomplete.length != 0) {
+  if (filescompleted.length != 0 || filesincomplete.length != 0 || filesreviewed.length != 0) {
     template += ` 
       <div class='row'>
         <div id='boxFilePreview' class="col-8 preview-container"></div>

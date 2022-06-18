@@ -712,7 +712,7 @@ export const deleteTask = async (taskId) => {
                 Authorization: "Bearer " + access_token,
             }
         })
-
+        console.log(response);
         if (response.status === 401) {
             if ((await refreshToken()) === true) return await getTaskList(taskId);
         }
@@ -932,7 +932,8 @@ export async function showComments(id) {
                     <p class='text-primary small mb-0 align-left'>${comment.created_by.name}</p>
                 </div>
             `;
-        if(document.getElementById('finalChairDecision').style.display === "block"){
+        if(document.getElementById('finalChairDecision') !== null){
+             if(document.getElementById('finalChairDecision').style.display === "block"){
                 template += `
                 <div class='col-4'>
                     <input type='checkbox' name='comments' id='${comment.id}' class='mb-0'>
@@ -940,6 +941,7 @@ export async function showComments(id) {
                 
                 `;
             }
+        }
             template +=`    
             </div>
             <div class='row'>
@@ -968,7 +970,8 @@ export async function showComments(id) {
 
     }
     template += '</div>'
-    if(comments.length >= 0 && document.getElementById('finalChairDecision').style.display === "block"){
+    if(comments.length >= 0 && document.getElementById('finalChairDecision')){
+        if(document.getElementById('finalChairDecision').style.display === "block"){
         console.log(commentSection);
         template += `
         <input type='button' class='btn-secondary' value='Copy'  id='copyBtn' onclick="
@@ -988,6 +991,7 @@ export async function showComments(id) {
         "/>
         `
     }
+}
     commentSection.innerHTML = template;
    
     return;
