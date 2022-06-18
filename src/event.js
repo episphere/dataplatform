@@ -1587,6 +1587,7 @@ export function switchTabs(show, hide, files) {
                         }
                         if(show === 'daccReview'){
                             document.getElementById('boxFilePreview').classList.add('col-8');
+                            document.getElementById('daccComment').style.display="block";
                             showComments(files[0].id);
                         }
                     } else {

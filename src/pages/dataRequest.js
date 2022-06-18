@@ -950,7 +950,7 @@ export const daccFileView = async () => {
                 id='completed' role='tabpanel'
                 aria-labeledby='completedTab'> `
   template += renderFilePreviewDropdown(filescompleted, 'completed');
-  template += `<div id='filePreview'`;
+  template += `<div id='filePreview'>`;
 
   if (filescompleted.length != 0 || filesincomplete.length != 0 || filesreviewed.length != 0) {
     template += ` 
@@ -1005,7 +1005,7 @@ export const submitToComment = () => {
     const btn = document.activeElement;
     btn.disabled = true;
     //let taskId = btn.name;
-    let fileId = document.querySelector(".tab-content .active #dacctoBeCompletedselectedDoc").value //document.getElementById('selectedDoc').value;
+    let fileId = (document.querySelector(".tab-content .active #dacctoBeCompletedselectedDoc") !== null) ? document.getElementById('dacctoBeCompletedselectedDoc').value : document.getElementById('daccReviewselectedDoc').value  //document.getElementById('selectedDoc').value;
     let message = e.target[0].value;
     console.log(fileId);
     console.log(message);
