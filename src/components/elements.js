@@ -109,7 +109,7 @@ export function renderFilePreviewDropdown(files, tab){
                 <div class='card-title'>
                 <label for='${tab}selectedDoc'><b>Select Document:</b></label>
                 <br>
-                <select id='${tab}selectedDoc'>
+                <select id='${tab}selectedDoc' multiple>
             `;
 
         for (const file of files) { 

@@ -33,7 +33,9 @@ import {
   copyFile,
   submitterFolder,
   listComments,
-  addNewCollaborator
+  addNewCollaborator,
+  getCollaboration,
+  checkDataSubmissionPermissionLevel
 } from '../shared.js';
 import {
   addEventToggleCollapsePanelBtn
@@ -50,7 +52,6 @@ import {
 import {
   switchTabs
 } from '../event.js';
-import { template } from './dataGovernance.js';
 
 export const dataAccessNotSignedIn = () => {
   let template = `
@@ -139,10 +140,10 @@ export const dataAccess = (activeTab, showDescripton) => {
 
   return template
 }
-
-export const formSection = (activeTab, showDescripton) => {
+export const formSectionOther = async(activeTab, showDescripton) => {
   let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+
   let navBarItems = '';
   if (authDacc && authChair) {
 
@@ -161,7 +162,51 @@ export const formSection = (activeTab, showDescripton) => {
           
       </div>
       `;
-  template += ` 
+
+    template += ` 
+                  <div class="general-bg padding-bottom-1rem">
+                          <div class="container body-min-height">
+
+                              <div class="main-summary-row">
+                                  <div class="align-left">
+                                      <h1 class="page-header">Form Submission</h1>
+                                  </div>
+                              </div>
+
+                              <div class="main-summary-row confluence-resources white-bg div-border font-size-18">
+                                <div class="col">
+                                  <span>You currently do not have permission to submit a data request form.</span></br>
+                                  <span>For access, please contact Tom </strong> <a href=""></a></span>
+                          </div>
+                  </div>
+                `
+  return template;
+}
+
+export const formSection = async(activeTab, showDescripton) => {
+  let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+  let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+
+  let navBarItems = '';
+  if (authDacc && authChair) {
+
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', "DACC Menu");
+  } else if (authChair) {
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
+  } else if (authDacc) {
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
+  } else {
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
+  }
+  let template = `
+      <div class="general-bg body-min-height padding-bottom-1rem">
+          <div class="container">
+            ${navBarItems}
+          
+      </div>
+      `;
+
+    template += ` 
                   <div class="general-bg padding-bottom-1rem">
                           <div class="container body-min-height">
 
@@ -253,23 +298,23 @@ export const formSection = (activeTab, showDescripton) => {
                             </form>
                           </section>
                           <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" id='modalBody'>
-        
-      </div>
-      <div class="modal-footer">
-    
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body" id='modalBody'>
+                                
+                              </div>
+                              <div class="modal-footer">
+                            
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                           <div class="results">
                           <h2>Form Data</h2>
                           <pre></pre>
@@ -833,8 +878,8 @@ export const daccFileView = async () => {
                 id='completed' role='tabpanel'
                 aria-labeledby='completedTab'> `
   template += renderFilePreviewDropdown(filescompleted, 'completed');
-  template += `<div id='filePreview'`;
 
+  template += `<div id='filePreview'`
   if (filescompleted.length != 0 || filesincomplete.length != 0) {
     template += ` 
       <div class='row'>
@@ -843,7 +888,15 @@ export const daccFileView = async () => {
       </div>
 
       <div id="daccComment" class="card-body dacc-comment" style="padding-left: 10px;background-color:#f6f6f6;">
-          <form>
+      <form>  
+        <label for="grade">Choose a rating:</label>
+          <select name="grade" id="grade"></option>
+            <option value = "1"> Poor (Do not recommend)</option>
+            <option value = "2"> Below Average </option>
+            <option value = "3"> Average </option>
+            <option value = "4"> Good </option>
+            <option value = "5"> Excellent (Highly recommended)</option>
+          </select>
             <label for"message">Submit Comment</label>
             <div class="input-group">
               <textarea id="message" name="message" rows="6" cols="65"></textarea>
@@ -886,8 +939,11 @@ export const submitToComment = () => {
     btn.disabled = true;
     //let taskId = btn.name;
     let fileId = document.querySelector(".tab-content .active #dacctoBeCompletedselectedDoc").value //document.getElementById('selectedDoc').value;
-    let message = e.target[0].value;
+    let grade = e.target[0].value;
+    let comment = e.target[1].value;
+    console.log(grade);
     console.log(fileId);
+    let message = "Rating: " + grade + "\nComment: " + comment;
     console.log(message);
     //let metaArray = await getMetadata(fileId);
     //let daccMetaValue = metaArray.entries["0"]["BCRPPdacc"];
@@ -1268,7 +1324,8 @@ export const dataForm = async () => {
     });
   }
 
-  const form = document.querySelector('.contact-form');
+  const form = await document.querySelector('.contact-form');
+  //console.log(form);
   form.addEventListener('submit', handleFormSubmit);
 }
 

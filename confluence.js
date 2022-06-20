@@ -2,7 +2,7 @@ import { navBarMenutemplate } from './src/components/navBarMenuItems.js';
 import { infoDeck, infoDeckAfterLoggedIn } from './src/pages/homePage.js';
 import { dataSubmissionTemplate, lazyload } from './src/pages/dataSubmission.js';
 import { dataSummary, dataSummaryMissingTemplate, dataSummaryStatisticsTemplate } from './src/pages/dataExploration.js';
-import { dataAccess as dataRequestTemplate, dataAccessNotSignedIn, dataForm, dataApproval, formSection, approveRejectSection, daccSection, chairSection, chairFileView, daccFileView } from './src/pages/dataRequest.js';
+import { dataAccess as dataRequestTemplate, dataAccessNotSignedIn, dataForm, dataApproval, formSection, approveRejectSection, daccSection, chairSection, chairFileView, daccFileView, formSectionOther } from './src/pages/dataRequest.js';
 import { checkAccessTokenValidity, loginAppDev, loginObs, loginAppEpisphere, logOut, loginAppProd } from './src/manageAuthentication.js';
 import { storeAccessToken, removeActiveClass, showAnimation, getCurrentUser, inactivityTime, filterConsortiums, getFolderItems, filterProjects, amIViewer, getCollaboration, hideAnimation, assignNavbarActive, getFileInfo, handleRangeRequests, applicationURLs, checkDataSubmissionPermissionLevel } from './src/shared.js';
 import { addEventConsortiaSelect, addEventUploadStudyForm, addEventStudyRadioBtn, addEventDataGovernanceNavBar, addEventMyProjects, addEventUpdateSummaryStatsData } from './src/event.js';
@@ -135,7 +135,7 @@ export const confluence = async () => {
             })
         }
         if(dataFormElement){
-            dataFormElement.addEventListener('click', () => {
+            dataFormElement.addEventListener('click', async() => {
                 if (dataFormElement.classList.contains('navbar-active')) return;
                 const element = document.getElementById('dataForm');
                 showAnimation();
@@ -144,9 +144,19 @@ export const confluence = async () => {
                 document.title = 'BCRPP - Data Form';
                 assignNavbarActive(element, 1);
                 //dataForm();
-                confluenceDiv.innerHTML = formSection('form');
+                const getCollaborators = await getCollaboration(144028521583, 'folders'); //144028521583, 155292358576
+                let getMyPermissionLevel = false;
+                if(getCollaborators) getMyPermissionLevel =  checkDataSubmissionPermissionLevel(getCollaborators, JSON.parse(localStorage.parms).login);
+                //console.log(getMyPermissionLevel);
+                if(getMyPermissionLevel){
+                    confluenceDiv.innerHTML = await formSection('form');
                 //confluenceDiv.innerHTML = approveRejectSection();
-                dataForm();
+                    await dataForm();
+                }
+                else {
+                    console.log(getMyPermissionLevel);
+                    confluenceDiv.innerHTML = await formSectionOther('form');
+                }
                 //dataApproval();
                 hideAnimation();
             })
@@ -340,7 +350,7 @@ const manageRouter = async () => {
         showAnimation();
         assignNavbarActive(dataFormElement, 1);
         document.title = 'BCRPP - Data Form';
-        confluenceDiv.innerHTML = formSection();
+        confluenceDiv.innerHTML = await formSection();
         //confluenceDiv.innerHTML = approveRejectSection();
         removeActiveClass('nav-link', 'active');
     }
