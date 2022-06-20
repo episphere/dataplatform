@@ -10,9 +10,15 @@ import {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
+<<<<<<< HEAD
 export const emailforChair = ['kopchickbp@nih.gov']//, 'ahearntu@nih.gov', 'Roger.Milne@cancervic.org.au', 'kopchickbp@nih.gov', 'wraynr@nih.gov'] //'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
 
 export const emailforDACC = ['kopchickbp@nih.gov']//'troisir@nih.gov', 'gaudetmm@nih.gov', 'garciacm@nih.gov','ahearntu@nih.gov', 'kopchickbp@nih.gov']//,'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov', 'garciacm@nih.gov'] //'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov']
+=======
+export const emailforChair = ['wraynr@nih.gov', 'ahearntu@nih.gov', 'Roger.Milne@cancervic.org.au', 'kopchickbp@nih.gov', 'wraynr@nih.gov'] //'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
+
+export const emailforDACC = ['wraynr@nih.gov', ] //'troisir@nih.gov', 'gaudetmm@nih.gov', 'garciacm@nih.gov','ahearntu@nih.gov', 'kopchickbp@nih.gov']//,'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov', 'garciacm@nih.gov'] //'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov']
+>>>>>>> 3bda3e694a042db9f558b9925bc7759a70f72a25
 
 export const publicDataFileId = 697309514903; //Unknown
 
@@ -25,6 +31,8 @@ export const missingnessStatsFileId = 653087731560; //Unknown
 export const uploadFormFolder = 155292358576;
 
 export const daccReviewFolder = 161192245846;
+
+export const daccReviewChairFolder = 165542319674;
 
 export const chairReviewFolder = 161191639493;
 
@@ -173,13 +181,13 @@ export const getFileVersions = async (id) => {
 
 export const storeAccessToken = async () => {
     let parms = searchParms();
-    if(parms.code){
+    if (parms.code) {
         //exchange code for authorization token
-        let clt={}
-        if(location.origin.indexOf('episphere') !== -1) clt = config.iniAppDev;
-        else if(location.origin.indexOf('localhost') !== -1) clt = config.iniAppLocal;
-        else if(location.origin.indexOf(applicationURLs.stage) !== -1) clt = config.iniAppStage;
-        else if(location.origin.indexOf(applicationURLs.prod) !== -1) clt = config.iniAppProd;
+        let clt = {}
+        if (location.origin.indexOf('episphere') !== -1) clt = config.iniAppDev;
+        else if (location.origin.indexOf('localhost') !== -1) clt = config.iniAppLocal;
+        else if (location.origin.indexOf(applicationURLs.stage) !== -1) clt = config.iniAppStage;
+        else if (location.origin.indexOf(applicationURLs.prod) !== -1) clt = config.iniAppProd;
         document.getElementById('confluenceDiv').innerHTML = '';
 
         var myHeaders = new Headers();
@@ -193,45 +201,45 @@ export const storeAccessToken = async () => {
         urlencoded.append("code", parms.code);
 
         var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: urlencoded,
-        redirect: 'follow'
+            method: 'POST',
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: 'follow'
         };
-        
+
         console.log('Auth code: ', parms.code);
         const response = await fetch("https://api.box.com/oauth2/token", requestOptions)
-            // .then(response => response.json())
-            // .then(result => console.log(result))
-            // .catch(error => console.log('error', error));
+        // .then(response => response.json())
+        // .then(result => console.log(result))
+        // .catch(error => console.log('error', error));
         if (response.status === 400) {
-            window.history.replaceState({},'', './#home');
+            window.history.replaceState({}, '', './#home');
             console.log('exited with 400');
             console.log(await response.json());
             //console.log(await response.json());
         }
-//         let url = `https://api.box.com/oauth2/token`;
-        
-//         const response = await fetch(url, {
-//             headers: {
-//                 'Content-Type': 'application/x-www-form-urlencoded'
-//             },
-//             method:'POST',
-//             body: `grant_type=authorization_code&code=${parms.code}&client_id=${clt.client_id}&client_secret=${clt.server_id}`
-//         });
-        if(response.status && response.status === 200) {
+        //         let url = `https://api.box.com/oauth2/token`;
+
+        //         const response = await fetch(url, {
+        //             headers: {
+        //                 'Content-Type': 'application/x-www-form-urlencoded'
+        //             },
+        //             method:'POST',
+        //             body: `grant_type=authorization_code&code=${parms.code}&client_id=${clt.client_id}&client_secret=${clt.server_id}`
+        //         });
+        if (response.status && response.status === 200) {
             localStorage.parms = JSON.stringify(await response.json());
-            window.history.replaceState({},'', './#home');
+            window.history.replaceState({}, '', './#home');
             confluence();
             document.getElementById('loginBoxAppDev').hidden = true;
             document.getElementById('loginBoxAppStage').hidden = true;
             document.getElementById('loginBoxAppEpisphere').hidden = true;
             document.getElementById('loginBoxAppProd').hidden = true;
         }
-    }else{
-        if(localStorage.parms){
-            confluence.parms=JSON.parse(localStorage.parms)
-            if(confluence.parms.access_token === undefined){
+    } else {
+        if (localStorage.parms) {
+            confluence.parms = JSON.parse(localStorage.parms)
+            if (confluence.parms.access_token === undefined) {
                 localStorage.clear();
                 alert('access token not found, please contact system administrator')
             }
@@ -274,7 +282,7 @@ export const storeAccessToken = async () => {
 //                 document.getElementById('loginBoxAppEpisphere').hidden = true;
 //                 document.getElementById('loginBoxAppProd').hidden = true;
 //             }
-       
+
 //         } catch(err){
 //         console.log('HTTP error on token fetch', err);
 //         }
@@ -701,6 +709,28 @@ export const updateBoxCollaborator = async (id, role) => {
     }
 }
 
+export const deleteTask = async (taskId) => {
+    try {
+        const access_token = JSON.parse(localStorage.parms).access_token;
+        const response = await fetch(`https://api.box.com/2.0//tasks/${taskId}`, {
+            method: 'DEL',
+            headers: {
+                Authorization: "Bearer " + access_token,
+            }
+        })
+        console.log(response);
+        if (response.status === 401) {
+            if ((await refreshToken()) === true) return await getTaskList(taskId);
+        }
+        if (response.status === 200) {
+            return response.json();
+        } else {
+            return null;
+        }
+    } catch (err) {
+        if ((await refreshToken()) === true) return await deleteTask(taskId);
+    }
+}
 export const getTaskList = async (id) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
@@ -892,27 +922,84 @@ export async function showComments(id) {
 
     let comments = JSON.parse(response).entries;
 
-    //console.log(comments);
-    let template = "<ul class='align-left'>Comments";
+    let template = `
+    <div class='comments'>
+    Comments
+    <div class='container-fluid'>`;
     for (const comment of comments) {
         const comment_date = new Date(comment.created_at);
-        const date = comment_date.toLocaleDateString()
-        const time = comment_date.toLocaleTimeString()
-        template += `<div class='w-100 mb-1 p-2'>
-      <h6 class='text-primary small mb-0'>${comment.created_by.name}</h6>
-      <p class='align-left mb-0 text-justify w-90'>${comment.message}</p>
-      <div class='d-flex'>
-        <p class='small mb-0 font-weight-light align-right'>${date} at ${time}</p>
-      </div>  
-      </div>
+        const date = comment_date.toLocaleDateString();
+        const time = comment_date.toLocaleTimeString();
+        console.log('Comment', comment);
+        template += `
+        <div>
+            <div class='row'>
+                <div class='col-8 p-0'>
+                    <p class='text-primary small mb-0 align-left'>${comment.created_by.name}</p>
+                </div>
+            `;
+        if(document.getElementById('finalChairDecision') !== null){
+             if(document.getElementById('finalChairDecision').style.display === "block"){
+                template += `
+                <div class='col-4'>
+                    <input type='checkbox' name='comments' id='${comment.id}' class='mb-0'>
+                </div>
+                
+                `;
+            }
+        }
+            template +=`    
+            </div>
+            <div class='row'>
+                    <p class='my-0' id='comment${comment.id}'>${comment.message}</p>
+            </div>
 
-      <hr class='m-1'>
-      
-      `
+            <div class='row'>
+                <p class='small mb-0 font-weight-light'>${date} at ${time}</p>
+            </div>
+            <hr class='my-1'>
+        </div>
+        `
+        //     template += `<div class='w-100 mb-1 p-2'>
+        //   <h6 class='text-primary small mb-0'>${comment.created_by.name}</h6>
+
+
+        //   <p class='align-left mb-0 text-justify w-90'>${comment.message}</p>
+        //   <div class='d-flex'>
+        //     <p class='small mb-0 font-weight-light align-right'>${date} at ${time}</p>
+        //   </div>  
+        //   </div>
+
+        //   <hr class='m-1'>
+
+        //   `
 
     }
-    template += '</ul>'
+    template += '</div>'
+    if(comments.length >= 0 && document.getElementById('finalChairDecision')){
+        if(document.getElementById('finalChairDecision').style.display === "block"){
+        console.log(commentSection);
+        template += `
+        <input type='button' class='btn-secondary' value='Copy'  id='copyBtn' onclick="
+        const comments = Array.from(document.getElementsByName('comments'));
+    console.log(comments);
+     let copiedComments = [];
+     for(const comment of comments){
+         console.log(comment);
+         console.log(comment.checked);
+
+         if (comment.checked){
+             copiedComments.push(document.getElementById('comment' + comment.id).innerText);
+         }
+     }
+
+     navigator.clipboard.writeText(copiedComments.join('\\n'));
+        "/>
+        `
+    }
+}
     commentSection.innerHTML = template;
+   
     return;
 
 }

@@ -62,9 +62,10 @@ export const confluence = async () => {
         const dataSummarySubsetElement = document.getElementById('dataSummarySubset');
         const dataDictionaryElement = document.getElementById('dataDictionary');
         const dataRequestElement = document.getElementById('dataRequest');
-        const dataFormElement = document.getElementById('dataForm')
-        const chairViewElement = document.getElementById('chairView')
-        const daccViewElement = document.getElementById('daccView')
+        const dataFormElement = document.getElementById('dataForm');
+        const studyAcceptedElement = document.getElementById('studyAccepted');
+        const chairViewElement = document.getElementById('chairView');
+        const daccViewElement = document.getElementById('daccView');
         // const platformTutorialElement = document.getElementById('platformTutorial');
         // const dataAnalysisElement = document.getElementById('dataAnalysis');
 
@@ -157,6 +158,23 @@ export const confluence = async () => {
                     console.log(getMyPermissionLevel);
                     confluenceDiv.innerHTML = await formSectionOther('form');
                 }
+                //dataApproval();
+                hideAnimation();
+            })
+        }
+        if(studyAcceptedElement){
+            studyAcceptedElement.addEventListener('click', () => {
+                if (studyAcceptedElement.classList.contains('navbar-active')) return;
+                const element = document.getElementById('acceptedStudiesView');
+                showAnimation();
+                if(!element) return;
+                if(element.classList.contains('navbar-active')) return;
+                document.title = 'BCRPP - Accepted Studies';
+                assignNavbarActive(element, 1);
+                //dataForm();
+                confluenceDiv.innerHTML = acceptedStudiesSection('acceptedStudies');
+                //confluenceDiv.innerHTML = approveRejectSection();
+                acceptedStudiesView();
                 //dataApproval();
                 hideAnimation();
             })
@@ -355,6 +373,16 @@ const manageRouter = async () => {
         removeActiveClass('nav-link', 'active');
     }
 
+    else if (hash === '#data_access/acceptedStudies'){
+        const acceptedStudiesElement = document.getElementById('acceptedStudiesView');
+        if (!acceptedStudiesElement) return;
+        if(acceptedStudiesElement.classList.contains('navbar-active')) return;
+        showAnimation();
+        assignNavbarActive(acceptedStudiesElement, 1);
+        document.title = 'BCRPP - Accepted Studies';
+        confluenceDiv.innerHTML = acceptedStudiesSection();
+        removeActiveClass('nav-link', 'active');
+    }
     else if (hash === '#data_access/chairView'){
         const chairViewElement = document.getElementById('chairView');
         if (!chairViewElement) return;
@@ -422,6 +450,11 @@ const manageHash = async () => {
     }
     else if (hash === '#data_access/form') {
         const element = document.getElementById('dataForm');
+        if(!element) return;
+        element.click();
+    }
+    else if (hash === '#data_access/acceptedStudies') {
+        const element = document.getElementById('acceptedStudies');
         if(!element) return;
         element.click();
     }
