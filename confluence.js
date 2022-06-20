@@ -145,7 +145,7 @@ export const confluence = async () => {
                 document.title = 'BCRPP - Data Form';
                 assignNavbarActive(element, 1);
                 //dataForm();
-                const getCollaborators = await getCollaboration(144028521583, 'folders'); //144028521583, 155292358576
+                const getCollaborators = await getCollaboration(uploadFormFolder, 'folders'); //144028521583, 155292358576
                 let getMyPermissionLevel = false;
                 if(getCollaborators) getMyPermissionLevel =  checkDataSubmissionPermissionLevel(getCollaborators, JSON.parse(localStorage.parms).login);
                 //console.log(getMyPermissionLevel);
