@@ -1014,7 +1014,8 @@ export const daccFileView = async () => {
             <option value = "4"> Good </option>
             <option value = "5"> Excellent (Highly recommended)</option>
           </select>
-            <label for"message">Submit Comment</label>
+          <br>
+            <label for"message">Submit Comment:</label>
             <div class="input-group">
               <textarea id="message" name="message" rows="6" cols="65"></textarea>
             </div>

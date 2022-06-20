@@ -234,7 +234,6 @@ export const renderAllCharts = (data) => {
     generateParityBarChart('parous', 'dataSummaryVizChart4', 'dataSummaryVizLabel4', finalData, 'chartRow2');
     generatePregnaciesBarChart('parity', 'dataSummaryVizChart5', 'dataSummaryVizLabel5', finalData, 'chartRow2');
     generateBMIBarChart('BMI', 'dataSummaryVizChart6', 'dataSummaryVizLabel6', finalData, 'chartRow2');
-
 }
 
 export const renderAllCasesCharts = (data) => {
@@ -457,11 +456,11 @@ const generateBirthBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     Plotly.newPlot(`${id}`, data, layout, {responsive: true, displayModeBar: false});
     document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]['label']}`;
 
-    const div1 = document.createElement('div');
-    div1.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
-    div1.innerHTML = dataVisulizationCards({cardHeaderId: 'test', cardBodyId: 'testChart'});
-    document.getElementById('chartRow2').appendChild(div1);
-    renderDCSummaryStats();
+    // const div1 = document.createElement('div');
+    // div1.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
+    // div1.innerHTML = dataVisulizationCards({cardHeaderId: 'test', cardBodyId: 'testChart'});
+    // document.getElementById('chartRow2').appendChild(div1);
+    //renderDCSummaryStats();
 }
 
 const generateMenarcheBarChart = (parameter, id, labelID, jsonData, chartRow) => {
@@ -801,18 +800,16 @@ const dataVisulizationCards = (obj) => `
         </div>
     `;
 
-export const renderDCSummaryStats = async () => {
-    //create chart objects
-    const volumeChart = new dc.BarChart('#testChart');
-    //load the data
-    // const {jsonData, headers} = csvJSON(await getFile(summaryStatsFileId)); // Get summary level data
-    let summaryFile = await getFile(summaryStatsFileId); // Get summary level data
-    console.log('Summary File:', summaryFile);
-    d3.csv(summaryFile).then(data => {
-        console.log('Summary file data',data);
-    });
+// export const renderDCSummaryStats = async () => {
+//     //create chart objects
+//     const volumeChart = new dc.BarChart('#testChart');
+//     //load the data
+//     // const {jsonData, headers} = csvJSON(await getFile(summaryStatsFileId)); // Get summary level data
+//     let summaryFile = await getFile(summaryStatsFileId); // Get summary level data
+//     console.log('Summary File:', summaryFile);
+//     d3.csv(summaryFile).then(data => {
+//         console.log('Summary file data',data);
+//     });
 
     //create crossfilters
-
-
-}
+//}
