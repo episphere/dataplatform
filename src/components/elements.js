@@ -103,29 +103,13 @@ export function renderFilePreviewDropdown(files, tab){
     console.log('Not an array');
     return
     }
-//if(files.length != 0){
-//   
-//    template += `<div class='card-body'>
-//            <div class='card-title'>
-//            <label for='${tab}selectedDoc'>Choose the file you'd like to preview</label><br>
-//            <select id='${tab}selectedDoc'>
-//            
-//            `;
-//    
-//    for (const file of files) { 
-//      //console.log('File', file);
-//      template += `
-//              <option value='${file.id}'>
-//              ${file.name}</option>`;
-//    }
-//=======
     if(files.length != 0){
         //console.log('Param is array length: ' + files.length);
         template += `<div class='card-body'>
                 <div class='card-title'>
                 <label for='${tab}selectedDoc'><b>Select Document:</b></label>
                 <br>
-                <select id='${tab}selectedDoc'>
+                <select id='${tab}selectedDoc' multiple>
             `;
 
         for (const file of files) { 
@@ -134,7 +118,6 @@ export function renderFilePreviewDropdown(files, tab){
                 <option value='${file.id}'>
                 ${file.name}</option>`;
         }
-//>>>>>>> master
 
         template += `
                 </select>
