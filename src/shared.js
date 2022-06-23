@@ -10,9 +10,9 @@ import {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-export const emailforChair = ['Roger.Milne@cancervic.org.au', 'ahearntu@nih.gov'];//['wraynr@nih.gov', 'ahearntu@nih.gov', 'Roger.Milne@cancervic.org.au', 'kopchickbp@nih.gov', 'wraynr@nih.gov'] //'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
+export const emailforChair = ['wraynr@nih.gov']//['Roger.Milne@cancervic.org.au', 'ahearntu@nih.gov'];//['wraynr@nih.gov', 'ahearntu@nih.gov', 'Roger.Milne@cancervic.org.au', 'kopchickbp@nih.gov', 'wraynr@nih.gov'] //'ahearntu@nih.gov', 'kopchickbp@nih.gov', 'wraynr@nih.gov']
 
-export const emailforDACC = ['mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];//'mia.gaudet@nih.gov', 'mukopadhyays2@nih.gov',  'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov',] //['wraynr@nih.gov', 'troisir@nih.gov', 'gaudetmm@nih.gov', 'garciacm@nih.gov','ahearntu@nih.gov', 'kopchickbp@nih.gov']//,'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov', 'garciacm@nih.gov'] //'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov']
+export const emailforDACC = ['wraynr@nih.gov']//['mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];//'mia.gaudet@nih.gov', 'mukopadhyays2@nih.gov',  'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov',] //['wraynr@nih.gov', 'troisir@nih.gov', 'gaudetmm@nih.gov', 'garciacm@nih.gov','ahearntu@nih.gov', 'kopchickbp@nih.gov']//,'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov', 'garciacm@nih.gov'] //'mukopadhyays2@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov']//,'wraynr@nih.gov',  'garciacm@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'gaudetmm@nci.nih.gov']
 
 export const publicDataFileId = 697309514903; //Unknown
 

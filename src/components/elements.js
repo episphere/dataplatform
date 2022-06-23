@@ -105,11 +105,14 @@ export function renderFilePreviewDropdown(files, tab){
     }
     if(files.length != 0){
         //console.log('Param is array length: ' + files.length);
-        template += `<div class='card-body'>
+        template += `<div class='card-body p-0'>
                 <div class='card-title'>
-                <label for='${tab}selectedDoc'><b>Select Document:</b></label>
+                <label for='${tab}selectedDoc'>
+                    <b>Select Document:</b>
+                    <div class='text-muted small'>If you would like to submit multiple forms for review, hold Ctrl and select the files you wish to submit. </div>
+                </label>
                 <br>
-                <select id='${tab}selectedDoc' multiple>
+                <select id='${tab}selectedDoc' multiple size='3'>
             `;
 
         for (const file of files) { 
