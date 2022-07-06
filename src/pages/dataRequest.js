@@ -467,13 +467,17 @@ export const chairSection = (activeTab) => {
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', "DACC Menu");
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', 'DACC Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted');
   }
   let template = `
       <div class="general-bg body-min-height padding-bottom-1rem">
@@ -673,9 +677,8 @@ export const chairFileView = async () => {
   switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted', 'denied'], filesaccepted);
   switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
 
-  const tasks = await getTaskList('972355868060');
+  const tasks = await getTaskList('980655369256');
   console.log(tasks.entries);
-  // deleteTask("16176514085");
   hideAnimation();
 }
 
@@ -744,28 +747,41 @@ export const commentApproveReject = () => {
       console.log("File moved to denied folder");
     } else if (decision == 'daccReview') {
       // Delete review task assigned to chair
-      const tasklist = await getTaskList(fileId);
+      let tasklist = await getTaskList(fileId);
       const taskEntries = tasklist.entries;
+
+      console.log(taskEntries);
       if (taskEntries.length !== 0) {
         for (let entry of entries) {
-          if (entry.action === 'review')
+          if (entry.action === 'review'){
+          console.log(entry);
             if (entry.is_completed == false) {
-              for (let taskassignment of entry.task_assignment_collection.entries) {
-                if (taskassignment.resolution_state === 'incomplete') {
-                  if (taskassignment.assigned_to.login === JSON.parse(localStorage.parms).login) {
-                    var taskId = taskassignment.id;
-                    console.log(taskId);
-                    await deleteTask(taskId);
+              // for (let taskassignment of entry.task_assignment_collection.entries) {
+              //   if (taskassignment.resolution_state === 'incomplete') {
+              //     if (taskassignment.assigned_to.login === JSON.parse(localStorage.parms).login) {
+              //       var taskId = taskassignment.id;
+                    console.log(entry.id);
+                    await deleteTask(entry.id);
                   }
-                }
-              }
+              //   }
+              // }
+              // }
             }
         }
       }
-
+      
       //Create complete tasks for DACC
       await createCompleteTask(fileId, message);
-      let tasktodacc = tasklist.entries[0].id;
+      tasklist = await getTaskList(fileId);
+      let tasktodacc;
+      for(const entry of tasklist.entries){
+        if(entry.is_completed == false) {
+          if(entry.action === 'complete'){
+            tasktodacc = entry.id;
+          }
+        }
+      }
+      console.log('Tasks for DACC', tasklist.entries);
       console.log(emailforDACC.length.toString());
       for (let i = 0, daccemaillength = emailforDACC.length; i < daccemaillength; i++) {
         await assignTask(tasktodacc, emailforDACC[i]);
@@ -775,7 +791,8 @@ export const commentApproveReject = () => {
       //Move file to DACC Review (Resubmit) folder
       await moveFile(fileId, daccReviewChairFolder);
       console.log('File moved to Dacc Review folder');
-      // document.location.reload(true);
+      return;
+      document.location.reload(true);
 
     }
 
@@ -1119,6 +1136,7 @@ export const submitToComment = () => {
     await createComment(fileId, message);
     let tasklist = await getTaskList(fileId);
     let entries = tasklist.entries;
+    console.log('Dacc tasklist', entries);
     if (entries.length !== 0) {
       for (let item of entries) {
         if (item.is_completed == false) {
@@ -1160,7 +1178,7 @@ export const submitToComment = () => {
       }
     };
 
-    document.location.reload(true);
+    // document.location.reload(true);
   }
   const dcform = document.querySelector('.dacc-comment');
   if (dcform) {
