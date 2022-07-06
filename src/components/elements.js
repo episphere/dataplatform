@@ -105,6 +105,8 @@ export function renderFilePreviewDropdown(files, tab){
     }
     if(files.length != 0){
         //console.log('Param is array length: ' + files.length);
+
+        if(!tab.startsWith('dacc')){
         template += `<div class='card-body p-0'>
                 <div class='card-title'>
                 <label for='${tab}selectedDoc'>
@@ -114,6 +116,15 @@ export function renderFilePreviewDropdown(files, tab){
                 <br>
                 <select id='${tab}selectedDoc' multiple size='3'>
             `;
+        } else {
+            template += `<div class='card-body p-0'>
+                <div class='card-title'>
+                <label for='${tab}selectedDoc'>
+                    <b>Select Document:</b>
+                </label>
+                <br>
+                <select id='${tab}selectedDoc'>`;
+        }
 
         for (const file of files) { 
         //console.log('File', file);
@@ -127,6 +138,7 @@ export function renderFilePreviewDropdown(files, tab){
                 </div>
                 </div>  
             </div>`
+    
     } else {
     template += `
               No files to show.            

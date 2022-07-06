@@ -12,7 +12,7 @@ export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov'
 
 export const emailforChair = ['Roger.Milne@cancervic.org.au', 'ahearntu@nih.gov'];
 
-export const emailforDACC = ['mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
+export const emailforDACC = ['mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov'];
 
 export const publicDataFileId = 697309514903; //Unknown
 
