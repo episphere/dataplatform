@@ -106,7 +106,7 @@ export function renderFilePreviewDropdown(files, tab){
     if(files.length != 0){
         //console.log('Param is array length: ' + files.length);
 
-        if(!tab.startsWith('dacc')){
+        if(tab !== 'daccReview' && tab !== 'daccToBeCompleted' && tab !== 'completed'){
         template += `<div class='card-body p-0'>
                 <div class='card-title'>
                 <label for='${tab}selectedDoc'>

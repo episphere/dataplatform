@@ -542,7 +542,7 @@ export const chairFileView = async () => {
          <a class='nav-link' id='inProgressTab' href='#inProgress' data-mdb-toggle="tab" role='tab' aria-controls='inProgress' aria-selected='true'> In Progress </a>
       </li>
       <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='completedTab' href='#completed' data-mdb-toggle="tab" role='tab' aria-controls='completed' aria-selected='true'> DACC Completed </a>
+         <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'> DACC Completed </a>
       </li>
       <li class='nav-item' role='presentation'>
          <a class='nav-link' id='acceptedTab' href='#accepted' data-mdb-toggle="tab" role='tab' aria-controls='accepted' aria-selected='true'> Accepted </a>
@@ -596,9 +596,9 @@ export const chairFileView = async () => {
   template += renderFilePreviewDropdown(filesinprogress, 'inProgress');
 
   template += `<div class='tab-pane fade'
-                id='completed' role='tabpanel'
-                aria-labelledby='completedTab'>`
-  template += renderFilePreviewDropdown(filescompleted, 'completed');
+                id='daccCompleted' role='tabpanel'
+                aria-labelledby='daccCompletedTab'>`
+  template += renderFilePreviewDropdown(filescompleted, 'daccCompleted');
 
   template += `<div class='tab-pane fade' 
                 id='accepted' role='tabpanel'
@@ -671,11 +671,11 @@ export const chairFileView = async () => {
   }
 
   //Switch Tabs
-  switchTabs('toBeCompleted', ['inProgress', 'completed', 'accepted', 'denied'], filesincomplete);
-  switchTabs('inProgress', ['toBeCompleted', 'cCompleted', 'accepted', 'denied'], filesinprogress);
-  switchTabs('completed', ['inProgress', 'toBeCompleted', 'accepted', 'denied'], filescompleted);
-  switchTabs('accepted', ['inProgress', 'completed', 'toBeCompleted', 'denied'], filesaccepted);
-  switchTabs('denied', ['inProgress', 'completed', 'toBeCompleted', 'accepted'], filesdenied);
+  switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'accepted', 'denied'], filesincomplete);
+  switchTabs('inProgress', ['toBeCompleted', 'daccCompleted', 'accepted', 'denied'], filesinprogress);
+  switchTabs('daccCompleted', ['inProgress', 'toBeCompleted', 'accepted', 'denied'], filescompleted);
+  switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted', 'denied'], filesaccepted);
+  switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
 
   const tasks = await getTaskList('980655369256');
   console.log(tasks.entries);
@@ -955,7 +955,7 @@ export const daccFileView = async () => {
               <a class='nav-link' id='daccReviewTab' href='#daccReview' data-mdb-toggle="tab" role='tab' aria-controls='daccReview' aria-selected='true'>Review </a>
             </li>
             <li class='nav-item' role='presentation'>
-                <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'>Completed</a>
+                <a class='nav-link' id='completedTab' href='#completed' data-mdb-toggle="tab" role='tab' aria-controls='completed' aria-selected='true'>Completed</a>
             </li>
 
 
@@ -1061,9 +1061,9 @@ export const daccFileView = async () => {
   template += renderFilePreviewDropdown(filesreviewed, 'daccReview');
 
   template += `<div class='tab-pane fade'
-                id='daccCompleted' role='tabpanel'
-                aria-labeledby='daccCompletedTab'> `
-  template += renderFilePreviewDropdown(filescompleted, 'daccCompleted');
+                id='completed' role='tabpanel'
+                aria-labeledby='completedTab'> `
+  template += renderFilePreviewDropdown(filescompleted, 'completed');
   template += `<div id='filePreview'>`;
 
   if (filescompleted.length != 0 || filesincomplete.length != 0 || filesreviewed.length != 0) {
@@ -1114,9 +1114,9 @@ export const daccFileView = async () => {
   submitToComment();
 
   //Switch Tabs
-  switchTabs('dacctoBeCompleted', ['daccCompleted', 'daccReview'], filesincomplete);
-  switchTabs('daccCompleted', ['dacctoBeCompleted', 'daccReview'], filescompleted);
-  switchTabs('daccReview', ['dacctoBeCompleted', 'daccCompleted'], filesreviewed);
+  switchTabs('dacctoBeCompleted', ['completed', 'daccReview'], filesincomplete);
+  switchTabs('completed', ['dacctoBeCompleted', 'daccReview'], filescompleted);
+  switchTabs('daccReview', ['dacctoBeCompleted', 'completed'], filesreviewed);
   hideAnimation();
 }
 

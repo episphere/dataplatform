@@ -1570,7 +1570,7 @@ export function switchTabs(show, hide, files) {
                             document.getElementById('sendtodaccButton').style.display="none";
                             document.getElementById('finalChairDecision').style.display="none";
                             }
-                        if (show === 'completed'){
+                        if (show === 'daccCompleted'){
                             document.getElementById('sendtodaccButton').style.display="none";
                             document.getElementById('finalChairDecision').style.display="block";
                             }
@@ -1581,7 +1581,7 @@ export function switchTabs(show, hide, files) {
                         if (show ==='dacctoBeCompleted'){
                             document.getElementById('daccComment').style.display="block";
                         }
-                        if (show === 'daccCompleted'){
+                        if (show === 'completed'){
                             console.log('did this work?');
                             document.getElementById('daccComment').style.display="none";
                         }
