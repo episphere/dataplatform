@@ -989,7 +989,8 @@ export async function showComments(id) {
          console.log(comment.checked);
 
          if (comment.checked){
-             copiedComments.push(document.getElementById('comment' + comment.id).innerText);
+             let commentText = document.getElementById('comment' + comment.id).innerText;
+             copiedComments.push(commentText.split(':')[2]);
          }
      }
 
