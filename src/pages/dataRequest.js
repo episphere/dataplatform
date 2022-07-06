@@ -691,6 +691,19 @@ export const submitToDacc = () => {
     let message = e.target[0].value;
     console.log(fileId);
     console.log(message);
+
+    //Send multiple files
+    const filesToSend = [];
+    const elements = document.querySelectorAll(".tab-content .active #toBeCompletedselectedDoc option");
+    console.log(elements)
+    for(let i = 0; i < elements.length; i++){
+      if(elements[i].selected){
+        filesToSend.push(elements[i].value)
+      }
+      
+    }
+    console.log(filesToSend);
+   for(const fileId of filesToSend){ 
     await createCompleteTask(fileId, message);
     let tasklist = await getTaskList(fileId);
     let tasktodacc = tasklist.entries[0].id;
@@ -701,6 +714,7 @@ export const submitToDacc = () => {
     }
     await moveFile(fileId, daccReviewFolder);
     console.log('File moved to: ' + daccReviewFolder);
+  }
     document.location.reload(true);
   }
   const sdform = document.querySelector('.dacc-submit');
