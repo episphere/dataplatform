@@ -734,7 +734,10 @@ export const commentApproveReject = () => {
     let decision = e.submitter.value;
     let message = e.target[0].value;
     //console.log(approval);
-    await updateTaskAssignment(taskId, decision, message);
+
+    if(decision !== 'daccReview'){
+      await updateTaskAssignment(taskId, decision, message);
+    }
     await createComment(fileId, message);
     let fileInfo = await getFileInfo(fileId);
     let uploaderName = fileInfo.created_by.login
