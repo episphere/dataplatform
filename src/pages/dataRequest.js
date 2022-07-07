@@ -52,7 +52,7 @@ import {
   renderFilePreviewDropdown
 } from '../components/elements.js';
 import {
-  switchTabs
+  switchTabs, switchFiles
 } from '../event.js';
 
 export const dataAccessNotSignedIn = () => {
@@ -658,6 +658,7 @@ export const chairFileView = async () => {
   submitToDacc();
   commentApproveReject();
   if (filesincomplete.length != 0) {
+    switchFiles('toBeCompleted');
     showPreview(filesincomplete[0].id);
     document.getElementById('boxFilePreview').classList.remove('col-8');
   } else {
@@ -677,8 +678,6 @@ export const chairFileView = async () => {
   switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted', 'denied'], filesaccepted);
   switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
 
-  const tasks = await getTaskList('980655369256');
-  console.log(tasks.entries);
   hideAnimation();
 }
 
