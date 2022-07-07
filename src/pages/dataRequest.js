@@ -807,7 +807,6 @@ export const commentApproveReject = () => {
       //Move file to DACC Review (Resubmit) folder
       await moveFile(fileId, daccReviewChairFolder);
       console.log('File moved to Dacc Review folder');
-      return;
       document.location.reload(true);
 
     }
@@ -1194,7 +1193,7 @@ export const submitToComment = () => {
       }
     };
 
-    // document.location.reload(true);
+    document.location.reload(true);
   }
   const dcform = document.querySelector('.dacc-comment');
   if (dcform) {
