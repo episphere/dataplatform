@@ -660,6 +660,7 @@ export const chairFileView = async () => {
   if (filesincomplete.length != 0) {
     switchFiles('toBeCompleted');
     showPreview(filesincomplete[0].id);
+    document.getElementById('toBeCompletedselectedDoc').children[0].selected = true;
     document.getElementById('boxFilePreview').classList.remove('col-8');
   } else {
     // if (typeof classList === 'undefined') {
@@ -686,22 +687,19 @@ export const submitToDacc = () => {
     const btn = document.activeElement;
     btn.disabled = true;
     e.preventDefault();
-    let fileId = document.querySelector(".tab-content .active #toBeCompletedselectedDoc").value //document.getElementById('selectedDoc').value//e.submitter.value;
     let message = e.target[0].value;
-    console.log(fileId);
     console.log(message);
 
     //Send multiple files
     const filesToSend = [];
     const elements = document.querySelectorAll(".tab-content .active #toBeCompletedselectedDoc option");
-    console.log(elements)
     for(let i = 0; i < elements.length; i++){
       if(elements[i].selected){
         filesToSend.push(elements[i].value)
       }
       
     }
-    console.log(filesToSend);
+    console.log('Files selected on submit', filesToSend);
    for(const fileId of filesToSend){ 
     await createCompleteTask(fileId, message);
     let tasklist = await getTaskList(fileId);
@@ -714,7 +712,7 @@ export const submitToDacc = () => {
     await moveFile(fileId, daccReviewFolder);
     console.log('File moved to: ' + daccReviewFolder);
   }
-    document.location.reload(true);
+    //document.location.reload(true);
   }
   const sdform = document.querySelector('.dacc-submit');
   if (sdform) {
@@ -1495,7 +1493,14 @@ export const dataForm = async () => {
       //let files = getFolderItems(uploadFormFolder);//149098174998);
       if (filesinfoldernames.includes(filename)) {
         console.log(filename + " Exists: Saving New Version");
-
+        // const path = filename.split('.');
+        // let i = 0;
+        // console.log(path);
+        
+        // while(filesinfoldernames.includes(filename)){
+        //   filename = path[0] + `(${i}).` + path[1];
+        //   i++; 
+        // }
         let fileidupdate = filesinfolderids[filesinfoldernames.indexOf(filename)];
         (async () => {
           // document.getElementById('modalBody').innerHTML = 'Would'
@@ -1517,7 +1522,7 @@ export const dataForm = async () => {
           let fileid = response.entries[0].id;
           //Modal code here
           document.getElementById('modalBody').innerHTML = `
-          <p>File was successfully updated.</p>
+          <p>File was successfully uploaded.</p>
           <p>Document ID: ${fileid}</p>`;
           $('#popUpModal').modal('show');
         })();
