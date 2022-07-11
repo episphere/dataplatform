@@ -726,7 +726,18 @@ export const commentApproveReject = () => {
     const btn = document.activeElement;
     btn.disabled = true;
     //let taskId = btn.name;
-    let fileId = document.querySelector(".tab-content .active #daccCompletedselectedDoc").value //document.getElementById('selectedDoc').value;
+    // let fileId = document.querySelector(".tab-content .active #daccCompletedselectedDoc").value //document.getElementById('selectedDoc').value;
+    //Send multiple files
+    const filesToSend = [];
+    const elements = document.querySelectorAll(".tab-content .active #daccCompletedselectedDoc option");
+    for(let i = 0; i < elements.length; i++){
+      if(elements[i].selected){
+        filesToSend.push(elements[i].value)
+      }
+      
+    }
+    console.log('Files selected on submit', filesToSend);
+   for(const fileId of filesToSend){ 
     let tasklist = await getTaskList(fileId);
     //console.log(tasklist);
     let entries = tasklist.entries;
@@ -848,7 +859,7 @@ export const commentApproveReject = () => {
     //   await createComment(cpFileId, `DACC Member ${commentNum}: ${message}`);
     //   commentNum += 1;
     // }
-
+  }
     document.location.reload(true);
   }
 
