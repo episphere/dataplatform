@@ -10,9 +10,9 @@ import {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-export const emailforChair =['Roger.Milne@cancervic.org.au', 'ahearntu@nih.gov', 'wraynr@nih.gov'];
+export const emailforChair =['Roger.Milne@cancervic.org.au', 'ahearntu@nih.gov', 'montserrat.garcia-closas@nih.gov', 'wraynr@nih.gov'];
 
-export const emailforDACC = ['mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
+export const emailforDACC = ['mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov'];
 
 export const publicDataFileId = 697309514903; //Unknown
 
@@ -990,10 +990,16 @@ export async function showComments(id) {
 
          if (comment.checked){
              let commentText = document.getElementById('comment' + comment.id).innerText;
-             copiedComments.push(commentText.split(':')[2]);
+             console.log(commentText);
+             if(commentText.includes('Rating:')){
+                copiedComments.push(commentText.split(':')[2]);
+             }
+            else {
+                copiedComments.push(commentText);
+            }
          }
      }
-
+     console.log(copiedComments);
      navigator.clipboard.writeText(copiedComments.join('\\n'));
         "/>
         `
