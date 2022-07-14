@@ -1120,6 +1120,7 @@ export const daccFileView = async () => {
   //}
   document.getElementById('daccFileView').innerHTML = template;
   if (filesincomplete.length != 0) {
+    switchFiles('dacctoBeCompleted');
     showPreview(filesincomplete[0].id);
     showComments(filesincomplete[0].id);
   } else {
