@@ -712,7 +712,7 @@ export const submitToDacc = () => {
     await moveFile(fileId, daccReviewFolder);
     console.log('File moved to: ' + daccReviewFolder);
   }
-    //document.location.reload(true);
+    document.location.reload(true);
   }
   const sdform = document.querySelector('.dacc-submit');
   if (sdform) {
@@ -1124,6 +1124,7 @@ export const daccFileView = async () => {
   //}
   document.getElementById('daccFileView').innerHTML = template;
   if (filesincomplete.length != 0) {
+    switchFiles('dacctoBeCompleted');
     showPreview(filesincomplete[0].id);
     showComments(filesincomplete[0].id);
   } else {
