@@ -403,7 +403,6 @@ export const acceptedStudiesSection = (activeTab) => {
     <div id="acceptedStudiesView" class="align-left"></div>
   </div>
   `;
-
   return template
 }
 
@@ -536,13 +535,13 @@ export const chairFileView = async () => {
     <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
     <ul class='nav nav-tabs mb-3' role='tablist'>
       <li class='nav-item' role='presentation'>
-        <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> To Be Completed </a>
+        <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> New Submissions </a>
       </li>
       <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='inProgressTab' href='#inProgress' data-mdb-toggle="tab" role='tab' aria-controls='inProgress' aria-selected='true'> In Progress </a>
+         <a class='nav-link' id='inProgressTab' href='#inProgress' data-mdb-toggle="tab" role='tab' aria-controls='inProgress' aria-selected='true'> Under Review </a>
       </li>
       <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'> DACC Completed </a>
+         <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'> Review Completed </a>
       </li>
       <li class='nav-item' role='presentation'>
          <a class='nav-link' id='acceptedTab' href='#accepted' data-mdb-toggle="tab" role='tab' aria-controls='accepted' aria-selected='true'> Accepted </a>
@@ -592,12 +591,13 @@ export const chairFileView = async () => {
 
   template += `<div class='tab-pane fade'
                  id='inProgress' role='tabpanel'
-                 aria-labeledby='inProgressTab'> `
+                 aria-labeledby='inProgressTab'>`
   template += renderFilePreviewDropdown(filesinprogress, 'inProgress');
-
+ 
   template += `<div class='tab-pane fade'
                 id='daccCompleted' role='tabpanel'
-                aria-labelledby='daccCompletedTab'>`
+                aria-labelledby='daccCompletedTab'>
+                <p id=email><a href="mailto:${emailforDACC.join("; ")}">Send Email to DACC</a><p>`
   template += renderFilePreviewDropdown(filescompleted, 'daccCompleted');
 
   template += `<div class='tab-pane fade' 
