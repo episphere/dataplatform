@@ -726,7 +726,18 @@ export const commentApproveReject = () => {
     const btn = document.activeElement;
     btn.disabled = true;
     //let taskId = btn.name;
-    let fileId = document.querySelector(".tab-content .active #daccCompletedselectedDoc").value //document.getElementById('selectedDoc').value;
+    // let fileId = document.querySelector(".tab-content .active #daccCompletedselectedDoc").value //document.getElementById('selectedDoc').value;
+    //Send multiple files
+    const filesToSend = [];
+    const elements = document.querySelectorAll(".tab-content .active #daccCompletedselectedDoc option");
+    for(let i = 0; i < elements.length; i++){
+      if(elements[i].selected){
+        filesToSend.push(elements[i].value)
+      }
+      
+    }
+    console.log('Files selected on submit', filesToSend);
+   for(const fileId of filesToSend){ 
     let tasklist = await getTaskList(fileId);
     //console.log(tasklist);
     let entries = tasklist.entries;
@@ -848,7 +859,7 @@ export const commentApproveReject = () => {
     //   await createComment(cpFileId, `DACC Member ${commentNum}: ${message}`);
     //   commentNum += 1;
     // }
-
+  }
     document.location.reload(true);
   }
 
@@ -1109,6 +1120,7 @@ export const daccFileView = async () => {
   //}
   document.getElementById('daccFileView').innerHTML = template;
   if (filesincomplete.length != 0) {
+    switchFiles('dacctoBeCompleted');
     showPreview(filesincomplete[0].id);
     showComments(filesincomplete[0].id);
   } else {
@@ -1221,7 +1233,20 @@ export const dataApproval = () => {
 export const dataForm = async () => {
   let files = await getFolderItems(uploadFormFolder);
   const d = new Date();
-  const filename = JSON.parse(localStorage.parms).login.split("@")[0] + "testing" + "_" + d.getDate() + "_" + (d.getMonth() + 1) + "_" + d.getFullYear() + ".docx";
+  let filename = JSON.parse(localStorage.parms).login.split("@")[0] + "testing" + "_" + d.getDate() + "_" + (d.getMonth() + 1) + "_" + d.getFullYear() + ".docx";
+  
+  // Find unique name
+  let entries = files.entries;
+  let i = 1;
+  while(entries.includes(filename)){
+    console.log('Chaning file name')
+    let indexOfExtension = filename.indexOf('.');
+    filename = filename.substring(0, indexOfExtension) + `(${i})` + filename.substring(indexOfExtension);
+    console.log('File name changed', filename);
+    i++;
+
+  }
+  
   const filesinfoldernames = [];
   const filesinfolderids = [];
   for (let i = 0; i < files.entries.length; i++) {
@@ -1493,27 +1518,47 @@ export const dataForm = async () => {
       //let files = getFolderItems(uploadFormFolder);//149098174998);
       if (filesinfoldernames.includes(filename)) {
         console.log(filename + " Exists: Saving New Version");
-        // const path = filename.split('.');
-        // let i = 0;
-        // console.log(path);
+        const [name, extension] = filename.split('.');
+        let i = 1;
+        console.log(name);
         
-        // while(filesinfoldernames.includes(filename)){
-        //   filename = path[0] + `(${i}).` + path[1];
-        //   i++; 
-        // }
-        let fileidupdate = filesinfolderids[filesinfoldernames.indexOf(filename)];
-        (async () => {
-          // document.getElementById('modalBody').innerHTML = 'Would'
-          let response = await uploadWordFileVersion(blob, fileidupdate);
-          await assigntasktochair();
-          document.getElementById('modalBody').innerHTML = `
-          <p>File was successfully updated.</p>
-          <p>Document ID: ${fileidupdate}</p>
-          
-          `;
-          $('#popUpModal').modal('show');
+        while(filesinfoldernames.includes(filename)){
+          console.log(filename, 'coming in')
+          console.log(filename.indexOf(')') - 1);
+          if(filename.includes(')')){
 
+            const [name, version] = filename.split('(');
+            filename = name + `(${i})` + version.substring(2,);
+          }
+          else {
+          filename = name + `(${i}).` + extension;
+          }
+          console.log('New name', filename);
+          i++; 
+        }
+        (async () => {
+          let response = await uploadWordFile(blob, filename, uploadFormFolder);
+          await assigntasktochair();
+          let fileid = response.entries[0].id;
+          //Modal code here
+          document.getElementById('modalBody').innerHTML = `
+          <p>File was successfully uploaded.</p>
+          <p>Document ID: ${fileid}</p>`;
+          $('#popUpModal').modal('show');
         })();
+        // let fileidupdate = filesinfolderids[filesinfoldernames.indexOf(filename)];
+        // (async () => {
+        //   // document.getElementById('modalBody').innerHTML = 'Would'
+        //   let response = await uploadWordFileVersion(blob, fileidupdate);
+        //   await assigntasktochair();
+        //   document.getElementById('modalBody').innerHTML = `
+        //   <p>File was successfully updated.</p>
+        //   <p>Document ID: ${fileidupdate}</p>
+          
+        //   `;
+        //   $('#popUpModal').modal('show');
+
+        // })();
       } else {
         console.log("Saving File to Box: " + filename + jsondata.keywords); // Adding keywords
         (async () => {
