@@ -65,7 +65,7 @@ export const dataAccessNotSignedIn = () => {
                       <h1 class="page-header">Data Access</h1>
                   </div>
               </div>
-              <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
+              <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
                   <div class="row m-0">
                       The Breast Cancer Risk Prediction Project is currently generating genotyping data and harmonizing risk factor and clinical data. Data is expected to be available for request in late 2022. Data access will be facilitated through this platform, in accordance to the data transfer agreements signed between participating studies (originator) and the BCRPP Data Coordinating Center (DCC) at the Division of Cancer Epidemiology and Genetics at the National Cancer Institute.
                   </div></br>
@@ -123,7 +123,7 @@ export const dataAccess = (activeTab, showDescripton) => {
                         <h1 class="page-header">Data Access</h1>
                     </div>
                 </div>
-                <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
+                <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
                     <div class="row m-0">
 
                         The Breast Cancer Risk Prediction Project is currently harmonizing risk factor and clinical data from participating cohorts. Data is expected to be available for request in late 2022. Data access will be facilitated through this platform, in accordance to the data transfer agreements signed between participating studies (originator) and the BCRPP Data Coordinating Center (DCC) at the Division of Cancer Epidemiology and Genetics at the National Cancer Institute.
@@ -229,7 +229,7 @@ export const formSection = async (activeTab, showDescripton) => {
                                       <h1 class="page-header">Form Submission</h1>
                                   </div>
                               </div>
-                          <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">             
+                          <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">             
                             <section class="contact-form">
                               <p>Please fill out the form below in order to get approval for access to data.</p>
                               <form>
@@ -533,7 +533,7 @@ export const chairFileView = async () => {
         </div>
 
   
-    <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
+    <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
     <ul class='nav nav-tabs mb-3' role='tablist'>
       <li class='nav-item' role='presentation'>
         <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> New Submissions </a>
@@ -620,8 +620,7 @@ export const chairFileView = async () => {
           <div id='fileComments' class='col-4 mt-2'></div>
         </div>
 
-        <div class='row card-body dacc-submit'>
-          <div id='sendtodaccButton' class="col-6">
+        <div class='row card-body dacc-submit' id='sendtodaccButton' class="col-8" style="background-color:#f6f6f6; display:block">
             <form>
               <label for"message">Send to DACC</label>
               <div class="input-group">
@@ -630,22 +629,21 @@ export const chairFileView = async () => {
               <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
                 <span class="buttonsubmit__text"> Send </span> </button>
             </form>
-          </div>
         </div>
 
-        <div class='row card-body dacc-override'>
-          <div id='daccOverride' class="col-6" style='display:none'>
+        <div class='row card-body dacc-override' id='daccOverride' class="col-6" style='display:none'>
           <form>
               <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
                 <span class="buttonsubmit__text"> Override DACC </span> 
               </button>
+              <div class='text-muted small'>Select to move form to Review Completed </div>
           </form>
-          </div>
         </div>
 
-        <div id='finalChairDecision' class="card-body approvedeny" style="padding-left: 10px;background-color:#f6f6f6; display:none">
+        <div id='finalChairDecision' class="card-body approvedeny" style="background-color:#f6f6f6; display:none">
           <form>
             <label for="message">Enter Message for Submitter</label>
+            <div class='text-muted small'>Submitter will only see the below comment after approve or deny. </div>
             <div class="input-group">
                 <textarea id="message" name="message" rows="6" cols="65"></textarea>
             </div>
@@ -1033,7 +1031,7 @@ export const daccFileView = async () => {
                     <h1 class="page-header">DACC Access Only</h1>
                 </div>
             </div>
-            <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
+            <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
             <ul class='nav nav-tabs mb-3' role='tablist'>
             <li class='nav-item' role='presentation'>
               <a class='nav-link active' id='dacctoBeCompletedTab' href='#dacctoBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='dacctoBeCompleted' aria-selected='true'> To Be Completed </a>

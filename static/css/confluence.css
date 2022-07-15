@@ -554,8 +554,8 @@ label {
     text-align: left;
     background-color: #fff;
     margin-bottom: 1rem;
-    padding: 0.5rem 0;
-    border-radius: 0.25rem;
+    padding: 0.0rem 0;
+    border-radius: 0.0rem;
 }
 
 .my-projects-div {
@@ -1835,6 +1835,7 @@ form {
     font-size:87.5%;
     float:right;
     padding-right: 10px;
+    display: inline;
   }
   
   .results pre {
@@ -1995,9 +1996,9 @@ form {
   }
 
   .preview-container {
-    border: 1px solid #eee;
+    border: 2px solid #eee;
     height: 1000px;
-    width: 100%;
+    width: 99%;
   }
 
 .buttonsubmit {
