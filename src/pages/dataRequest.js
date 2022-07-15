@@ -52,7 +52,8 @@ import {
   renderFilePreviewDropdown
 } from '../components/elements.js';
 import {
-  switchTabs, switchFiles
+  switchTabs,
+  switchFiles
 } from '../event.js';
 
 export const dataAccessNotSignedIn = () => {
@@ -146,7 +147,7 @@ export const dataAccess = (activeTab, showDescripton) => {
 
   return template
 }
-export const formSectionOther = async(activeTab, showDescripton) => {
+export const formSectionOther = async (activeTab, showDescripton) => {
   let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
 
@@ -173,7 +174,7 @@ export const formSectionOther = async(activeTab, showDescripton) => {
       </div>
       `;
 
-    template += ` 
+  template += ` 
                   <div class="general-bg padding-bottom-1rem">
                           <div class="container body-min-height">
 
@@ -193,12 +194,12 @@ export const formSectionOther = async(activeTab, showDescripton) => {
   return template;
 }
 
-export const formSection = async(activeTab, showDescripton) => {
+export const formSection = async (activeTab, showDescripton) => {
   let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
 
   let navBarItems = '';
-   if (authDacc && authChair) {
+  if (authDacc && authChair) {
     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
@@ -219,7 +220,7 @@ export const formSection = async(activeTab, showDescripton) => {
       </div>
       `;
 
-    template += ` 
+  template += ` 
                   <div class="general-bg padding-bottom-1rem">
                           <div class="container body-min-height">
 
@@ -632,6 +633,16 @@ export const chairFileView = async () => {
           </div>
         </div>
 
+        <div class='row card-body dacc-override'>
+          <div id='daccOverride' class="col-6" style='display:none'>
+          <form>
+              <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+                <span class="buttonsubmit__text"> Override DACC </span> 
+              </button>
+          </form>
+          </div>
+        </div>
+
         <div id='finalChairDecision' class="card-body approvedeny" style="padding-left: 10px;background-color:#f6f6f6; display:none">
           <form>
             <label for="message">Enter Message for Submitter</label>
@@ -656,6 +667,7 @@ export const chairFileView = async () => {
 
   document.getElementById('chairFileView').innerHTML = template;
   submitToDacc();
+  daccOverride();
   commentApproveReject();
   if (filesincomplete.length != 0) {
     switchFiles('toBeCompleted');
@@ -693,30 +705,81 @@ export const submitToDacc = () => {
     //Send multiple files
     const filesToSend = [];
     const elements = document.querySelectorAll(".tab-content .active #toBeCompletedselectedDoc option");
-    for(let i = 0; i < elements.length; i++){
-      if(elements[i].selected){
+    for (let i = 0; i < elements.length; i++) {
+      if (elements[i].selected) {
         filesToSend.push(elements[i].value)
       }
-      
+
     }
     console.log('Files selected on submit', filesToSend);
-   for(const fileId of filesToSend){ 
-    await createCompleteTask(fileId, message);
-    let tasklist = await getTaskList(fileId);
-    let tasktodacc = tasklist.entries[0].id;
-    console.log(emailforDACC.length.toString());
-    for (let i = 0, daccemaillength = emailforDACC.length; i < daccemaillength; i++) {
-      await assignTask(tasktodacc, emailforDACC[i]);
-      console.log("Task assigned to " + emailforDACC[i]);
+    for (const fileId of filesToSend) {
+      await createCompleteTask(fileId, message);
+      let tasklist = await getTaskList(fileId);
+      let tasktodacc = tasklist.entries[0].id;
+      console.log(emailforDACC.length.toString());
+      for (let i = 0, daccemaillength = emailforDACC.length; i < daccemaillength; i++) {
+        await assignTask(tasktodacc, emailforDACC[i]);
+        console.log("Task assigned to " + emailforDACC[i]);
+      }
+      await moveFile(fileId, daccReviewFolder);
+      console.log('File moved to: ' + daccReviewFolder);
     }
-    await moveFile(fileId, daccReviewFolder);
-    console.log('File moved to: ' + daccReviewFolder);
-  }
-    //document.location.reload(true);
+    document.location.reload(true);
   }
   const sdform = document.querySelector('.dacc-submit');
   if (sdform) {
     sdform.addEventListener('submit', submitDacc);
+  }
+}
+
+export const daccOverride = () => {
+  let override = async (e) => {
+    e.preventDefault();
+    const btn = document.activeElement;
+    btn.disabled = true;
+
+    const filesToSend = [];
+    const elements = document.querySelectorAll(".tab-content .active #inProgressselectedDoc option");
+    for (let i = 0; i < elements.length; i++) {
+      if (elements[i].selected) {
+        filesToSend.push(elements[i].value)
+      }
+
+    }
+    console.log('Files selected on submit', filesToSend);
+    for (const fileId of filesToSend) {
+      let tasklist = await getTaskList(fileId);
+      //console.log(tasklist);
+      let entries = tasklist.entries;
+
+      if (entries.length !== 0) {
+        for (let item of entries) {
+          if (item.is_completed == false && item.action == 'complete') {
+            for (let taskassignment of item.task_assignment_collection.entries) {
+              updateTaskAssignment(taskassignment.id, 'completed')
+            }
+
+          }
+        }
+        await moveFile(fileId, chairReviewFolder);
+        console.log('File moved to: ' + chairReviewFolder);
+        await createFileTask(fileId);
+        tasklist = await getTaskList(fileId);
+        entries = tasklist.entries;
+        console.log(entries);
+        for (let item of entries) {
+          if (item.is_completed == false) {
+            await assignTask(item.id, emailforChair[0]);
+            console.log("Chair Task Assigned");
+          }
+        }
+      }
+    }
+    document.location.reload(true);
+  }
+  const overrideform = document.querySelector('.dacc-override');
+  if (overrideform) {
+    overrideform.addEventListener('submit', override);
   }
 }
 
@@ -730,136 +793,139 @@ export const commentApproveReject = () => {
     //Send multiple files
     const filesToSend = [];
     const elements = document.querySelectorAll(".tab-content .active #daccCompletedselectedDoc option");
-    for(let i = 0; i < elements.length; i++){
-      if(elements[i].selected){
+    for (let i = 0; i < elements.length; i++) {
+      if (elements[i].selected) {
         filesToSend.push(elements[i].value)
       }
-      
+
     }
     console.log('Files selected on submit', filesToSend);
-   for(const fileId of filesToSend){ 
-    let tasklist = await getTaskList(fileId);
-    //console.log(tasklist);
-    let entries = tasklist.entries;
-    if (entries.length !== 0) {
-      for (let item of entries) {
-        if (item.is_completed == false && item.action == 'review') {
-          for (let taskassignment of item.task_assignment_collection.entries) {
-            if (taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
-              var taskId = taskassignment.id;
-              //console.log(taskId);
+    for (const fileId of filesToSend) {
+      let tasklist = await getTaskList(fileId);
+      //console.log(tasklist);
+      let entries = tasklist.entries;
+      if (entries.length !== 0) {
+        for (let item of entries) {
+          if (item.is_completed == false && item.action == 'review') {
+            for (let taskassignment of item.task_assignment_collection.entries) {
+              if (taskassignment.assigned_to.login == JSON.parse(localStorage.parms).login) {
+                var taskId = taskassignment.id;
+                //console.log(taskId);
+              }
             }
           }
         }
       }
-    }
-    let decision = e.submitter.value;
-    let message = e.target[0].value;
-    //console.log(approval);
+      let decision = e.submitter.value;
+      let message = e.target[0].value;
+      //console.log(approval);
 
-    if(decision !== 'daccReview'){
-      await updateTaskAssignment(taskId, decision, message);
-    }
-    await createComment(fileId, message);
-    let fileInfo = await getFileInfo(fileId);
-    let uploaderName = fileInfo.created_by.login
-    console.log(uploaderName);
-    if (decision == 'approved') {
-      await moveFile(fileId, acceptedFolder);
-      console.log("File moved to approved folder");
-    } else if (decision == 'rejected') {
-      await moveFile(fileId, deniedFolder);
-      console.log("File moved to denied folder");
-    } else if (decision == 'daccReview') {
-      // Delete review task assigned to chair
-      let tasklist = await getTaskList(fileId);
-      const taskEntries = tasklist.entries;
+      if (decision !== 'daccReview') {
+        await updateTaskAssignment(taskId, decision, message);
+      }
+      await createComment(fileId, message);
+      let fileInfo = await getFileInfo(fileId);
+      let uploaderName = fileInfo.created_by.login
+      console.log(uploaderName);
+      if (decision == 'approved') {
+        await moveFile(fileId, acceptedFolder);
+        console.log("File moved to approved folder");
+      } else if (decision == 'rejected') {
+        await moveFile(fileId, deniedFolder);
+        console.log("File moved to denied folder");
+      } else if (decision == 'daccReview') {
+        // Delete review task assigned to chair
+        let tasklist = await getTaskList(fileId);
+        const taskEntries = tasklist.entries;
 
-      console.log(taskEntries);
-      if (taskEntries.length !== 0) {
-        for (let entry of entries) {
-          if (entry.action === 'review'){
-          console.log(entry);
-            if (entry.is_completed == false) {
-              // for (let taskassignment of entry.task_assignment_collection.entries) {
-              //   if (taskassignment.resolution_state === 'incomplete') {
-              //     if (taskassignment.assigned_to.login === JSON.parse(localStorage.parms).login) {
-              //       var taskId = taskassignment.id;
-                    console.log(entry.id);
-                    await deleteTask(entry.id);
-                  }
+        console.log(taskEntries);
+        if (taskEntries.length !== 0) {
+          for (let entry of entries) {
+            if (entry.action === 'review') {
+              console.log(entry);
+              if (entry.is_completed == false) {
+                // for (let taskassignment of entry.task_assignment_collection.entries) {
+                //   if (taskassignment.resolution_state === 'incomplete') {
+                //     if (taskassignment.assigned_to.login === JSON.parse(localStorage.parms).login) {
+                //       var taskId = taskassignment.id;
+                console.log(entry.id);
+                await deleteTask(entry.id);
+              }
               //   }
               // }
               // }
             }
-        }
-      }
-      
-      //Create complete tasks for DACC
-      await createCompleteTask(fileId, message);
-      tasklist = await getTaskList(fileId);
-      let tasktodacc;
-      for(const entry of tasklist.entries){
-        if(entry.is_completed == false) {
-          if(entry.action === 'complete'){
-            tasktodacc = entry.id;
           }
         }
-      }
-      console.log('Tasks for DACC', tasklist.entries);
-      console.log(emailforDACC.length.toString());
-      for (let i = 0, daccemaillength = emailforDACC.length; i < daccemaillength; i++) {
-        await assignTask(tasktodacc, emailforDACC[i]);
-        console.log("Task assigned to " + emailforDACC[i]);
+
+        //Create complete tasks for DACC
+        await createCompleteTask(fileId, message);
+        tasklist = await getTaskList(fileId);
+        let tasktodacc;
+        for (const entry of tasklist.entries) {
+          if (entry.is_completed == false) {
+            if (entry.action === 'complete') {
+              tasktodacc = entry.id;
+            }
+          }
+        }
+        console.log('Tasks for DACC', tasklist.entries);
+        console.log(emailforDACC.length.toString());
+        for (let i = 0, daccemaillength = emailforDACC.length; i < daccemaillength; i++) {
+          await assignTask(tasktodacc, emailforDACC[i]);
+          console.log("Task assigned to " + emailforDACC[i]);
+        }
+
+        //Move file to DACC Review (Resubmit) folder
+        await moveFile(fileId, daccReviewChairFolder);
+        console.log('File moved to Dacc Review folder');
+
+
       }
 
-      //Move file to DACC Review (Resubmit) folder
-      await moveFile(fileId, daccReviewChairFolder);
-      console.log('File moved to Dacc Review folder');
-      document.location.reload(true);
+      if (decision != 'daccReview') {
 
+        let folderItems = await getFolderItems(submitterFolder);
+        //console.log(folderItems);
+        let folderEntries = folderItems.entries;
+        let folderID = 'none';
+        console.log(folderEntries);
+        for (let obj of folderEntries) {
+          console.log(obj.name);
+          if (obj.name == uploaderName) {
+            folderID = obj.id
+            console.log('Folder found: ' + folderID);
+          }
+        };
+        console.log(folderID);
+        let cpFileId = '';
+        if (folderID == 'none') {
+          console.log('No folder found');
+          const newFolder = await createFolder(submitterFolder, uploaderName);
+          //console.log(newFolder);
+          console.log('New Folder created: ' + newFolder.id);
+          await addNewCollaborator(newFolder.id, "folder", uploaderName, "viewer");
+          const cpFile = await copyFile(fileId, newFolder.id);
+          cpFileId = cpFile.id;
+          console.log(cpFileId);
+        } else {
+          const cpFile = await copyFile(fileId, folderID);
+          cpFileId = cpFile.id;
+          //console.log(cpFileId);
+          console.log('File copied to folder');
+        };
+        //console.log(cpFileId);
+        await createComment(cpFileId, 'This file was ' + decision);
+        await createComment(cpFileId, message);
+        // for(const comment of comments){
+        //   const message = comment.message;
+        //   // console.log(message);
+        //   // console.log(cpFileId.id);
+        //   await createComment(cpFileId, `DACC Member ${commentNum}: ${message}`);
+        //   commentNum += 1;
+        // }
+      }
     }
-
-    let folderItems = await getFolderItems(submitterFolder);
-    //console.log(folderItems);
-    let folderEntries = folderItems.entries;
-    let folderID = 'none';
-    console.log(folderEntries);
-    for (let obj of folderEntries) {
-      console.log(obj.name);
-      if (obj.name == uploaderName) {
-        folderID = obj.id
-        console.log('Folder found: ' + folderID);
-      }
-    };
-    console.log(folderID);
-    let cpFileId = '';
-    if (folderID == 'none') {
-      console.log('No folder found');
-      const newFolder = await createFolder(submitterFolder, uploaderName);
-      //console.log(newFolder);
-      console.log('New Folder created: ' + newFolder.id);
-      await addNewCollaborator(newFolder.id, "folder", uploaderName, "viewer");
-      const cpFile = await copyFile(fileId, newFolder.id);
-      cpFileId = cpFile.id;
-      console.log(cpFileId);
-    } else {
-      const cpFile = await copyFile(fileId, folderID);
-      cpFileId = cpFile.id;
-      //console.log(cpFileId);
-      console.log('File copied to folder');
-    };
-    //console.log(cpFileId);
-    await createComment(cpFileId, 'This file was ' + decision);
-    await createComment(cpFileId, message);
-    // for(const comment of comments){
-    //   const message = comment.message;
-    //   // console.log(message);
-    //   // console.log(cpFileId.id);
-    //   await createComment(cpFileId, `DACC Member ${commentNum}: ${message}`);
-    //   commentNum += 1;
-    // }
-  }
     document.location.reload(true);
   }
 
@@ -1148,7 +1214,7 @@ export const submitToComment = () => {
     const btn = document.activeElement;
     btn.disabled = true;
     //let taskId = btn.name;
-    let fileId = (document.querySelector(".tab-content .active #dacctoBeCompletedselectedDoc") !== null) ? document.getElementById('dacctoBeCompletedselectedDoc').value : document.getElementById('daccReviewselectedDoc').value  //document.getElementById('selectedDoc').value;
+    let fileId = (document.querySelector(".tab-content .active #dacctoBeCompletedselectedDoc") !== null) ? document.getElementById('dacctoBeCompletedselectedDoc').value : document.getElementById('daccReviewselectedDoc').value //document.getElementById('selectedDoc').value;
     let grade = e.target[0].value;
     let comment = e.target[1].value;
     console.log(grade);
@@ -1523,8 +1589,7 @@ export const dataForm = async () => {
         console.log(name);
         
         while(filesinfoldernames.includes(filename)){
-          console.log(filename, 'coming in')
-          console.log(filename.indexOf(')') - 1);
+
           if(filename.includes(')')){
 
             const [name, version] = filename.split('(');

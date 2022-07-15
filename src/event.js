@@ -1563,19 +1563,23 @@ export function switchTabs(show, hide, files) {
                         if (show === 'toBeCompleted'){
                             document.getElementById('sendtodaccButton').style.display="block";
                             document.getElementById('finalChairDecision').style.display="none";
-                            
+                            document.getElementById('daccOverride').style.display='none';
                             // document.getElementById('fileComments').innerHTML = listComments(files[0].id);
                         }  
                         if (show === 'inProgress'){
                             document.getElementById('sendtodaccButton').style.display="none";
                             document.getElementById('finalChairDecision').style.display="none";
+                            document.getElementById('daccOverride').style.display='block';
+
                             }
                         if (show === 'daccCompleted'){
                             document.getElementById('sendtodaccButton').style.display="none";
+                            document.getElementById('daccOverride').style.display='none';
                             document.getElementById('finalChairDecision').style.display="block";
                             }
-                        if (show === 'accepted'){
+                        if (show === 'accepted' || show === 'denied'){
                             document.getElementById('sendtodaccButton').style.display="none";
+                            document.getElementById('daccOverride').style.display='none';
                             document.getElementById('finalChairDecision').style.display="none";
                             }
                         if (show ==='dacctoBeCompleted'){
