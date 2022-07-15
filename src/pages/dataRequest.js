@@ -1266,6 +1266,7 @@ export const dataForm = async () => {
     const results = document.querySelector('.results pre');
     results.innerText = JSON.stringify(formJSON, null, 2);
     await generateWord(formJSON);
+    console.log('generatewordcomplete');
     btn.classList.toggle("buttonsubmit--loading");
     btn.disabled = false;
   };
@@ -1511,7 +1512,7 @@ export const dataForm = async () => {
     }
     //console.log(filesinfoldernames);
 
-    docx.Packer.toBlob(doc).then(blob => {
+    await docx.Packer.toBlob(doc).then(async blob => {
       console.log(blob);
       //saveAs(blob, "BCRPPexample.docx");
       console.log("Document created successfully");
@@ -1536,7 +1537,6 @@ export const dataForm = async () => {
           console.log('New name', filename);
           i++; 
         }
-        (async () => {
           let response = await uploadWordFile(blob, filename, uploadFormFolder);
           await assigntasktochair();
           let fileid = response.entries[0].id;
@@ -1545,38 +1545,24 @@ export const dataForm = async () => {
           <p>File was successfully uploaded.</p>
           <p>Document ID: ${fileid}</p>`;
           $('#popUpModal').modal('show');
-        })();
-        // let fileidupdate = filesinfolderids[filesinfoldernames.indexOf(filename)];
-        // (async () => {
-        //   // document.getElementById('modalBody').innerHTML = 'Would'
-        //   let response = await uploadWordFileVersion(blob, fileidupdate);
-        //   await assigntasktochair();
-        //   document.getElementById('modalBody').innerHTML = `
-        //   <p>File was successfully updated.</p>
-        //   <p>Document ID: ${fileidupdate}</p>
-          
-        //   `;
-        //   $('#popUpModal').modal('show');
-
-        // })();
+          console.log('popup');
+        
       } else {
         console.log("Saving File to Box: " + filename + jsondata.keywords); // Adding keywords
-        (async () => {
-          let response = await uploadWordFile(blob, filename, uploadFormFolder);
-          await assigntasktochair();
-          let fileid = response.entries[0].id;
-          //Modal code here
-          document.getElementById('modalBody').innerHTML = `
-          <p>File was successfully uploaded.</p>
-          <p>Document ID: ${fileid}</p>`;
-          $('#popUpModal').modal('show');
-        })();
+        let response = await uploadWordFile(blob, filename, uploadFormFolder);
+        await assigntasktochair();
+        let fileid = response.entries[0].id;
+        //Modal code here
+        document.getElementById('modalBody').innerHTML = `
+        <p>File was successfully uploaded.</p>
+        <p>Document ID: ${fileid}</p>`;
+        $('#popUpModal').modal('show');
+        console.log('popup');
       }
     });
   }
 
   const form = await document.querySelector('.contact-form');
-  //console.log(form);
   form.addEventListener('submit', handleFormSubmit);
 }
 
