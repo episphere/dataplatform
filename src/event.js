@@ -1554,7 +1554,7 @@ export function switchTabs(show, hide, files) {
                             showComments(files[0].id);
                         }
                         else {
-                            document.getElementById('fileComments').innerHTML = '';
+                            //document.getElementById('fileComments').innerHTML = '';
                             document.getElementById('boxFilePreview').classList.remove('col-8');
                         }
                         // let response = async () => { let test = await listComments('945509107663');//files[0].id);
