@@ -65,7 +65,7 @@ export const dataAccessNotSignedIn = () => {
                       <h1 class="page-header">Data Access</h1>
                   </div>
               </div>
-              <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
+              <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
                   <div class="row m-0">
                       The Breast Cancer Risk Prediction Project is currently generating genotyping data and harmonizing risk factor and clinical data. Data is expected to be available for request in late 2022. Data access will be facilitated through this platform, in accordance to the data transfer agreements signed between participating studies (originator) and the BCRPP Data Coordinating Center (DCC) at the Division of Cancer Epidemiology and Genetics at the National Cancer Institute.
                   </div></br>
@@ -123,7 +123,7 @@ export const dataAccess = (activeTab, showDescripton) => {
                         <h1 class="page-header">Data Access</h1>
                     </div>
                 </div>
-                <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
+                <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
                     <div class="row m-0">
 
                         The Breast Cancer Risk Prediction Project is currently harmonizing risk factor and clinical data from participating cohorts. Data is expected to be available for request in late 2022. Data access will be facilitated through this platform, in accordance to the data transfer agreements signed between participating studies (originator) and the BCRPP Data Coordinating Center (DCC) at the Division of Cancer Epidemiology and Genetics at the National Cancer Institute.
@@ -186,8 +186,8 @@ export const formSectionOther = async (activeTab, showDescripton) => {
 
                               <div class="main-summary-row confluence-resources white-bg div-border font-size-18">
                                 <div class="col">
-                                  <span>You currently do not have permission to submit a data request form.</span></br>
-                                  <span>For access, please contact Tom </strong> <a href=""></a></span>
+                                  <span>You currently do not have access to submit a data request form.</span></br>
+                                  <span>For access, please contact <a href="mailto:thomas.ahearn@nih.gov">Thomas Ahearn</a></span>
                           </div>
                   </div>
                 `
@@ -229,7 +229,7 @@ export const formSection = async (activeTab, showDescripton) => {
                                       <h1 class="page-header">Form Submission</h1>
                                   </div>
                               </div>
-                          <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">             
+                          <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">             
                             <section class="contact-form">
                               <p>Please fill out the form below in order to get approval for access to data.</p>
                               <form>
@@ -404,7 +404,6 @@ export const acceptedStudiesSection = (activeTab) => {
     <div id="acceptedStudiesView" class="align-left"></div>
   </div>
   `;
-
   return template
 }
 
@@ -534,16 +533,16 @@ export const chairFileView = async () => {
         </div>
 
   
-    <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
+    <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
     <ul class='nav nav-tabs mb-3' role='tablist'>
       <li class='nav-item' role='presentation'>
-        <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> To Be Completed </a>
+        <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> New Submissions </a>
       </li>
       <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='inProgressTab' href='#inProgress' data-mdb-toggle="tab" role='tab' aria-controls='inProgress' aria-selected='true'> In Progress </a>
+         <a class='nav-link' id='inProgressTab' href='#inProgress' data-mdb-toggle="tab" role='tab' aria-controls='inProgress' aria-selected='true'> Under Review </a>
       </li>
       <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'> DACC Completed </a>
+         <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'> Review Completed </a>
       </li>
       <li class='nav-item' role='presentation'>
          <a class='nav-link' id='acceptedTab' href='#accepted' data-mdb-toggle="tab" role='tab' aria-controls='accepted' aria-selected='true'> Accepted </a>
@@ -593,12 +592,13 @@ export const chairFileView = async () => {
 
   template += `<div class='tab-pane fade'
                  id='inProgress' role='tabpanel'
-                 aria-labeledby='inProgressTab'> `
+                 aria-labeledby='inProgressTab'>`
   template += renderFilePreviewDropdown(filesinprogress, 'inProgress');
-
+ 
   template += `<div class='tab-pane fade'
                 id='daccCompleted' role='tabpanel'
-                aria-labelledby='daccCompletedTab'>`
+                aria-labelledby='daccCompletedTab'>
+                <p id=email><a href="mailto:${emailforDACC.join("; ")}">Send Email to DACC</a><p>`
   template += renderFilePreviewDropdown(filescompleted, 'daccCompleted');
 
   template += `<div class='tab-pane fade' 
@@ -620,8 +620,7 @@ export const chairFileView = async () => {
           <div id='fileComments' class='col-4 mt-2'></div>
         </div>
 
-        <div class='row card-body dacc-submit'>
-          <div id='sendtodaccButton' class="col-6">
+        <div class='row card-body dacc-submit' id='sendtodaccButton' class="col-8" style="background-color:#f6f6f6; display:block">
             <form>
               <label for"message">Send to DACC</label>
               <div class="input-group">
@@ -630,22 +629,21 @@ export const chairFileView = async () => {
               <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
                 <span class="buttonsubmit__text"> Send </span> </button>
             </form>
-          </div>
         </div>
 
-        <div class='row card-body dacc-override'>
-          <div id='daccOverride' class="col-6" style='display:none'>
+        <div class='row card-body dacc-override' id='daccOverride' class="col-6" style='display:none'>
           <form>
               <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
                 <span class="buttonsubmit__text"> Override DACC </span> 
               </button>
+              <div class='text-muted small'>Select to move form to Review Completed </div>
           </form>
-          </div>
         </div>
 
-        <div id='finalChairDecision' class="card-body approvedeny" style="padding-left: 10px;background-color:#f6f6f6; display:none">
+        <div id='finalChairDecision' class="card-body approvedeny" style="background-color:#f6f6f6; display:none">
           <form>
             <label for="message">Enter Message for Submitter</label>
+            <div class='text-muted small'>Submitter will only see the below comment after approve or deny. </div>
             <div class="input-group">
                 <textarea id="message" name="message" rows="6" cols="65"></textarea>
             </div>
@@ -1033,7 +1031,7 @@ export const daccFileView = async () => {
                     <h1 class="page-header">DACC Access Only</h1>
                 </div>
             </div>
-            <div class="data-submission div-border font-size-18" style="padding-left: 1rem;">
+            <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
             <ul class='nav nav-tabs mb-3' role='tablist'>
             <li class='nav-item' role='presentation'>
               <a class='nav-link active' id='dacctoBeCompletedTab' href='#dacctoBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='dacctoBeCompleted' aria-selected='true'> To Be Completed </a>
@@ -1332,6 +1330,7 @@ export const dataForm = async () => {
     const results = document.querySelector('.results pre');
     results.innerText = JSON.stringify(formJSON, null, 2);
     await generateWord(formJSON);
+    console.log('generatewordcomplete');
     btn.classList.toggle("buttonsubmit--loading");
     btn.disabled = false;
   };
@@ -1577,7 +1576,7 @@ export const dataForm = async () => {
     }
     //console.log(filesinfoldernames);
 
-    docx.Packer.toBlob(doc).then(blob => {
+    await docx.Packer.toBlob(doc).then(async blob => {
       console.log(blob);
       //saveAs(blob, "BCRPPexample.docx");
       console.log("Document created successfully");
@@ -1601,7 +1600,6 @@ export const dataForm = async () => {
           console.log('New name', filename);
           i++; 
         }
-        (async () => {
           let response = await uploadWordFile(blob, filename, uploadFormFolder);
           await assigntasktochair();
           let fileid = response.entries[0].id;
@@ -1610,38 +1608,24 @@ export const dataForm = async () => {
           <p>File was successfully uploaded.</p>
           <p>Document ID: ${fileid}</p>`;
           $('#popUpModal').modal('show');
-        })();
-        // let fileidupdate = filesinfolderids[filesinfoldernames.indexOf(filename)];
-        // (async () => {
-        //   // document.getElementById('modalBody').innerHTML = 'Would'
-        //   let response = await uploadWordFileVersion(blob, fileidupdate);
-        //   await assigntasktochair();
-        //   document.getElementById('modalBody').innerHTML = `
-        //   <p>File was successfully updated.</p>
-        //   <p>Document ID: ${fileidupdate}</p>
-          
-        //   `;
-        //   $('#popUpModal').modal('show');
-
-        // })();
+          console.log('popup');
+        
       } else {
         console.log("Saving File to Box: " + filename + jsondata.keywords); // Adding keywords
-        (async () => {
-          let response = await uploadWordFile(blob, filename, uploadFormFolder);
-          await assigntasktochair();
-          let fileid = response.entries[0].id;
-          //Modal code here
-          document.getElementById('modalBody').innerHTML = `
-          <p>File was successfully uploaded.</p>
-          <p>Document ID: ${fileid}</p>`;
-          $('#popUpModal').modal('show');
-        })();
+        let response = await uploadWordFile(blob, filename, uploadFormFolder);
+        await assigntasktochair();
+        let fileid = response.entries[0].id;
+        //Modal code here
+        document.getElementById('modalBody').innerHTML = `
+        <p>File was successfully uploaded.</p>
+        <p>Document ID: ${fileid}</p>`;
+        $('#popUpModal').modal('show');
+        console.log('popup');
       }
     });
   }
 
   const form = await document.querySelector('.contact-form');
-  //console.log(form);
   form.addEventListener('submit', handleFormSubmit);
 }
 
