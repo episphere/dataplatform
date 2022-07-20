@@ -1766,8 +1766,8 @@ const viewFinalDecisionFiles = (files) => {
         <div class="row">
             <div class="col-md-3">${file.name}</div>
             <div class="col-md-2">${new Date().getDay()}</div>
-            <div class="col-md-2">${index%2 == 0 ? 'Approved' : 'Denied'}</div>
-            <div class="col-md-3">${file.created_by} </div>
+            ${index%2 == 0 ? '<div class="btn btn-success col-md-2">Approved</div>' : '<div class="btn btn-danger col-md-2">Denied</div>'}
+            <div class="col-md-3">Test User  </div>
             <div class="col-md-1">
                 <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${file.id}">
                     <i class="fas fa-caret-down fa-2x"></i>
