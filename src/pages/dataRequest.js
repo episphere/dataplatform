@@ -719,6 +719,7 @@ export const submitToDacc = () => {
         await assignTask(tasktodacc, emailforDACC[i]);
         console.log("Task assigned to " + emailforDACC[i]);
       }
+      await createComment(fileId, message);
       await moveFile(fileId, daccReviewFolder);
       console.log('File moved to: ' + daccReviewFolder);
     }
