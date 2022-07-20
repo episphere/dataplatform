@@ -55,6 +55,7 @@ import {
   switchTabs,
   switchFiles
 } from '../event.js';
+import { template } from './dataGovernance.js';
 
 export const dataAccessNotSignedIn = () => {
   let template = `
@@ -605,8 +606,8 @@ export const chairFileView = async () => {
   template += `<div class='tab-pane fade' 
                 id='decided' role='tabpanel'
                 aria-labelledby='decidedTab'>`
-  template += renderFilePreviewDropdown(filesdecided, 'decided');
-
+  // template += renderFilePreviewDropdown(filesdecided, 'decided');
+  template += viewFinalDecisionFiles(filesdecided);
   // template += `<div class='tab-pane fade' 
   //           id='denied' role='tabpanel'
   //           aria-labelledby='deniedTab'>`
@@ -1743,5 +1744,15 @@ const viewDACCFiles = async (files, taskids) => {
             `
     ival += 1;
   };
+  return template;
+}
+
+const viewFinalDecisionFiles = (files) => {
+  let template = '';
+  for(const file of files){
+    template += `<p>${file.id}</p>`;
+  }
+
+  template += '</div>';
   return template;
 }
