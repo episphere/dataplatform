@@ -1577,7 +1577,7 @@ export function switchTabs(show, hide, files) {
                             document.getElementById('daccOverride').style.display='none';
                             document.getElementById('finalChairDecision').style.display="block";
                             }
-                        if (show === 'accepted' || show === 'denied'){
+                        if (show === 'decided'){
                             document.getElementById('sendtodaccButton').style.display="none";
                             document.getElementById('daccOverride').style.display='none';
                             document.getElementById('finalChairDecision').style.display="none";

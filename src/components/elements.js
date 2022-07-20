@@ -105,7 +105,7 @@ export function renderFilePreviewDropdown(files, tab){
     }
     if(files.length != 0){
         console.log(tab);
-        if(tab !== 'daccReview' && tab !== 'dacctoBeCompleted' && tab !== 'completed' && tab !== 'accepted' && tab !=='denied'){
+        if(tab !== 'daccReview' && tab !== 'dacctoBeCompleted' && tab !== 'completed' && tab !== 'decided'){
         template += `<div class='card-body p-0'>
                 <div class='card-title'>
                 <label for='${tab}selectedDoc'>

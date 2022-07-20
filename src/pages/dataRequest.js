@@ -545,18 +545,19 @@ export const chairFileView = async () => {
          <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'> Review Completed </a>
       </li>
       <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='acceptedTab' href='#accepted' data-mdb-toggle="tab" role='tab' aria-controls='accepted' aria-selected='true'> Accepted </a>
+         <a class='nav-link' id='decidedTab' href='#decided' data-mdb-toggle="tab" role='tab' aria-controls='decided' aria-selected='true'> Accepted/Denied </a>
       </li>
-      <li class='nav-item' role='presentation'>
+      <!--li class='nav-item' role='presentation'>
          <a class='nav-link' id='deniedTab' href='#denied' data-mdb-toggle="tab" role='tab' aria-controls='denied' aria-selected='true'> Denied </a>
-      </li>
+      </li-->
     </ul>`;
 
   const filesincomplete = [];
   const filesinprogress = [];
   const filescompleted = [];
-  const filesaccepted = [];
-  const filesdenied = [];
+  const filesdecided = [];
+  // const filesaccepted = [];
+  // const filesdenied = [];
   for (let obj of filearrayUpload) {
     //let id = obj.id;
     filesincomplete.push(obj);
@@ -576,11 +577,11 @@ export const chairFileView = async () => {
 
 
   for (let obj of filearrayAccepted) {
-    filesaccepted.push(obj);
+    filesdecided.push(obj);
   }
 
   for (let obj of filearrayDenied) {
-    filesdenied.push(obj);
+    filesdecided.push(obj);
   }
 
   template += "<div class='tab-content' id='selectedTab'>";
@@ -598,22 +599,22 @@ export const chairFileView = async () => {
   template += `<div class='tab-pane fade'
                 id='daccCompleted' role='tabpanel'
                 aria-labelledby='daccCompletedTab'>
-                <p id=email><a href="mailto:${emailforDACC.join("; ")}">Send Email to DACC</a><p>`
+               <a href="mailto:${emailforDACC.join("; ")}" id='email' class='btn btn-dark'>Send Email to DACC</a>`
   template += renderFilePreviewDropdown(filescompleted, 'daccCompleted');
 
   template += `<div class='tab-pane fade' 
-                id='accepted' role='tabpanel'
-                aria-labelledby='acceptedTab'>`
-  template += renderFilePreviewDropdown(filesaccepted, 'accepted');
+                id='decided' role='tabpanel'
+                aria-labelledby='decidedTab'>`
+  template += renderFilePreviewDropdown(filesdecided, 'decided');
 
-  template += `<div class='tab-pane fade' 
-            id='denied' role='tabpanel'
-            aria-labelledby='deniedTab'>`
-  template += renderFilePreviewDropdown(filesdenied, 'denied');
+  // template += `<div class='tab-pane fade' 
+  //           id='denied' role='tabpanel'
+  //           aria-labelledby='deniedTab'>`
+  // template += renderFilePreviewDropdown(filesdenied, 'denied');
 
   template += `<div id='filePreview'>`
   if (filescompleted.length !== 0 || filesinprogress.length !== 0 ||
-    filesincomplete.length !== 0 || filesaccepted.length !== 0 || filesdenied.length !== 0) {
+    filesincomplete.length !== 0 || filesdecided !== 0) {
     template += `
         <div class='row'>
           <div id='boxFilePreview' class="col-8 preview-container"></div>
@@ -682,12 +683,17 @@ export const chairFileView = async () => {
     //}
   }
 
+  if(filescompleted.length == 0) {
+    document.getElementById('email').style.display = 'none';
+  }
+
   //Switch Tabs
-  switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'accepted', 'denied'], filesincomplete);
-  switchTabs('inProgress', ['toBeCompleted', 'daccCompleted', 'accepted', 'denied'], filesinprogress);
-  switchTabs('daccCompleted', ['inProgress', 'toBeCompleted', 'accepted', 'denied'], filescompleted);
-  switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted', 'denied'], filesaccepted);
-  switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
+  switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'decided'], filesincomplete);
+  switchTabs('inProgress', ['toBeCompleted', 'daccCompleted', 'decided'], filesinprogress);
+  switchTabs('daccCompleted', ['inProgress', 'toBeCompleted', 'decided'], filescompleted);
+  switchTabs('decided', ['inProgress', 'daccCompleted', 'toBeCompleted'], filesdecided);
+  // switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted', 'denied'], filesaccepted);
+  // switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
 
   hideAnimation();
 }
