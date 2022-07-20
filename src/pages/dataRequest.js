@@ -1749,10 +1749,42 @@ const viewDACCFiles = async (files, taskids) => {
 
 const viewFinalDecisionFiles = (files) => {
   let template = '';
-  for(const file of files){
-    template += `<p>${file.id}</p>`;
-  }
 
+  if(files.length > 0) {
+    template += `<div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
+    <div class="col-md-3 font-bold ws-nowrap pl-2">Concept Name <button class="transparent-btn sort-column" data-column-name="Cohort name"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-2 font-bold ws-nowrap">Date of submission <button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-2 font-bold ws-nowrap">Decision <button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-3 font-bold ws-nowrap">Submitted By <button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-1"></div>
+</div>`;
+  
+  files.forEach((file, index) => {
+    console.log(file);
+    template += `<div class="card mt-1 mb-1 align-left">
+    <div style="padding: 10px" aria-expanded="false" id="file${file.id}">
+        <div class="row">
+            <div class="col-md-3">${file.name}</div>
+            <div class="col-md-2">${new Date().getDay()}</div>
+            <div class="col-md-2">${index%2 == 0 ? 'Approved' : 'Denied'}</div>
+            <div class="col-md-3">${file.created_by} </div>
+            <div class="col-md-1">
+                <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${file.id}">
+                    <i class="fas fa-caret-down fa-2x"></i>
+                </button>
+            </div>
+        </div>
+        <div id="study${file.id}" class="collapse" aria-labelledby="file${file.id}">
+                    <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
+                    <div class="row mb-1 m-0"><div class="col-md-2 font-bold">Location</div><div class="col"><a href='https://nih.app.box.com/file/${file.id}'>Box File URL</a></div>
+                    </div>
+                    </div>
+        </div>
+    </div>
+    </div>
+  `
+  });
+  }
   template += '</div>';
   return template;
 }
