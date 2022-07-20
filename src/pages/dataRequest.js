@@ -669,7 +669,7 @@ export const chairFileView = async () => {
   daccOverride();
   commentApproveReject();
   if (filesincomplete.length != 0) {
-    switchFiles('toBeCompleted', 'chair');
+    switchFiles('toBeCompleted');
     showPreview(filesincomplete[0].id);
     document.getElementById('toBeCompletedselectedDoc').children[0].selected = true;
     document.getElementById('boxFilePreview').classList.remove('col-8');
@@ -688,10 +688,10 @@ export const chairFileView = async () => {
   }
 
   //Switch Tabs
-  switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'decided'], filesincomplete, 'chair');
-  switchTabs('inProgress', ['toBeCompleted', 'daccCompleted', 'decided'], filesinprogress, 'chair');
-  switchTabs('daccCompleted', ['inProgress', 'toBeCompleted', 'decided'], filescompleted, 'chair');
-  switchTabs('decided', ['inProgress', 'daccCompleted', 'toBeCompleted'], filesdecided, 'chair');
+  switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'decided'], filesincomplete);
+  switchTabs('inProgress', ['toBeCompleted', 'daccCompleted', 'decided'], filesinprogress);
+  switchTabs('daccCompleted', ['inProgress', 'toBeCompleted', 'decided'], filescompleted);
+  switchTabs('decided', ['inProgress', 'daccCompleted', 'toBeCompleted'], filesdecided);
   // switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted', 'denied'], filesaccepted);
   // switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
 
@@ -1191,9 +1191,9 @@ export const daccFileView = async () => {
   //}
   document.getElementById('daccFileView').innerHTML = template;
   if (filesincomplete.length != 0) {
-    switchFiles('dacctoBeCompleted', 'dacc');
+    switchFiles('dacctoBeCompleted');
     showPreview(filesincomplete[0].id);
-    showComments(filesincomplete[0].id, 'dacc');
+    showComments(filesincomplete[0].id);
   } else {
     // if (typeof classList === 'undefined') {
     //   console.log('No files exist');
@@ -1207,9 +1207,9 @@ export const daccFileView = async () => {
   submitToComment();
 
   //Switch Tabs
-  switchTabs('dacctoBeCompleted', ['completed', 'daccReview'], filesincomplete, 'dacc');
-  switchTabs('completed', ['dacctoBeCompleted', 'daccReview'], filescompleted, 'dacc');
-  switchTabs('daccReview', ['dacctoBeCompleted', 'completed'], filesreviewed, 'dacc');
+  switchTabs('dacctoBeCompleted', ['completed', 'daccReview'], filesincomplete);
+  switchTabs('completed', ['dacctoBeCompleted', 'daccReview'], filescompleted);
+  switchTabs('daccReview', ['dacctoBeCompleted', 'completed'], filesreviewed);
   hideAnimation();
 }
 

@@ -11,7 +11,7 @@ import {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-export const emailforChair = ['garciacm@nih.gov'];//['montserrat.garcia-closas@nih.gov', 'kopchickbp@nih.gov', 'Roger.Milne@cancervic.org.au', 'garciacm@nih.gov', 'ahearntu@nih.gov', 'wraynr@nih.gov'];
+export const emailforChair = ['wraynr@nih.gov'];//['montserrat.garcia-closas@nih.gov', 'kopchickbp@nih.gov', 'Roger.Milne@cancervic.org.au', 'garciacm@nih.gov', 'ahearntu@nih.gov', 'wraynr@nih.gov'];
 
 export const emailforDACC = ['wraynr@nih.gov'];//['montserrat.garcia-closas@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'garciacm@nih.gov'];//, 'mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
 
@@ -917,7 +917,7 @@ export const createComment = async (id, msg = "") => {
         if ((await refreshToken()) === true) return await createComment(id, msg);
     }
 }
-export async function showComments(id, menu) {
+export async function showComments(id) {
     const commentSection = document.getElementById('fileComments');
     const response = await listComments(id);
 

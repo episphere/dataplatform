@@ -1551,7 +1551,7 @@ export function switchTabs(show, hide, files) {
                         showPreview(files[0].id);
                         if(show !== 'toBeCompleted'){
                             document.getElementById('boxFilePreview').classList.add('col-8');
-                            showComments(files[0].id, 'chair');
+                            showComments(files[0].id);
                         }
                         else {
                             //document.getElementById('fileComments').innerHTML = '';
@@ -1592,7 +1592,7 @@ export function switchTabs(show, hide, files) {
                         if(show === 'daccReview'){
                             document.getElementById('boxFilePreview').classList.add('col-8');
                             document.getElementById('daccComment').style.display="block";
-                            showComments(files[0].id, 'dacc');
+                            showComments(files[0].id);
                         }
                     } else {
                         boxPreview.classList.remove('d-block');
@@ -1621,10 +1621,10 @@ export function switchTabs(show, hide, files) {
     }
 }
 
-export function switchFiles(tab, menu) {
+export function switchFiles(tab) {
     document.getElementById(`${tab}selectedDoc`).addEventListener('change', (e) => {
         const file_id = e.target.value
         showPreview(file_id);
-        showComments(file_id, menu);
+        showComments(file_id);
       });
 }
