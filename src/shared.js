@@ -8,9 +8,10 @@ import {
     confluence
 } from '../confluence.js';
 
+
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-export const emailforChair = ['wraynr@nih.gov'];//['montserrat.garcia-closas@nih.gov', 'kopchickbp@nih.gov', 'Roger.Milne@cancervic.org.au', 'garciacm@nih.gov', 'ahearntu@nih.gov', 'wraynr@nih.gov'];
+export const emailforChair = ['garciacm@nih.gov'];//['montserrat.garcia-closas@nih.gov', 'kopchickbp@nih.gov', 'Roger.Milne@cancervic.org.au', 'garciacm@nih.gov', 'ahearntu@nih.gov', 'wraynr@nih.gov'];
 
 export const emailforDACC = ['wraynr@nih.gov'];//['montserrat.garcia-closas@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'garciacm@nih.gov'];//, 'mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
 
@@ -916,7 +917,7 @@ export const createComment = async (id, msg = "") => {
         if ((await refreshToken()) === true) return await createComment(id, msg);
     }
 }
-export async function showComments(id) {
+export async function showComments(id, menu) {
     const commentSection = document.getElementById('fileComments');
     const response = await listComments(id);
 
@@ -926,7 +927,57 @@ export async function showComments(id) {
     <div class='comments'>
     Comments
     <div class='container-fluid'>`;
+    const user = JSON.parse(localStorage.parms).login;
+
+    if(emailforChair.includes(user)){
+        for (const comment of comments){
+            const comment_date = new Date(comment.created_at);
+        const date = comment_date.toLocaleDateString();
+        const time = comment_date.toLocaleTimeString();
+        console.log('Comment', comment);
+        template += `
+        <div>
+            <div class='row'>
+                <div class='col-8 p-0'>
+                    <p class='text-primary small mb-0 align-left'>${comment.created_by.name}</p>
+                </div>
+            `;
+        if(document.getElementById('finalChairDecision') !== null){
+             if(document.getElementById('finalChairDecision').style.display === "block"){
+                template += `
+                <div class='col-4'>
+                    <input type='checkbox' name='comments' id='${comment.id}' class='mb-0'>
+                </div>
+                
+                `;
+            }
+        }
+            template +=`    
+            </div>
+            <div class='row'>
+                    <p class='my-0' id='comment${comment.id}'>${comment.message}</p>
+            </div>
+
+            <div class='row'>
+                <p class='small mb-0 font-weight-light'>${date} at ${time}</p>
+            </div>
+            <hr class='my-1'>
+        </div>
+        `
+
+    
+        }
+    }
+
+    else{
+
     for (const comment of comments) {
+        const comment_user = comment.created_by;
+
+        
+            if(comment_user.login === user || emailforChair.includes(comment_user.login)){
+                
+
         const comment_date = new Date(comment.created_at);
         const date = comment_date.toLocaleDateString();
         const time = comment_date.toLocaleTimeString();
@@ -960,21 +1011,11 @@ export async function showComments(id) {
             <hr class='my-1'>
         </div>
         `
-        //     template += `<div class='w-100 mb-1 p-2'>
-        //   <h6 class='text-primary small mb-0'>${comment.created_by.name}</h6>
-
-
-        //   <p class='align-left mb-0 text-justify w-90'>${comment.message}</p>
-        //   <div class='d-flex'>
-        //     <p class='small mb-0 font-weight-light align-right'>${date} at ${time}</p>
-        //   </div>  
-        //   </div>
-
-        //   <hr class='m-1'>
-
-        //   `
 
     }
+
+    }
+}
     template += '</div>'
     if(comments.length >= 0 && document.getElementById('finalChairDecision')){
         if(document.getElementById('finalChairDecision').style.display === "block"){
