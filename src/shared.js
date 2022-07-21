@@ -11,9 +11,9 @@ import {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-export const emailforChair = ['montserrat.garcia-closas@nih.gov', 'kopchickbp@nih.gov', 'Roger.Milne@cancervic.org.au', 'garciacm@nih.gov', 'ahearntu@nih.gov', 'wraynr@nih.gov'];
+export const emailforChair = ['wraynr@nih.gov']//['montserrat.garcia-closas@nih.gov', 'kopchickbp@nih.gov', 'Roger.Milne@cancervic.org.au', 'garciacm@nih.gov', 'ahearntu@nih.gov', 'wraynr@nih.gov'];
 
-export const emailforDACC = ['montserrat.garcia-closas@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov'];//, 'mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
+export const emailforDACC = ['wraynr@nih.gov']//['montserrat.garcia-closas@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov'];//, 'mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
 
 export const publicDataFileId = 697309514903; //Unknown
 
@@ -471,9 +471,14 @@ export const uploadFile = async (data, fileName, folderId, html) => {
 export const uploadWordFile = async (data, fileName, folderId, html) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
+        const user = await getCurrentUser();
         const form = new FormData();
         form.append('file', data);
-        form.append('attributes', `{"name": "${fileName}", "parent": {"id": "${folderId}"}}`);
+        form.append('attributes', `{
+            "name": "${fileName}", 
+            "parent": {"id": "${folderId}"},
+            "created_by" : ${user},
+    }`);
 
         let response = await fetch("https://upload.box.com/api/2.0/files/content", {
             method: "POST",

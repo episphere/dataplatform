@@ -9,10 +9,8 @@ import {
   createMetadata,
   getTaskList,
   updateTaskAssignment,
-  uploadFile,
   uploadWordFile,
   getFolderItems,
-  uploadWordFileVersion,
   emailforChair,
   emailforDACC,
   uploadFormFolder,
@@ -1168,14 +1166,15 @@ export const daccFileView = async () => {
 
       <div id="daccComment" class="card-body dacc-comment" style="padding-left: 10px;background-color:#f6f6f6;">
       <form>  
-        <label for="grade">Choose a rating:</label>
+        <label for="grade">Select recommendation: </label>
           <select name="grade" id="grade"></option>
-            <option value = "1"> Poor (Do not recommend)</option>
-            <option value = "2"> Below Average </option>
-            <option value = "3"> Average </option>
-            <option value = "4"> Good </option>
-            <option value = "5"> Excellent (Highly recommended)</option>
-          </select>
+            <option value = "1"> 1 - Approved as submitted</option>
+            <option value = "2"> 2 - Approved, pending conditions/clarification of some issues </option>
+            <option value = "3"> 3 - Approved, but data release will be delayed </option>
+            <option value = "4"> 4 - Not approved </option>
+            <option value = "6"> 6 - Decision pending clarification of several issues</option>
+            <option value = "777"> 777 - Duplicate Proposal</option>
+            </select>
           <br>
             <label for"message">Submit Comment:</label>
             <div class="input-group">
@@ -1753,21 +1752,21 @@ const viewFinalDecisionFiles = (files) => {
   if(files.length > 0) {
     template += `<div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
     <div class="col-md-3 font-bold ws-nowrap pl-2">Concept Name <button class="transparent-btn sort-column" data-column-name="Cohort name"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-2 font-bold ws-nowrap">Date of submission <button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-2 font-bold ws-nowrap">Decision <button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-3 font-bold ws-nowrap">Submission Date <button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-3 font-bold ws-nowrap">Decision<button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button></div>
     <div class="col-md-3 font-bold ws-nowrap">Submitted By <button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-1"></div>
 </div>`;
   
   files.forEach((file, index) => {
     console.log(file);
+    let comments = await listComments(file.id);
     template += `<div class="card mt-1 mb-1 align-left">
     <div style="padding: 10px" aria-expanded="false" id="file${file.id}">
         <div class="row">
-            <div class="col-md-3">${file.name}</div>
-            <div class="col-md-2">${new Date().getDay()}</div>
-            ${index%2 == 0 ? '<div class="btn btn-success col-md-2">Approved</div>' : '<div class="btn btn-danger col-md-2">Denied</div>'}
-            <div class="col-md-3">Test User  </div>
+            <div class="col-md-4">${file.name}</div>
+            <div class="col-md-2">${new Date().getDate()}</div>
+            ${index%2 == 0 ? '<div class="badge badge-success col-md-1 text-center">Approved</div>' : '<div class="badge badge-danger col-md-1">Denied</div>'}
+            <div class="col-md-4 text-right">Test User Test User Test User  </div>
             <div class="col-md-1">
                 <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${file.id}">
                     <i class="fas fa-caret-down fa-2x"></i>
@@ -1777,6 +1776,7 @@ const viewFinalDecisionFiles = (files) => {
         <div id="study${file.id}" class="collapse" aria-labelledby="file${file.id}">
                     <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
                     <div class="row mb-1 m-0"><div class="col-md-2 font-bold">Location</div><div class="col"><a href='https://nih.app.box.com/file/${file.id}'>Box File URL</a></div>
+                    <div class="row mb-1 m-0"><div class="col-md-2 font-bold">Comments</div><div class="col">${}</div>
                     </div>
                     </div>
         </div>
