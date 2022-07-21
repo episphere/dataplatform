@@ -21,7 +21,7 @@ export const summaryStatsFileId = 956943662666; //861342561526;//908600664259; /
 
 export const summaryStatsCasesFileId = 862065772362; //958869203942; //927803436743; //862065772362; //cases => Pilot - BCRP_Summary_Results_Cases.csv
 
-//export const missingnessStatsFileId = 653087731560; //Unknown, TUA Commented out July 21, file needs to be updated to missingness stats using BCRPP data, not confluence data
+export const missingnessStatsFileId = 653087731560; //Unknown, TUA Commented out July 21, file needs to be updated to missingness stats using BCRPP data, not confluence data
 
 export const uploadFormFolder = 155292358576;
 
