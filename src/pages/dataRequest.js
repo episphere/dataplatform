@@ -35,7 +35,8 @@ import {
   addNewCollaborator,
   getCollaboration,
   checkDataSubmissionPermissionLevel,
-  deleteTask
+  deleteTask,
+  showCommentsDropDown
 } from '../shared.js';
 import {
   addEventToggleCollapsePanelBtn
@@ -582,7 +583,7 @@ export const chairFileView = async () => {
   for (let obj of filearrayDenied) {
     filesdecided.push(obj);
   }
-
+  console.log(filesincomplete[0]);
   template += "<div class='tab-content' id='selectedTab'>";
 
   template += `<div class='tab-pane fade show active' 
@@ -694,6 +695,10 @@ export const chairFileView = async () => {
   // switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted', 'denied'], filesaccepted);
   // switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
 
+  //Accepted/Deny listeners
+  for(const file of filesdecided){
+  document.getElementById(`study${file.id}`).addEventListener('click', showCommentsDropDown(file.id))
+  }
   hideAnimation();
 }
 
@@ -1756,16 +1761,18 @@ const viewFinalDecisionFiles = (files) => {
     <div class="col-md-3 font-bold ws-nowrap">Decision<button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button></div>
     <div class="col-md-3 font-bold ws-nowrap">Submitted By <button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button></div>
 </div>`;
-  
-  files.forEach((file, index) => {
+  let i = 0;
+  for(const file of files){
     console.log(file);
-    let comments = await listComments(file.id);
-    template += `<div class="card mt-1 mb-1 align-left">
+    // let response = await listComments(file.id);
+    // let comments = JSON.parse(response).entries;
+    // console.log(response, comments);
+    template += `<div class="card mt-1 mb-1 align-left" data-toggle="collapse" data-target="#study${file.id}">
     <div style="padding: 10px" aria-expanded="false" id="file${file.id}">
         <div class="row">
             <div class="col-md-4">${file.name}</div>
             <div class="col-md-2">${new Date().getDate()}</div>
-            ${index%2 == 0 ? '<div class="badge badge-success col-md-1 text-center">Approved</div>' : '<div class="badge badge-danger col-md-1">Denied</div>'}
+            ${i%2 == 0 ? '<div class="badge badge-success col-md-1 text-center">Approved</div>' : '<div class="badge badge-danger col-md-1">Denied</div>'}
             <div class="col-md-4 text-right">Test User Test User Test User  </div>
             <div class="col-md-1">
                 <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${file.id}">
@@ -1775,16 +1782,24 @@ const viewFinalDecisionFiles = (files) => {
         </div>
         <div id="study${file.id}" class="collapse" aria-labelledby="file${file.id}">
                     <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
-                    <div class="row mb-1 m-0"><div class="col-md-2 font-bold">Location</div><div class="col"><a href='https://nih.app.box.com/file/${file.id}'>Box File URL</a></div>
-                    <div class="row mb-1 m-0"><div class="col-md-2 font-bold">Comments</div><div class="col">${}</div>
+                    <div class="row mb-1 m-0">
+                    <div class="col-md-2 font-bold">
+                    Comments
                     </div>
                     </div>
+                    <div class="row mb-1 m-0">
+                      <div id='file${file.id}Comments' class='col-12'></div>
+                    </div>
+
         </div>
     </div>
     </div>
-  `
-  });
+    </div>
+  `;
+  i++;};
   }
   template += '</div>';
+
+
   return template;
 }
