@@ -237,20 +237,20 @@ export const formSection = async (activeTab, showDescripton) => {
 
                               <div class="input-group">
                               <label for="date"><b>Date</b></label>
-                              <input id="date" name="date" type="date" value='${today}' required/>
+                              <input id="date" name="date" type="date" value='${today}'/>
                             </div>
 
                             <div class="input-group">
                               <label for="projname"><b>Title of Proposed Project</b></label>
-                              <input id="projname" name="projname" type="text" required/>
+                              <input id="projname" name="projname" type="text"/>
                             </div>
 
                             <div class="input-group">
                                 <label for="amendment"> <b>Is this an amendment?</b> </label>
                                     
-                                    <input id="amendmentyes" name="amendment" type="radio" value="Yes" required/>
+                                    <input id="amendmentyes" name="amendment" type="radio" value="Yes"/>
                                         <label class="inline" for="amendmentyes">Yes</label>
-                                    <input id="amendmentno" name="amendment" type="radio" value="No" required/>
+                                    <input id="amendmentno" name="amendment" type="radio" value="No"/>
                                         <label class="inline" for="amendmentno">No</label>
                                 <label for="ifamendmentyes"> If yes, provide Concept Number of original form </label>
                                     <input type="text" id="conNum" name="conNum"/>
@@ -258,12 +258,12 @@ export const formSection = async (activeTab, showDescripton) => {
 
                             <div class="input-group">
                             <label for="investigators"><b>Contact Investigator(s)</b></label>
-                            <input id="investigators" name="investigators" type="text" required/>
+                            <input id="investigators" name="investigators" type="text"/>
                           </div>
 
                           <div class="input-group">
                               <label for="institution"><b>Institution(s)</b></label>
-                              <input id="institution" name="institution" type="text" required/>
+                              <input id="institution" name="institution" type="text"/>
                             </div>
                               
                               <div class="input-group">
@@ -274,15 +274,15 @@ export const formSection = async (activeTab, showDescripton) => {
                               <div class="input-group">
                                 <label for="amendment"> <b>Are you a member of BCRPP?</b> </label>
                                     
-                                    <input id="amendmentyes" name="amendment" type="radio" value="Yes" required/>
+                                    <input id="amendmentyes" name="amendment" type="radio" value="Yes"/>
                                         <label class="inline" for="amendmentyes"> Yes</label>
-                                    <input id="amendmentno" name="amendment" type="radio" value="No" required/>
+                                    <input id="amendmentno" name="amendment" type="radio" value="No" />
                                         <label class="inline" for="amendmentno"> No</label>
                             </div>
 
                             <div class="input-group">
                               <label for="acro"><b>Confluence Study Acronym(s) for the Contact Investigator</b></label>
-                              <textarea id="acro" name="acro" rows="2" cols="65" required></textarea>
+                              <textarea id="acro" name="acro" rows="2" cols="65"></textarea>
                             </div>
 
                               <div class="input-group">
@@ -292,7 +292,7 @@ export const formSection = async (activeTab, showDescripton) => {
 
                               <div class="input-group">
                                 <label for="allinvest"><b>ALL Investigators (and their institutions) who will require access to the data requested</b></label>
-                                <textarea id="allinvest" name="allinvest" rows="2" cols="65" required></textarea>
+                                <textarea id="allinvest" name="allinvest" rows="2" cols="65"></textarea>
                             </div>
 
 
@@ -307,7 +307,7 @@ export const formSection = async (activeTab, showDescripton) => {
                               <div class="input-group">
                               <label for="confirmation"><b>Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b></label>
                               <div class="input-group">
-                                <input id="confirm-agree" name="confirm-agree" type="checkbox" value="Yes" required/>
+                                <input id="confirm-agree" name="confirm-agree" type="checkbox" value="Yes" />
                                 <label class="inline" for="confirm-agree"> Yes</label>
                               </div>
                             </div>

@@ -1061,6 +1061,8 @@ export async function showCommentsDropDown(id) {
     const commentSection = document.getElementById(`file${id}Comments`);
     const response = await listComments(id);
 
+    console.log(commentSection);   
+
     let comments = JSON.parse(response).entries;
 
     let template = `
@@ -1136,8 +1138,9 @@ export async function showCommentsDropDown(id) {
     }
 }
     // template += '</div>'
+    console.log(template);
     commentSection.innerHTML = template;
-   
+    console.log(commentSection);   
     return;
 
 }
