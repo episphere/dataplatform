@@ -1848,7 +1848,7 @@ const viewFinalDecisionFiles = async (files) => {
         <div class="row">
             <div class="col-md-4 text-center">${file.name}</div>
             <div class="col-md-3 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
-            ${i%2 == 0 ? '<div class="badge badge-success col-md-1 text-center">Approved</div>' : '<div class="badge badge-danger col-md-1">Denied</div>'}
+            ${i%2 == 0 ? '<h6 class="badge badge-pill badge-success col-md-1"><span>Approved</span></h6>' : '<h6 class="badge badge-pill badge-danger col-md-1">Denied</h6>'}
             <div class="col-md-3 text-center">${fileInfo.created_by.name}</div>
             <div class="col-md-1 text-center">
                 <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${file.id}">
