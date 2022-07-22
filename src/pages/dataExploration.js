@@ -103,57 +103,74 @@ export const dataSummaryStatisticsTemplate = () => {
 }
 
 export const dataSummaryMissingTemplate = async () => {
-    const response = await getFile(missingnessStatsFileId);
-    const lastModified = (await getFileInfo(missingnessStatsFileId)).modified_at;
-    document.getElementById('dataLastModified').innerHTML = `Data last modified at - ${new Date(lastModified).toLocaleString()}`;
-    const {
-        data,
-        headers
-    } = csv2Json(response);
-    const variables = headers.filter(dt => /status_/i.test(dt) === false && /study/i.test(dt) === false && /consortia/i.test(dt) === false && /ethnicityClass_/i.test(dt) === false && /bcac_id/i.test(dt) === false);
-    const status = headers.filter(dt => /status_/i.test(dt) === true);
-    const initialSelection = variables.length > 5 ? variables.slice(0, 5) : variables;
-    // const studies = data.map(dt => dt['study']).filter((item, i, ar) => ar.indexOf(item) === i);
-    const studies = {};
-    data.forEach(dt => {
-        if (studies[dt['Consortia']] === undefined) studies[dt['Consortia']] = {};
-        if (dt['study'] && studies[dt['Consortia']][dt['study']] === undefined) studies[dt['Consortia']][dt['study']] = {};
-    });
-    const ancestory = headers.filter(dt => /ethnicityClass_/i.test(dt) === true);
-
     const div1 = document.createElement('div');
-    div1.classList = ['col-xl-2 filter-column'];
-    div1.id = 'missingnessFilter';
-
-
-    const div2 = document.createElement('div');
-    div2.classList = ['col-xl-10'];
-    div2.innerHTML = `
-        <button id="filterBarToggle">
-            <i class="fas fa-lg fa-caret-left"></i>
-        </button>
-        <div class="main-summary-row" style="min-height: 10px;margin-bottom: 1rem;margin-left: 1rem;">
-            <div class="col white-bg div-border align-left font-size-17" style="padding: 0.5rem;" id="listFilters">
-                <span class="font-bold">Status:</span> All<span class="vertical-line"></span>
-                <span class="font-bold">Ancestry:</span> All
-                ${initialSelection.length > 0 ? `
-                    <span class="vertical-line"></span><span class="font-bold">Variable: </span>${initialSelection[0]} ${initialSelection.length > 1 ? `and <span class="other-variable-count">${initialSelection.length-1} other</span>`:``}
-                `:``}
+    // div1.classList = ['row'];
+    div1.innerHTML = `
+    <div class='row'>
+        <div class='col-12'>
+            <div class="card">
+                <div class="card-header align-left card-filter-header">
+                    <strong class="side-panel-header font-size-17">Disclaimer</strong>
+                </div>
+                <div id="cardContent" class="card-body">
+                    <p>We are currently working on creating a new file with subset statistics for BCRPP</p> 
+                    <p class='text-left'>Check back soon!</p>    
+                </div>
             </div>
         </div>
-        `;
-
-    const row = document.createElement('div');
-    row.classList = ['main-summary-row div-border overflow-x mb-2'];
-    row.id = 'missingnessTable'
-
-    div2.appendChild(row);
+    </div>`;
     document.getElementById('dataSummaryStatistics').appendChild(div1);
-    document.getElementById('dataSummaryStatistics').appendChild(div2);
+//     const response = await getFile(missingnessStatsFileId);
+//     const lastModified = (await getFileInfo(missingnessStatsFileId)).modified_at;
+//     document.getElementById('dataLastModified').innerHTML = `Data last modified at - ${new Date(lastModified).toLocaleString()}`;
+//     const {
+//         data,
+//         headers
+//     } = csv2Json(response);
+//     const variables = headers.filter(dt => /status_/i.test(dt) === false && /study/i.test(dt) === false && /consortia/i.test(dt) === false && /ethnicityClass_/i.test(dt) === false && /bcac_id/i.test(dt) === false);
+//     const status = headers.filter(dt => /status_/i.test(dt) === true);
+//     const initialSelection = variables.length > 5 ? variables.slice(0, 5) : variables;
+//     // const studies = data.map(dt => dt['study']).filter((item, i, ar) => ar.indexOf(item) === i);
+//     const studies = {};
+//     data.forEach(dt => {
+//         if (studies[dt['Consortia']] === undefined) studies[dt['Consortia']] = {};
+//         if (dt['study'] && studies[dt['Consortia']][dt['study']] === undefined) studies[dt['Consortia']][dt['study']] = {};
+//     });
+//     const ancestory = headers.filter(dt => /ethnicityClass_/i.test(dt) === true);
 
-    renderFilter(data, initialSelection, variables, status, studies, ancestory);
-    midset(data, initialSelection);
-    addEventMissingnessFilterBarToggle()
+//     const div1 = document.createElement('div');
+//     div1.classList = ['col-xl-2 filter-column'];
+//     div1.id = 'missingnessFilter';
+
+
+//     const div2 = document.createElement('div');
+//     div2.classList = ['col-xl-10'];
+//     div2.innerHTML = `
+//         <button id="filterBarToggle">
+//             <i class="fas fa-lg fa-caret-left"></i>
+//         </button>
+//         <div class="main-summary-row" style="min-height: 10px;margin-bottom: 1rem;margin-left: 1rem;">
+//             <div class="col white-bg div-border align-left font-size-17" style="padding: 0.5rem;" id="listFilters">
+//                 <span class="font-bold">Status:</span> All<span class="vertical-line"></span>
+//                 <span class="font-bold">Ancestry:</span> All
+//                 ${initialSelection.length > 0 ? `
+//                     <span class="vertical-line"></span><span class="font-bold">Variable: </span>${initialSelection[0]} ${initialSelection.length > 1 ? `and <span class="other-variable-count">${initialSelection.length-1} other</span>`:``}
+//                 `:``}
+//             </div>
+//         </div>
+//         `;
+
+//     const row = document.createElement('div');
+//     row.classList = ['main-summary-row div-border overflow-x mb-2'];
+//     row.id = 'missingnessTable'
+
+//     div2.appendChild(row);
+//     document.getElementById('dataSummaryStatistics').appendChild(div1);
+//     document.getElementById('dataSummaryStatistics').appendChild(div2);
+
+    // renderFilter(data, initialSelection, variables, status, studies, ancestory);
+    // midset(data, initialSelection);
+    // addEventMissingnessFilterBarToggle()
 }
 
 const renderFilter = (data, acceptedVariables, headers, status, studies, ancestory) => {
@@ -337,7 +354,7 @@ const midset = (data, acceptedVariables) => {
         const headerCount = computeHeader(data, acceptedVariables);
         headerData = headerCount;
         const result = computeSets(data, acceptedVariables);
-        template += `<tr class="midset-header"><th class="missing-column"><button class="info-btn variable-definition" aria-label="More info" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#confluenceMainModal" data-variable='midsetTopBars'><i class="fas fa-question-circle cursor-pointer"></i></button></th><th class='bar-chart-cell' colspan="${Object.keys(headerCount).length}"><div id="midsetHeader"></div></th><th class="missing-column"></th></tr>`
+        template += `<tr class="midset-header"><th class="missing-column"><p>Number of subjects with data based on the selection of variables</p><button class="info-btn variable-definition" aria-label="More info" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#confluenceMainModal" data-variable='midsetTopBars'><i class="fas fa-question-circle cursor-pointer"></i></button></th><th class='bar-chart-cell' colspan="${Object.keys(headerCount).length}"><div id="midsetHeader"></div></th><th class="missing-column"></th></tr>`
 
         template += `<tr><th class="missing-column"></th>`
         for (let variable in headerCount) {

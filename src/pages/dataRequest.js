@@ -9,10 +9,8 @@ import {
   createMetadata,
   getTaskList,
   updateTaskAssignment,
-  uploadFile,
   uploadWordFile,
   getFolderItems,
-  uploadWordFileVersion,
   emailforChair,
   emailforDACC,
   uploadFormFolder,
@@ -37,7 +35,8 @@ import {
   addNewCollaborator,
   getCollaboration,
   checkDataSubmissionPermissionLevel,
-  deleteTask
+  deleteTask,
+  showCommentsDropDown
 } from '../shared.js';
 import {
   addEventToggleCollapsePanelBtn
@@ -55,6 +54,7 @@ import {
   switchTabs,
   switchFiles
 } from '../event.js';
+import { template } from './dataGovernance.js';
 
 export const dataAccessNotSignedIn = () => {
   let template = `
@@ -194,6 +194,223 @@ export const formSectionOther = async (activeTab, showDescripton) => {
   return template;
 }
 
+// export const formSection = async (activeTab, showDescripton) => {
+//   let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+//   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+
+//   let navBarItems = '';
+//   if (authDacc && authChair) {
+//     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', 'DACC Menu');
+//     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', 'DACC Menu');
+//   } else if (authChair) {
+//     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
+//     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu');
+//   } else if (authDacc) {
+//     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
+//     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'DACC Menu');
+//   } else {
+//     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
+//     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted');
+//   }
+//   let template = `
+//       <div class="general-bg body-min-height padding-bottom-1rem">
+//           <div class="container">
+//             ${navBarItems}
+          
+//       </div>
+//       `;
+//       const date = new Date();
+//       const today = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+//   template += ` 
+//                   <div class="general-bg padding-bottom-1rem">
+//                           <div class="container body-min-height">
+
+//                               <div class="main-summary-row">
+//                                   <div class="align-left">
+//                                       <h1 class="page-header">Form Submission</h1>
+//                                   </div>
+//                               </div>
+//                           <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">             
+//                             <section class="contact-form">
+//                               <p>Please fill out the form below in order to get approval for access to data.</p>
+//                               <form>
+
+//                               <div class="input-group">
+//                               <label for="date"><b>Date</b></label>
+//                               <input id="date" name="date" type="date" value='${today}'/>
+//                             </div>
+
+//                             <div class="input-group">
+//                               <label for="projname"><b>Title of Proposed Project</b></label>
+//                               <input id="projname" name="projname" type="text"/>
+//                             </div>
+
+//                             <div class="input-group">
+//                                 <label for="amendment"> <b>Is this an amendment?</b> </label>
+                                    
+//                                     <input id="amendmentyes" name="amendment" type="radio" value="Yes"/>
+//                                         <label class="inline" for="amendmentyes">Yes</label>
+//                                     <input id="amendmentno" name="amendment" type="radio" value="No"/>
+//                                         <label class="inline" for="amendmentno">No</label>
+//                                 <label for="ifamendmentyes"> If yes, provide Concept Number of original form </label>
+//                                     <input type="text" id="conNum" name="conNum"/>
+//                             </div>
+
+//                             <div class="input-group">
+//                             <label for="investigators"><b>Contact Investigator(s)</b></label>
+//                             <input id="investigators" name="investigators" type="text"/>
+//                           </div>
+
+//                           <div class="input-group">
+//                               <label for="institution"><b>Institution(s)</b></label>
+//                               <input id="institution" name="institution" type="text"/>
+//                             </div>
+                              
+//                               <div class="input-group">
+//                                 <label for="email"><b>Contact Email</b></label>
+//                                 <input id="email" name="email" type="email"/>
+//                               </div>
+
+//                               <div class="input-group">
+//                                 <label for="amendment"> <b>Are you a member of BCRPP?</b> </label>
+                                    
+//                                     <input id="amendmentyes" name="amendment" type="radio" value="Yes"/>
+//                                         <label class="inline" for="amendmentyes"> Yes</label>
+//                                     <input id="amendmentno" name="amendment" type="radio" value="No" />
+//                                         <label class="inline" for="amendmentno"> No</label>
+//                             </div>
+
+//                             <div class="input-group">
+//                               <label for="acro"><b>Confluence Study Acronym(s) for the Contact Investigator</b></label>
+//                               <textarea id="acro" name="acro" rows="2" cols="65"></textarea>
+//                             </div>
+
+//                               <div class="input-group">
+//                                 <label for="keywords"><b>Keywords</b></label>
+//                                 <input id="keywords" name="keywords" type="text"/>
+//                               </div>
+
+//                               <div class="input-group">
+//                                 <label for="allinvest"><b>ALL Investigators (and their institutions) who will require access to the data requested</b></label>
+//                                 <textarea id="allinvest" name="allinvest" rows="2" cols="65"></textarea>
+//                             </div>
+
+
+                              
+                              
+                              
+//                               <!--div class="input-group">
+//                                 <label for="additional"><b>Please provide any additional information</b></label>
+//                                 <textarea id="additional" name="additional" rows="4" cols="65"></textarea>
+//                               </div-->
+
+//                               <div class="input-group">
+//                               <label for="confirmation"><b>Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b></label>
+//                               <div class="input-group">
+//                                 <input id="confirm-agree" name="confirm-agree" type="checkbox" value="Yes" />
+//                                 <label class="inline" for="confirm-agree"> Yes</label>
+//                               </div>
+//                             </div>
+
+//                             <div class="input-group">
+//                                 <label for="background"><b>Please provide a concise description of Background/Aims</b></label>
+//                                 <textarea id="background" name="background" rows="4" cols="65"></textarea>
+//                               </div>
+
+//                               <br>
+//                               <p><u>1. GENETIC DATA REQUESTED</u></p>
+//                               <div class="input-group">
+//                                 <p>All data requests will be provided access to the Confluence core variables. <br>
+//                                 <i>No dates (e.g. intDate, DateDiagnosis, etc.) can be sent.</i></p>
+//                             </div>
+                           
+//                             <div class="input-group">
+//                                 <label for="corevar"><b>Core Variables</b></label>
+                                
+//                                 <label> 
+//                                 <input id="corevarv" name="corevarv" type="checkbox" value="corevarv"/>
+//                                   Check all 
+//                                 </label>
+//                             </div>
+
+//                             <div class="input-group">
+//                                 <label for="mmdvar"><b>MMD Variables</b></label>
+                                
+//                                 <label> 
+//                                 <input id="mmdvarv" name="mmdvarv" type="checkbox" value="mmdvarv"/>
+//                                   Check all 
+//                                 </label>
+//                             </div>
+
+//                             <div class="input-group">
+//                             <label for="brcavarv"><b>BRCA Variables</b></label>
+                            
+//                             <label> 
+//                             <input id="brcavarv" name="brcavarv" type="checkbox" value="brcavarv"/>
+//                               Check all 
+//                             </label>
+//                         </div>
+
+
+//                               <div class="input-group">
+//                                   <label for="cohort"><b>Cohort Data Requested: </b></label>
+//                                   <input id="nhs" name="cohort" type="checkbox" value="NHS"/>
+//                                   <label class="inline" for="cohort-nhs">NHS</label>
+//                                   <input id="nhs2" name="cohort" type="checkbox" value="NHS2"/>
+//                                   <label class="inline" for="cohort-nhs2">NHS2</label>
+//                                   <input id="cps2" name="cohort" type="checkbox" value="CPS2"/>
+//                                   <label class="inline" for="cohort-cps2">CPS2</label>
+//                                   <input id="cps3" name="cohort" type="checkbox" value="CPS3"/>
+//                                   <label class="inline" for="cohort-cps3">CPS3</label>
+//                               </div>
+
+//                               <br>
+//                             <p><u>Timeline</u></p>
+//                               <div class="input-group">
+//                                 <label for="timeline"><b>Please indicate estimated time from receipt of data to completion of analysesand submission of paper; the expectation (per the BCRPP Recipient DTA)is that results will be published within one year after completion</b></label>
+//                                 <textarea id="timeline" name="timeline" rows="4" cols="65"></textarea>
+//                               </div>
+
+//                               <br>
+//                             <p><u>Authorship</u></p>
+//                               <div class="input-group">
+//                                 <label for="authorship"><b>Please confirm that you acknowledge the intention to include representatives of the contributing cohorts as co-authors and that you will provide contributing cohorts 30 days to review the draft manuscript before submission (per section 3.4 of the BCRPP Recipient DTA). Please include any special considerations you would like to bring to the DACC’s attention.</b></label>
+//                                 <textarea id="authorship" name="authorship" rows="4" cols="65"></textarea>
+//                               </div>
+                              
+//                               <button type="submit" id="submitFormButton" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+//                                 <span class="buttonsubmit__text"> Send Form </span>
+//                               </button>
+//                             </form>
+//                           </section>
+//                           <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
+//                           <div class="modal-dialog" role="document">
+//                             <div class="modal-content">
+//                               <div class="modal-header">
+//                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+//                                   <span aria-hidden="true">&times;</span>
+//                                 </button>
+//                               </div>
+//                               <div class="modal-body" id='modalBody'>
+                                
+//                               </div>
+//                               <div class="modal-footer">
+                            
+//                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+//                               </div>
+//                             </div>
+//                           </div>
+//                         </div>
+//                           <div class="results">
+//                           <h2>Form Data</h2>
+//                           <pre></pre>
+//                           </div>
+//                         </div>
+//                       </div>
+//                     </div>`;
+//   return template;
+// }
+
 export const formSection = async (activeTab, showDescripton) => {
   let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
@@ -223,7 +440,6 @@ export const formSection = async (activeTab, showDescripton) => {
   template += ` 
                   <div class="general-bg padding-bottom-1rem">
                           <div class="container body-min-height">
-
                               <div class="main-summary-row">
                                   <div class="align-left">
                                       <h1 class="page-header">Form Submission</h1>
@@ -242,20 +458,16 @@ export const formSection = async (activeTab, showDescripton) => {
                                 <label for="email"><b>Contact Email</b></label>
                                 <input id="email" name="email" type="email"/>
                               </div>
-
                               <div class="input-group">
                                 <label for="keywords"><b>Keywords</b></label>
                                 <input id="keywords" name="keywords" type="text"/>
                               </div>
-
                               <div class="input-group">
                                 <label for="project"><b>Title of Proposed Project</b></label>
                                 <input id="project" name="project" type="text"/>
                               </div>
-
                               <div class="input-group">
                                   <label for="amendment"> <b>Is this an amendment?</b> </label>
-
                                   <input id="amendmentyes" name="amendment" type="radio" value="Yes"/>
                                   <label class="inline" for="amendmentyes">Yes</label>
                               
@@ -267,7 +479,6 @@ export const formSection = async (activeTab, showDescripton) => {
                                 <label for="institution"><b>Institution</b></label>
                                 <input id="institution" name="institution" type="text"/>
                               </div>
-
                               <!---<div class="input-group">
                                 <label for="dataplatform"><b>Data Platform</b></label>
                                 <select id="dataplatform" name="dataplatform">
@@ -275,7 +486,6 @@ export const formSection = async (activeTab, showDescripton) => {
                                   <option>Confluence</option>
                                 </select>
                               </div>--->
-
                               <div class="input-group">
                                   <label for="cohort"><b>Cohort Data Requested: </b></label>
                                   <input id="nhs" name="cohort" type="checkbox" value="NHS"/>
@@ -292,12 +502,10 @@ export const formSection = async (activeTab, showDescripton) => {
                                 <label for="background"><b>Please provide a concise description of Background/Aims</b></label>
                                 <textarea id="background" name="background" rows="4" cols="65"></textarea>
                               </div>
-
                               <div class="input-group">
                                 <label for="additional"><b>Please provide any additional information</b></label>
                                 <textarea id="additional" name="additional" rows="4" cols="65"></textarea>
                               </div>
-
                               <div class="input-group">
                                 <label for="confirmation"><b>Have ALL named investigators have read AND agree to be named on this proposal?</b></label>
                                 <select id="confirmation" name="confirmation">
@@ -583,7 +791,7 @@ export const chairFileView = async () => {
   for (let obj of filearrayDenied) {
     filesdecided.push(obj);
   }
-
+  console.log(filesincomplete[0]);
   template += "<div class='tab-content' id='selectedTab'>";
 
   template += `<div class='tab-pane fade show active' 
@@ -604,9 +812,11 @@ export const chairFileView = async () => {
 
   template += `<div class='tab-pane fade' 
                 id='decided' role='tabpanel'
-                aria-labelledby='decidedTab'>`
-  template += renderFilePreviewDropdown(filesdecided, 'decided');
-
+                aria-labelledby='decidedTab'>
+                
+                </div>`
+  // template += renderFilePreviewDropdown(filesdecided, 'decided');
+  // template += viewFinalDecisionFiles(filesdecided);
   // template += `<div class='tab-pane fade' 
   //           id='denied' role='tabpanel'
   //           aria-labelledby='deniedTab'>`
@@ -665,6 +875,7 @@ export const chairFileView = async () => {
   //};
 
   document.getElementById('chairFileView').innerHTML = template;
+  viewFinalDecisionFiles(filesdecided);
   submitToDacc();
   daccOverride();
   commentApproveReject();
@@ -695,6 +906,8 @@ export const chairFileView = async () => {
   // switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted', 'denied'], filesaccepted);
   // switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
 
+  //Accepted/Deny listeners
+  
   hideAnimation();
 }
 
@@ -1167,14 +1380,15 @@ export const daccFileView = async () => {
 
       <div id="daccComment" class="card-body dacc-comment" style="padding-left: 10px;background-color:#f6f6f6;">
       <form>  
-        <label for="grade">Choose a rating:</label>
+        <label for="grade">Select recommendation: </label>
           <select name="grade" id="grade"></option>
-            <option value = "1"> Poor (Do not recommend)</option>
-            <option value = "2"> Below Average </option>
-            <option value = "3"> Average </option>
-            <option value = "4"> Good </option>
-            <option value = "5"> Excellent (Highly recommended)</option>
-          </select>
+            <option value = "1"> 1 - Approved as submitted</option>
+            <option value = "2"> 2 - Approved, pending conditions/clarification of some issues </option>
+            <option value = "3"> 3 - Approved, but data release will be delayed </option>
+            <option value = "4"> 4 - Not approved </option>
+            <option value = "6"> 6 - Decision pending clarification of several issues</option>
+            <option value = "777"> 777 - Duplicate Proposal</option>
+            </select>
           <br>
             <label for"message">Submit Comment:</label>
             <div class="input-group">
@@ -1418,6 +1632,25 @@ export const dataForm = async () => {
             children: [
               new docx.TextRun({
                 text: jsondata.email,
+                bold: true,
+              }),
+            ],
+          }),
+          //New sections
+          new docx.Paragraph({
+            text: "Keywords: ",
+            heading: docx.HeadingLevel.HEADING_2
+          }),
+          new docx.Paragraph({
+            alignment: docx.AlignmentType.START,
+            style: {
+              paragraph: {
+                indent: 500
+              },
+            },
+            children: [
+              new docx.TextRun({
+                text: jsondata.keywords,
                 bold: true,
               }),
             ],
@@ -1744,4 +1977,65 @@ const viewDACCFiles = async (files, taskids) => {
     ival += 1;
   };
   return template;
+}
+// const chairFileViews = async () => {
+// }
+const viewFinalDecisionFiles = async (files) => {
+  let template = '';
+
+  if(files.length > 0) {
+    template += `<div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
+    <div class="col-md-4 text-center font-bold ws-nowrap pl-2">Concept Name <!--button class="transparent-btn sort-column" data-column-name="Cohort name"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-3 text-center font-bold ws-nowrap">Submission Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-1 text-center font-bold ws-nowrap">Decision<!--button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-3 text-center font-bold ws-nowrap">Submitted By <!--button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button--></div>
+</div>`;
+  let i = 0;
+  const fileInfo = await getFileInfo('986462009982');
+  for(const file of files){
+    const fileInfo = await getFileInfo(file.id);
+    console.log(file.id, fileInfo)
+    // let response = await listComments(file.id);
+    // let comments = JSON.parse(response).entries;
+    // console.log(response, comments);
+    template += `<div class="card mt-1 mb-1 align-left" data-toggle="collapse" data-target="#study${file.id}">
+    <div style="padding: 10px" aria-expanded="false" id="file${file.id}">
+        <div class="row">
+            <div class="col-md-4 text-center">${file.name}</div>
+            <div class="col-md-3 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
+            ${i%2 == 0 ? '<h6 class="badge badge-pill badge-success col-md-1"><span>Approved</span></h6>' : '<h6 class="badge badge-pill badge-danger col-md-1">Denied</h6>'}
+            <div class="col-md-3 text-center">${fileInfo.created_by.name}</div>
+            <div class="col-md-1 text-center">
+                <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${file.id}">
+                    <i class="fas fa-caret-down fa-2x"></i>
+                </button>
+            </div>
+        </div>
+        <div id="study${file.id}" class="collapse" aria-labelledby="file${file.id}">
+                    <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
+                    <div class="row mb-1 m-0">
+                    <div class="col-md-2 font-bold">
+                    Comments
+                    </div>
+                    </div>
+                    <div class="row mb-1 m-0">
+                      <div id='file${file.id}Comments' class='col-12'></div>
+                    </div>
+
+        </div>
+    </div>
+    </div>
+    </div>
+  `;
+  i++;
+
+};
+  }
+  // template += '</div>';
+
+
+  document.getElementById('decided').innerHTML = template;
+  for(const file of files){
+    document.getElementById(`study${file.id}`).addEventListener('click', showCommentsDropDown(file.id))
+    }
 }

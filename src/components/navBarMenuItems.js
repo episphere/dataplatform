@@ -66,6 +66,7 @@ export const navBarMenutemplate = () => {
                         ${JSON.parse(localStorage.parms).name}
                     </button>
                     <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#userSubmissions" id="userSubmissionsBtn">View Submissions</a>
                         <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#logout" id="logOutBtn">Log Out</a>
                     </div>
                 </div>

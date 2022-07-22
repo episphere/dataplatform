@@ -471,9 +471,13 @@ export const uploadFile = async (data, fileName, folderId, html) => {
 export const uploadWordFile = async (data, fileName, folderId, html) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
+        const user = await getCurrentUser();
         const form = new FormData();
         form.append('file', data);
-        form.append('attributes', `{"name": "${fileName}", "parent": {"id": "${folderId}"}}`);
+        form.append('attributes', `{
+            "name": "${fileName}", 
+            "parent": {"id": "${folderId}"},
+    }`);
 
         let response = await fetch("https://upload.box.com/api/2.0/files/content", {
             method: "POST",
@@ -1049,6 +1053,94 @@ export async function showComments(id) {
 }
     commentSection.innerHTML = template;
    
+    return;
+
+}
+
+export async function showCommentsDropDown(id) {
+    const commentSection = document.getElementById(`file${id}Comments`);
+    const response = await listComments(id);
+
+    console.log(commentSection);   
+
+    let comments = JSON.parse(response).entries;
+
+    let template = `
+    <div class='container-fluid'>`;
+    const user = JSON.parse(localStorage.parms).login;
+
+    if(emailforChair.includes(user)){
+        for (const comment of comments){
+            const comment_date = new Date(comment.created_at);
+        const date = comment_date.toLocaleDateString();
+        const time = comment_date.toLocaleTimeString();
+        console.log('Comment', comment);
+        template += `
+        <div>
+            <div class='row'>
+                <div class='col-8 p-0'>
+                    <p class='text-primary small mb-0 align-left'>${comment.created_by.name}</p>
+                </div>
+            `;
+            template +=`    
+            </div>
+            <div class='row'>
+                    <p class='my-0' id='comment${comment.id}'>${comment.message}</p>
+            </div>
+
+            <div class='row'>
+                <p class='small mb-0 font-weight-light'>${date} at ${time}</p>
+            </div>
+            <hr class='my-1'>
+        </div>
+        `
+
+    
+        }
+    }
+
+    else{
+
+    for (const comment of comments) {
+        const comment_user = comment.created_by;
+
+        
+            if(comment_user.login === user || emailforChair.includes(comment_user.login)){
+                
+
+        const comment_date = new Date(comment.created_at);
+        const date = comment_date.toLocaleDateString();
+        const time = comment_date.toLocaleTimeString();
+        console.log('Comment', comment);
+        template += `
+        <div>
+            <div class='row'>
+                <div class='col-8 p-0'>
+                    <p class='text-primary small mb-0 align-left'>${comment.created_by.name}</p>
+                </div>
+            `;
+       
+            template +=`    
+            </div>
+            <div class='row'>
+                    <p class='my-0' id='comment${comment.id}'>${comment.message}</p>
+            </div>
+
+            <div class='row'>
+                <p class='small mb-0 font-weight-light'>${date} at ${time}</p>
+            </div>
+            <hr class='my-1'>
+        </div>
+        `
+
+    }
+
+    }
+}
+    // template += '</div>'
+    console.log(template);
+    commentSection.innerHTML = template;
+    console.log(commentSection);   
     return;
 
 }

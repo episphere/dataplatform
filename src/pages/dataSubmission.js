@@ -1,4 +1,4 @@
-import { getFolderItems, filterStudiesDataTypes, filterConsortiums, hideAnimation, checkDataSubmissionPermissionLevel, getCollaboration, getFile, tsv2Json, consortiumSelection } from "../shared.js";
+import { getFolderItems, showCommentsDropDown, filterStudiesDataTypes, filterConsortiums, hideAnimation, checkDataSubmissionPermissionLevel, getCollaboration, getFile, tsv2Json, consortiumSelection, uploadFormFolder, daccReviewFolder, getFileInfo, daccReviewChairFolder, acceptedFolder, deniedFolder, chairReviewFolder } from "../shared.js";
 import { uploadInStudy } from "../components/modal.js";
 
 export const dataSubmissionTemplate = async () => {
@@ -160,3 +160,112 @@ export const dataSubmission = (element) => {
     //     element.dispatchEvent(new Event('click'));
     // });
 };
+
+export const userSubmissionTemplate = async () => {
+let template = '';
+
+const uploads = await getFolderItems(uploadFormFolder);
+const daccReview = await getFolderItems(daccReviewFolder);
+const resubmit = await getFolderItems(daccReviewChairFolder);
+const chairReview = await getFolderItems(chairReviewFolder);
+const accepted = await getFolderItems(acceptedFolder);
+const denied = await getFolderItems(deniedFolder);
+
+const files = [];
+
+for(const file of uploads.entries){
+    const fileInfo = await getFileInfo(file.id);
+    if(fileInfo.created_by.login === JSON.parse(localStorage.parms).login){
+        files.push({'file': file, 'status' : 'Uploaded', decision: 'Pending'});
+    }
+}
+
+for(const file of daccReview.entries){
+    const fileInfo = await getFileInfo(file.id);
+    if(fileInfo.created_by.login === JSON.parse(localStorage.parms).login){
+        files.push({'file': file, 'status' : 'DACC Review', decision: 'Pending'});
+    }
+}
+
+for(const file of resubmit.entries){
+    const fileInfo = await getFileInfo(file.id);
+    if(fileInfo.created_by.login === JSON.parse(localStorage.parms).login){
+        files.push({'file': file, 'status' : 'Resubmitted to DACC', decision: 'Pending'});
+    }
+}
+
+for(const file of chairReview.entries){
+    const fileInfo = await getFileInfo(file.id);
+    if(fileInfo.created_by.login === JSON.parse(localStorage.parms).login){
+        files.push({'file': file, 'status' : 'Chair Review', decision: 'Pending'});
+        }
+}
+
+for(const file of accepted.entries){
+    const fileInfo = await getFileInfo(file.id);
+    if(fileInfo.created_by.login === JSON.parse(localStorage.parms).login){
+        files.push({'file': file, 'status' : 'Review Complete', decision: 'Accepted'});
+        }
+}
+
+for(const file of denied.entries){
+    const fileInfo = await getFileInfo(file.id);
+    if(fileInfo.created_by.login === JSON.parse(localStorage.parms).login){
+        files.push({'file': file, 'status' : 'Review Complete', decision: 'Denied'});
+    }
+}
+
+if(files.length > 0) {
+    template += `<div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
+    <div class="col-md-4 text-center font-bold ws-nowrap pl-2">Concept Name <!--button class="transparent-btn sort-column" data-column-name="Cohort name"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-3 text-center font-bold ws-nowrap">Status <!--button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-3 text-center font-bold ws-nowrap">Submission Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-1 text-center font-bold ws-nowrap">Decision<!--button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button--></div>
+</div>`;
+  let i = 0;
+
+  for(const element of files){
+    const fileInfo = await getFileInfo(element.file.id);
+    template += `<div class="card mt-1 mb-1 align-left" data-toggle="collapse" data-target="#study${element.file.id}">
+    <div style="padding: 10px" aria-expanded="false" id="file${element.file.id}">
+        <div class="row">
+            <div class="col-md-4 text-center">${element.file.name}</div>
+            <div class="col-md-3 text-center">${element.status}</div>
+            <div class="col-md-3 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
+            <h6 class="badge badge-pill col-md-1">${element.decision}</h6>
+            <div class="col-md-1 text-center">
+                <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${element.file.id}">
+                    <i class="fas fa-caret-down fa-2x"></i>
+                </button>
+            </div>
+        </div>
+        <div id="study${element.file.id}" class="collapse" aria-labelledby="file${element.file.id}">
+                    <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
+                    <div class="row mb-1 m-0">
+                    <div class="col-md-2 font-bold">
+                    Comments
+                    </div>
+                    </div>
+                    <div class="row mb-1 m-0">
+                      <div id='file${element.file.id}Comments' class='col-12'></div>
+                    </div>
+
+        </div>
+    </div>
+    </div>
+    </div>
+  `;
+  i++;
+
+};
+  }
+  // template += '</div>';
+
+
+  document.getElementById('confluenceDiv').innerHTML = template;
+    for(const element of files){
+        document.getElementById(`file${element.file.id}`).addEventListener('click', showCommentsDropDown(element.file.id))
+        }
+
+return template;
+}

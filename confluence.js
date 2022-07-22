@@ -1,6 +1,6 @@
 import { navBarMenutemplate } from './src/components/navBarMenuItems.js';
 import { infoDeck, infoDeckAfterLoggedIn } from './src/pages/homePage.js';
-import { dataSubmissionTemplate, lazyload } from './src/pages/dataSubmission.js';
+import { dataSubmissionTemplate, lazyload, userSubmissionTemplate } from './src/pages/dataSubmission.js';
 import { dataSummary, dataSummaryMissingTemplate, dataSummaryStatisticsTemplate } from './src/pages/dataExploration.js';
 import { dataAccess as dataRequestTemplate, dataAccessNotSignedIn, dataForm, dataApproval, formSection, approveRejectSection, daccSection, chairSection, chairFileView, daccFileView, formSectionOther } from './src/pages/dataRequest.js';
 import { checkAccessTokenValidity, loginAppDev, loginObs, loginAppEpisphere, logOut, loginAppProd } from './src/manageAuthentication.js';
@@ -56,6 +56,7 @@ export const confluence = async () => {
         }
         navBarOptions.innerHTML = navBarMenutemplate();
         document.getElementById('logOutBtn').addEventListener('click', logOut);
+        const viewUserSubmissionElement = document.getElementById('userSubmissionsBtn');
 
         const dataSubmissionElement = document.getElementById('dataSubmission');
         const dataSummaryElement = document.getElementById('dataSummary');
@@ -69,6 +70,14 @@ export const confluence = async () => {
         // const platformTutorialElement = document.getElementById('platformTutorial');
         // const dataAnalysisElement = document.getElementById('dataAnalysis');
 
+        viewUserSubmissionElement.addEventListener('click', async() => {
+            if (viewUserSubmissionElement.classList.contains('navbar-active')) return;
+            showAnimation();
+            // assignNavbarActive(viewUserSubmissionElement, 1)
+            document.title = 'BCRPP - Your Submissions';
+            confluenceDiv.innerHTML = await userSubmissionTemplate();
+            hideAnimation()
+        })
         dataSubmissionElement.addEventListener('click', async () => {
             if (dataSubmissionElement.classList.contains('navbar-active')) return;
             showAnimation();
@@ -111,7 +120,7 @@ export const confluence = async () => {
             dataSummarySubsetElement.addEventListener('click', () => {
                 if (dataSummarySubsetElement.classList.contains('navbar-active')) return;
                 const confluenceDiv = document.getElementById('confluenceDiv');
-                showAnimation();
+                // showAnimation();
                 assignNavbarActive(dataSummarySubsetElement, 1);
                 document.title = 'BCRPP - Subset Statistics';
                 confluenceDiv.innerHTML = dataSummary('Subset Statistics', false, true, true);

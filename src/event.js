@@ -1534,7 +1534,25 @@ export function switchTabs(show, hide, files) {
         } else if (!Array.isArray(files)) {
             console.log('files not in an array');
             return;
-        } else {
+        } else if (show === 'decided') {
+            document.getElementById(show + 'Tab').addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log(show, 'Tab clicked');
+
+                const boxPreview = document.getElementById('filePreview');
+                boxPreview.classList.remove('d-block');
+                boxPreview.classList.add('d-none');
+                
+                for (const tab of hide) {
+                   
+                    document.getElementById(tab + 'Tab').classList.remove('active');
+                    document.getElementById(tab).classList.remove('show', 'active');
+                }
+                document.getElementById(show + 'Tab').classList.add('active');
+                document.getElementById(show).classList.add('show', 'active');
+                return;
+            });
+        } else{
             const boxPreview = document.getElementById('filePreview');
             
             document.getElementById(show + 'Tab').addEventListener('click', (e) => {
@@ -1576,11 +1594,6 @@ export function switchTabs(show, hide, files) {
                             document.getElementById('sendtodaccButton').style.display="none";
                             document.getElementById('daccOverride').style.display='none';
                             document.getElementById('finalChairDecision').style.display="block";
-                            }
-                        if (show === 'decided'){
-                            document.getElementById('sendtodaccButton').style.display="none";
-                            document.getElementById('daccOverride').style.display='none';
-                            document.getElementById('finalChairDecision').style.display="none";
                             }
                         if (show ==='dacctoBeCompleted'){
                             document.getElementById('daccComment').style.display="block";
