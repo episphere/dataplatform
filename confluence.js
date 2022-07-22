@@ -111,7 +111,7 @@ export const confluence = async () => {
             dataSummarySubsetElement.addEventListener('click', () => {
                 if (dataSummarySubsetElement.classList.contains('navbar-active')) return;
                 const confluenceDiv = document.getElementById('confluenceDiv');
-                showAnimation();
+                // showAnimation();
                 assignNavbarActive(dataSummarySubsetElement, 1);
                 document.title = 'BCRPP - Subset Statistics';
                 confluenceDiv.innerHTML = dataSummary('Subset Statistics', false, true, true);
