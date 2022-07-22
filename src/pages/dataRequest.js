@@ -676,9 +676,11 @@ export const chairFileView = async () => {
 
   template += `<div class='tab-pane fade' 
                 id='decided' role='tabpanel'
-                aria-labelledby='decidedTab'>`
+                aria-labelledby='decidedTab'>
+                
+                </div>`
   // template += renderFilePreviewDropdown(filesdecided, 'decided');
-  template += viewFinalDecisionFiles(filesdecided);
+  // template += viewFinalDecisionFiles(filesdecided);
   // template += `<div class='tab-pane fade' 
   //           id='denied' role='tabpanel'
   //           aria-labelledby='deniedTab'>`
@@ -737,6 +739,7 @@ export const chairFileView = async () => {
   //};
 
   document.getElementById('chairFileView').innerHTML = template;
+  viewFinalDecisionFiles(filesdecided);
   submitToDacc();
   daccOverride();
   commentApproveReject();
@@ -768,9 +771,7 @@ export const chairFileView = async () => {
   // switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
 
   //Accepted/Deny listeners
-  for(const file of filesdecided){
-  document.getElementById(`study${file.id}`).addEventListener('click', showCommentsDropDown(file.id))
-  }
+  
   hideAnimation();
 }
 
@@ -1822,31 +1823,34 @@ const viewDACCFiles = async (files, taskids) => {
   };
   return template;
 }
-
-const viewFinalDecisionFiles = (files) => {
+// const chairFileViews = async () => {
+// }
+const viewFinalDecisionFiles = async (files) => {
   let template = '';
 
   if(files.length > 0) {
     template += `<div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
-    <div class="col-md-3 font-bold ws-nowrap pl-2">Concept Name <button class="transparent-btn sort-column" data-column-name="Cohort name"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-3 font-bold ws-nowrap">Submission Date <button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-3 font-bold ws-nowrap">Decision<button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-3 font-bold ws-nowrap">Submitted By <button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-4 text-center font-bold ws-nowrap pl-2">Concept Name <!--button class="transparent-btn sort-column" data-column-name="Cohort name"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-3 text-center font-bold ws-nowrap">Submission Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-1 text-center font-bold ws-nowrap">Decision<!--button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-3 text-center font-bold ws-nowrap">Submitted By <!--button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button--></div>
 </div>`;
   let i = 0;
+  const fileInfo = await getFileInfo('986462009982');
   for(const file of files){
-    console.log(file);
+    const fileInfo = await getFileInfo(file.id);
+    console.log(file.id, fileInfo)
     // let response = await listComments(file.id);
     // let comments = JSON.parse(response).entries;
     // console.log(response, comments);
     template += `<div class="card mt-1 mb-1 align-left" data-toggle="collapse" data-target="#study${file.id}">
     <div style="padding: 10px" aria-expanded="false" id="file${file.id}">
         <div class="row">
-            <div class="col-md-4">${file.name}</div>
-            <div class="col-md-2">${new Date().getDate()}</div>
+            <div class="col-md-4 text-center">${file.name}</div>
+            <div class="col-md-3 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
             ${i%2 == 0 ? '<div class="badge badge-success col-md-1 text-center">Approved</div>' : '<div class="badge badge-danger col-md-1">Denied</div>'}
-            <div class="col-md-4 text-right">Test User Test User Test User  </div>
-            <div class="col-md-1">
+            <div class="col-md-3 text-center">${fileInfo.created_by.name}</div>
+            <div class="col-md-1 text-center">
                 <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${file.id}">
                     <i class="fas fa-caret-down fa-2x"></i>
                 </button>
@@ -1868,10 +1872,15 @@ const viewFinalDecisionFiles = (files) => {
     </div>
     </div>
   `;
-  i++;};
+  i++;
+
+};
   }
-  template += '</div>';
+  // template += '</div>';
 
 
-  return template;
+  document.getElementById('decided').innerHTML = template;
+  for(const file of files){
+    document.getElementById(`study${file.id}`).addEventListener('click', showCommentsDropDown(file.id))
+    }
 }
