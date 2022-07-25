@@ -94,17 +94,17 @@ export const dataAccess = (activeTab, showDescripton) => {
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', 'DACC Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu', 'DACC Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'DACC Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
   let template = `
 
@@ -153,17 +153,17 @@ export const formSectionOther = async (activeTab, showDescripton) => {
 
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', 'DACC Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu', 'DACC Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'DACC Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
 
   let template = `
@@ -417,17 +417,17 @@ export const formSection = async (activeTab, showDescripton) => {
 
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', 'DACC Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu', 'DACC Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'DACC Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
   let template = `
       <div class="general-bg body-min-height padding-bottom-1rem">
@@ -442,7 +442,7 @@ export const formSection = async (activeTab, showDescripton) => {
                           <div class="container body-min-height">
                               <div class="main-summary-row">
                                   <div class="align-left">
-                                      <h1 class="page-header">Form Submission</h1>
+                                      <h1 class="page-header">Project Concept Form</h1>
                                   </div>
                               </div>
                           <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">             
@@ -589,17 +589,17 @@ export const acceptedStudiesSection = (activeTab) => {
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', 'DACC Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu', 'DACC Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'DACC Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
   let template = `
       <div class="general-bg body-min-height padding-bottom-1rem">
@@ -675,17 +675,17 @@ export const chairSection = (activeTab) => {
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', 'DACC Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu', 'DACC Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'DACC Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
   let template = `
       <div class="general-bg body-min-height padding-bottom-1rem">
@@ -744,7 +744,7 @@ export const chairFileView = async () => {
     <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
     <ul class='nav nav-tabs mb-3' role='tablist'>
       <li class='nav-item' role='presentation'>
-        <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> New Submissions </a>
+        <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> New Concepts </a>
       </li>
       <li class='nav-item' role='presentation'>
          <a class='nav-link' id='inProgressTab' href='#inProgress' data-mdb-toggle="tab" role='tab' aria-controls='inProgress' aria-selected='true'> Under Review </a>
@@ -753,7 +753,7 @@ export const chairFileView = async () => {
          <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'> Review Completed </a>
       </li>
       <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='decidedTab' href='#decided' data-mdb-toggle="tab" role='tab' aria-controls='decided' aria-selected='true'> Accepted/Denied </a>
+         <a class='nav-link' id='decidedTab' href='#decided' data-mdb-toggle="tab" role='tab' aria-controls='decided' aria-selected='true'> DACC Decision </a>
       </li>
       <!--li class='nav-item' role='presentation'>
          <a class='nav-link' id='deniedTab' href='#denied' data-mdb-toggle="tab" role='tab' aria-controls='denied' aria-selected='true'> Denied </a>
@@ -845,9 +845,8 @@ export const chairFileView = async () => {
         <div class='row card-body dacc-override' id='daccOverride' class="col-6" style='display:none'>
           <form>
               <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
-                <span class="buttonsubmit__text"> Override DACC </span> 
+                <span class="buttonsubmit__text"> Move To Review Complete </span> 
               </button>
-              <div class='text-muted small'>Select to move form to Review Completed </div>
           </form>
         </div>
 
@@ -906,7 +905,7 @@ export const chairFileView = async () => {
   // switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted', 'denied'], filesaccepted);
   // switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
 
-  //Accepted/Deny listeners
+
   
   hideAnimation();
 }
@@ -1191,17 +1190,17 @@ export const daccSection = (activeTab) => {
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', 'DACC Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu', 'DACC Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'DACC Menu');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
-    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form');
+    // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
   let template = `
               <div class="general-bg body-min-height padding-bottom-1rem">
@@ -1260,8 +1259,11 @@ export const daccFileView = async () => {
               <a class='nav-link' id='daccReviewTab' href='#daccReview' data-mdb-toggle="tab" role='tab' aria-controls='daccReview' aria-selected='true'>Review </a>
             </li>
             <li class='nav-item' role='presentation'>
-                <a class='nav-link' id='completedTab' href='#completed' data-mdb-toggle="tab" role='tab' aria-controls='completed' aria-selected='true'>Completed</a>
+              <a class='nav-link' id='decidedTab' href='#decided' data-mdb-toggle="tab" role='tab' aria-controls='decided' aria-selected='true'> DACC Decision </a>
             </li>
+            <!--li class='nav-item' role='presentation'>
+                <a class='nav-link' id='completedTab' href='#completed' data-mdb-toggle="tab" role='tab' aria-controls='completed' aria-selected='true'>Completed</a>
+            </li-->
 
 
             </ul>`;
@@ -1365,10 +1367,15 @@ export const daccFileView = async () => {
                 aria-labeledby='daccReviewTab'> `
   template += renderFilePreviewDropdown(filesreviewed, 'daccReview');
 
-  template += `<div class='tab-pane fade'
-                id='completed' role='tabpanel'
-                aria-labeledby='completedTab'> `
-  template += renderFilePreviewDropdown(filescompleted, 'completed');
+  template += `<div class='tab-pane fade' 
+                id='decided' role='tabpanel'
+                aria-labelledby='decidedTab'>
+                
+                </div>`
+  // template += `<div class='tab-pane fade'
+  //               id='completed' role='tabpanel'
+  //               aria-labeledby='completedTab'> `
+  // template += renderFilePreviewDropdown(filescompleted, 'completed');
   template += `<div id='filePreview'>`;
 
   if (filescompleted.length != 0 || filesincomplete.length != 0 || filesreviewed.length != 0) {
@@ -1404,6 +1411,7 @@ export const daccFileView = async () => {
     </div>`
   //}
   document.getElementById('daccFileView').innerHTML = template;
+  viewFinalDecisionFiles(filescompleted);
   if (filesincomplete.length != 0) {
     switchFiles('dacctoBeCompleted');
     showPreview(filesincomplete[0].id);
@@ -1417,13 +1425,13 @@ export const daccFileView = async () => {
     document.getElementById('filePreview').classList.add('d-none');
     //}
   };
-
+  
   submitToComment();
 
   //Switch Tabs
-  switchTabs('dacctoBeCompleted', ['completed', 'daccReview'], filesincomplete);
-  switchTabs('completed', ['dacctoBeCompleted', 'daccReview'], filescompleted);
-  switchTabs('daccReview', ['dacctoBeCompleted', 'completed'], filesreviewed);
+  switchTabs('dacctoBeCompleted', ['decided', 'daccReview'], filesincomplete);
+  switchTabs('decided', ['dacctoBeCompleted', 'daccReview'], filescompleted);
+  switchTabs('daccReview', ['dacctoBeCompleted', 'decided'], filesreviewed);
   hideAnimation();
 }
 
@@ -1575,7 +1583,7 @@ export const dataForm = async () => {
         properties: {},
         children: [
           new docx.Paragraph({
-            text: "BCRPP Data Access Submission",
+            text: "Breast Cancer Risk Prediction Project Analysis Proposal",
             heading: docx.HeadingLevel.TITLE,
             alignment: docx.AlignmentType.CENTER
           }),
@@ -1991,7 +1999,6 @@ const viewFinalDecisionFiles = async (files) => {
     <div class="col-md-3 text-center font-bold ws-nowrap">Submitted By <!--button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button--></div>
 </div>`;
   let i = 0;
-  const fileInfo = await getFileInfo('986462009982');
   for(const file of files){
     const fileInfo = await getFileInfo(file.id);
     console.log(file.id, fileInfo)
@@ -2021,7 +2028,10 @@ const viewFinalDecisionFiles = async (files) => {
                     <div class="row mb-1 m-0">
                       <div id='file${file.id}Comments' class='col-12'></div>
                     </div>
-
+                    <!--div class='row'>
+                      <div id='filePreview${file.id}' class="col-8 preview-container"></div>
+                      <div id='file${file.id}Comments' class='col-4 mt-2'></div>
+                    </div-->
         </div>
     </div>
     </div>
@@ -2037,5 +2047,9 @@ const viewFinalDecisionFiles = async (files) => {
   document.getElementById('decided').innerHTML = template;
   for(const file of files){
     document.getElementById(`study${file.id}`).addEventListener('click', showCommentsDropDown(file.id))
+    // document.getElementById(`study${file.id}`).addEventListener('click', (e) => {
+    //     showPreview(file.id, `filePreview${file.id}` );
+    //     showCommentsDropDown(file.id);
+    // })
     }
 }
