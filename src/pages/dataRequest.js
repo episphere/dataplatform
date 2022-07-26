@@ -436,7 +436,8 @@ export const formSection = async (activeTab, showDescripton) => {
           
       </div>
       `;
-
+  const date = new Date();
+  const today = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
   template += ` 
                   <div class="general-bg padding-bottom-1rem">
                           <div class="container body-min-height">
