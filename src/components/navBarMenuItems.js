@@ -20,10 +20,10 @@ export const navBarMenutemplate = () => {
         </div>
         <div class="grid-elements dropdown">
             <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Data
+                Explore Data
             </button>
             <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-                <h6 class="dropdown-header dropdown-header-bg font-bold">Explore Data</h6>
+                <!--h6 class="dropdown-header dropdown-header-bg font-bold">Explore Data</h6-->
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_exploration/dictionary" title="Data Dictionary" id="dataDictionary">
                 Dictionary
                 </a>
@@ -45,12 +45,19 @@ export const navBarMenutemplate = () => {
                 </a>
                 <div id="governanceNav" class="grid-elements"></div>
                 <div id="myProjectsNav" class="grid-elements"></div>
-                <h6 class="dropdown-header dropdown-header-bg font-bold">Data Access</h6>
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/overview" title="Data Access" id="dataRequest"> Overview </a>
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/form" title="Data Form" id="dataForm"> Submission Form </a>
-                <!--a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/accepted" title="Accepted Studies" id="dataAccepted"> Accepted </a-->
-                ${emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/chairView" title="Chair File View" id="chairView"> Chair Menu </a>`:``}
-                ${emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/daccView" title="DACC Menu" id="daccView"> DACC Menu </a>`:``}
+                </div>
+            </div>
+                <div class='grid-elements dropdown'>
+                    <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Data Access
+                    </button>
+                    <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
+                <!--h6 class="dropdown-header dropdown-header-bg font-bold">Data Access</h6-->
+                    <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/overview" title="Data Access" id="dataRequest"> Overview </a>
+                    <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/form" title="Data Form" id="dataForm"> Project Concept Form </a>
+                    <!--a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/accepted" title="Accepted Studies" id="dataAccepted"> Accepted </a-->
+                    ${emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/chairView" title="Chair File View" id="chairView"> Chair Menu </a>`:``}
+                    ${emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/daccView" title="DACC Menu" id="daccView"> DACC Menu </a>`:``}
             </div>
         </div>
         <div class="grid-elements">
@@ -107,7 +114,7 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
             if(activeTab === 'overview')
                 link.classList.add('active');
         }
-        if(header === 'Submission Form'){
+        if(header === 'Project Concept Form'){
             link.href = `#${page}/form`
             if(activeTab === 'form')
                 link.classList.add('active');

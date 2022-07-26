@@ -109,8 +109,8 @@ export function renderFilePreviewDropdown(files, tab){
         template += `<div class='card-body p-0'>
                 <div class='card-title'>
                 <label for='${tab}selectedDoc'>
-                    <b>Select Document:</b>
-                    <div class='text-muted small'>If you would like to submit multiple forms for review, hold Ctrl and select the files you wish to submit. </div>
+                    <b>Select Concept Form:</b>
+                    <div class='text-muted small'>Hold Ctrl to select multiple concept forms </div>
                 </label>
                 <br>
                 <select id='${tab}selectedDoc' multiple size='3'>
@@ -119,7 +119,7 @@ export function renderFilePreviewDropdown(files, tab){
             template += `<div class='card-body p-0'>
                 <div class='card-title'>
                 <label for='${tab}selectedDoc'>
-                    <b>Select Document:</b>
+                    <b>Select Concept Form:</b>
                 </label>
                 <br>
                 <select id='${tab}selectedDoc'>`;
