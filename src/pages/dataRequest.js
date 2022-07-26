@@ -1916,7 +1916,7 @@ const viewFinalDecisionFiles = async (files) => {
                                     </button>`;
             const fileId = btn.dataset.fileId;
            $('#bcrppPreviewerModal').modal('show');
-            filePreviewer(fileId, '#bcrppPreviewerModalBody');
+            showPreview(fileId, 'bcrppPreviewerModalBody');
         })
     })
 }
