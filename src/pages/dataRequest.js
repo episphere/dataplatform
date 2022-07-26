@@ -1390,7 +1390,7 @@ export const dataApproval = () => {
 export const dataForm = async () => {
   let files = await getFolderItems(uploadFormFolder);
   const d = new Date();
-  let filename = JSON.parse(localStorage.parms).login.split("@")[0] + "testing" + "_" + d.getDate() + "_" + (d.getMonth() + 1) + "_" + d.getFullYear() + ".docx";
+  let filename = jsondata.project.substring(0,10) + '_' + JSON.parse(localStorage.parms).login.split("@")[0] + "testing" + "_" + d.getDate() + "_" + (d.getMonth() + 1) + "_" + d.getFullYear() + ".docx";
   
   // Find unique name
   let entries = files.entries;
@@ -1853,7 +1853,10 @@ const viewFinalDecisionFiles = async (files) => {
     template += `<div class="card mt-1 mb-1 align-left" data-toggle="collapse" data-target="#study${file.id}">
     <div style="padding: 10px" aria-expanded="false" id="file${file.id}">
         <div class="row">
-            <div class="col-md-4 text-center">${file.name}</div>
+            <div class="col-md-4 text-center">
+            ${file.name}
+            <button class="btn btn-sm custom-btn preview-file" data-file-id="${file.id}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i> Preview</button>
+            </div>
             <div class="col-md-3 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
             ${i%2 == 0 ? '<h6 class="badge badge-pill badge-success col-md-1"><span>Approved</span></h6>' : '<h6 class="badge badge-pill badge-danger col-md-1">Denied</h6>'}
             <div class="col-md-3 text-center">${fileInfo.created_by.name}</div>
@@ -1892,9 +1895,25 @@ const viewFinalDecisionFiles = async (files) => {
   document.getElementById('decided').innerHTML = template;
   for(const file of files){
     document.getElementById(`study${file.id}`).addEventListener('click', showCommentsDropDown(file.id))
+    // e.stopPropagation();
     // document.getElementById(`study${file.id}`).addEventListener('click', (e) => {
     //     showPreview(file.id, `filePreview${file.id}` );
     //     showCommentsDropDown(file.id);
     // })
     }
+
+    const btns = Array.from(document.querySelectorAll('.preview-file'));
+    btns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+            const header = document.getElementById('confluencePreviewerModalHeader');
+                const body = document.getElementById('confluencePreviewerModalBody');
+                header.innerHTML = `<h5 class="modal-title">File preview</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>`;
+            const fileId = btn.dataset.fileId;
+            filePreviewer(fileId, '#confluencePreviewerModalBody');
+        })
+    })
 }
