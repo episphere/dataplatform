@@ -476,7 +476,7 @@ export const uploadWordFile = async (data, fileName, folderId, html) => {
         form.append('file', data);
         form.append('attributes', `{
             "name": "${fileName}", 
-            "parent": {"id": "${folderId}"},
+            "parent": {"id": "${folderId}"}
     }`);
 
         let response = await fetch("https://upload.box.com/api/2.0/files/content", {
@@ -503,6 +503,7 @@ export const uploadWordFile = async (data, fileName, folderId, html) => {
             };
         };
     } catch (err) {
+        console.log(err);
         if ((await refreshToken()) === true) return await uploadWordFile(data, fileName, folderId, html);
     }
 }
