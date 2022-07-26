@@ -1,6 +1,6 @@
 import { navBarMenutemplate } from './src/components/navBarMenuItems.js';
 import { infoDeck, infoDeckAfterLoggedIn } from './src/pages/homePage.js';
-import { dataSubmissionTemplate, lazyload, userSubmissionTemplate } from './src/pages/dataSubmission.js';
+import { dataSubmissionTemplate, lazyload, userSubmissionTemplate} from './src/pages/dataSubmission.js';
 import { dataSummary, dataSummaryMissingTemplate, dataSummaryStatisticsTemplate } from './src/pages/dataExploration.js';
 import { dataAccess as dataRequestTemplate, dataAccessNotSignedIn, dataForm, dataApproval, formSection, approveRejectSection, daccSection, chairSection, chairFileView, daccFileView, formSectionOther } from './src/pages/dataRequest.js';
 import { checkAccessTokenValidity, loginAppDev, loginObs, loginAppEpisphere, logOut, loginAppProd } from './src/manageAuthentication.js';
@@ -75,8 +75,9 @@ export const confluence = async () => {
             showAnimation();
             // assignNavbarActive(viewUserSubmissionElement, 1)
             document.title = 'BCRPP - Your Submissions';
-            confluenceDiv.innerHTML = await userSubmissionTemplate();
-            hideAnimation()
+            // confluenceDiv.innerHTML = await userSubmissionTemplate();
+            userSubmissionTemplate();
+            hideAnimation();
         })
         dataSubmissionElement.addEventListener('click', async () => {
             if (dataSubmissionElement.classList.contains('navbar-active')) return;
@@ -426,6 +427,17 @@ const manageRouter = async () => {
         document.querySelectorAll('[href="#data_exploration/dictionary"]')[1].classList.add('active');
         dataDictionaryTemplate();
     }
+    else if (hash === '#data_exploration/dictionary') {
+        const viewUserSubmissionElement = document.getElementById('userSubmissions')
+        if (viewUserSubmissionElement.classList.contains('navbar-active')) return;
+        showAnimation();
+        // assignNavbarActive(viewUserSubmissionElement, 1)
+        document.title = 'BCRPP - Your Submissions';
+        // confluenceDiv.innerHTML = await userSubmissionTemplate();
+        userSubmissionTemplate();
+        hideAnimation();
+    }
+
     else window.location.hash = '#home';
 }
 
@@ -500,6 +512,10 @@ const manageHash = async () => {
     } 
     else if (hash === '#logout') {
         const element = document.getElementById('logOutBtn');
+        element.click();
+    }
+    else if (hash === '#userSubmissions') {
+        const element = document.getElementById('userSubmissionsBtn');
         element.click();
     }
     else if(hash === '#home'){
