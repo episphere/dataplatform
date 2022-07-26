@@ -295,17 +295,12 @@ export const formSection = async (activeTab, showDescripton) => {
                             </div>
 
                             <div class="input-group">
-                              <label for="confirmation"><b>Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b></label>
-                              <div class="input-group">
-                                <input id="confirm-agree" name="confirm-agree" type="checkbox" value="Yes" required/>
-                                <label class="inline" for="confirm-agree"> Yes</label>
-                              </div>
+                              <label><input id="confirmation" name="confirmation" type="checkbox" value="Yes" required/><b> Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b></label>
                             </div>
 
                             <div class="input-group">
                               <label for="background"><b>Proposal Description</b> <i>Please provide a concise description of Background, Aims, and Analysis Plan (max. two pages).</i></label>
-                              <textarea id="background" name="background" rows="4" cols="65" placeholder="Provide enough detail so contributing cohorts can assess whether Aims 
-                              (i) align with participant consents and (ii) overlap with other cohort projects. Please list all planned analyses." required></textarea>
+                              <textarea id="background" name="background" rows="4" cols="65" placeholder="Provide enough detail so contributing cohorts can assess whether Aims (i) align with participant consents and (ii) overlap with other cohort projects. Please list all planned analyses." required></textarea>
                             </div>
 
                             <br>
@@ -1419,370 +1414,456 @@ export const dataForm = async () => {
 
   async function generateWord(jsondata) {
     const doc = new docx.Document({
+      styles: {
+        default: {
+          heading1: {
+            run: {
+              size: 26,
+              bold: true,
+              color: "#000000",
+            },
+          },
+          heading2: {
+            run: {
+              size: 22,
+              bold: true,
+              color: "#000000",
+            },
+          },
+        },
+      },
       sections: [{
         properties: {},
+        headers: {
+          default: new docx.Header({
+            children: [new docx.Paragraph({
+              text: "Breast Cancer Risk Prediction Project Analysis Proposal",
+              heading: docx.HeadingLevel.HEADING_1,
+              alignment: docx.AlignmentType.CENTER,
+            }),
+          ],
+          }),
+        },
         children: [
+          // new docx.Paragraph({
+          //   text: "Breast Cancer Risk Prediction Project Analysis Proposal",
+          //   heading: docx.HeadingLevel.HEADING_1,
+          //   alignment: docx.AlignmentType.CENTER
+          // }),
           new docx.Paragraph({
-            text: "Cohort Consortium Breast Cancer Risk Prediction Project (BCRPP)",
-            heading: docx.HeadingLevel.TITLE,
-            alignment: docx.AlignmentType.CENTER
-          }),
-          new docx.Paragraph({
-            text: "Analysis Proposal Form",
             heading: docx.HeadingLevel.HEADING_2,
-            alignment: docx.AlignmentType.CENTER
-          }),
-          new docx.Paragraph({
-            text: "Date: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: 500
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.date,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Date: "}), new docx.TextRun({text: jsondata.date, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Project Title: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: 500
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.projname,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Project Title: "}), new docx.TextRun({text: jsondata.projname, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Is this an amendment: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.amendment,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Is this an amendment: "}), new docx.TextRun({text: jsondata.amendment, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Contact Investigator(s): ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.investigators,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Amendment: "}), new docx.TextRun({text: jsondata.conNum, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Institution(s): ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.amendment,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Contact Investigator(s): "}), new docx.TextRun({text: jsondata.investigators, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Contact Email: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.email,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Institution(s): "}), new docx.TextRun({text: jsondata.institution, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Are you a member of BCRPP: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.email,
-                bold: true,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Contact Email: "}), new docx.TextRun({text: jsondata.email, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "BCRPP Study Acronym(s) for the Contact Investigator: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.acro,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Are you a member of BCRPP "}), new docx.TextRun({text: jsondata.member, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "ALL Investigators (and their institutions) who will require access: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.allinvest,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "BCRPP Study Acronym(s) for the Contact Investigator: "}), new docx.TextRun({text: jsondata.acro, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Agreement confirmation: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.confirmation,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "All Investigators (and Institutions) who require access: "}), new docx.TextRun({text: jsondata.investigators, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Proposal Description: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.background,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Proposal Description: "}), new docx.TextRun({text: jsondata.background, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Core Variables: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.corevar,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Core Variables: "}), new docx.TextRun({text: jsondata.corevar, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "MMD Variables: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.mmdvar,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "MMD Variables: "}), new docx.TextRun({text: jsondata.mmdvar, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "BRCA Variables: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.brcavar,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "BRCA Variables: "}), new docx.TextRun({text: jsondata.brcavar, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Requested Cohorts: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.reqcoh,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Requested Cohorts: "}), new docx.TextRun({text: jsondata.reqcoh, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Timeline: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.timeline,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Timeline: "}), new docx.TextRun({text: jsondata.timeline, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Authorship: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.authorship,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Authorship: "}), new docx.TextRun({text: jsondata.authorship, bold: false})],
+            spacing: {after: 150},
           }),
+          // new docx.Paragraph({
+          //   text: "Project Title: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: 500
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.projname,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Is this an amendment: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.amendment,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Contact Investigator(s): ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.investigators,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Institution(s): ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.amendment,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Contact Email: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.email,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Are you a member of BCRPP: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.member,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "BCRPP Study Acronym(s) for the Contact Investigator: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.acro,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "ALL Investigators (and their institutions) who will require access: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.allinvest,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Proposal Description: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.background,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Core Variables: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.corevar,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "MMD Variables: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.mmdvar,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "BRCA Variables: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.brcavar,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Requested Cohorts: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.reqcoh,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Timeline: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.timeline,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Authorship: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.authorship,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
         ],
       }]
     });
@@ -1832,7 +1913,7 @@ export const dataForm = async () => {
           console.log('popup');
         
       } else {
-        console.log("Saving File to Box: " + filename + jsondata.projname); // Adding keywords
+        console.log("Saving File to Box: " + filename + " " + jsondata.projname); // Adding keywords
         let response = await uploadWordFile(blob, filename, uploadFormFolder);
         await assigntasktochair();
         let fileid = response.entries[0].id;

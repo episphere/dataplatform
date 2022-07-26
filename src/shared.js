@@ -475,9 +475,7 @@ export const uploadWordFile = async (data, fileName, folderId, html) => {
         const form = new FormData();
         form.append('file', data);
         form.append('attributes', `{
-            "name": "${fileName}", 
-            "parent": {"id": "${folderId}"},
-        }`);
+            "name": "${fileName}", "parent": {"id": "${folderId}"}}`);
 
         let response = await fetch("https://upload.box.com/api/2.0/files/content", {
             method: "POST",
@@ -485,8 +483,7 @@ export const uploadWordFile = async (data, fileName, folderId, html) => {
                 Authorization: "Bearer " + access_token
             },
             body: form,
-            contentType: false,
-            mode: 'no-cors',
+            contentType: false
         });
         if (response.status === 400) {
             console.log(response.status);
