@@ -474,10 +474,7 @@ export const uploadWordFile = async (data, fileName, folderId, html) => {
         const user = await getCurrentUser();
         const form = new FormData();
         form.append('file', data);
-        form.append('attributes', `{
-            "name": "${fileName}", 
-            "parent": {"id": "${folderId}"},
-    }`);
+        form.append('attributes', `{"name": "${fileName}", "parent": {"id": "${folderId}"}}`);
 
         let response = await fetch("https://upload.box.com/api/2.0/files/content", {
             method: "POST",
