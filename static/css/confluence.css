@@ -1897,7 +1897,7 @@ form {
   
   .contact-form input[type=checkbox],
   .contact-form input[type=radio] {
-    display: block;
+    display: inline-block;
     width: auto;
     padding: 0.5rem .75rem;
   }

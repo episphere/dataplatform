@@ -471,10 +471,11 @@ export const uploadFile = async (data, fileName, folderId, html) => {
 export const uploadWordFile = async (data, fileName, folderId, html) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
-        const user = await getCurrentUser();
+        //const user = await getCurrentUser();
         const form = new FormData();
         form.append('file', data);
-        form.append('attributes', `{"name": "${fileName}", "parent": {"id": "${folderId}"}}`);
+        form.append('attributes', `{
+            "name": "${fileName}", "parent": {"id": "${folderId}"}}`);
 
         let response = await fetch("https://upload.box.com/api/2.0/files/content", {
             method: "POST",
@@ -484,11 +485,12 @@ export const uploadWordFile = async (data, fileName, folderId, html) => {
             body: form,
             contentType: false
         });
-        if (response.status === 401) {
+        if (response.status === 400) {
+            console.log(response.status);
             if ((await refreshToken()) === true) return await uploadWordFile(data, fileName, folderId, html);
         } else if (response.status === 201) {
             return response.json();
-        } else if (response.status === 409) {
+        } else if (response.status === 400) {
             return {
                 status: response.status,
                 json: await response.json()
