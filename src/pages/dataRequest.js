@@ -1851,12 +1851,12 @@ const viewFinalDecisionFiles = async (files) => {
     // let response = await listComments(file.id);
     // let comments = JSON.parse(response).entries;
     // console.log(response, comments);
-    template += `<div class="card mt-1 mb-1 align-left" data-toggle="collapse" data-target="#study${file.id}">
+    template += `<div class="card mt-1 mb-1 align-left" >
     <div style="padding: 10px" aria-expanded="false" id="file${file.id}">
         <div class="row">
             <div class="col-md-4 text-center">
             ${file.name}
-            <button class="btn btn-sm custom-btn preview-file" data-file-id="${file.id}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i> Preview</button>
+            <button class="btn btn-sm custom-btn col preview-file" data-file-id="${file.id}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i> Preview</button>
             </div>
             <div class="col-md-3 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
             ${i%2 == 0 ? '<h6 class="badge badge-pill badge-success col-md-1"><span>Approved</span></h6>' : '<h6 class="badge badge-pill badge-danger col-md-1">Denied</h6>'}
@@ -1906,15 +1906,17 @@ const viewFinalDecisionFiles = async (files) => {
     const btns = Array.from(document.querySelectorAll('.preview-file'));
     btns.forEach(btn => {
         btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-            const header = document.getElementById('confluencePreviewerModalHeader');
-                const body = document.getElementById('confluencePreviewerModalBody');
+          // e.stopPropagation();
+          console.log('Modal popping up');
+            const header = document.getElementById('bcrppPreviewerModalHeader');
+                const body = document.getElementById('bcrppPreviewerModalBody');
                 header.innerHTML = `<h5 class="modal-title">File preview</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>`;
             const fileId = btn.dataset.fileId;
-            filePreviewer(fileId, '#confluencePreviewerModalBody');
+           $('#bcrppPreviewerModal').modal('show');
+            filePreviewer(fileId, '#bcrppPreviewerModalBody');
         })
     })
 }
