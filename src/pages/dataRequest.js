@@ -1390,7 +1390,7 @@ export const dataApproval = () => {
 export const dataForm = async () => {
   let files = await getFolderItems(uploadFormFolder);
   const d = new Date();
-  let filename = jsondata.project.substring(0,10) + '_' + JSON.parse(localStorage.parms).login.split("@")[0] + "testing" + "_" + d.getDate() + "_" + (d.getMonth() + 1) + "_" + d.getFullYear() + ".docx";
+  let filename = JSON.parse(localStorage.parms).login.split("@")[0] + "_" + d.getDate() + "_" + (d.getMonth() + 1) + "_" + d.getFullYear() + ".docx";
   
   // Find unique name
   let entries = files.entries;
@@ -1659,6 +1659,7 @@ export const dataForm = async () => {
       }]
     });
 
+    filename = jsondata.projname.substring(0,10) + '_' + filename ;
     let files = await getFolderItems(uploadFormFolder);
     //console.log(files.entries)
     const filesinfoldernames = [];
