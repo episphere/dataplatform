@@ -997,7 +997,7 @@ export const chairFileView = async () => {
   // switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted', 'denied'], filesaccepted);
   // switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
 
-  console.log(document.getElementById(localStorage.getItem('currentTab')));//.click();
+  
   document.getElementById(localStorage.getItem('currentTab')).click();
   hideAnimation();
 }
@@ -1525,6 +1525,9 @@ export const daccFileView = async () => {
   switchTabs('dacctoBeCompleted', ['decided', 'daccReview'], filesincomplete);
   switchTabs('decided', ['dacctoBeCompleted', 'daccReview'], filescompleted);
   switchTabs('daccReview', ['dacctoBeCompleted', 'decided'], filesreviewed);
+
+  document.getElementById(localStorage.getItem('currentTab')).click();
+  
   hideAnimation();
 }
 

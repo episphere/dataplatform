@@ -1551,7 +1551,7 @@ export function switchTabs(show, hide, files) {
                 document.getElementById(show + 'Tab').classList.add('active');
                 document.getElementById(show).classList.add('show', 'active');
 
-                localStorage.setItem('currentTab', show);
+                localStorage.setItem('currentTab', show + 'Tab');
                 return;
             });
         } else{
