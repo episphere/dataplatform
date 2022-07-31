@@ -56,6 +56,39 @@ import {
 } from '../event.js';
 import { template } from './dataGovernance.js';
 
+
+
+/*//Indexed DB
+window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
+if (!window.indexedDB) {
+  console.log("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
+}
+const request = window.indexedDB.open("bcrppDatabase", 1);
+
+request.onerror = (e) => {
+  console.error('An error occured with indexedDB');
+  console.error(e);
+};
+
+request.onupgradeneeded = () {
+  const db = request.result;
+  const store = db.createObjectStore('state', {keyPath : 'id'});
+  store.createIndex('tab', ['currentTab'], {unique: false});
+}
+
+request.onsuccess = () => {
+   const db = request.result;
+   const transaction = db.transaction('state', 'readwrite');
+
+   const store = transaction.objectStore('state');
+   const tabIndex = store.index('tab');
+
+   store.put({id : 1})
+}
+*/
+
+
 export const dataAccessNotSignedIn = () => {
   let template = `
       <div class="general-bg padding-bottom-1rem">
@@ -769,8 +802,8 @@ export const chairFileView = async () => {
   // switchTabs('accepted', ['inProgress', 'daccCompleted', 'toBeCompleted', 'denied'], filesaccepted);
   // switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
 
-
-  
+  console.log(document.getElementById(localStorage.getItem('currentTab')));//.click();
+  document.getElementById(localStorage.getItem('currentTab')).click();
   hideAnimation();
 }
 
@@ -805,6 +838,7 @@ export const submitToDacc = () => {
       await moveFile(fileId, daccReviewFolder);
       console.log('File moved to: ' + daccReviewFolder);
     }
+
     document.location.reload(true);
   }
   const sdform = document.querySelector('.dacc-submit');
@@ -1839,11 +1873,11 @@ const viewFinalDecisionFiles = async (files) => {
 
   if(files.length > 0) {
     template += `<div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
-    <div class="col-md-4 text-center font-bold ws-nowrap pl-2">Concept Name <!--button class="transparent-btn sort-column" data-column-name="Cohort name"><i class="fas fa-sort"></i></button--></div>
-    <div class="col-md-3 text-center font-bold ws-nowrap">Submission Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
-    <div class="col-md-1 text-center font-bold ws-nowrap">Decision<!--button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-4 text-center font-bold ws-nowrap pl-2">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept name"><i class="fas fa-sort"></i></button></div>
     <div class="col-md-3 text-center font-bold ws-nowrap">Submitted By <!--button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button--></div>
-</div>`;
+    <div class="col-md-1 text-center font-bold ws-nowrap">Decision<!--button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-3 text-center font-bold ws-nowrap">Submission Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
+  </div>`;
   let i = 0;
   for(const file of files){
     const fileInfo = await getFileInfo(file.id);
@@ -1858,9 +1892,9 @@ const viewFinalDecisionFiles = async (files) => {
             ${file.name}
             <button class="btn btn-sm custom-btn col preview-file" data-file-id="${file.id}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i> Preview</button>
             </div>
-            <div class="col-md-3 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
-            ${i%2 == 0 ? '<h6 class="badge badge-pill badge-success col-md-1"><span>Approved</span></h6>' : '<h6 class="badge badge-pill badge-danger col-md-1">Denied</h6>'}
             <div class="col-md-3 text-center">${fileInfo.created_by.name}</div>
+            ${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success col-md-1"><span>Accepted</span></h6>' : '<h6 class="badge badge-pill badge-danger col-md-1">Denied</h6>'}
+            <div class="col-md-3 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
             <div class="col-md-1 text-center">
                 <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${file.id}">
                     <i class="fas fa-caret-down fa-2x"></i>
@@ -1889,10 +1923,14 @@ const viewFinalDecisionFiles = async (files) => {
   i++;
 
 };
+  } else {
+    template += `
+              No files to show.            
+    </div>`
   }
   // template += '</div>';
 
-
+  console.log(files);
   document.getElementById('decided').innerHTML = template;
   for(const file of files){
     document.getElementById(`study${file.id}`).addEventListener('click', showCommentsDropDown(file.id))
@@ -1903,7 +1941,7 @@ const viewFinalDecisionFiles = async (files) => {
     // })
     }
 
-    const btns = Array.from(document.querySelectorAll('.preview-file'));
+    let btns = Array.from(document.querySelectorAll('.preview-file'));
     btns.forEach(btn => {
         btn.addEventListener('click', (e) => {
           // e.stopPropagation();
@@ -1919,4 +1957,20 @@ const viewFinalDecisionFiles = async (files) => {
             showPreview(fileId, 'bcrppPreviewerModalBody');
         })
     })
-}
+
+    btns = document.getElementsByClassName('sort-column');
+    console.log(btns);
+    Array.from(btns).forEach(btn => {
+      btn.addEventListener('click', () => {
+          const columnName = btn.dataset.columnName;
+          console.log(columnName);
+          if(columnName === 'Concept name'){
+            files = files.sort((a, b) => {
+              a.name.localeCompare(b.name, 'en-US', {'usage' : 'sort'});
+            })
+          }
+          console.log(files);
+          viewFinalDecisionFiles(files);
+})
+    })
+  }
