@@ -11,9 +11,9 @@ import {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-export const emailforChair = ['wraynr@nih.gov']//['montserrat.garcia-closas@nih.gov', 'kopchickbp@nih.gov', 'Roger.Milne@cancervic.org.au', 'garciacm@nih.gov', 'ahearntu@nih.gov', 'wraynr@nih.gov'];
+export const emailforChair = ['montserrat.garcia-closas@nih.gov', 'kopchickbp@nih.gov', 'Roger.Milne@cancervic.org.au', 'garciacm@nih.gov', 'ahearntu@nih.gov'];
 
-export const emailforDACC = ['wraynr@nih.gov']//['montserrat.garcia-closas@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov'];//, 'mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
+export const emailforDACC = ['montserrat.garcia-closas@nih.gov', 'mukopadhyays2@nih.gov', 'ahearntu@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov'];//, 'mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
 
 export const publicDataFileId = 697309514903; //Unknown
 
@@ -21,7 +21,7 @@ export const summaryStatsFileId = 956943662666; //861342561526;//908600664259; /
 
 export const summaryStatsCasesFileId = 862065772362; //958869203942; //927803436743; //862065772362; //cases => Pilot - BCRP_Summary_Results_Cases.csv
 
-export const missingnessStatsFileId = 653087731560; //Unknown
+export const missingnessStatsFileId = 653087731560; //Unknown, TUA Commented out July 21, file needs to be updated to missingness stats using BCRPP data, not confluence data
 
 export const uploadFormFolder = 155292358576;
 
@@ -471,13 +471,11 @@ export const uploadFile = async (data, fileName, folderId, html) => {
 export const uploadWordFile = async (data, fileName, folderId, html) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
-        const user = await getCurrentUser();
+        //const user = await getCurrentUser();
         const form = new FormData();
         form.append('file', data);
         form.append('attributes', `{
-            "name": "${fileName}", 
-            "parent": {"id": "${folderId}"}
-    }`);
+            "name": "${fileName}", "parent": {"id": "${folderId}"}}`);
 
         let response = await fetch("https://upload.box.com/api/2.0/files/content", {
             method: "POST",
@@ -487,11 +485,12 @@ export const uploadWordFile = async (data, fileName, folderId, html) => {
             body: form,
             contentType: false
         });
-        if (response.status === 401) {
+        if (response.status === 400) {
+            console.log(response.status);
             if ((await refreshToken()) === true) return await uploadWordFile(data, fileName, folderId, html);
         } else if (response.status === 201) {
             return response.json();
-        } else if (response.status === 409) {
+        } else if (response.status === 400) {
             return {
                 status: response.status,
                 json: await response.json()

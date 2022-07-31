@@ -213,7 +213,7 @@ export const formSectionOther = async (activeTab, showDescripton) => {
 
                               <div class="main-summary-row">
                                   <div class="align-left">
-                                      <h1 class="page-header">Form Submission</h1>
+                                      <h1 class="page-header">Analysis Proposal Form</h1>
                                   </div>
                               </div>
 
@@ -226,6 +226,223 @@ export const formSectionOther = async (activeTab, showDescripton) => {
                 `
   return template;
 }
+
+// export const formSection = async (activeTab, showDescripton) => {
+//   let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+//   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+
+//   let navBarItems = '';
+//   if (authDacc && authChair) {
+//     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', 'DACC Menu');
+//     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', 'DACC Menu');
+//   } else if (authChair) {
+//     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
+//     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu');
+//   } else if (authDacc) {
+//     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
+//     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'DACC Menu');
+//   } else {
+//     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
+//     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted');
+//   }
+//   let template = `
+//       <div class="general-bg body-min-height padding-bottom-1rem">
+//           <div class="container">
+//             ${navBarItems}
+          
+//       </div>
+//       `;
+//       const date = new Date();
+//       const today = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+//   template += ` 
+//                   <div class="general-bg padding-bottom-1rem">
+//                           <div class="container body-min-height">
+
+//                               <div class="main-summary-row">
+//                                   <div class="align-left">
+//                                       <h1 class="page-header">Form Submission</h1>
+//                                   </div>
+//                               </div>
+//                           <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">             
+//                             <section class="contact-form">
+//                               <p>Please fill out the form below in order to get approval for access to data.</p>
+//                               <form>
+
+//                               <div class="input-group">
+//                               <label for="date"><b>Date</b></label>
+//                               <input id="date" name="date" type="date" value='${today}'/>
+//                             </div>
+
+//                             <div class="input-group">
+//                               <label for="projname"><b>Title of Proposed Project</b></label>
+//                               <input id="projname" name="projname" type="text"/>
+//                             </div>
+
+//                             <div class="input-group">
+//                                 <label for="amendment"> <b>Is this an amendment?</b> </label>
+                                    
+//                                     <input id="amendmentyes" name="amendment" type="radio" value="Yes"/>
+//                                         <label class="inline" for="amendmentyes">Yes</label>
+//                                     <input id="amendmentno" name="amendment" type="radio" value="No"/>
+//                                         <label class="inline" for="amendmentno">No</label>
+//                                 <label for="ifamendmentyes"> If yes, provide Concept Number of original form </label>
+//                                     <input type="text" id="conNum" name="conNum"/>
+//                             </div>
+
+//                             <div class="input-group">
+//                             <label for="investigators"><b>Contact Investigator(s)</b></label>
+//                             <input id="investigators" name="investigators" type="text"/>
+//                           </div>
+
+//                           <div class="input-group">
+//                               <label for="institution"><b>Institution(s)</b></label>
+//                               <input id="institution" name="institution" type="text"/>
+//                             </div>
+                              
+//                               <div class="input-group">
+//                                 <label for="email"><b>Contact Email</b></label>
+//                                 <input id="email" name="email" type="email"/>
+//                               </div>
+
+//                               <div class="input-group">
+//                                 <label for="amendment"> <b>Are you a member of BCRPP?</b> </label>
+                                    
+//                                     <input id="amendmentyes" name="amendment" type="radio" value="Yes"/>
+//                                         <label class="inline" for="amendmentyes"> Yes</label>
+//                                     <input id="amendmentno" name="amendment" type="radio" value="No" />
+//                                         <label class="inline" for="amendmentno"> No</label>
+//                             </div>
+
+//                             <div class="input-group">
+//                               <label for="acro"><b>Confluence Study Acronym(s) for the Contact Investigator</b></label>
+//                               <textarea id="acro" name="acro" rows="2" cols="65"></textarea>
+//                             </div>
+
+//                               <div class="input-group">
+//                                 <label for="keywords"><b>Keywords</b></label>
+//                                 <input id="keywords" name="keywords" type="text"/>
+//                               </div>
+
+//                               <div class="input-group">
+//                                 <label for="allinvest"><b>ALL Investigators (and their institutions) who will require access to the data requested</b></label>
+//                                 <textarea id="allinvest" name="allinvest" rows="2" cols="65"></textarea>
+//                             </div>
+
+
+                              
+                              
+                              
+//                               <!--div class="input-group">
+//                                 <label for="additional"><b>Please provide any additional information</b></label>
+//                                 <textarea id="additional" name="additional" rows="4" cols="65"></textarea>
+//                               </div-->
+
+//                               <div class="input-group">
+//                               <label for="confirmation"><b>Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b></label>
+//                               <div class="input-group">
+//                                 <input id="confirm-agree" name="confirm-agree" type="checkbox" value="Yes" />
+//                                 <label class="inline" for="confirm-agree"> Yes</label>
+//                               </div>
+//                             </div>
+
+//                             <div class="input-group">
+//                                 <label for="background"><b>Please provide a concise description of Background/Aims</b></label>
+//                                 <textarea id="background" name="background" rows="4" cols="65"></textarea>
+//                               </div>
+
+//                               <br>
+//                               <p><u>1. GENETIC DATA REQUESTED</u></p>
+//                               <div class="input-group">
+//                                 <p>All data requests will be provided access to the Confluence core variables. <br>
+//                                 <i>No dates (e.g. intDate, DateDiagnosis, etc.) can be sent.</i></p>
+//                             </div>
+                           
+//                             <div class="input-group">
+//                                 <label for="corevar"><b>Core Variables</b></label>
+                                
+//                                 <label> 
+//                                 <input id="corevarv" name="corevarv" type="checkbox" value="corevarv"/>
+//                                   Check all 
+//                                 </label>
+//                             </div>
+
+//                             <div class="input-group">
+//                                 <label for="mmdvar"><b>MMD Variables</b></label>
+                                
+//                                 <label> 
+//                                 <input id="mmdvarv" name="mmdvarv" type="checkbox" value="mmdvarv"/>
+//                                   Check all 
+//                                 </label>
+//                             </div>
+
+//                             <div class="input-group">
+//                             <label for="brcavarv"><b>BRCA Variables</b></label>
+                            
+//                             <label> 
+//                             <input id="brcavarv" name="brcavarv" type="checkbox" value="brcavarv"/>
+//                               Check all 
+//                             </label>
+//                         </div>
+
+
+//                               <div class="input-group">
+//                                   <label for="cohort"><b>Cohort Data Requested: </b></label>
+//                                   <input id="nhs" name="cohort" type="checkbox" value="NHS"/>
+//                                   <label class="inline" for="cohort-nhs">NHS</label>
+//                                   <input id="nhs2" name="cohort" type="checkbox" value="NHS2"/>
+//                                   <label class="inline" for="cohort-nhs2">NHS2</label>
+//                                   <input id="cps2" name="cohort" type="checkbox" value="CPS2"/>
+//                                   <label class="inline" for="cohort-cps2">CPS2</label>
+//                                   <input id="cps3" name="cohort" type="checkbox" value="CPS3"/>
+//                                   <label class="inline" for="cohort-cps3">CPS3</label>
+//                               </div>
+
+//                               <br>
+//                             <p><u>Timeline</u></p>
+//                               <div class="input-group">
+//                                 <label for="timeline"><b>Please indicate estimated time from receipt of data to completion of analysesand submission of paper; the expectation (per the BCRPP Recipient DTA)is that results will be published within one year after completion</b></label>
+//                                 <textarea id="timeline" name="timeline" rows="4" cols="65"></textarea>
+//                               </div>
+
+//                               <br>
+//                             <p><u>Authorship</u></p>
+//                               <div class="input-group">
+//                                 <label for="authorship"><b>Please confirm that you acknowledge the intention to include representatives of the contributing cohorts as co-authors and that you will provide contributing cohorts 30 days to review the draft manuscript before submission (per section 3.4 of the BCRPP Recipient DTA). Please include any special considerations you would like to bring to the DACC’s attention.</b></label>
+//                                 <textarea id="authorship" name="authorship" rows="4" cols="65"></textarea>
+//                               </div>
+                              
+//                               <button type="submit" id="submitFormButton" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+//                                 <span class="buttonsubmit__text"> Send Form </span>
+//                               </button>
+//                             </form>
+//                           </section>
+//                           <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
+//                           <div class="modal-dialog" role="document">
+//                             <div class="modal-content">
+//                               <div class="modal-header">
+//                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+//                                   <span aria-hidden="true">&times;</span>
+//                                 </button>
+//                               </div>
+//                               <div class="modal-body" id='modalBody'>
+                                
+//                               </div>
+//                               <div class="modal-footer">
+                            
+//                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+//                               </div>
+//                             </div>
+//                           </div>
+//                         </div>
+//                           <div class="results">
+//                           <h2>Form Data</h2>
+//                           <pre></pre>
+//                           </div>
+//                         </div>
+//                       </div>
+//                     </div>`;
+//   return template;
+// }
 
 export const formSection = async (activeTab, showDescripton) => {
   let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
@@ -252,38 +469,41 @@ export const formSection = async (activeTab, showDescripton) => {
           
       </div>
       `;
-      const date = new Date();
-      const today = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+
   template += ` 
                   <div class="general-bg padding-bottom-1rem">
                           <div class="container body-min-height">
-
                               <div class="main-summary-row">
                                   <div class="align-left">
-                                      <h1 class="page-header">Project Concept Form</h1>
+
+                                      <h1 class="page-header">Analysis Proposal Form</h1>
+
                                   </div>
                               </div>
                           <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">             
                             <section class="contact-form">
-                              <p>Please fill out the form below in order to get approval for access to data.</p>
+                              <p>Please fill out the form below. This will be reviewed by the BCRPP Data Access Coordination Committee (DACC) 
+                              to ensure that proposal is consistent with BCRPP goals and individual cohorts’ consents. The DACC consists of 
+                              representatives from the BCRPP Steering Committee and representatives of individual cohorts. Proposals will be reviewed 
+                              once every four months. Data for approved concepts will be sent only to the Investigators listed below (field marked with an A), 
+                              each of whose Institutions will need to sign the BCRPP DTA.</p>
                               <form>
-
                               <div class="input-group">
                               <label for="date"><b>Date</b></label>
-                              <input id="date" name="date" type="date" value='${today}'/>
+                              <input id="date" name="date" type="date" value='${today}' required/>
                             </div>
 
                             <div class="input-group">
                               <label for="projname"><b>Title of Proposed Project</b></label>
-                              <input id="projname" name="projname" type="text"/>
+                              <input id="projname" name="projname" type="text" required/>
                             </div>
 
                             <div class="input-group">
                                 <label for="amendment"> <b>Is this an amendment?</b> </label>
                                     
-                                    <input id="amendmentyes" name="amendment" type="radio" value="Yes"/>
+                                    <input id="amendmentyes" name="amendment" type="radio" value="Yes" required/>
                                         <label class="inline" for="amendmentyes">Yes</label>
-                                    <input id="amendmentno" name="amendment" type="radio" value="No"/>
+                                    <input id="amendmentno" name="amendment" type="radio" value="No" required/>
                                         <label class="inline" for="amendmentno">No</label>
                                 <label for="ifamendmentyes"> If yes, provide Concept Number of original form </label>
                                     <input type="text" id="conNum" name="conNum"/>
@@ -291,130 +511,105 @@ export const formSection = async (activeTab, showDescripton) => {
 
                             <div class="input-group">
                             <label for="investigators"><b>Contact Investigator(s)</b></label>
-                            <input id="investigators" name="investigators" type="text"/>
+                            <input id="investigators" name="investigators" type="text" required/>
                           </div>
 
                           <div class="input-group">
                               <label for="institution"><b>Institution(s)</b></label>
-                              <input id="institution" name="institution" type="text"/>
+                              <input id="institution" name="institution" type="text" required/>
                             </div>
                               
                               <div class="input-group">
                                 <label for="email"><b>Contact Email</b></label>
-                                <input id="email" name="email" type="email"/>
+                                <input id="email" name="email" type="email" required/>
                               </div>
 
-                              <div class="input-group">
-                                <label for="amendment"> <b>Are you a member of BCRPP?</b> </label>
+                            <div class="input-group">
+                                <label for="member"> <b>Are you a member of BCRPP?</b> </label>
                                     
-                                    <input id="amendmentyes" name="amendment" type="radio" value="Yes"/>
-                                        <label class="inline" for="amendmentyes"> Yes</label>
-                                    <input id="amendmentno" name="amendment" type="radio" value="No" />
-                                        <label class="inline" for="amendmentno"> No</label>
+                                    <input id="memberyes" name="member" type="radio" value="Yes" required/>
+                                        <label class="inline" for="memberyes"> Yes </label>
+                                    <input id="memberno" name="member" type="radio" value="No" required/>
+                                        <label class="inline" for="memberno"> No </label>
                             </div>
 
                             <div class="input-group">
-                              <label for="acro"><b>Confluence Study Acronym(s) for the Contact Investigator</b></label>
-                              <textarea id="acro" name="acro" rows="2" cols="65"></textarea>
+                              <label for="acro"><b>BCRPP Study Acronym(s) for the Contact Investigator</b></label>
+                              <textarea id="acro" name="acro" rows="2" cols="65" required></textarea>
                             </div>
-
-                              <div class="input-group">
-                                <label for="keywords"><b>Keywords</b></label>
-                                <input id="keywords" name="keywords" type="text"/>
-                              </div>
 
                               <div class="input-group">
                                 <label for="allinvest"><b>ALL Investigators (and their institutions) who will require access to the data requested</b></label>
-                                <textarea id="allinvest" name="allinvest" rows="2" cols="65"></textarea>
-                            </div>
-
-
-                              
-                              
-                              
-                              <!--div class="input-group">
-                                <label for="additional"><b>Please provide any additional information</b></label>
-                                <textarea id="additional" name="additional" rows="4" cols="65"></textarea>
-                              </div-->
-
-                              <div class="input-group">
-                              <label for="confirmation"><b>Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b></label>
-                              <div class="input-group">
-                                <input id="confirm-agree" name="confirm-agree" type="checkbox" value="Yes" />
-                                <label class="inline" for="confirm-agree"> Yes</label>
-                              </div>
+                                <textarea id="allinvest" name="allinvest" rows="2" cols="65" required></textarea>
                             </div>
 
                             <div class="input-group">
-                                <label for="background"><b>Please provide a concise description of Background/Aims</b></label>
-                                <textarea id="background" name="background" rows="4" cols="65"></textarea>
-                              </div>
+                              <label><input id="confirmation" name="confirmation" type="checkbox" value="Yes" required/><b> Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b></label>
+                            </div>
 
-                              <br>
-                              <p><u>1. GENETIC DATA REQUESTED</u></p>
-                              <div class="input-group">
-                                <p>All data requests will be provided access to the Confluence core variables. <br>
-                                <i>No dates (e.g. intDate, DateDiagnosis, etc.) can be sent.</i></p>
+                            <div class="input-group">
+                              <label for="background"><b>Proposal Description</b> <i>Please provide a concise description of Background, Aims, and Analysis Plan (max. two pages).</i></label>
+                              <textarea id="background" name="background" rows="4" cols="65" placeholder="Provide enough detail so contributing cohorts can assess whether Aims (i) align with participant consents and (ii) overlap with other cohort projects. Please list all planned analyses." required></textarea>
+                            </div>
+
+                            <br>
+
+                            <p><u><b>Core Covariate, Mammography and Incident Breast Cancer Data Requested</b></u></p>
+                            <div class="input-group">
+                                <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables requested from BCRPP, broken down into three domains (tabs on the data dictionary): 
+                                CORE covariates and risk factors (currently available only at cohort baseline), MMD mammographic density, and BRCA incident breast cancer data.
+                                Data availability and descriptive statistics can be explored via the <a href="#data_exploration/subset">Data menu </a> on the BCRPP portal. If data from a particular domain are requested,
+                                all variables from that domain will be provided. Please list the variables to be included in analyses (along with a brief justification) in the following boxes.</p>
                             </div>
                            
                             <div class="input-group">
                                 <label for="corevar"><b>Core Variables</b></label>
-                                
-                                <label> 
-                                <input id="corevarv" name="corevarv" type="checkbox" value="corevarv"/>
-                                  Check all 
-                                </label>
+                                <textarea id="corevar" name="corevar" rows="2" cols="65"></textarea>
                             </div>
 
                             <div class="input-group">
                                 <label for="mmdvar"><b>MMD Variables</b></label>
-                                
-                                <label> 
-                                <input id="mmdvarv" name="mmdvarv" type="checkbox" value="mmdvarv"/>
-                                  Check all 
-                                </label>
+                                <textarea id="mmdvar" name="mmdvar" rows="2" cols="65"></textarea>
                             </div>
 
                             <div class="input-group">
-                            <label for="brcavarv"><b>BRCA Variables</b></label>
-                            
-                            <label> 
-                            <input id="brcavarv" name="brcavarv" type="checkbox" value="brcavarv"/>
-                              Check all 
-                            </label>
-                        </div>
+                              <label for="brcavar"><b>BRCA Variables</b></label>
+                              <textarea id="brcavar" name="brcavar" rows="2" cols="65"></textarea>
+                            </div>
 
+                            <div class="input-group">
+                                <p>By default, data from all participating cohorts will be requested. If you wish to only select data from a subset of cohorts, 
+                                please list them here with a justification for the restriction. Proposals only requesting data from a single cohort will not be approved. 
+                                If you are interested in only analyzing data froma particular cohort, please contact that cohort directly.</p>
+                            </div>
 
+                            <div class="input-group">
+                              <label for="reqcoh"><b>Requested Cohorts</b></label>
+                              <textarea id="reqcoh" name="reqcoh" rows="2" cols="65"></textarea>
+                            </div>
+
+                            <br>
+                            <p><u><b>Timeline</b></u></p>
                               <div class="input-group">
-                                  <label for="cohort"><b>Cohort Data Requested: </b></label>
-                                  <input id="nhs" name="cohort" type="checkbox" value="NHS"/>
-                                  <label class="inline" for="cohort-nhs">NHS</label>
-                                  <input id="nhs2" name="cohort" type="checkbox" value="NHS2"/>
-                                  <label class="inline" for="cohort-nhs2">NHS2</label>
-                                  <input id="cps2" name="cohort" type="checkbox" value="CPS2"/>
-                                  <label class="inline" for="cohort-cps2">CPS2</label>
-                                  <input id="cps3" name="cohort" type="checkbox" value="CPS3"/>
-                                  <label class="inline" for="cohort-cps3">CPS3</label>
+                                <label for="timeline">Please indicate estimated time from receipt of data to completion of analysesand submission of paper; 
+                                the expectation (per the BCRPP Recipient DTA) is that results will be published within one year after completion</label>
+                                <textarea id="timeline" name="timeline" rows="4" cols="65" required></textarea>
                               </div>
 
-                              <br>
-                            <p><u>Timeline</u></p>
+                            <br>
+                            <p><u><b>Authorship</b></u></p>
                               <div class="input-group">
-                                <label for="timeline"><b>Please indicate estimated time from receipt of data to completion of analysesand submission of paper; the expectation (per the BCRPP Recipient DTA)is that results will be published within one year after completion</b></label>
-                                <textarea id="timeline" name="timeline" rows="4" cols="65"></textarea>
-                              </div>
-
-                              <br>
-                            <p><u>Authorship</u></p>
-                              <div class="input-group">
-                                <label for="authorship"><b>Please confirm that you acknowledge the intention to include representatives of the contributing cohorts as co-authors and that you will provide contributing cohorts 30 days to review the draft manuscript before submission (per section 3.4 of the BCRPP Recipient DTA). Please include any special considerations you would like to bring to the DACC’s attention.</b></label>
-                                <textarea id="authorship" name="authorship" rows="4" cols="65"></textarea>
+                                <label for="authorship">Please confirm that you acknowledge the intention to include representatives of the 
+                                contributing cohorts as co-authors and that you will provide contributing cohorts 30 days to review the draft manuscript 
+                                before submission (per section 3.4 of the BCRPP Recipient DTA). Please include any special considerations you would like to bring to the DACC’s attention.</label>
+                                <textarea id="authorship" name="authorship" rows="4" cols="65" required></textarea>
                               </div>
                               
                               <button type="submit" id="submitFormButton" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
                                 <span class="buttonsubmit__text"> Send Form </span>
                               </button>
                             </form>
+
                           </section>
                           <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
                           <div class="modal-dialog" role="document">
@@ -1477,32 +1672,61 @@ export const dataForm = async () => {
 
   async function generateWord(jsondata) {
     const doc = new docx.Document({
+      styles: {
+        default: {
+          heading1: {
+            run: {
+              size: 26,
+              bold: true,
+              color: "#000000",
+            },
+          },
+          heading2: {
+            run: {
+              size: 22,
+              bold: true,
+              color: "#000000",
+            },
+          },
+        },
+      },
       sections: [{
         properties: {},
+        headers: {
+          default: new docx.Header({
+            children: [new docx.Paragraph({
+              text: "Breast Cancer Risk Prediction Project Analysis Proposal",
+              heading: docx.HeadingLevel.HEADING_1,
+              alignment: docx.AlignmentType.CENTER,
+            }),
+          ],
+          }),
+        },
         children: [
+          // new docx.Paragraph({
+          //   text: "Breast Cancer Risk Prediction Project Analysis Proposal",
+          //   heading: docx.HeadingLevel.HEADING_1,
+          //   alignment: docx.AlignmentType.CENTER
+          // }),
           new docx.Paragraph({
-            text: "Breast Cancer Risk Prediction Project Analysis Proposal",
-            heading: docx.HeadingLevel.TITLE,
-            alignment: docx.AlignmentType.CENTER
-          }),
-          new docx.Paragraph({
-            text: "Investigator(s): ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: 500
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.name,
-                bold: true,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Date: "}), new docx.TextRun({text: jsondata.date, bold: false})],
+            spacing: {after: 150},
           }),
+          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
+            alignment: docx.AlignmentType.START,
+            children: [new docx.TextRun({text: "Project Title: "}), new docx.TextRun({text: jsondata.projname, bold: false})],
+            spacing: {after: 150},
+          }),
+          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
+            alignment: docx.AlignmentType.START,
+            children: [new docx.TextRun({text: "Is this an amendment: "}), new docx.TextRun({text: jsondata.amendment, bold: false})],
+            spacing: {after: 150},
+          }),
+          //New sections
           new docx.Paragraph({
             text: "Keywords: ",
             heading: docx.HeadingLevel.HEADING_2
@@ -1522,173 +1746,401 @@ export const dataForm = async () => {
             ],
           }),
           new docx.Paragraph({
-            text: "Contact Email: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.email,
-                bold: true,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Amendment: "}), new docx.TextRun({text: jsondata.conNum, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Title of Proposed Project: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.project,
-                bold: true,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Contact Investigator(s): "}), new docx.TextRun({text: jsondata.investigators, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Is this an amendment? ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.amendment,
-                bold: true,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Institution(s): "}), new docx.TextRun({text: jsondata.institution, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Institution: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.institution,
-                bold: true,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Contact Email: "}), new docx.TextRun({text: jsondata.email, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Cohort Requested: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.cohort,
-                bold: true,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Are you a member of BCRPP "}), new docx.TextRun({text: jsondata.member, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Background/Aims: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.background,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "BCRPP Study Acronym(s) for the Contact Investigator: "}), new docx.TextRun({text: jsondata.acro, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Additional Information: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.additional,
-                bold: false,
-              }),
-            ],
+            children: [new docx.TextRun({text: "All Investigators (and Institutions) who require access: "}), new docx.TextRun({text: jsondata.investigators, bold: false})],
+            spacing: {after: 150},
           }),
           new docx.Paragraph({
-            text: "Agreement: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: {
-                  left: 1440,
-                  hanging: 980
-                },
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.confirmation,
-                bold: true,
-              }),
-            ],
+            children: [new docx.TextRun({text: "Proposal Description: "}), new docx.TextRun({text: jsondata.background, bold: false})],
+            spacing: {after: 150},
           }),
+          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
+            alignment: docx.AlignmentType.START,
+            children: [new docx.TextRun({text: "Core Variables: "}), new docx.TextRun({text: jsondata.corevar, bold: false})],
+            spacing: {after: 150},
+          }),
+          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
+            alignment: docx.AlignmentType.START,
+            children: [new docx.TextRun({text: "MMD Variables: "}), new docx.TextRun({text: jsondata.mmdvar, bold: false})],
+            spacing: {after: 150},
+          }),
+          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
+            alignment: docx.AlignmentType.START,
+            children: [new docx.TextRun({text: "BRCA Variables: "}), new docx.TextRun({text: jsondata.brcavar, bold: false})],
+            spacing: {after: 150},
+          }),
+          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
+            alignment: docx.AlignmentType.START,
+            children: [new docx.TextRun({text: "Requested Cohorts: "}), new docx.TextRun({text: jsondata.reqcoh, bold: false})],
+            spacing: {after: 150},
+          }),
+          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
+            alignment: docx.AlignmentType.START,
+            children: [new docx.TextRun({text: "Timeline: "}), new docx.TextRun({text: jsondata.timeline, bold: false})],
+            spacing: {after: 150},
+          }),
+          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
+            alignment: docx.AlignmentType.START,
+            children: [new docx.TextRun({text: "Authorship: "}), new docx.TextRun({text: jsondata.authorship, bold: false})],
+            spacing: {after: 150},
+          }),
+          // new docx.Paragraph({
+          //   text: "Project Title: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: 500
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.projname,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Is this an amendment: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.amendment,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Contact Investigator(s): ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.investigators,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Institution(s): ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.amendment,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Contact Email: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.email,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Are you a member of BCRPP: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.member,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "BCRPP Study Acronym(s) for the Contact Investigator: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.acro,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "ALL Investigators (and their institutions) who will require access: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.allinvest,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Proposal Description: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.background,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Core Variables: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.corevar,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "MMD Variables: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.mmdvar,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "BRCA Variables: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.brcavar,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Requested Cohorts: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.reqcoh,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Timeline: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.timeline,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
+          // new docx.Paragraph({
+          //   text: "Authorship: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: {
+          //         left: 1440,
+          //         hanging: 980
+          //       },
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.authorship,
+          //       bold: false,
+          //     }),
+          //   ],
+          // }),
         ],
       }]
     });
@@ -1739,7 +2191,7 @@ export const dataForm = async () => {
           console.log('popup');
         
       } else {
-        console.log("Saving File to Box: " + filename + jsondata.keywords); // Adding keywords
+        console.log("Saving File to Box: " + filename + " " + jsondata.projname); // Adding keywords
         let response = await uploadWordFile(blob, filename, uploadFormFolder);
         await assigntasktochair();
         let fileid = response.entries[0].id;
