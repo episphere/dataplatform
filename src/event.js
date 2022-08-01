@@ -1645,3 +1645,75 @@ export function switchFiles(tab) {
         showComments(file_id);
       });
 }
+
+export function filterCheckBox(table, variable, value){
+    //Get all the elements
+    const rows = Array.from(document.getElementsByClassName('filedata'));
+
+    //Get only elements that do not have variable value
+    let hideRows = [];
+    console.log(rows);
+    rows.forEach( row => {
+        const filterHeader = row.firstElementChild.children[variable]
+        console.log(filterHeader);
+        if(filterHeader.innerText !== value){
+            hideRows.push(row);
+        }
+    })
+
+    console.log(hideRows);
+    //Hide the ones without variable value
+    hideRows.forEach(row => {
+        row.parentElement.style.display = 'none';
+    })
+}
+export function sortTableByColumn(table, column, ascending=true) {
+    const direction = ascending ? 1 : -1;
+    const rows = Array.from(document.getElementsByClassName('filedata'));
+
+    //Sort each row
+    const sortedRows = rows.sort( (a,b) => {
+        let aContent = '';
+        let bContent = '';
+        if(column === 0){
+            aContent = a.firstElementChild.firstElementChild.textContent.trim();
+            bContent = b.firstElementChild.firstElementChild.textContent.trim();
+        }
+        else{
+        aContent = a.querySelector(`div:nth-child(${ column + 1})`).textContent.trim();
+        bContent = b.querySelector(`div:nth-child(${ column + 1})`).textContent.trim();
+        
+       
+        }
+
+         
+        console.log(aContent);
+        console.log(bContent);
+
+        return aContent > bContent ? (1 * direction) : (-1 * direction);
+    })
+
+    console.log(sortedRows);
+
+    //Remove all filedata
+    while(document.getElementById('files').firstChild){
+        document.getElementById('files').removeChild(document.getElementById('files').firstChild);
+    }
+
+    //Add Data Back
+    sortedRows.forEach(row => {
+        const divEl = document.createElement('div')
+        divEl.classList.add('card', 'mt-1', 'mb-1','align-left');
+        divEl.appendChild(row);
+        document.getElementById('files').appendChild(divEl);
+    })
+
+    //Remember how colmmn is sorted
+    table.querySelectorAll('.header-sortable').forEach(header => {
+        header.classList.remove('header-sort-asc', 'header-sort-desc');
+    })
+
+        table.querySelector(`.div-sticky`).children[column].classList.toggle('header-sort-asc', direction);
+        table.querySelector(`.div-sticky`).children[column].classList.toggle('header-sort-desc', !direction);
+
+}

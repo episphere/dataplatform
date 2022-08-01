@@ -52,44 +52,13 @@ import {
 } from '../components/elements.js';
 import {
   switchTabs,
-  switchFiles
+  switchFiles,
+  sortTableByColumn,
+  filterCheckBox
 } from '../event.js';
 import {
   template
 } from './dataGovernance.js';
-
-
-
-/*//Indexed DB
-window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
-if (!window.indexedDB) {
-  console.log("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
-}
-const request = window.indexedDB.open("bcrppDatabase", 1);
-
-request.onerror = (e) => {
-  console.error('An error occured with indexedDB');
-  console.error(e);
-};
-
-request.onupgradeneeded = () {
-  const db = request.result;
-  const store = db.createObjectStore('state', {keyPath : 'id'});
-  store.createIndex('tab', ['currentTab'], {unique: false});
-}
-
-request.onsuccess = () => {
-   const db = request.result;
-   const transaction = db.transaction('state', 'readwrite');
-
-   const store = transaction.objectStore('state');
-   const tabIndex = store.index('tab');
-
-   store.put({id : 1})
-}
-*/
-
 
 export const dataAccessNotSignedIn = () => {
   let template = `
@@ -2469,13 +2438,14 @@ const viewFinalDecisionFiles = async (files) => {
         </tr>
       </thead>
       <tbody-->
+    <div id='decidedFiles'>
     <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
     <div class="col-md-4 text-left font-bold ws-nowrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept name"><i class="fas fa-sort"></i></button></div>
     <div class="col-md-3 text-left font-bold ws-nowrap header-sortable">Submitted By <button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button></div>
     <div class="col-md-1 text-center font-bold ws-nowrap header-sortable">Decision<button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button></div>
     <div class="col-md-4 text-center font-bold ws-nowrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button></div>
   </div>`;
-    let i = 0;
+  template += '<div id="files">';
     for (const file of files) {
       const fileInfo = await getFileInfo(file.id);
       const fileId = file.id;
@@ -2498,12 +2468,9 @@ const viewFinalDecisionFiles = async (files) => {
             </tr-->
           
       <div class="card mt-1 mb-1 align-left" >
-    <div style="padding: 10px" aria-expanded="false" id="file${fileId}">
+    <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
         <div class="row">
-            <div class="col-md-4 text-left">
-            ${filename}
-            <button class="btn btn-sm custom-btn preview-file" data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i> Preview</button>
-            </div>
+            <div class="col-md-4 text-left">${filename}<button class="btn btn-sm custom-btn preview-file" data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i> Preview</button></div>
             <div class="col-md-3 text-left">${fileInfo.created_by.name}</div>
             <div class="col-md-1 text-center">${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success">Accepted</h6>' : '<h6 class="badge badge-pill badge-danger">Denied</h6>'}</div>
             <div class="col-md-3 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
@@ -2532,15 +2499,18 @@ const viewFinalDecisionFiles = async (files) => {
     </div>
     </div>
   `;
-      i++;
 
     };
   } else {
     template += `
               No files to show.            
+    </div>
     </div>`
   }
-  // template += '</tbody> </table>';
+  template += `</div></div>
+  
+    <!--input type='checkbox' id='testCheck' name='testCheck' value='Accepted'> Accepted </input-->
+  `;
 
   console.log(files);
   document.getElementById('decided').innerHTML = template;
@@ -2569,22 +2539,19 @@ const viewFinalDecisionFiles = async (files) => {
       showPreview(fileId, 'bcrppPreviewerModalBody');
     })
   })
+  const table = document.getElementById('decidedFiles');
+  const headers = table.querySelector(`.div-sticky`);
+  Array.from(headers.children).forEach( (header, index) => {
+    header.addEventListener('click', (e) => {
+      const sortDirection = header.classList.contains('header-sort-asc'); 
 
-  btns = document.getElementsByClassName('sort-column');
-  console.log(btns);
-  Array.from(btns).forEach(btn => {
-    btn.addEventListener('click', () => {
-      const columnName = btn.dataset.columnName;
-      console.log(columnName);
-      if (columnName === 'Concept name') {
-        files = files.sort((a, b) => {
-          a.name.localeCompare(b.name, 'en-US', {
-            'usage': 'sort'
-          });
-        })
-      }
-      console.log(files);
-      viewFinalDecisionFiles(files);
-    })
-  })
+      sortTableByColumn(table, index, !sortDirection);
+    });
+  });
+  
+  // //Filtering
+
+  // document.getElementById('testCheck').addEventListener('click', () => {
+  //   filterCheckBox(table, 2, 'Accepted');
+  // })
 }
