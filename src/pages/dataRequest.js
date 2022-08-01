@@ -886,7 +886,7 @@ export const chairFileView = async () => {
   for (let obj of filearrayDenied) {
     filesdecided.push(obj);
   }
-  console.log(filesincomplete[0]);
+  console.log(filesdecided);
   template += "<div class='tab-content' id='selectedTab'>";
 
   template += `<div class='tab-pane fade show active' 
@@ -1001,7 +1001,13 @@ export const chairFileView = async () => {
   // switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
 
 
-  document.getElementById(localStorage.getItem('currentTab')).click();
+  if(localStorage.getItem('currentTab')){
+    const currTab = localStorage.getItem('currentTab');
+    if(document.getElementById(currTab) != null){
+    document.getElementById(currTab).click();
+    }
+  }
+
   hideAnimation();
 }
 
@@ -1529,8 +1535,12 @@ export const daccFileView = async () => {
   switchTabs('decided', ['dacctoBeCompleted', 'daccReview'], filescompleted);
   switchTabs('daccReview', ['dacctoBeCompleted', 'decided'], filesreviewed);
 
-  document.getElementById(localStorage.getItem('currentTab')).click();
-
+  if(localStorage.getItem('currentTab')){
+    const currTab = localStorage.getItem('currentTab');
+    if(document.getElementById(currTab) != null){
+    document.getElementById(currTab).click();
+    }
+  }
   hideAnimation();
 }
 
@@ -2447,36 +2457,63 @@ const viewFinalDecisionFiles = async (files) => {
   let template = '';
 
   if (files.length > 0) {
-    template += `<div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
-    <div class="col-md-4 text-center font-bold ws-nowrap pl-2">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept name"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-3 text-center font-bold ws-nowrap">Submitted By <!--button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button--></div>
-    <div class="col-md-1 text-center font-bold ws-nowrap">Decision<!--button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button--></div>
-    <div class="col-md-3 text-center font-bold ws-nowrap">Submission Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
+    template += `
+    <!--table class='table table-striped w-auto table-sortable'>
+      <thead>
+        <tr>
+          <th scope='col'>Concept Name</th>
+          <th scope='col'>Submitted By</th>
+          <th scope='col'>Decision</th>
+          <th scope='col'>Submission Date</th>
+          <th scope='col'></th>
+        </tr>
+      </thead>
+      <tbody-->
+    <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
+    <div class="col-md-4 text-left font-bold ws-nowrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept name"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-3 text-left font-bold ws-nowrap header-sortable">Submitted By <button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-1 text-center font-bold ws-nowrap header-sortable">Decision<button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-4 text-center font-bold ws-nowrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button></div>
   </div>`;
     let i = 0;
     for (const file of files) {
       const fileInfo = await getFileInfo(file.id);
-      console.log(file.id, fileInfo)
+      const fileId = file.id;
+      let filename = file.name.split('_')[0];
+      filename = filename.length > 25 ? filename.substring(0, 26) + '...' : filename;
+      console.log(fileId, fileInfo);
       // let response = await listComments(file.id);
       // let comments = JSON.parse(response).entries;
       // console.log(response, comments);
-      template += `<div class="card mt-1 mb-1 align-left" >
-    <div style="padding: 10px" aria-expanded="false" id="file${file.id}">
+      template += `
+          
+            <!--tr>
+              <td> ${filename}</td>
+              <td> ${fileInfo.created_by.name}</td>
+              ${fileInfo.parent.name === 'Accepted' ?'<td class="badge badge-pill badge-success">Accepted</td>' : '<td class="badge badge-pill badge-danger">Denied</td>'}
+              <td> ${new Date(fileInfo.created_at).toDateString().substring(4,)}</td>
+              <td><button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
+              <i class="fas fa-caret-down fa-2x"></i>
+          </button> </td>
+            </tr-->
+          
+      <div class="card mt-1 mb-1 align-left" >
+    <div style="padding: 10px" aria-expanded="false" id="file${fileId}">
         <div class="row">
-            <div class="col-md-4 text-center">
-            ${file.name}
-            <button class="btn btn-sm custom-btn col preview-file" data-file-id="${file.id}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i> Preview</button>
+            <div class="col-md-4 text-left">
+            ${filename}
+            <button class="btn btn-sm custom-btn preview-file" data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i> Preview</button>
             </div>
-            <div class="col-md-3 text-center">${fileInfo.created_by.name}</div>
-            ${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success col-md-1"><span>Accepted</span></h6>' : '<h6 class="badge badge-pill badge-danger col-md-1">Denied</h6>'}
+            <div class="col-md-3 text-left">${fileInfo.created_by.name}</div>
+            <div class="col-md-1 text-center">${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success">Accepted</h6>' : '<h6 class="badge badge-pill badge-danger">Denied</h6>'}</div>
             <div class="col-md-3 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
-            <div class="col-md-1 text-center">
-                <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${file.id}">
+            <div class="col-md-1 text-left">
+                <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
                     <i class="fas fa-caret-down fa-2x"></i>
                 </button>
             </div>
         </div>
-        <div id="study${file.id}" class="collapse" aria-labelledby="file${file.id}">
+        <div id="study${fileId}" class="collapse" aria-labelledby="file${fileId}">
                     <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
                     <div class="row mb-1 m-0">
                     <div class="col-md-2 font-bold">
@@ -2484,11 +2521,11 @@ const viewFinalDecisionFiles = async (files) => {
                     </div>
                     </div>
                     <div class="row mb-1 m-0">
-                      <div id='file${file.id}Comments' class='col-12'></div>
+                      <div id='file${fileId}Comments' class='col-12'></div>
                     </div>
                     <!--div class='row'>
-                      <div id='filePreview${file.id}' class="col-8 preview-container"></div>
-                      <div id='file${file.id}Comments' class='col-4 mt-2'></div>
+                      <div id='filePreview${fileId}' class="col-8 preview-container"></div>
+                      <div id='file${fileId}Comments' class='col-4 mt-2'></div>
                     </div-->
         </div>
     </div>
@@ -2503,7 +2540,7 @@ const viewFinalDecisionFiles = async (files) => {
               No files to show.            
     </div>`
   }
-  // template += '</div>';
+  // template += '</tbody> </table>';
 
   console.log(files);
   document.getElementById('decided').innerHTML = template;
