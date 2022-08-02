@@ -61,7 +61,7 @@ import {
 } from './components/boxPreview.js';
 
 import {
-    viewFinalDecisionFilesTemplate
+    viewFinalDecisionFiles
 } from './pages/dataRequest.js';
 let top = 0;
 
@@ -1663,9 +1663,8 @@ export function filterCheckBox(data){
     console.log('Current Decision', selectedDecisions);
     console.log('Current Submitter(s)', selectedSubmitters);
     console.log(data);
-    //Get only elements that do not have variable value(s)
- 
-    console.log(rows);
+
+    //Set filter values
     let filteredData = data;
     const filter = {};
     if (selectedDecisions.length > 0) filter['Decision'] = selectedDecisions;
@@ -1693,25 +1692,15 @@ export function filterCheckBox(data){
 
      
     }
-    // rows.forEach( row => {
-    //     const filterHeader = row.firstElementChild.children[variable]
-    //     console.log(filterHeader);
-    //     if(filterHeader.innerText !== value){
-    //         hideRows.push(row);
-    //     }
-    // })
 
-    // console.log(hideRows);
     //Hide the ones without variable value
     console.log(filteredData);
     let showRows = [];
-    // viewFinalDecisionFilesTemplate(filteredData);
     rows.forEach(row => {
         const file_id = row.id.split('file')[1];
         console.log(file_id);
         for(const data of filteredData){
             if(Object.values(data).includes(file_id)){
-                console.log(row)
                 showRows.push(row)
             }
         }
@@ -1728,8 +1717,11 @@ export function sortTableByColumn(table, column, ascending=true) {
     const direction = ascending ? 1 : -1;
     const rows = Array.from(document.getElementsByClassName('filedata'));
 
+    //Get only visible rows
+    let filteredRows = rows;
+    filteredRows = filteredRows.filter(row => row.parentElement.style.display !== 'none');
     //Sort each row
-    const sortedRows = rows.sort( (a,b) => {
+    const sortedRows = filteredRows.sort( (a,b) => {
         let aContent = '';
         let bContent = '';
         if(column === 0){
@@ -1749,9 +1741,12 @@ export function sortTableByColumn(table, column, ascending=true) {
     console.log(sortedRows);
 
     //Remove all filedata
-    while(document.getElementById('files').firstChild){
-        document.getElementById('files').removeChild(document.getElementById('files').firstChild);
-    }
+    // while(document.getElementById('files').firstChild){
+    //     document.getElementById('files').removeChilddocument.getElementById('f(iles').firstChild);
+    // }
+    sortedRows.forEach(row => {
+        row.parentElement.remove();
+    })
 
     //Add Data Back
     sortedRows.forEach(row => {
