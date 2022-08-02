@@ -2518,7 +2518,6 @@ export async function viewFinalDecisionFilesTemplate(files){
   //Get all possible values for filters (Submitted By and Decision)
   const submitterFilterButtons = [...new Set([...filesInfo.map(fileInfo => fileInfo.created_by.name)])];
   const decisionFilterButtons = [...new Set([...filesInfo.map(fileInfo => fileInfo.parent.name)])];
-  // console.log(filterButtons);
 
   submitterFilterButtons.forEach((submitter, index) => {
     template += `<input type='checkbox' id='submitter${index}' name='submitter_${submitter}' value='${submitter}' class='filter-var' data-variable-column='Submitter' data-variable-type='${submitter}'> ${submitter} </input>`;
@@ -2526,10 +2525,8 @@ export async function viewFinalDecisionFilesTemplate(files){
   decisionFilterButtons.forEach((decision, index) => {
     template += `<input type='checkbox' id='decision${index}' name='decision_${decision}' value='${decision}' class='filter-var' data-variable-column='Decision' data-variable-type='${decision}'> ${decision} </input>`;
   });
-  // template += `<input type='checkbox' id='testCheck' name='testCheck' value='Accepted' class='filter-var' data-variable-column='Decision' data-variable-type='Accepted'> Accepted </input>
-  // <input type='checkbox' id='testCheck1' name='testCheck1' value='Denied' class='filter-var' data-variable-column='Decision' data-variable-type='Denied'> Denied </input>
-  // <input type='checkbox' id='testCheck3' name='testCheck3' value='Ben Kopchick' class='filter-var' data-variable-column='Submitter' data-variable-type='Ben Kopchick'> Ben Kopchick </input>
-  // <input type='checkbox' id='testCheck2' name='testCheck2' value='Navado Wray' class='filter-var' data-variable-column='Submitter' data-variable-type='Navado Wray'> Navado Wray </input>`;
+
+  template += "<input type='search' class='form-control-rounded' autocomplete='off'>"
   document.getElementById('decided').innerHTML = template;
 
   viewFinalDecisionFiles(filesInfo);
