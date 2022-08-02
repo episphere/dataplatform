@@ -1161,6 +1161,9 @@ export const chairFileView = async () => {
     // else {
     document.getElementById('filePreview').classList.remove('d-block');
     document.getElementById('filePreview').classList.add('d-none');
+
+    document.getElementById('fileComments').classList.remove('d-block');
+    document.getElementById('fileComments').classList.add('d-none');
     //}
   }
 
