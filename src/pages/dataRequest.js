@@ -437,172 +437,381 @@ export const formSection = async (activeTab, showDescripton) => {
       </div>
       `;
 
+  const date = new Date();
+  const today = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
   template += ` 
-                  <div class="general-bg padding-bottom-1rem">
-                          <div class="container body-min-height">
-                              <div class="main-summary-row">
-                                  <div class="align-left">
+    <div class="general-bg padding-bottom-1rem">
+      <div class="container body-min-height">
+        <div class="main-summary-row">
+            <div class="align-left">
 
-                                      <h1 class="page-header">Analysis Proposal Form</h1>
+                <h1 class="page-header">Analysis Proposal Form</h1>
 
-                                  </div>
-                              </div>
-                          <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">             
-                            <section class="contact-form">
-                              <p>Please fill out the form below. This will be reviewed by the BCRPP Data Access Coordination Committee (DACC) 
-                              to ensure that proposal is consistent with BCRPP goals and individual cohorts’ consents. The DACC consists of 
-                              representatives from the BCRPP Steering Committee and representatives of individual cohorts. Proposals will be reviewed 
-                              once every four months. Data for approved concepts will be sent only to the Investigators listed below (field marked with an A), 
-                              each of whose Institutions will need to sign the BCRPP DTA.</p>
-                              <form>
-                              <div class="input-group">
-                              <label for="date"><b>Date</b></label>
-                              <input id="date" name="date" type="date" value='${today}' required/>
-                            </div>
+            </div>
+        </div>
+        <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">             
+          <section class="contact-form">
+            <p>Please fill out the form below. This will be reviewed by the BCRPP Data Access Coordination Committee (DACC) 
+            to ensure that proposal is consistent with BCRPP goals and individual cohorts’ consents. The DACC consists of 
+            representatives from the BCRPP Steering Committee and representatives of individual cohorts. Proposals will be reviewed 
+            once every four months. Data for approved concepts will be sent only to the Investigators listed below, 
+            each of whose Institutions will need to sign the BCRPP DTA.</p>
+            <form>
+              <div class="input-group">
+                <label for="date"><b>Date</b></label>
+                <input id="date" name="date" type="date" value='${today}' required/>
+              </div>
 
-                            <div class="input-group">
-                              <label for="projname"><b>Title of Proposed Project</b></label>
-                              <input id="projname" name="projname" type="text" required/>
-                            </div>
+              <div class="input-group">
+                <label for="projname"><b>Title of Proposed Project</b></label>
+                <input id="projname" name="projname" type="text" required/>
+              </div>
 
-                            <div class="input-group">
-                                <label for="amendment"> <b>Is this an amendment?</b> </label>
-                                    
-                                    <input id="amendmentyes" name="amendment" type="radio" value="Yes" required/>
-                                        <label class="inline" for="amendmentyes">Yes</label>
-                                    <input id="amendmentno" name="amendment" type="radio" value="No" required/>
-                                        <label class="inline" for="amendmentno">No</label>
-                                <label for="ifamendmentyes"> If yes, provide Concept Number of original form </label>
-                                    <input type="text" id="conNum" name="conNum"/>
-                            </div>
+              <div class="input-group">
+                <label for="amendment"> <b>Is this an amendment?</b> </label>      
+                  <input id="amendmentyes" name="amendment" type="radio" value="Yes" required/>
+                    <label class="inline" for="amendmentyes"> Yes </label>
+                  <input id="amendmentno" name="amendment" type="radio" value="No" required/>
+                    <label class="inline" for="amendmentno"> No </label>
+                  <label for="ifamendmentyes"> If yes, provide Concept Number of original form </label>
+                    <input type="text" id="conNum" name="conNum"/>
+              </div>
 
-                            <div class="input-group">
-                            <label for="investigators"><b>Contact Investigator(s)</b></label>
-                            <input id="investigators" name="investigators" type="text" required/>
-                          </div>
+              <div class="input-group">
+                <label for="investigators"><b>Contact Investigator(s)</b></label>
+                <input id="investigators" name="investigators" type="text" required/>
+              </div>
 
-                          <div class="input-group">
-                              <label for="institution"><b>Institution(s)</b></label>
-                              <input id="institution" name="institution" type="text" required/>
-                            </div>
-                              
-                              <div class="input-group">
-                                <label for="email"><b>Contact Email</b></label>
-                                <input id="email" name="email" type="email" required/>
-                              </div>
+              <div class="input-group">
+                <label for="institution"><b>Institution(s)</b></label>
+                <input id="institution" name="institution" type="text" required/>
+              </div>
+                
+              <div class="input-group">
+                <label for="email"><b>Contact Email</b></label>
+                <input id="email" name="email" type="email" required/>
+              </div>
 
-                            <div class="input-group">
-                                <label for="member"> <b>Are you a member of BCRPP?</b> </label>
-                                    
-                                    <input id="memberyes" name="member" type="radio" value="Yes" required/>
-                                        <label class="inline" for="memberyes"> Yes </label>
-                                    <input id="memberno" name="member" type="radio" value="No" required/>
-                                        <label class="inline" for="memberno"> No </label>
-                            </div>
+              <div class="input-group">
+                <label for="member"> <b>Are you a member of BCRPP?</b> </label>
+                  <input id="memberyes" name="member" type="radio" value="Yes" required/>
+                    <label class="inline" for="memberyes"> Yes </label>
+                  <input id="memberno" name="member" type="radio" value="No" required/>
+                    <label class="inline" for="memberno"> No </label>
+              </div>
 
-                            <div class="input-group">
-                              <label for="acro"><b>BCRPP Study Acronym(s) for the Contact Investigator</b></label>
-                              <textarea id="acro" name="acro" rows="2" cols="65" required></textarea>
-                            </div>
+              <div class="input-group">
+                <label for="acro"><b>BCRPP Study Acronym(s) for the Contact Investigator</b></label>
+                <textarea id="acro" name="acro" rows="2" cols="65" required></textarea>
+              </div>
 
-                              <div class="input-group">
-                                <label for="allinvest"><b>ALL Investigators (and their institutions) who will require access to the data requested</b></label>
-                                <textarea id="allinvest" name="allinvest" rows="2" cols="65" required></textarea>
-                            </div>
+              <div class="input-group">
+                <label for="allinvest"><b>ALL Investigators (and their institutions) who will require access to the data requested</b></label>
+                <textarea id="allinvest" name="allinvest" rows="2" cols="65" required></textarea>
+              </div>
 
-                            <div class="input-group">
-                              <label><input id="confirmation" name="confirmation" type="checkbox" value="Yes" required/><b> Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b></label>
-                            </div>
+              <div class="input-group">
+                <label><input id="confirmation" name="confirmation" type="checkbox" value="Yes" required/><b> Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b></label>
+              </div>
 
-                            <div class="input-group">
-                              <label for="background"><b>Proposal Description</b> <i>Please provide a concise description of Background, Aims, and Analysis Plan (max. two pages).</i></label>
-                              <textarea id="background" name="background" rows="4" cols="65" placeholder="Provide enough detail so contributing cohorts can assess whether Aims (i) align with participant consents and (ii) overlap with other cohort projects. Please list all planned analyses." required></textarea>
-                            </div>
+              <div class="input-group">
+                <label for="background"><b>Proposal Description</b> <i>Please provide a concise description of Background, Aims, and Analysis Plan (max. two pages).</i></label>
+                <textarea id="background" name="background" rows="4" cols="65" placeholder="Provide enough detail so contributing cohorts can assess whether Aims (i) align with participant consents and (ii) overlap with other cohort projects. Please list all planned analyses." required></textarea>
+              </div>
 
-                            <br>
+              <br>
 
-                            <p><u><b>Core Covariate, Mammography and Incident Breast Cancer Data Requested</b></u></p>
-                            <div class="input-group">
-                                <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables requested from BCRPP, broken down into three domains (tabs on the data dictionary): 
-                                CORE covariates and risk factors (currently available only at cohort baseline), MMD mammographic density, and BRCA incident breast cancer data.
-                                Data availability and descriptive statistics can be explored via the <a href="#data_exploration/subset">Data menu </a> on the BCRPP portal. If data from a particular domain are requested,
-                                all variables from that domain will be provided. Please list the variables to be included in analyses (along with a brief justification) in the following boxes.</p>
-                            </div>
-                           
-                            <div class="input-group">
-                                <label for="corevar"><b>Core Variables</b></label>
-                                <textarea id="corevar" name="corevar" rows="2" cols="65"></textarea>
-                            </div>
+              <p><u><b>Core Covariate, Mammography and Incident Breast Cancer Data Requested</b></u></p>
+              <div class="input-group">
+                <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables requested from BCRPP, broken down into three domains (tabs on the data dictionary): 
+                CORE covariates and risk factors (currently available only at cohort baseline), MMD mammographic density, and BRCA incident breast cancer data.
+                Data availability and descriptive statistics can be explored via the <a href="#data_exploration/subset">Data menu </a> on the BCRPP portal. If data from a particular domain are requested,
+                all variables from that domain will be provided. Please list the variables to be included in analyses (along with a brief justification) in the following boxes.</p>
+              </div>
+              
+              <div class="input-group">
+                <label for="basevar"><b>Baseline</b></label>
 
-                            <div class="input-group">
-                                <label for="mmdvar"><b>MMD Variables</b></label>
-                                <textarea id="mmdvar" name="mmdvar" rows="2" cols="65"></textarea>
-                            </div>
+                <label>
+                  <input id="basevarv" name="basevarv" type="checkbox" value="basevarv"/>
+                  Check All
+                </label>
+              </div>
+              
+              <div class="input-group">
 
-                            <div class="input-group">
-                              <label for="brcavar"><b>BRCA Variables</b></label>
-                              <textarea id="brcavar" name="brcavar" rows="2" cols="65"></textarea>
-                            </div>
+                <ul class="form" id='basevarlist'>
+                  <div class="inline-field">
+                    <input id="alctob" name="basevar" type="checkbox" value="Alcohol and Tobacco"/>
+                    <label class="container-ul" for="alctob">Alcohol and Tobacco</label>
+                  </div>
 
-                            <div class="input-group">
-                                <p>By default, data from all participating cohorts will be requested. If you wish to only select data from a subset of cohorts, 
-                                please list them here with a justification for the restriction. Proposals only requesting data from a single cohort will not be approved. 
-                                If you are interested in only analyzing data froma particular cohort, please contact that cohort directly.</p>
-                            </div>
+                  <div class="inline-field">
+                    <input id="anthros" name="basevar" type="checkbox" value="Anthropometry"/>
+                    <label class="container-ul" for="anthros">Anthropometry</label>
+                  </div>
 
-                            <div class="input-group">
-                              <label for="reqcoh"><b>Requested Cohorts</b></label>
-                              <textarea id="reqcoh" name="reqcoh" rows="2" cols="65"></textarea>
-                            </div>
+                  <div class="inline-field">
+                    <input id="demos" name="basevar" type="checkbox" value="Demographics"/>
+                    <label class="container-ul" for="demos">Demographics</label>
+                  </div>
 
-                            <br>
-                            <p><u><b>Timeline</b></u></p>
-                              <div class="input-group">
-                                <label for="timeline">Please indicate estimated time from receipt of data to completion of analysesand submission of paper; 
-                                the expectation (per the BCRPP Recipient DTA) is that results will be published within one year after completion</label>
-                                <textarea id="timeline" name="timeline" rows="4" cols="65" required></textarea>
-                              </div>
+                  <div class="inline-field">
+                    <input id="identdates" name="basevar" type="checkbox" value="Identification/Dates"/>
+                    <label class="container-ul" for="identdates">Identification/Dates</label>
+                  </div>
 
-                            <br>
-                            <p><u><b>Authorship</b></u></p>
-                              <div class="input-group">
-                                <label for="authorship">Please confirm that you acknowledge the intention to include representatives of the 
-                                contributing cohorts as co-authors and that you will provide contributing cohorts 30 days to review the draft manuscript 
-                                before submission (per section 3.4 of the BCRPP Recipient DTA). Please include any special considerations you would like to bring to the DACC’s attention.</label>
-                                <textarea id="authorship" name="authorship" rows="4" cols="65" required></textarea>
-                              </div>
-                              
-                              <button type="submit" id="submitFormButton" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
-                                <span class="buttonsubmit__text"> Send Form </span>
-                              </button>
-                            </form>
+                  <div class="inline-field">
+                    <input id="pershist" name="basevar" type="checkbox" value="Personal/Family Health History"/>
+                    <label class="container-ul" for="pershist">Personal/Family Health History</label>
+                  </div>
 
-                          </section>
-                          <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
-                          <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body" id='modalBody'>
-                                
-                              </div>
-                              <div class="modal-footer">
-                            
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                          <div class="results">
-                          <h2>Form Data</h2>
-                          <pre></pre>
-                          </div>
-                        </div>
-                      </div>
-                    </div>`;
+                  <div class="inline-field">
+                    <input id="physact" name="basevar" type="checkbox" value="Physical Activity"/>
+                    <label class="container-ul" for="physact">Physical Activity</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="reprohist" name="basevar" type="checkbox" value="Reproductive History"/>
+                    <label class="container-ul" for="reprohist">Reproductive History</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="scrhist" name="basevar" type="checkbox" value="Screening History"/>
+                    <label class="container-ul" for="scrhist">Screening History</label>
+                  </div>
+                </ul>
+              </div>
+
+              <div class="input-group">
+                <label for="ibcvar"><b>Incident Breast Cancer</b></label>
+                <label>
+                  <input id="ibcvarv" name="ibcvarv" type="checkbox" value="ibcvarv"/>
+                  Check All
+              </label>
+              </div>
+
+              <div class="input-group">
+
+                <ul class="form" id='ibcvarlist'>
+                  <div class="inline-field">
+                    <input id="diag" name="ibcvar" type="checkbox" value="Diagnostic"/>
+                    <label class="container-ul" for="diag">Diagnostic</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="path" name="ibcvar" type="checkbox" value="Pathology"/>
+                    <label class="container-ul" for="path">Pathology</label>
+                  </div>
+                </ul>
+              </div>
+
+              <div class="input-group">
+                <label for="mmdvar"><b>Mammographic Density</b></label>
+                <label>
+                  <input id="mmdvarv" name="mmdvarv" type="checkbox" value="Mammographic Density"/>
+                  Check
+                </label>
+              </div>
+
+              <div class="input-group">
+                <p>By default, data from all participating cohorts will be requested. If you wish to only select data from a subset of cohorts, 
+                please list them here with a justification for the restriction. Proposals only requesting data from a single cohort will not be approved. 
+                If you are interested in only analyzing data froma particular cohort, please contact that cohort directly.</p>
+              </div>
+
+              <div class="input-group">
+                <label for="reqcoh"><b>Requested Cohorts</b> <i>(please check all boxes that apply)</i></label>
+              </div>
+
+              <div class="input-group">
+
+                <ul class="form" id='reqcohlist'>
+                  <div class="inline-field">
+                    <input id="CSDLH" name="reqcoh" type="checkbox" value="CSDLH"/>
+                    <label class="container-ul" for="CSDLH">CSDLH</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="BCFR" name="reqcoh" type="checkbox" value="BCFR"/>
+                    <label class="container-ul" for="BCFR">BCFR</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="BWHS" name="reqcoh" type="checkbox" value="BWHS"/>
+                    <label class="container-ul" for="BWHS">BWHS</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="CARET" name="reqcoh" type="checkbox" value="CARET"/>
+                    <label class="container-ul" for="CARET">CARET</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="CLUE-II" name="reqcoh" type="checkbox" value="CLUE-II"/>
+                    <label class="container-ul" for="CLUE-II">CLUE-II</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="Connect" name="reqcoh" type="checkbox" value="Connect"/>
+                    <label class="container-ul" for="Connect">Connect</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="CPS-2" name="reqcoh" type="checkbox" value="CPS-2"/>
+                    <label class="container-ul" for="CPS-2">CPS-2</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="CPS-3" name="reqcoh" type="checkbox" value="CPS-3"/>
+                    <label class="container-ul" for="CPS-3">CPS-3</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="CTS" name="reqcoh" type="checkbox" value="CTS"/>
+                    <label class="container-ul" for="CTS">CTS</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="EPIC" name="reqcoh" type="checkbox" value="EPIC"/>
+                    <label class="container-ul" for="EPIC">EPIC</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="GS" name="reqcoh" type="checkbox" value="GS"/>
+                    <label class="container-ul" for="GS">GS</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="JANUS" name="reqcoh" type="checkbox" value="JANUS"/>
+                    <label class="container-ul" for="JANUS">JANUS</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="MAC" name="reqcoh" type="checkbox" value="MAC"/>
+                    <label class="container-ul" for="MAC">MAC</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="MCCS" name="reqcoh" type="checkbox" value="MCCS"/>
+                    <label class="container-ul" for="MCCS">MCCS</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="MEC" name="reqcoh" type="checkbox" value="MEC"/>
+                    <label class="container-ul" for="MEC">MEC</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="MMHS" name="reqcoh" type="checkbox" value="MMHS"/>
+                    <label class="container-ul" for="MMHS">MMHS</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="NHS" name="reqcoh" type="checkbox" value="NHS"/>
+                    <label class="container-ul" for="NHS">NHS</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="NHS-2" name="reqcoh" type="checkbox" value="NHS-2"/>
+                    <label class="container-ul" for="NHS-2">NHS-2</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="NYUWHS" name="reqcoh" type="checkbox" value="NYUWHS"/>
+                    <label class="container-ul" for="NYUWHS">NYUWHS</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="PLCO" name="reqcoh" type="checkbox" value="PLCO"/>
+                    <label class="container-ul" for="PLCO">PLCO</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="SISTER" name="reqcoh" type="checkbox" value="SISTER"/>
+                    <label class="container-ul" for="SISTER">SISTER</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="SNM" name="reqcoh" type="checkbox" value="SNM"/>
+                    <label class="container-ul" for="SNM">SNM</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="VITAL" name="reqcoh" type="checkbox" value="VITAL"/>
+                    <label class="container-ul" for="VITAL">VITAL</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="WHI" name="reqcoh" type="checkbox" value="WHI"/>
+                    <label class="container-ul" for="WHI">WHI</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="WHS" name="reqcoh" type="checkbox" value="WHS"/>
+                    <label class="container-ul" for="WHS">WHS</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="WISDOM" name="reqcoh" type="checkbox" value="WISDOM"/>
+                    <label class="container-ul" for="WISDOM">WISDOM</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="WLH" name="reqcoh" type="checkbox" value="WLH"/>
+                    <label class="container-ul" for="WLH">WLH</label>
+                  </div>
+                </ul>
+              </div>
+
+              <br>
+              <p><u><b>Timeline</b></u></p>
+                <div class="input-group">
+                  <label for="timeline">Please indicate estimated time from receipt of data to completion of analysesand submission of paper; 
+                  the expectation (per the BCRPP Recipient DTA) is that results will be published within one year after completion</label>
+                  <textarea id="timeline" name="timeline" rows="4" cols="65" required></textarea>
+                </div>
+
+              <br>
+              <p><u><b>Authorship</b></u></p>
+                <div class="input-group">
+                  <label for="authorship">Please confirm that you acknowledge the intention to include representatives of the 
+                  contributing cohorts as co-authors and that you will provide contributing cohorts 30 days to review the draft manuscript 
+                  before submission (per section 3.4 of the BCRPP Recipient DTA). Please include any special considerations you would like to bring to the DACC’s attention.</label>
+                  <textarea id="authorship" name="authorship" rows="4" cols="65" required></textarea>
+                </div>
+                
+                <button type="submit" id="submitFormButton" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+                  <span class="buttonsubmit__text"> Send Form </span>
+                </button>
+              </form>
+
+            </section>
+            <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body" id='modalBody'>
+                  
+                </div>
+                <div class="modal-footer">
+              
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+            <div class="results">
+            <h2>Form Data</h2>
+            <pre></pre>
+            </div>
+          </div>
+        </div>
+      </div>`;
   return template;
 }
 
@@ -1614,7 +1823,10 @@ export const dataForm = async () => {
     const data = new FormData(eventtest.target);
 
     const formJSON = Object.fromEntries(data.entries());
-
+    formJSON.basevar = data.getAll("basevar");
+    formJSON.ibcvar = data.getAll("ibcvar");
+    formJSON.reqcoh = data.getAll("reqcoh")
+    console.log(formJSON);
     const results = document.querySelector('.results pre');
     results.innerText = JSON.stringify(formJSON, null, 2);
     await generateWord(formJSON);
@@ -1645,6 +1857,7 @@ export const dataForm = async () => {
               size: 26,
               bold: true,
               color: "#000000",
+              font: "Noto Sans",
             },
           },
           heading2: {
@@ -1652,6 +1865,7 @@ export const dataForm = async () => {
               size: 22,
               bold: true,
               color: "#000000",
+              font: "Noto Sans",
             },
           },
         },
@@ -1669,11 +1883,6 @@ export const dataForm = async () => {
           }),
         },
         children: [
-          // new docx.Paragraph({
-          //   text: "Breast Cancer Risk Prediction Project Analysis Proposal",
-          //   heading: docx.HeadingLevel.HEADING_1,
-          //   alignment: docx.AlignmentType.CENTER
-          // }),
           new docx.Paragraph({
             heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
@@ -1762,25 +1971,25 @@ export const dataForm = async () => {
           new docx.Paragraph({
             heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            children: [new docx.TextRun({text: "Core Variables: "}), new docx.TextRun({text: jsondata.corevar, bold: false})],
+            children: [new docx.TextRun({text: "Core Variables: "}), new docx.TextRun({text: JSON.stringify(jsondata.basevar, null, 2).replace('[','').replace(']',''), bold: false})],
             spacing: {after: 150},
           }),
           new docx.Paragraph({
             heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            children: [new docx.TextRun({text: "MMD Variables: "}), new docx.TextRun({text: jsondata.mmdvar, bold: false})],
+            children: [new docx.TextRun({text: "MMD Variables: "}), new docx.TextRun({text: jsondata.mmdvarv, bold: false})],
             spacing: {after: 150},
           }),
           new docx.Paragraph({
             heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            children: [new docx.TextRun({text: "BRCA Variables: "}), new docx.TextRun({text: jsondata.brcavar, bold: false})],
+            children: [new docx.TextRun({text: "BRCA Variables: "}), new docx.TextRun({text: JSON.stringify(jsondata.ibcvar, null, 2).replace('[', '').replace(']',''), bold: false})],
             spacing: {after: 150},
           }),
           new docx.Paragraph({
             heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            children: [new docx.TextRun({text: "Requested Cohorts: "}), new docx.TextRun({text: jsondata.reqcoh, bold: false})],
+            children: [new docx.TextRun({text: "Requested Cohorts: "}), new docx.TextRun({text: JSON.stringify(jsondata.reqcoh, null, 2).replace('[', '').replace(']',''), bold: false})],
             spacing: {after: 150},
           }),
           new docx.Paragraph({
@@ -1795,318 +2004,6 @@ export const dataForm = async () => {
             children: [new docx.TextRun({text: "Authorship: "}), new docx.TextRun({text: jsondata.authorship, bold: false})],
             spacing: {after: 150},
           }),
-          // new docx.Paragraph({
-          //   text: "Project Title: ",
-          //   heading: docx.HeadingLevel.HEADING_2
-          // }),
-          // new docx.Paragraph({
-          //   alignment: docx.AlignmentType.START,
-          //   style: {
-          //     paragraph: {
-          //       indent: 500
-          //     },
-          //   },
-          //   children: [
-          //     new docx.TextRun({
-          //       text: jsondata.projname,
-          //       bold: false,
-          //     }),
-          //   ],
-          // }),
-          // new docx.Paragraph({
-          //   text: "Is this an amendment: ",
-          //   heading: docx.HeadingLevel.HEADING_2
-          // }),
-          // new docx.Paragraph({
-          //   alignment: docx.AlignmentType.START,
-          //   style: {
-          //     paragraph: {
-          //       indent: {
-          //         left: 1440,
-          //         hanging: 980
-          //       },
-          //     },
-          //   },
-          //   children: [
-          //     new docx.TextRun({
-          //       text: jsondata.amendment,
-          //       bold: false,
-          //     }),
-          //   ],
-          // }),
-          // new docx.Paragraph({
-          //   text: "Contact Investigator(s): ",
-          //   heading: docx.HeadingLevel.HEADING_2
-          // }),
-          // new docx.Paragraph({
-          //   alignment: docx.AlignmentType.START,
-          //   style: {
-          //     paragraph: {
-          //       indent: {
-          //         left: 1440,
-          //         hanging: 980
-          //       },
-          //     },
-          //   },
-          //   children: [
-          //     new docx.TextRun({
-          //       text: jsondata.investigators,
-          //       bold: false,
-          //     }),
-          //   ],
-          // }),
-          // new docx.Paragraph({
-          //   text: "Institution(s): ",
-          //   heading: docx.HeadingLevel.HEADING_2
-          // }),
-          // new docx.Paragraph({
-          //   alignment: docx.AlignmentType.START,
-          //   style: {
-          //     paragraph: {
-          //       indent: {
-          //         left: 1440,
-          //         hanging: 980
-          //       },
-          //     },
-          //   },
-          //   children: [
-          //     new docx.TextRun({
-          //       text: jsondata.amendment,
-          //       bold: false,
-          //     }),
-          //   ],
-          // }),
-          // new docx.Paragraph({
-          //   text: "Contact Email: ",
-          //   heading: docx.HeadingLevel.HEADING_2
-          // }),
-          // new docx.Paragraph({
-          //   alignment: docx.AlignmentType.START,
-          //   style: {
-          //     paragraph: {
-          //       indent: {
-          //         left: 1440,
-          //         hanging: 980
-          //       },
-          //     },
-          //   },
-          //   children: [
-          //     new docx.TextRun({
-          //       text: jsondata.email,
-          //       bold: false,
-          //     }),
-          //   ],
-          // }),
-          // new docx.Paragraph({
-          //   text: "Are you a member of BCRPP: ",
-          //   heading: docx.HeadingLevel.HEADING_2
-          // }),
-          // new docx.Paragraph({
-          //   alignment: docx.AlignmentType.START,
-          //   style: {
-          //     paragraph: {
-          //       indent: {
-          //         left: 1440,
-          //         hanging: 980
-          //       },
-          //     },
-          //   },
-          //   children: [
-          //     new docx.TextRun({
-          //       text: jsondata.member,
-          //       bold: false,
-          //     }),
-          //   ],
-          // }),
-          // new docx.Paragraph({
-          //   text: "BCRPP Study Acronym(s) for the Contact Investigator: ",
-          //   heading: docx.HeadingLevel.HEADING_2
-          // }),
-          // new docx.Paragraph({
-          //   alignment: docx.AlignmentType.START,
-          //   style: {
-          //     paragraph: {
-          //       indent: {
-          //         left: 1440,
-          //         hanging: 980
-          //       },
-          //     },
-          //   },
-          //   children: [
-          //     new docx.TextRun({
-          //       text: jsondata.acro,
-          //       bold: false,
-          //     }),
-          //   ],
-          // }),
-          // new docx.Paragraph({
-          //   text: "ALL Investigators (and their institutions) who will require access: ",
-          //   heading: docx.HeadingLevel.HEADING_2
-          // }),
-          // new docx.Paragraph({
-          //   alignment: docx.AlignmentType.START,
-          //   style: {
-          //     paragraph: {
-          //       indent: {
-          //         left: 1440,
-          //         hanging: 980
-          //       },
-          //     },
-          //   },
-          //   children: [
-          //     new docx.TextRun({
-          //       text: jsondata.allinvest,
-          //       bold: false,
-          //     }),
-          //   ],
-          // }),
-          // new docx.Paragraph({
-          //   text: "Proposal Description: ",
-          //   heading: docx.HeadingLevel.HEADING_2
-          // }),
-          // new docx.Paragraph({
-          //   alignment: docx.AlignmentType.START,
-          //   style: {
-          //     paragraph: {
-          //       indent: {
-          //         left: 1440,
-          //         hanging: 980
-          //       },
-          //     },
-          //   },
-          //   children: [
-          //     new docx.TextRun({
-          //       text: jsondata.background,
-          //       bold: false,
-          //     }),
-          //   ],
-          // }),
-          // new docx.Paragraph({
-          //   text: "Core Variables: ",
-          //   heading: docx.HeadingLevel.HEADING_2
-          // }),
-          // new docx.Paragraph({
-          //   alignment: docx.AlignmentType.START,
-          //   style: {
-          //     paragraph: {
-          //       indent: {
-          //         left: 1440,
-          //         hanging: 980
-          //       },
-          //     },
-          //   },
-          //   children: [
-          //     new docx.TextRun({
-          //       text: jsondata.corevar,
-          //       bold: false,
-          //     }),
-          //   ],
-          // }),
-          // new docx.Paragraph({
-          //   text: "MMD Variables: ",
-          //   heading: docx.HeadingLevel.HEADING_2
-          // }),
-          // new docx.Paragraph({
-          //   alignment: docx.AlignmentType.START,
-          //   style: {
-          //     paragraph: {
-          //       indent: {
-          //         left: 1440,
-          //         hanging: 980
-          //       },
-          //     },
-          //   },
-          //   children: [
-          //     new docx.TextRun({
-          //       text: jsondata.mmdvar,
-          //       bold: false,
-          //     }),
-          //   ],
-          // }),
-          // new docx.Paragraph({
-          //   text: "BRCA Variables: ",
-          //   heading: docx.HeadingLevel.HEADING_2
-          // }),
-          // new docx.Paragraph({
-          //   alignment: docx.AlignmentType.START,
-          //   style: {
-          //     paragraph: {
-          //       indent: {
-          //         left: 1440,
-          //         hanging: 980
-          //       },
-          //     },
-          //   },
-          //   children: [
-          //     new docx.TextRun({
-          //       text: jsondata.brcavar,
-          //       bold: false,
-          //     }),
-          //   ],
-          // }),
-          // new docx.Paragraph({
-          //   text: "Requested Cohorts: ",
-          //   heading: docx.HeadingLevel.HEADING_2
-          // }),
-          // new docx.Paragraph({
-          //   alignment: docx.AlignmentType.START,
-          //   style: {
-          //     paragraph: {
-          //       indent: {
-          //         left: 1440,
-          //         hanging: 980
-          //       },
-          //     },
-          //   },
-          //   children: [
-          //     new docx.TextRun({
-          //       text: jsondata.reqcoh,
-          //       bold: false,
-          //     }),
-          //   ],
-          // }),
-          // new docx.Paragraph({
-          //   text: "Timeline: ",
-          //   heading: docx.HeadingLevel.HEADING_2
-          // }),
-          // new docx.Paragraph({
-          //   alignment: docx.AlignmentType.START,
-          //   style: {
-          //     paragraph: {
-          //       indent: {
-          //         left: 1440,
-          //         hanging: 980
-          //       },
-          //     },
-          //   },
-          //   children: [
-          //     new docx.TextRun({
-          //       text: jsondata.timeline,
-          //       bold: false,
-          //     }),
-          //   ],
-          // }),
-          // new docx.Paragraph({
-          //   text: "Authorship: ",
-          //   heading: docx.HeadingLevel.HEADING_2
-          // }),
-          // new docx.Paragraph({
-          //   alignment: docx.AlignmentType.START,
-          //   style: {
-          //     paragraph: {
-          //       indent: {
-          //         left: 1440,
-          //         hanging: 980
-          //       },
-          //     },
-          //   },
-          //   children: [
-          //     new docx.TextRun({
-          //       text: jsondata.authorship,
-          //       bold: false,
-          //     }),
-          //   ],
-          // }),
         ],
       }]
     });
@@ -2371,4 +2268,36 @@ const viewFinalDecisionFiles = async (files) => {
             showPreview(fileId, 'bcrppPreviewerModalBody');
         })
     })
+}
+
+export const formFunctions = () => {
+  document.getElementById('basevarv').addEventListener('click', (e) => {
+    const inputList = document.getElementById('basevarlist').getElementsByTagName('input');
+
+    if (e.target.checked) {
+      for (const element of inputList) {
+        element.checked = true;
+      }
+    }
+    else{
+      for (const element of inputList) {
+        element.checked = false;
+      }
+    }
+  });
+
+  document.getElementById('ibcvarv').addEventListener('click', (e) => {
+    const inputList = document.getElementById('ibcvarlist').getElementsByTagName('input');
+
+    if (e.target.checked) {
+      for (const element of inputList) {
+        element.checked = true;
+      }
+    }
+    else{
+      for (const element of inputList) {
+        element.checked = false;
+      }
+    }
+  });
 }
