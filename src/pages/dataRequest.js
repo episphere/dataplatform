@@ -2504,21 +2504,98 @@ template += `</div></div></div></div>
 
 function filterSection(files) {
   //Get all possible values for filters (Submitted By and Decision)
+  let template = '';
+  
 
-  let template = "<input type='search' id='searchDataDictionary' class='form-control-rounded' autocomplete='off'>";
+  // template = "<input type='search' id='searchDataDictionary' class='form-control-rounded' autocomplete='off'>";
   const submitterFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.created_by.name)])];
   const decisionFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.parent.name)])];
-
+  template += `<div class="main-summary-row">
+  <div style="width: 100%;">
+      <div class="form-group" margin:0px>
+          <div class="input-group">
+              <input type="search" class="form-control rounded" autocomplete="off" placeholder="Search min. 3 characters" aria-label="Search" id="searchDataDictionary" aria-describedby="search-addon" />
+              <span class="input-group-text border-0 search-input">
+                  <i class="fas fa-search"></i>
+              </span>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="main-summary-row">
+  <div style="width: 100%;">
+      <div class="form-group" margin:0px>
+   `;
+   if(submitterFilterButtons.length !== 0){
+     template += `       
+     <label class="filter-label font-size-13" for="variableTypeList">Submitter</label>
+     <ul class="remove-padding-left font-size-15 allow-overflow" id="submitterFilterList"> </ul>`;
+   }
+   let submitterTemp = '';
   submitterFilterButtons.forEach((submitter, index) => {
-    template += `<input type='checkbox' id='submitter${index}' name='submitter_${submitter}' value='${submitter}' class='filter-var' data-variable-column='Submitter' data-variable-type='${submitter}'> ${submitter} </input>`;
+    submitterTemp += `
+    <li class="filter-list-item">
+      <!--input type='checkbox' id='submitter${index}' name='submitter_${submitter}' value='${submitter}' class='filter-var' data-variable-column='Submitter' data-variable-type='${submitter}'> ${submitter} </input-->
+      <input type="checkbox" data-variable-type="${submitter}" name='submitter_${submitter}' id="submitter${index}" value='${submitter}' class="filter-var" style="margin-left: 1px !important;" data-variable-column='Submitter'>
+      <label for="label${submitter}" class="sub-category" title="${submitter}">${submitter}</label>
+      `;
+      
   });
-  decisionFilterButtons.forEach((decision, index) => {
-    template += `<input type='checkbox' id='decision${index}' name='decision_${decision}' value='${decision}' class='filter-var' data-variable-column='Decision' data-variable-type='${decision}'> ${decision} </input>`;
-  });
+  if(decisionFilterButtons.length !== 0){
+    template += `       
+    <label class="filter-label font-size-13" for="variableTypeList">Submitter</label>
+    <ul class="remove-padding-left font-size-15 allow-overflow" id="decisionFilterList"> </ul>`;
+  }
+  let decisionFilterTemp = '';
+ decisionFilterButtons.forEach((decision, index) => {
+   decisionFilterTemp += `
+   <li class="filter-list-item">
+     <!--input type='checkbox' id='submitter${index}' name='submitter_${decision}' value='${decision}' class='filter-var' data-variable-column='Submitter' data-variable-type='${decision}'> ${decision} </input-->
+     <input type="checkbox" data-variable-type="${decision}" name='decision${decision}' id="decision${index}" value='${decision}' class="filter-var" style="margin-left: 1px !important;" data-variable-column='Decision'>
+     <label for="label${decision}" class="sub-category" title="${decision}">${decision}</label>
+     `;
+     
+ });
+  // decisionFilterButtons.forEach((decision, index) => {
+  //   decisionFilterTemp += `<input type='checkbox' id='decision${index}' name='decision_${decision}' value='${decision}' class='filter-var' data-variable-column='Decision' data-variable-type='${decision}'> ${decision} </input>`;
+  // });
+ 
+//           `
+//           submitterFilterButtons.forEach(vt => {
+//               template += `
+//                   <li class="filter-list-item">
+//                       <input type="checkbox" data-variable-type="${vt}" id="label${vt}" class="select-variable-type" style="margin-left: 1px !important;">
+//                       <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(vt, 60)}</label>
+//                   </li>
+//               `
+//           })
+//           template +=`
+//           </ul>
 
+//           <label class="filter-label font-size-13" for="variableTypeList">Mammographic density</label>
+//           <ul class="remove-padding-left font-size-15 allow-overflow" id="variableTypeList">
+//           `
+//           mamuniqueType.forEach(vt => {
+//               template += `
+//                   <li class="filter-list-item">
+//                       <input type="checkbox" data-variable-type="${vt}" id="label${vt}" class="select-variable-type" style="margin-left: 1px !important;">
+//                       <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(vt, 60)}</label>
+//                   </li>
+//               `
+//           })
+//           template +=`
+//           </ul>
+
+
+//       </div>
+//   </div>
+// </div>`;
  
 
   document.getElementById('filterData').innerHTML = template;
+  document.getElementById('submitterFilterList').innerHTML = submitterTemp;
+  document.getElementById('decisionFilterList').innerHTML = decisionFilterTemp;
+
 }
 
 export const formFunctions = () => {
