@@ -59,6 +59,10 @@ import {
 import {
     showPreview
 } from './components/boxPreview.js';
+
+import {
+    viewFinalDecisionFilesTemplate
+} from './pages/dataRequest.js';
 let top = 0;
 
 export const addEventStudyRadioBtn = () => {
@@ -1646,24 +1650,77 @@ export function switchFiles(tab) {
       });
 }
 
-export function filterCheckBox(table, variable, value){
+export function filterCheckBox(data){
     //Get all the elements
     const rows = Array.from(document.getElementsByClassName('filedata'));
 
-    //Get only elements that do not have variable value
-    let hideRows = [];
+    //Get all selected filter variables
+    const selectedFilters = Array.from(document.getElementsByClassName('filter-var')).filter(dt => dt.checked);
+
+    const selectedDecisions = selectedFilters.filter(dt => dt.dataset.variableColumn === 'Decision').map(dt => dt.dataset.variableType)
+    const selectedSubmitters = selectedFilters.filter(dt => dt.dataset.variableColumn === 'Submitter').map(dt => dt.dataset.variableType)
+    console.log('Current filters', selectedFilters);
+    console.log('Current Decision', selectedDecisions);
+    console.log('Current Submitter(s)', selectedSubmitters);
+    console.log(data);
+    //Get only elements that do not have variable value(s)
+ 
     console.log(rows);
-    rows.forEach( row => {
-        const filterHeader = row.firstElementChild.children[variable]
-        console.log(filterHeader);
-        if(filterHeader.innerText !== value){
-            hideRows.push(row);
+    let filteredData = data;
+    const filter = {};
+    if (selectedDecisions.length > 0) filter['Decision'] = selectedDecisions;
+    if (selectedSubmitters.length > 0) filter['Submitter'] = selectedSubmitters;
+
+    if(selectedFilters.length === 0) filteredData = data;
+    else{
+        // filteredDecisions = data.filter(dt => selectedDecisions.indexOf(dt.parent.name) !== -1);
+        console.log('Filter', filter);
+        filteredData = filteredData.filter(dt => {
+            for(const key in filter){
+                if(key === 'Decision'){
+                    if(!filter[key].includes(dt.parent.name)){
+                        return false
+                    }
+                }
+                if(key === 'Submitter'){
+                    if(!filter[key].includes(dt.created_by.name))
+                        return false;
+                }
+            }
+
+            return true;
+        })
+
+     
+    }
+    // rows.forEach( row => {
+    //     const filterHeader = row.firstElementChild.children[variable]
+    //     console.log(filterHeader);
+    //     if(filterHeader.innerText !== value){
+    //         hideRows.push(row);
+    //     }
+    // })
+
+    // console.log(hideRows);
+    //Hide the ones without variable value
+    console.log(filteredData);
+    let showRows = [];
+    // viewFinalDecisionFilesTemplate(filteredData);
+    rows.forEach(row => {
+        const file_id = row.id.split('file')[1];
+        console.log(file_id);
+        for(const data of filteredData){
+            if(Object.values(data).includes(file_id)){
+                console.log(row)
+                showRows.push(row)
+            }
         }
     })
 
-    console.log(hideRows);
-    //Hide the ones without variable value
-    hideRows.forEach(row => {
+    rows.forEach(row => {
+        if(showRows.includes(row))
+        row.parentElement.style.display = 'block';
+        else
         row.parentElement.style.display = 'none';
     })
 }
@@ -1676,19 +1733,15 @@ export function sortTableByColumn(table, column, ascending=true) {
         let aContent = '';
         let bContent = '';
         if(column === 0){
-            aContent = a.firstElementChild.firstElementChild.textContent.trim();
-            bContent = b.firstElementChild.firstElementChild.textContent.trim();
+            aContent = a.firstElementChild.firstElementChild.textContent.trim().toLowerCase();
+            bContent = b.firstElementChild.firstElementChild.textContent.trim().toLowerCase();
         }
         else{
-        aContent = a.querySelector(`div:nth-child(${ column + 1})`).textContent.trim();
-        bContent = b.querySelector(`div:nth-child(${ column + 1})`).textContent.trim();
+        aContent = a.querySelector(`div:nth-child(${ column + 1})`).textContent.trim().toLowerCase();
+        bContent = b.querySelector(`div:nth-child(${ column + 1})`).textContent.trim().toLowerCase();
         
        
         }
-
-         
-        console.log(aContent);
-        console.log(bContent);
 
         return aContent > bContent ? (1 * direction) : (-1 * direction);
     })
@@ -1709,11 +1762,16 @@ export function sortTableByColumn(table, column, ascending=true) {
     })
 
     //Remember how colmmn is sorted
-    table.querySelectorAll('.header-sortable').forEach(header => {
+    Array.from(table.querySelectorAll('.header-sortable')).forEach(header => {
         header.classList.remove('header-sort-asc', 'header-sort-desc');
     })
-
+        console.log(direction);
+        if(direction === 1){
+            console.log('Ascending');
         table.querySelector(`.div-sticky`).children[column].classList.toggle('header-sort-asc', direction);
-        table.querySelector(`.div-sticky`).children[column].classList.toggle('header-sort-desc', !direction);
+        }else{
+            console.log('Descending');
+        table.querySelector(`.div-sticky`).children[column].classList.toggle('header-sort-desc', -direction);
+        }
 
 }

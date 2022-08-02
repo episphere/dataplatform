@@ -926,7 +926,17 @@ export async function showComments(id) {
     const response = await listComments(id);
 
     let comments = JSON.parse(response).entries;
+    if (comments.length === 0){
+        const dropdownSection = document.getElementById(`fileComments`);
+        dropdownSection.innerHTML = ` <div class='comments'>
+        Comments
+        <div class='text-left'>
+            No comments to show.
+        </div>
+        </div>`;
 
+        return;
+    }
     let template = `
     <div class='comments'>
     Comments
@@ -1064,7 +1074,16 @@ export async function showCommentsDropDown(id) {
     console.log(commentSection);   
 
     let comments = JSON.parse(response).entries;
+    if (comments.length === 0){
+        const dropdownSection = document.getElementById(`study${id}`);
+        dropdownSection.innerHTML = ` <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
+        <div class="row mb-1 m-0">
+            No comments to show
+        </div>
+        </div>`;
 
+        return;
+    }
     let template = `
     <div class='container-fluid'>`;
     const user = JSON.parse(localStorage.parms).login;

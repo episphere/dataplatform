@@ -71,7 +71,6 @@ export const confluence = async () => {
         // const dataAnalysisElement = document.getElementById('dataAnalysis');
 
         viewUserSubmissionElement.addEventListener('click', async() => {
-            if (viewUserSubmissionElement.classList.contains('navbar-active')) return;
             showAnimation();
             // assignNavbarActive(viewUserSubmissionElement, 1)
             document.title = 'BCRPP - Your Submissions';
