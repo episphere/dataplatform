@@ -1821,8 +1821,8 @@ form {
   /* Set up general layout rules for outer containers. */
   .contact-form,
   .results {
-    width: 90vw;
-    max-width: 750px;
+    width: 75vw;
+    max-width: 75vw;
     margin: 2vh auto;
   }
   
@@ -1888,7 +1888,7 @@ form {
     margin-top: 0.25rem;
     /* margin:2px 0 20px 10px; */
     padding: 0.5rem 0.75rem;
-    border: 1px solid var(--color-gray-light);
+    border: 1.25px solid var(--color-gray-light);
     width: 100%;
     font-family: 'Helvetica Neue'; /*"Open Sans", sans-serif;*/
     font-size: 1rem;
@@ -2061,4 +2061,32 @@ form {
 #participantCount{
     font-size: 18px;
 
+}
+
+ul.form {
+    column-count: 3;
+    column-width: 200px;
+    column-gap: 1rem;
+    list-style: none;
+}
+
+.inline-field input,
+.inline-field label {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.container-cl {
+    display: block;
+    font-family: Montserrat;
+    position: relative;
+    padding-left: 15px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
