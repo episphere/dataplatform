@@ -2393,7 +2393,7 @@ export async function viewFinalDecisionFilesTemplate(files){
     template += `<input type='checkbox' id='decision${index}' name='decision_${decision}' value='${decision}' class='filter-var' data-variable-column='Decision' data-variable-type='${decision}'> ${decision} </input>`;
   });
 
-  template += "<input type='search' class='form-control-rounded' autocomplete='off'>"
+  template += "<input type='search' id='searchDataDictionary' class='form-control-rounded' autocomplete='off'>"
   document.getElementById('decided').innerHTML = template;
 
   viewFinalDecisionFiles(filesInfo);
@@ -2438,6 +2438,10 @@ export async function viewFinalDecisionFilesTemplate(files){
     filterCheckBox(filesInfo);
   })
 })
+    const input = document.getElementById('searchDataDictionary');
+    input.addEventListener('input', () => {
+        filterCheckBox(filesInfo);
+    })
 
 }
 

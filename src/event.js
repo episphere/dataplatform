@@ -64,6 +64,7 @@ import {
     viewFinalDecisionFiles
 } from './pages/dataRequest.js';
 let top = 0;
+let previousValue = '';
 
 export const addEventStudyRadioBtn = () => {
     const createStudyRadio = document.getElementsByName('createStudyRadio');
@@ -1379,7 +1380,7 @@ export const addEventSummaryStatsFilterForm = (jsonData, headers) => {
     // });
 
     const subcasesSelection = document.getElementById('subcasesSelection');
-    subcasesSelection.addEventListener('change', function(event) {
+    subcasesSelection.addEventListener('change', function (event) {
         if (event.target.value == 'all') getFileContent()
         if (event.target.value == 'cases') getFileContentCases()
     });
@@ -1464,7 +1465,7 @@ const filterData = (jsonData, headers) => {
     if (race !== 'all') {
         finalData = finalData.filter(dt => dt['race'] === race);
     }
-    
+
     updateCounts(finalData);
 
     if (array.length > 0) {
@@ -1546,9 +1547,9 @@ export function switchTabs(show, hide, files) {
                 const boxPreview = document.getElementById('filePreview');
                 boxPreview.classList.remove('d-block');
                 boxPreview.classList.add('d-none');
-                
+
                 for (const tab of hide) {
-                   
+
                     document.getElementById(tab + 'Tab').classList.remove('active');
                     document.getElementById(tab).classList.remove('show', 'active');
                 }
@@ -1558,9 +1559,9 @@ export function switchTabs(show, hide, files) {
                 localStorage.setItem('currentTab', show + 'Tab');
                 return;
             });
-        } else{
+        } else {
             const boxPreview = document.getElementById('filePreview');
-            
+
             document.getElementById(show + 'Tab').addEventListener('click', (e) => {
                 e.preventDefault();
                 console.log(show, 'Tab clicked');
@@ -1573,59 +1574,58 @@ export function switchTabs(show, hide, files) {
                         switchFiles(show);
                         document.getElementById(show + 'selectedDoc').value = files[0].id;
                         showPreview(files[0].id);
-                        if(show !== 'toBeCompleted'){
+                        if (show !== 'toBeCompleted') {
                             document.getElementById('boxFilePreview').classList.add('col-8');
                             showComments(files[0].id);
-                        }
-                        else {
+                        } else {
                             //document.getElementById('fileComments').innerHTML = '';
                             document.getElementById('boxFilePreview').classList.remove('col-8');
                         }
                         // let response = async () => { let test = await listComments('945509107663');//files[0].id);
                         //     console.log(test);
                         //     }
-                        if (show === 'toBeCompleted'){
-                            document.getElementById('sendtodaccButton').style.display="block";
-                            document.getElementById('finalChairDecision').style.display="none";
-                            document.getElementById('daccOverride').style.display='none';
+                        if (show === 'toBeCompleted') {
+                            document.getElementById('sendtodaccButton').style.display = "block";
+                            document.getElementById('finalChairDecision').style.display = "none";
+                            document.getElementById('daccOverride').style.display = 'none';
                             // document.getElementById('fileComments').innerHTML = listComments(files[0].id);
-                        }  
-                        if (show === 'inProgress'){
-                            document.getElementById('sendtodaccButton').style.display="none";
-                            document.getElementById('finalChairDecision').style.display="none";
-                            document.getElementById('daccOverride').style.display='block';
+                        }
+                        if (show === 'inProgress') {
+                            document.getElementById('sendtodaccButton').style.display = "none";
+                            document.getElementById('finalChairDecision').style.display = "none";
+                            document.getElementById('daccOverride').style.display = 'block';
 
-                            }
-                        if (show === 'daccCompleted'){
-                            document.getElementById('sendtodaccButton').style.display="none";
-                            document.getElementById('daccOverride').style.display='none';
-                            document.getElementById('finalChairDecision').style.display="block";
-                            }
-                        if (show ==='dacctoBeCompleted'){
-                            document.getElementById('daccComment').style.display="block";
                         }
-                        if (show === 'completed'){
+                        if (show === 'daccCompleted') {
+                            document.getElementById('sendtodaccButton').style.display = "none";
+                            document.getElementById('daccOverride').style.display = 'none';
+                            document.getElementById('finalChairDecision').style.display = "block";
+                        }
+                        if (show === 'dacctoBeCompleted') {
+                            document.getElementById('daccComment').style.display = "block";
+                        }
+                        if (show === 'completed') {
                             console.log('did this work?');
-                            document.getElementById('daccComment').style.display="none";
+                            document.getElementById('daccComment').style.display = "none";
                         }
-                        if(show === 'daccReview'){
+                        if (show === 'daccReview') {
                             document.getElementById('boxFilePreview').classList.add('col-8');
-                            document.getElementById('daccComment').style.display="block";
+                            document.getElementById('daccComment').style.display = "block";
                             showComments(files[0].id);
                         }
                     } else {
                         boxPreview.classList.remove('d-block');
                         boxPreview.classList.add('d-none');
-                        if (show === 'completed'){
-                            if(document.getElementById('daccComment')){
-                                document.getElementById('daccComment').style.display="none";
+                        if (show === 'completed') {
+                            if (document.getElementById('daccComment')) {
+                                document.getElementById('daccComment').style.display = "none";
                             }
                         }
                     }
                 }
 
                 for (const tab of hide) {
-                   
+
                     document.getElementById(tab + 'Tab').classList.remove('active');
                     document.getElementById(tab).classList.remove('show', 'active');
                 }
@@ -1647,10 +1647,10 @@ export function switchFiles(tab) {
         const file_id = e.target.value
         showPreview(file_id);
         showComments(file_id);
-      });
+    });
 }
 
-export function filterCheckBox(data){
+export function filterCheckBox(data) {
     //Get all the elements
     const rows = Array.from(document.getElementsByClassName('filedata'));
 
@@ -1670,19 +1670,19 @@ export function filterCheckBox(data){
     if (selectedDecisions.length > 0) filter['Decision'] = selectedDecisions;
     if (selectedSubmitters.length > 0) filter['Submitter'] = selectedSubmitters;
 
-    if(selectedFilters.length === 0) filteredData = data;
-    else{
+    if (selectedFilters.length === 0) filteredData = data;
+    else {
         // filteredDecisions = data.filter(dt => selectedDecisions.indexOf(dt.parent.name) !== -1);
         console.log('Filter', filter);
         filteredData = filteredData.filter(dt => {
-            for(const key in filter){
-                if(key === 'Decision'){
-                    if(!filter[key].includes(dt.parent.name)){
+            for (const key in filter) {
+                if (key === 'Decision') {
+                    if (!filter[key].includes(dt.parent.name)) {
                         return false
                     }
                 }
-                if(key === 'Submitter'){
-                    if(!filter[key].includes(dt.created_by.name))
+                if (key === 'Submitter') {
+                    if (!filter[key].includes(dt.created_by.name))
                         return false;
                 }
             }
@@ -1690,30 +1690,59 @@ export function filterCheckBox(data){
             return true;
         })
 
-     
+
     }
 
-    //Hide the ones without variable value
-    console.log(filteredData);
-    let showRows = [];
-    rows.forEach(row => {
-        const file_id = row.id.split('file')[1];
-        console.log(file_id);
-        for(const data of filteredData){
-            if(Object.values(data).includes(file_id)){
-                showRows.push(row)
+
+
+    // Filter on search
+    let searchedData;
+    const input = document.getElementById('searchDataDictionary');
+    const currentValue = input.value.trim().toLowerCase();
+    console.log(currentValue);
+    if (currentValue.length <= 2 && (previousValue.length > 2 || previousValue.length === 0)) {
+        console.log('Search too short');
+        searchedData = filteredData;
+    } else {
+        previousValue = currentValue;
+
+        searchedData = JSON.parse(JSON.stringify(filteredData)).filter(dt => {
+            let found = false;
+            if (dt.name.toLowerCase().includes(currentValue)) {
+                found = true;
             }
+            if (dt.created_by.name.toLowerCase().includes(currentValue)) {
+                found = true;
+            }
+            if (dt.parent.name.toLowerCase().includes(currentValue)) {
+                found = true;
+            }
+            if (found) return dt;
+
+        });
+
+    }
+
+
+    console.log('Searched Data', searchedData);
+    //If file not in the showRows then add it
+    let showRows = [];
+    searchedData.forEach(file => {
+        const row_id = 'file' + file.id;
+        console.log(row_id);
+        if (showRows.indexOf(row_id) === -1) {
+            showRows.push(row_id);
         }
     })
-
     rows.forEach(row => {
-        if(showRows.includes(row))
-        row.parentElement.style.display = 'block';
+        if (showRows.includes(row.id))
+            row.parentElement.style.display = 'block';
         else
-        row.parentElement.style.display = 'none';
+            row.parentElement.style.display = 'none';
     })
+
 }
-export function sortTableByColumn(table, column, ascending=true) {
+export function sortTableByColumn(table, column, ascending = true) {
     const direction = ascending ? 1 : -1;
     const rows = Array.from(document.getElementsByClassName('filedata'));
 
@@ -1721,18 +1750,17 @@ export function sortTableByColumn(table, column, ascending=true) {
     let filteredRows = rows;
     filteredRows = filteredRows.filter(row => row.parentElement.style.display !== 'none');
     //Sort each row
-    const sortedRows = filteredRows.sort( (a,b) => {
+    const sortedRows = filteredRows.sort((a, b) => {
         let aContent = '';
         let bContent = '';
-        if(column === 0){
+        if (column === 0) {
             aContent = a.firstElementChild.firstElementChild.textContent.trim().toLowerCase();
             bContent = b.firstElementChild.firstElementChild.textContent.trim().toLowerCase();
-        }
-        else{
-        aContent = a.querySelector(`div:nth-child(${ column + 1})`).textContent.trim().toLowerCase();
-        bContent = b.querySelector(`div:nth-child(${ column + 1})`).textContent.trim().toLowerCase();
-        
-       
+        } else {
+            aContent = a.querySelector(`div:nth-child(${ column + 1})`).textContent.trim().toLowerCase();
+            bContent = b.querySelector(`div:nth-child(${ column + 1})`).textContent.trim().toLowerCase();
+
+
         }
 
         return aContent > bContent ? (1 * direction) : (-1 * direction);
@@ -1751,7 +1779,7 @@ export function sortTableByColumn(table, column, ascending=true) {
     //Add Data Back
     sortedRows.forEach(row => {
         const divEl = document.createElement('div')
-        divEl.classList.add('card', 'mt-1', 'mb-1','align-left');
+        divEl.classList.add('card', 'mt-1', 'mb-1', 'align-left');
         divEl.appendChild(row);
         document.getElementById('files').appendChild(divEl);
     })
@@ -1760,13 +1788,13 @@ export function sortTableByColumn(table, column, ascending=true) {
     Array.from(table.querySelectorAll('.header-sortable')).forEach(header => {
         header.classList.remove('header-sort-asc', 'header-sort-desc');
     })
-        console.log(direction);
-        if(direction === 1){
-            console.log('Ascending');
+    console.log(direction);
+    if (direction === 1) {
+        console.log('Ascending');
         table.querySelector(`.div-sticky`).children[column].classList.toggle('header-sort-asc', direction);
-        }else{
-            console.log('Descending');
+    } else {
+        console.log('Descending');
         table.querySelector(`.div-sticky`).children[column].classList.toggle('header-sort-desc', -direction);
-        }
+    }
 
 }
