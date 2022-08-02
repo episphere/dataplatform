@@ -2299,17 +2299,18 @@ export async function viewFinalDecisionFilesTemplate(files){
   if (filesInfo.length > 0) {
     template += `
     <div id='decidedFiles'>
-    <div class="col-xl-2 filter-column" id="summaryFilterSiderBar">
-        <div class="div-border white-bg align-left p-2">
-            <div class="main-summary-row">
-                <div class="col-xl-12 pl-1 pr-0">
-                    <span class="font-size-17 font-bold">Filter</span>
-                    <div id="filterDataDictionary" class="align-left"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class='col-xl-10 pr-0'>`;
+    <div class='row'>
+      <div class="col-xl-2 filter-column" id="summaryFilterSiderBar">
+          <div class="div-border white-bg align-left p-2">
+              <div class="main-summary-row">
+                  <div class="col-xl-12 pl-1 pr-0">
+                      <span class="font-size-17 font-bold">Filter</span>
+                      <div id="filterData" class="align-left"></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class='col-xl-10 pr-0'>`;
 
     template += viewFinalDecisionFilesColumns();
     
@@ -2380,20 +2381,7 @@ export async function viewFinalDecisionFilesTemplate(files){
     </div>
     </div>`
   }
-
-
-  //Get all possible values for filters (Submitted By and Decision)
-  const submitterFilterButtons = [...new Set([...filesInfo.map(fileInfo => fileInfo.created_by.name)])];
-  const decisionFilterButtons = [...new Set([...filesInfo.map(fileInfo => fileInfo.parent.name)])];
-
-  submitterFilterButtons.forEach((submitter, index) => {
-    template += `<input type='checkbox' id='submitter${index}' name='submitter_${submitter}' value='${submitter}' class='filter-var' data-variable-column='Submitter' data-variable-type='${submitter}'> ${submitter} </input>`;
-  });
-  decisionFilterButtons.forEach((decision, index) => {
-    template += `<input type='checkbox' id='decision${index}' name='decision_${decision}' value='${decision}' class='filter-var' data-variable-column='Decision' data-variable-type='${decision}'> ${decision} </input>`;
-  });
-
-  template += "<input type='search' id='searchDataDictionary' class='form-control-rounded' autocomplete='off'>"
+  
   document.getElementById('decided').innerHTML = template;
 
   viewFinalDecisionFiles(filesInfo);
@@ -2433,6 +2421,7 @@ export async function viewFinalDecisionFilesTemplate(files){
   });
   
   //Filtering
+  filterSection(filesInfo);
   Array.from(document.getElementsByClassName('filter-var')).forEach(el => {
     el.addEventListener('click', () => {
     filterCheckBox(filesInfo);
@@ -2506,11 +2495,30 @@ export function viewFinalDecisionFiles(files) {
     </div>`
 }
 
-template += `</div></div></div>
+template += `</div></div></div></div>
   
 
 `;
    document.getElementById('files').innerHTML = template;
+}
+
+function filterSection(files) {
+  //Get all possible values for filters (Submitted By and Decision)
+
+  let template = "<input type='search' id='searchDataDictionary' class='form-control-rounded' autocomplete='off'>";
+  const submitterFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.created_by.name)])];
+  const decisionFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.parent.name)])];
+
+  submitterFilterButtons.forEach((submitter, index) => {
+    template += `<input type='checkbox' id='submitter${index}' name='submitter_${submitter}' value='${submitter}' class='filter-var' data-variable-column='Submitter' data-variable-type='${submitter}'> ${submitter} </input>`;
+  });
+  decisionFilterButtons.forEach((decision, index) => {
+    template += `<input type='checkbox' id='decision${index}' name='decision_${decision}' value='${decision}' class='filter-var' data-variable-column='Decision' data-variable-type='${decision}'> ${decision} </input>`;
+  });
+
+ 
+
+  document.getElementById('filterData').innerHTML = template;
 }
 
 export const formFunctions = () => {
