@@ -1902,24 +1902,24 @@ export const dataForm = async () => {
             spacing: {after: 150},
           }),
           //New sections
-          new docx.Paragraph({
-            text: "Keywords: ",
-            heading: docx.HeadingLevel.HEADING_2
-          }),
-          new docx.Paragraph({
-            alignment: docx.AlignmentType.START,
-            style: {
-              paragraph: {
-                indent: 500
-              },
-            },
-            children: [
-              new docx.TextRun({
-                text: jsondata.keywords,
-                bold: true,
-              }),
-            ],
-          }),
+          // new docx.Paragraph({
+          //   text: "Keywords: ",
+          //   heading: docx.HeadingLevel.HEADING_2
+          // }),
+          // new docx.Paragraph({
+          //   alignment: docx.AlignmentType.START,
+          //   style: {
+          //     paragraph: {
+          //       indent: 500
+          //     },
+          //   },
+          //   children: [
+          //     new docx.TextRun({
+          //       text: jsondata.keywords,
+          //       bold: true,
+          //     }),
+          //   ],
+          // }),
           new docx.Paragraph({
             heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
