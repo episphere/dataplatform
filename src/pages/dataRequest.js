@@ -1872,18 +1872,18 @@ export const dataForm = async () => {
         default: {
           heading1: {
             run: {
-              size: 26,
+              size: 22,
               bold: true,
               color: "#000000",
-              font: "Noto Sans",
+              font: "Verdana",
             },
           },
           heading2: {
             run: {
-              size: 22,
+              size: 18,
               bold: true,
               color: "#000000",
-              font: "Noto Sans",
+              font: "Verdana",
             },
           },
         },
