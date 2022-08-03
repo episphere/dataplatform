@@ -517,9 +517,27 @@ export const formSection = async (activeTab, showDescripton) => {
                 <label><input id="confirmation" name="confirmation" type="checkbox" value="Yes" required/><b> Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b></label>
               </div>
 
+              <br>
+
+              <p><u><b>Project Description</b></u></p>
+
               <div class="input-group">
-                <label for="background"><b>Proposal Description</b> <i>Please provide a concise description of Background, Aims, and Analysis Plan (max. two pages).</i></label>
-                <textarea id="background" name="background" rows="4" cols="65" placeholder="Provide enough detail so contributing cohorts can assess whether Aims (i) align with participant consents and (ii) overlap with other cohort projects. Please list all planned analyses." required></textarea>
+              <p>Please provide a concise description of Background, Aims, and Analysis Plan. Provide enough detail so contributing cohorts can assess whether Aims (i) align with participant consents and (ii) overlap with other cohort projects. Please list all planned analyses.</p>
+            </div>
+
+              <div class="input-group">
+                <label for="background"><b>Background</b></label>
+                <textarea id="background" name="background" rows="4" cols="65" required></textarea>
+              </div>
+
+              <div class="input-group">
+                <label for="aims"><b>Aims</b></label>
+                <textarea id="aims" name="aims" rows="4" cols="65" required> </textarea>
+              </div>
+
+              <div class="input-group">
+                <label for="analyplan"><b>Analysis Plan</b></label>
+                <textarea id="analyplan" name="analyplan" rows="4" cols="65" required> </textarea>
               </div>
 
               <br>
@@ -2053,9 +2071,35 @@ export const dataForm = async () => {
             heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
             children: [new docx.TextRun({
-              text: "Proposal Description: "
+              text: "Background: "
             }), new docx.TextRun({
               text: jsondata.background,
+              bold: false
+            })],
+            spacing: {
+              after: 150
+            },
+          }),
+          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
+            alignment: docx.AlignmentType.START,
+            children: [new docx.TextRun({
+              text: "Aims: "
+            }), new docx.TextRun({
+              text: jsondata.aims,
+              bold: false
+            })],
+            spacing: {
+              after: 150
+            },
+          }),
+          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
+            alignment: docx.AlignmentType.START,
+            children: [new docx.TextRun({
+              text: "Analysis Plan: "
+            }), new docx.TextRun({
+              text: jsondata.analyplan,
               bold: false
             })],
             spacing: {
