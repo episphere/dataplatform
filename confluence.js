@@ -126,22 +126,11 @@ export const confluence = async () => {
         if(viewUserSubmissionElement){
             viewUserSubmissionElement.addEventListener('click', async() => {
                 if (viewUserSubmissionElement.classList.contains('navbar-active')) return;
-                const confluenceDiv = document.getElementById('confluenceDiv');
                 showAnimation();
                 assignNavbarActive(viewUserSubmissionElement, 1);
                 document.title = 'BCRPP - Your Submissions';
-                // confluenceDiv.innerHTML = dataSummary('Data Dictionary', true, false, false);
-                confluenceDiv.innerHTML = userSubmissionTemplate('Your Submissions');
-                // addEventUpdateSummaryStatsData();
+                userSubmissionTemplate('Your Submissions');
                 removeActiveClass('nav-link', 'active');
-                userSubmissionsView();
-                // console.log(document.querySelectorAll('[href="#data_exploration/dictionary"]'));//[1].classList.add('active');
-                // dataDictionaryTemplate();
-                // showAnimation();
-                // // assignNavbarActive(viewUserSubmissionElement, 1)
-                // document.title = 'BCRPP - Your Submissions';
-                // // confluenceDiv.innerHTML = await userSubmissionTemplate();
-                // userSubmissionTemplate();
                 hideAnimation();
             })
         }
@@ -452,14 +441,6 @@ const manageRouter = async () => {
         document.title = 'BCRPP - Your Submissions';
         userSubmissionTemplate('Your Submissions');
         removeActiveClass('nav-link', 'active');
-        // userSubmissionsView();
-        // const viewUserSubmissionElement = document.getElementById('userSubmissions')
-        // if (viewUserSubmissionElement.classList.contains('navbar-active')) return;
-        // showAnimation();
-        // // assignNavbarActive(viewUserSubmissionElement, 1)
-        // document.title = 'BCRPP - Your Submissions';
-        // // confluenceDiv.innerHTML = await userSubmissionTemplate();
-        // userSubmissionTemplate();
         hideAnimation();
     }
 
