@@ -1534,10 +1534,10 @@ export const daccFileView = async () => {
             <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
             <ul class='nav nav-tabs mb-3' role='tablist'>
             <li class='nav-item' role='presentation'>
-              <a class='nav-link active' id='dacctoBeCompletedTab' href='#dacctoBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='dacctoBeCompleted' aria-selected='true'> To Be Completed </a>
+              <a class='nav-link active' id='dacctoBeCompletedTab' href='#dacctoBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='dacctoBeCompleted' aria-selected='true'> Review </a>
             </li>
             <li class='nav-item' role='presentation'>
-              <a class='nav-link' id='daccReviewTab' href='#daccReview' data-mdb-toggle="tab" role='tab' aria-controls='daccReview' aria-selected='true'>Review </a>
+              <a class='nav-link' id='daccReviewTab' href='#daccReview' data-mdb-toggle="tab" role='tab' aria-controls='daccReview' aria-selected='true'> Re-Review </a>
             </li>
             <li class='nav-item' role='presentation'>
               <a class='nav-link' id='decidedTab' href='#decided' data-mdb-toggle="tab" role='tab' aria-controls='decided' aria-selected='true'> DACC Decision </a>
@@ -2408,10 +2408,11 @@ export async function viewFinalDecisionFilesTemplate(files) {
 export function viewFinalDecisionFilesColumns() {
   return `
   <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
-    <div class="col-md-4 text-left font-bold ws-nowrap header-sortable">Concept Name <!--button class="transparent-btn sort-column" data-column-name="Concept name"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-3 text-left font-bold ws-nowrap header-sortable">Concept Name <!--button class="transparent-btn sort-column" data-column-name="Concept name"><i class="fas fa-sort"></i></button--></div>
     <div class="col-md-3 text-left font-bold ws-nowrap header-sortable">Submitted By <!--button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button--></div>
-    <div class="col-md-1 text-center font-bold ws-nowrap header-sortable">Decision<!--button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button--></div>
-    <div class="col-md-4 text-center font-bold ws-nowrap header-sortable">Submission Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Submission Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-1 text-left font-bold ws-nowrap header-sortable">Decision<!--button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Decision Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
   </div>`;
 
 }
@@ -2430,11 +2431,12 @@ export function viewFinalDecisionFiles(files) {
       <div class="card mt-1 mb-1 align-left" >
     <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
         <div class="row">
-            <div class="col-md-4 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
+            <div class="col-md-3 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
             <div class="col-md-3 text-left">${fileInfo.created_by.name}</div>
+            <div class="col-md-2 text-left">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
             <div class="col-md-1 text-center">${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success">Accepted</h6>' : fileInfo.parent.name === 'Denied' ? '<h6 class="badge badge-pill badge-danger">Denied</h6>': '<h6 class="badge badge-pill badge-warning">Chair Review</h6>'}</div>
-            <div class="col-md-3 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
-            <div class="col-md-1 text-left">
+            <div class="col-md-2 text-left">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
+            <div class="col-md-1 text-right">
                 <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
                     <i class="fas fa-caret-down fa-2x"></i>
                 </button>
