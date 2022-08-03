@@ -2318,66 +2318,6 @@ export async function viewFinalDecisionFilesTemplate(files){
     template += viewFinalDecisionFilesColumns();
     
   template += '<div id="files"> </div>';
-  
- 
-  
-  //   for (const fileInfo of filesInfo) {
-  //     const fileId = fileInfo.id;
-  //     let filename = fileInfo.name.split('_')[0];
-  //     const shortfilename = filename.length > 25 ? filename.substring(0, 26) + '...' : filename;
-  //     console.log(fileId, fileInfo);
-    
-  //     template += `
-          
-  //           <!--tr>
-  //             <td> ${shortfilename}</td>
-  //             <td> ${fileInfo.created_by.name}</td>
-  //             ${fileInfo.parent.name === 'Accepted' ?'<td class="badge badge-pill badge-success">Accepted</td>' : '<td class="badge badge-pill badge-danger">Denied</td>'}
-  //             <td> ${new Date(fileInfo.created_at).toDateString().substring(4,)}</td>
-  //             <td><button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
-  //             <i class="fas fa-caret-down fa-2x"></i>
-  //         </button> </td>
-  //           </tr-->
-          
-  //     <div class="card mt-1 mb-1 align-left" >
-  //   <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
-  //       <div class="row">
-  //           <div class="col-md-4 text-left">${shortfilename}<button class="btn btn-sm custom-btn preview-file" data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i> Preview</button></div>
-  //           <div class="col-md-3 text-left">${fileInfo.created_by.name}</div>
-  //           <div class="col-md-1 text-center">${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success">Accepted</h6>' : '<h6 class="badge badge-pill badge-danger">Denied</h6>'}</div>
-  //           <div class="col-md-3 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
-  //           <div class="col-md-1 text-left">
-  //               <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
-  //                   <i class="fas fa-caret-down fa-2x"></i>
-  //               </button>
-  //           </div>
-  //       </div>
-  //       <div id="study${fileId}" class="collapse" aria-labelledby="file${fileId}">
-  //                   <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
-  //                   <div class="row mb-1 m-0">
-  //                   <div class="col-12 font-bold">
-  //                   Concept: ${filename}
-  //                   </div>
-  //                   </div>
-  //                   <div class="row mb-1 m-0">
-  //                   <div class="col-md-2 font-bold">
-  //                   Comments
-  //                   </div>
-  //                   </div>
-  //                   <div class="row mb-1 m-0">
-  //                     <div id='file${fileId}Comments' class='col-12'></div>
-  //                   </div>
-  //                   <!--div class='row'>
-  //                     <div id='filePreview${fileId}' class="col-8 preview-container"></div>
-  //                     <div id='file${fileId}Comments' class='col-4 mt-2'></div>
-  //                   </div-->
-  //       </div>
-  //   </div>
-  //   </div>
-  //   </div>
-  // `;
-
-  //   };
   } else {
     template += `
               No files to show.            
@@ -2463,7 +2403,7 @@ export function viewFinalDecisionFiles(files) {
       <div class="card mt-1 mb-1 align-left" >
     <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
         <div class="row">
-            <div class="col-md-4 text-left">${shortfilename}<button class="btn btn-sm custom-btn preview-file" data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i> Preview</button></div>
+            <div class="col-md-4 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i> Preview</button></div>
             <div class="col-md-3 text-left">${fileInfo.created_by.name}</div>
             <div class="col-md-1 text-center">${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success">Accepted</h6>' : fileInfo.parent.name === 'Denied' ? '<h6 class="badge badge-pill badge-danger">Denied</h6>': '<h6 class="badge badge-pill badge-warning">Chair Review</h6>'}</div>
             <div class="col-md-3 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
@@ -2508,9 +2448,6 @@ template += `</div></div></div></div>
 function filterSection(files) {
   //Get all possible values for filters (Submitted By and Decision)
   let template = '';
-  
-
-  // template = "<input type='search' id='searchDataDictionary' class='form-control-rounded' autocomplete='off'>";
   const submitterFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.created_by.name)])];
   const decisionFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.parent.name)])];
   template += `<div class="main-summary-row">
@@ -2559,41 +2496,6 @@ function filterSection(files) {
      `;
      
  });
-  // decisionFilterButtons.forEach((decision, index) => {
-  //   decisionFilterTemp += `<input type='checkbox' id='decision${index}' name='decision_${decision}' value='${decision}' class='filter-var' data-variable-column='Decision' data-variable-type='${decision}'> ${decision} </input>`;
-  // });
- 
-//           `
-//           submitterFilterButtons.forEach(vt => {
-//               template += `
-//                   <li class="filter-list-item">
-//                       <input type="checkbox" data-variable-type="${vt}" id="label${vt}" class="select-variable-type" style="margin-left: 1px !important;">
-//                       <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(vt, 60)}</label>
-//                   </li>
-//               `
-//           })
-//           template +=`
-//           </ul>
-
-//           <label class="filter-label font-size-13" for="variableTypeList">Mammographic density</label>
-//           <ul class="remove-padding-left font-size-15 allow-overflow" id="variableTypeList">
-//           `
-//           mamuniqueType.forEach(vt => {
-//               template += `
-//                   <li class="filter-list-item">
-//                       <input type="checkbox" data-variable-type="${vt}" id="label${vt}" class="select-variable-type" style="margin-left: 1px !important;">
-//                       <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(vt, 60)}</label>
-//                   </li>
-//               `
-//           })
-//           template +=`
-//           </ul>
-
-
-//       </div>
-//   </div>
-// </div>`;
- 
 
   document.getElementById('filterData').innerHTML = template;
   document.getElementById('submitterFilterList').innerHTML = submitterTemp;
