@@ -1690,7 +1690,7 @@ form {
 .transparent-btn {
     background-color: transparent;
     border: 0px;
-    color: #000000
+    color: #000000;
 }
 
 .custom-btn {
@@ -2090,3 +2090,17 @@ ul.form {
     -ms-user-select: none;
     user-select: none;
 }
+
+.header-sort-asc::after {
+    content: '\25b4';
+}
+.header-sort-desc::after {
+    content: '\25be';
+}
+
+.header-sort-asc::after,
+.header-sort-desc::after {
+    margin-left: .2rem;
+    font-size: x-large
+}
+

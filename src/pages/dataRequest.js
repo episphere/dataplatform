@@ -528,7 +528,7 @@ export const formSection = async (activeTab, showDescripton) => {
               <div class="input-group">
                 <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables requested from BCRPP, broken down into three domains (tabs on the data dictionary): 
                 CORE covariates and risk factors (currently available only at cohort baseline), MMD mammographic density, and BRCA incident breast cancer data.
-                Data availability and descriptive statistics can be explored via the <a href="#data_exploration/subset">Data menu </a> on the BCRPP portal. If data from a particular domain are requested,
+                Data availability and descriptive statistics can be explored via the <a href="#data_exploration/summary">Data menu </a> on the BCRPP portal. If data from a particular domain are requested,
                 all variables from that domain will be provided. Please list the variables to be included in analyses (along with a brief justification) in the following boxes.</p>
               </div>
               
@@ -591,11 +591,10 @@ export const formSection = async (activeTab, showDescripton) => {
                 <label>
                   <input id="ibcvarv" name="ibcvarv" type="checkbox" value="ibcvarv"/>
                   Check All
-              </label>
+                </label>
               </div>
 
               <div class="input-group">
-
                 <ul class="form" id='ibcvarlist'>
                   <div class="inline-field">
                     <input id="diag" name="ibcvar" type="checkbox" value="Diagnostic"/>
@@ -609,26 +608,25 @@ export const formSection = async (activeTab, showDescripton) => {
                 </ul>
               </div>
 
+
+
               <div class="input-group">
                 <label for="mmdvar"><b>Mammographic Density</b></label>
                 <label>
                   <input id="mmdvarv" name="mmdvarv" type="checkbox" value="Mammographic Density"/>
-                  Check
                 </label>
               </div>
 
               <div class="input-group">
-                <p>By default, data from all participating cohorts will be requested. If you wish to only select data from a subset of cohorts, 
-                please list them here with a justification for the restriction. Proposals only requesting data from a single cohort will not be approved. 
-                If you are interested in only analyzing data froma particular cohort, please contact that cohort directly.</p>
+                <p>Select cohorts from which data is being requested. Proposals only requesting data from a single cohort will not be approved. If you are interested in only analyzing data from a particular cohort, please contact that cohort directly. Information on cohorts can be found <a href="#about/description">here</a>.</p>
+                <label for="reqcoh"><b>Requested Cohorts</b></label>
+                <label>
+                  <input id="reqcohv" name="reqcohv" type="checkbox" value="reqcohv"/>
+                  Check All
+                </label>
               </div>
 
               <div class="input-group">
-                <label for="reqcoh"><b>Requested Cohorts</b> <i>(please check all boxes that apply)</i></label>
-              </div>
-
-              <div class="input-group">
-
                 <ul class="form" id='reqcohlist'>
                   <div class="inline-field">
                     <input id="CSDLH" name="reqcoh" type="checkbox" value="CSDLH"/>
@@ -784,7 +782,7 @@ export const formSection = async (activeTab, showDescripton) => {
                   <textarea id="authorship" name="authorship" rows="4" cols="65" required></textarea>
                 </div>
                 
-                <button type="submit" id="submitFormButton" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+                <button type="submit" id="submitFormButton" class="buttonsubmit"> 
                   <span class="buttonsubmit__text"> Send Form </span>
                 </button>
               </form>
@@ -1062,7 +1060,7 @@ export const chairFileView = async () => {
   for (let obj of filearrayDenied) {
     filesdecided.push(obj);
   }
-  console.log(filesdecided);
+
   template += "<div class='tab-content' id='selectedTab'>";
 
   template += `<div class='tab-pane fade show active' 
@@ -1180,10 +1178,10 @@ export const chairFileView = async () => {
   // switchTabs('denied', ['inProgress', 'daccCompleted', 'toBeCompleted', 'accepted'], filesdenied);
 
 
-  if(localStorage.getItem('currentTab')){
+  if (localStorage.getItem('currentTab')) {
     const currTab = localStorage.getItem('currentTab');
-    if(document.getElementById(currTab) != null){
-    document.getElementById(currTab).click();
+    if (document.getElementById(currTab) != null) {
+      document.getElementById(currTab).click();
     }
   }
 
@@ -1534,10 +1532,10 @@ export const daccFileView = async () => {
             <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
             <ul class='nav nav-tabs mb-3' role='tablist'>
             <li class='nav-item' role='presentation'>
-              <a class='nav-link active' id='dacctoBeCompletedTab' href='#dacctoBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='dacctoBeCompleted' aria-selected='true'> To Be Completed </a>
+              <a class='nav-link active' id='dacctoBeCompletedTab' href='#dacctoBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='dacctoBeCompleted' aria-selected='true'> Review </a>
             </li>
             <li class='nav-item' role='presentation'>
-              <a class='nav-link' id='daccReviewTab' href='#daccReview' data-mdb-toggle="tab" role='tab' aria-controls='daccReview' aria-selected='true'>Review </a>
+              <a class='nav-link' id='daccReviewTab' href='#daccReview' data-mdb-toggle="tab" role='tab' aria-controls='daccReview' aria-selected='true'> Re-Review </a>
             </li>
             <li class='nav-item' role='presentation'>
               <a class='nav-link' id='decidedTab' href='#decided' data-mdb-toggle="tab" role='tab' aria-controls='decided' aria-selected='true'> DACC Decision </a>
@@ -1714,10 +1712,10 @@ export const daccFileView = async () => {
   switchTabs('decided', ['dacctoBeCompleted', 'daccReview'], filescompleted);
   switchTabs('daccReview', ['dacctoBeCompleted', 'decided'], filesreviewed);
 
-  if(localStorage.getItem('currentTab')){
+  if (localStorage.getItem('currentTab')) {
     const currTab = localStorage.getItem('currentTab');
-    if(document.getElementById(currTab) != null){
-    document.getElementById(currTab).click();
+    if (document.getElementById(currTab) != null) {
+      document.getElementById(currTab).click();
     }
   }
   hideAnimation();
@@ -1837,6 +1835,7 @@ export const dataForm = async () => {
 
   async function handleFormSubmit(eventtest) {
     const btn = document.activeElement;
+    btn.classList.toggle("buttonsubmit--loading");
     btn.disabled = true;
     eventtest.preventDefault();
 
@@ -1874,18 +1873,18 @@ export const dataForm = async () => {
         default: {
           heading1: {
             run: {
-              size: 26,
+              size: 22,
               bold: true,
               color: "#000000",
-              font: "Noto Sans",
+              font: "Verdana",
             },
           },
           heading2: {
             run: {
-              size: 22,
+              size: 18,
               bold: true,
               color: "#000000",
-              font: "Noto Sans",
+              font: "Verdana",
             },
           },
         },
@@ -2067,26 +2066,54 @@ export const dataForm = async () => {
           new docx.Paragraph({
             heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            children: [new docx.TextRun({text: "Core Variables: "}), new docx.TextRun({text: JSON.stringify(jsondata.basevar, null, 2).replace('[','').replace(']',''), bold: false})],
-            spacing: {after: 150},
+            children: [new docx.TextRun({
+              text: "Core Variables: "
+            }), new docx.TextRun({
+              text: JSON.stringify(jsondata.basevar, null, 2).replace('[', '').replace(']', ''),
+              bold: false
+            })],
+            spacing: {
+              after: 150
+            },
           }),
           new docx.Paragraph({
             heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            children: [new docx.TextRun({text: "MMD Variables: "}), new docx.TextRun({text: jsondata.mmdvarv, bold: false})],
-            spacing: {after: 150},
+            children: [new docx.TextRun({
+              text: "MMD Variables: "
+            }), new docx.TextRun({
+              text: jsondata.mmdvarv,
+              bold: false
+            })],
+            spacing: {
+              after: 150
+            },
           }),
           new docx.Paragraph({
             heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            children: [new docx.TextRun({text: "BRCA Variables: "}), new docx.TextRun({text: JSON.stringify(jsondata.ibcvar, null, 2).replace('[', '').replace(']',''), bold: false})],
-            spacing: {after: 150},
+            children: [new docx.TextRun({
+              text: "BRCA Variables: "
+            }), new docx.TextRun({
+              text: JSON.stringify(jsondata.ibcvar, null, 2).replace('[', '').replace(']', ''),
+              bold: false
+            })],
+            spacing: {
+              after: 150
+            },
           }),
           new docx.Paragraph({
             heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
-            children: [new docx.TextRun({text: "Requested Cohorts: "}), new docx.TextRun({text: JSON.stringify(jsondata.reqcoh, null, 2).replace('[', '').replace(']',''), bold: false})],
-            spacing: {after: 150},
+            children: [new docx.TextRun({
+              text: "Requested Cohorts: "
+            }), new docx.TextRun({
+              text: JSON.stringify(jsondata.reqcoh, null, 2).replace('[', '').replace(']', ''),
+              bold: false
+            })],
+            spacing: {
+              after: 150
+            },
           }),
           new docx.Paragraph({
             heading: docx.HeadingLevel.HEADING_2,
@@ -2292,10 +2319,10 @@ const viewDACCFiles = async (files, taskids) => {
 }
 // const chairFileViews = async () => {
 // }
-export async function viewFinalDecisionFilesTemplate(files){
+export async function viewFinalDecisionFilesTemplate(files) {
   let template = '';
   let filesInfo = []
-  for(const file of files){
+  for (const file of files) {
     const fileInfo = await getFileInfo(file.id);
     filesInfo.push(fileInfo);
   }
@@ -2316,75 +2343,15 @@ export async function viewFinalDecisionFilesTemplate(files){
       <div class='col-xl-10 pr-0'>`;
 
     template += viewFinalDecisionFilesColumns();
-    
-  template += '<div id="files"> </div>';
-  
- 
-  
-  //   for (const fileInfo of filesInfo) {
-  //     const fileId = fileInfo.id;
-  //     let filename = fileInfo.name.split('_')[0];
-  //     const shortfilename = filename.length > 25 ? filename.substring(0, 26) + '...' : filename;
-  //     console.log(fileId, fileInfo);
-    
-  //     template += `
-          
-  //           <!--tr>
-  //             <td> ${shortfilename}</td>
-  //             <td> ${fileInfo.created_by.name}</td>
-  //             ${fileInfo.parent.name === 'Accepted' ?'<td class="badge badge-pill badge-success">Accepted</td>' : '<td class="badge badge-pill badge-danger">Denied</td>'}
-  //             <td> ${new Date(fileInfo.created_at).toDateString().substring(4,)}</td>
-  //             <td><button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
-  //             <i class="fas fa-caret-down fa-2x"></i>
-  //         </button> </td>
-  //           </tr-->
-          
-  //     <div class="card mt-1 mb-1 align-left" >
-  //   <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
-  //       <div class="row">
-  //           <div class="col-md-4 text-left">${shortfilename}<button class="btn btn-sm custom-btn preview-file" data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i> Preview</button></div>
-  //           <div class="col-md-3 text-left">${fileInfo.created_by.name}</div>
-  //           <div class="col-md-1 text-center">${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success">Accepted</h6>' : '<h6 class="badge badge-pill badge-danger">Denied</h6>'}</div>
-  //           <div class="col-md-3 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
-  //           <div class="col-md-1 text-left">
-  //               <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
-  //                   <i class="fas fa-caret-down fa-2x"></i>
-  //               </button>
-  //           </div>
-  //       </div>
-  //       <div id="study${fileId}" class="collapse" aria-labelledby="file${fileId}">
-  //                   <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
-  //                   <div class="row mb-1 m-0">
-  //                   <div class="col-12 font-bold">
-  //                   Concept: ${filename}
-  //                   </div>
-  //                   </div>
-  //                   <div class="row mb-1 m-0">
-  //                   <div class="col-md-2 font-bold">
-  //                   Comments
-  //                   </div>
-  //                   </div>
-  //                   <div class="row mb-1 m-0">
-  //                     <div id='file${fileId}Comments' class='col-12'></div>
-  //                   </div>
-  //                   <!--div class='row'>
-  //                     <div id='filePreview${fileId}' class="col-8 preview-container"></div>
-  //                     <div id='file${fileId}Comments' class='col-4 mt-2'></div>
-  //                   </div-->
-  //       </div>
-  //   </div>
-  //   </div>
-  //   </div>
-  // `;
 
-  //   };
+    template += '<div id="files"> </div>';
   } else {
     template += `
               No files to show.            
     </div>
     </div>`
   }
-  
+
   document.getElementById('decided').innerHTML = template;
 
   viewFinalDecisionFiles(filesInfo);
@@ -2415,59 +2382,60 @@ export async function viewFinalDecisionFilesTemplate(files){
   })
   const table = document.getElementById('decidedFiles');
   const headers = table.querySelector(`.div-sticky`);
-  Array.from(headers.children).forEach( (header, index) => {
+  Array.from(headers.children).forEach((header, index) => {
     header.addEventListener('click', (e) => {
-      const sortDirection = header.classList.contains('header-sort-asc'); 
+      const sortDirection = header.classList.contains('header-sort-asc');
       console.log(sortDirection);
       sortTableByColumn(table, index, !sortDirection);
     });
   });
-  
-  //Filtering
+
+  //Filtering and Sorting
   filterSection(filesInfo);
   Array.from(document.getElementsByClassName('filter-var')).forEach(el => {
     el.addEventListener('click', () => {
+      filterCheckBox(filesInfo);
+    })
+  })
+  const input = document.getElementById('searchDataDictionary');
+  input.addEventListener('input', () => {
     filterCheckBox(filesInfo);
   })
-})
-    const input = document.getElementById('searchDataDictionary');
-    input.addEventListener('input', () => {
-        filterCheckBox(filesInfo);
-    })
 
 }
 
 export function viewFinalDecisionFilesColumns() {
-  let template = `
+  return `
   <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
-    <div class="col-md-4 text-left font-bold ws-nowrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept name"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-3 text-left font-bold ws-nowrap header-sortable">Submitted By <button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-1 text-center font-bold ws-nowrap header-sortable">Decision<button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-4 text-center font-bold ws-nowrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-3 text-left font-bold ws-nowrap header-sortable">Concept Name <!--button class="transparent-btn sort-column" data-column-name="Concept name"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Submitted By <!--button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Submission Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-1 text-left font-bold ws-nowrap header-sortable">Decision<!--button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Decision Date<!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
   </div>`;
 
-return template;
 }
 
 export function viewFinalDecisionFiles(files) {
   let template = '';
-  
-    for (const fileInfo of files) {
-      const fileId = fileInfo.id;
-      let filename = fileInfo.name.split('_')[0];
-      const shortfilename = filename.length > 25 ? filename.substring(0, 26) + '...' : filename;
-      console.log(fileId, fileInfo);
-    
-      template += `
+
+  for (const fileInfo of files) {
+    const fileId = fileInfo.id;
+    let filename = fileInfo.name.split('_')[0];
+    const shortfilename = filename.length > 25 ? filename.substring(0, 26) + '...' : filename;
+    console.log(fileId, fileInfo);
+
+    template += `
           
       <div class="card mt-1 mb-1 align-left" >
     <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
         <div class="row">
-            <div class="col-md-4 text-left">${shortfilename}<button class="btn btn-sm custom-btn preview-file" data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i> Preview</button></div>
-            <div class="col-md-3 text-left">${fileInfo.created_by.name}</div>
+            <div class="col-md-3 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
+            <div class="col-md-2 text-left">${fileInfo.created_by.name}</div>
+            <div class="col-md-2 text-left">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
             <div class="col-md-1 text-center">${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success">Accepted</h6>' : fileInfo.parent.name === 'Denied' ? '<h6 class="badge badge-pill badge-danger">Denied</h6>': '<h6 class="badge badge-pill badge-warning">Chair Review</h6>'}</div>
-            <div class="col-md-3 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
-            <div class="col-md-1 text-left">
+            <div class="col-md-2 text-left">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
+            <div class="col-md-1 text-right">
                 <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
                     <i class="fas fa-caret-down fa-2x"></i>
                 </button>
@@ -2496,22 +2464,19 @@ export function viewFinalDecisionFiles(files) {
     </div>
     </div>
     </div>`
-}
+  }
 
-template += `</div></div></div></div>
+  template += `</div></div></div></div>
   
 
 `;
-   document.getElementById('files').innerHTML = template;
+  document.getElementById('files').innerHTML = template;
 }
 
 function filterSection(files) {
   //Get all possible values for filters (Submitted By and Decision)
   let template = '';
-  
-
-  // template = "<input type='search' id='searchDataDictionary' class='form-control-rounded' autocomplete='off'>";
-  const submitterFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.created_by.name)])];
+  // const submitterFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.created_by.name)])];
   const decisionFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.parent.name)])];
   template += `<div class="main-summary-row">
   <div style="width: 100%;">
@@ -2529,74 +2494,37 @@ function filterSection(files) {
   <div style="width: 100%;">
       <div class="form-group" margin:0px>
    `;
-   if(submitterFilterButtons.length !== 0){
-     template += `       
-     <label class="filter-label font-size-13" for="variableTypeList">Submitter</label>
-     <ul class="remove-padding-left font-size-15 allow-overflow" id="submitterFilterList"> </ul>`;
-   }
-   let submitterTemp = '';
-  submitterFilterButtons.forEach((submitter, index) => {
-    submitterTemp += `
-    <li class="filter-list-item">
-      <!--input type='checkbox' id='submitter${index}' name='submitter_${submitter}' value='${submitter}' class='filter-var' data-variable-column='Submitter' data-variable-type='${submitter}'> ${submitter} </input-->
-      <input type="checkbox" data-variable-type="${submitter}" name='submitter_${submitter}' id="submitter${index}" value='${submitter}' class="filter-var" style="margin-left: 1px !important;" data-variable-column='Submitter'>
-      <label for="label${submitter}" class="sub-category" title="${submitter}">${submitter}</label>
-      `;
-      
-  });
-  if(decisionFilterButtons.length !== 0){
+  // if (submitterFilterButtons.length !== 0) {
+  //   template += `       
+  //    <label class="filter-label font-size-13" for="variableTypeList">Submitter</label>
+  //    <ul class="remove-padding-left font-size-15 allow-overflow" id="submitterFilterList"> </ul>`;
+  // }
+  // let submitterTemp = '';
+  // submitterFilterButtons.forEach((submitter, index) => {
+  //   submitterTemp += `
+  //   <li class="filter-list-item">
+  //     <input type="checkbox" data-variable-type="${submitter}" name='submitter_${submitter}' id="submitter${index}" value='${submitter}' class="filter-var" style="margin-left: 1px !important;" data-variable-column='Submitter'>
+  //     <label for="label${submitter}" class="sub-category" title="${submitter}">${submitter}</label>
+  //     `;
+
+  // });
+  if (decisionFilterButtons.length !== 0) {
     template += `       
-    <label class="filter-label font-size-13" for="variableTypeList">Submitter</label>
+    <label class="filter-label font-size-13" for="variableTypeList">Decision</label>
     <ul class="remove-padding-left font-size-15 allow-overflow" id="decisionFilterList"> </ul>`;
   }
   let decisionFilterTemp = '';
- decisionFilterButtons.forEach((decision, index) => {
-   decisionFilterTemp += `
+  decisionFilterButtons.forEach((decision, index) => {
+    decisionFilterTemp += `
    <li class="filter-list-item">
-     <!--input type='checkbox' id='submitter${index}' name='submitter_${decision}' value='${decision}' class='filter-var' data-variable-column='Submitter' data-variable-type='${decision}'> ${decision} </input-->
      <input type="checkbox" data-variable-type="${decision}" name='decision${decision}' id="decision${index}" value='${decision}' class="filter-var" style="margin-left: 1px !important;" data-variable-column='Decision'>
      <label for="label${decision}" class="sub-category" title="${decision}">${decision}</label>
      `;
-     
- });
-  // decisionFilterButtons.forEach((decision, index) => {
-  //   decisionFilterTemp += `<input type='checkbox' id='decision${index}' name='decision_${decision}' value='${decision}' class='filter-var' data-variable-column='Decision' data-variable-type='${decision}'> ${decision} </input>`;
-  // });
- 
-//           `
-//           submitterFilterButtons.forEach(vt => {
-//               template += `
-//                   <li class="filter-list-item">
-//                       <input type="checkbox" data-variable-type="${vt}" id="label${vt}" class="select-variable-type" style="margin-left: 1px !important;">
-//                       <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(vt, 60)}</label>
-//                   </li>
-//               `
-//           })
-//           template +=`
-//           </ul>
 
-//           <label class="filter-label font-size-13" for="variableTypeList">Mammographic density</label>
-//           <ul class="remove-padding-left font-size-15 allow-overflow" id="variableTypeList">
-//           `
-//           mamuniqueType.forEach(vt => {
-//               template += `
-//                   <li class="filter-list-item">
-//                       <input type="checkbox" data-variable-type="${vt}" id="label${vt}" class="select-variable-type" style="margin-left: 1px !important;">
-//                       <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(vt, 60)}</label>
-//                   </li>
-//               `
-//           })
-//           template +=`
-//           </ul>
-
-
-//       </div>
-//   </div>
-// </div>`;
- 
+  });
 
   document.getElementById('filterData').innerHTML = template;
-  document.getElementById('submitterFilterList').innerHTML = submitterTemp;
+  //document.getElementById('submitterFilterList').innerHTML = submitterTemp;
   document.getElementById('decisionFilterList').innerHTML = decisionFilterTemp;
 
 }
@@ -2609,8 +2537,7 @@ export const formFunctions = () => {
       for (const element of inputList) {
         element.checked = true;
       }
-    }
-    else{
+    } else {
       for (const element of inputList) {
         element.checked = false;
       }
@@ -2624,8 +2551,20 @@ export const formFunctions = () => {
       for (const element of inputList) {
         element.checked = true;
       }
+    } else {
+      for (const element of inputList) {
+        element.checked = false;
+      }
     }
-    else{
+  });
+  document.getElementById('reqcohv').addEventListener('click', (e) => {
+    const inputList = document.getElementById('reqcohlist').getElementsByTagName('input');
+
+    if (e.target.checked) {
+      for (const element of inputList) {
+        element.checked = true;
+      }
+    } else {
       for (const element of inputList) {
         element.checked = false;
       }
