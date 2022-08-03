@@ -23,7 +23,7 @@ import {
 import {
     template
 } from "./dataGovernance.js";
-
+let previousValue = '';
 export const dataSubmissionTemplate = async () => {
     const response = await getFolderItems('145996351913'); //Should be 0 for those without access to this folder
     const studiesList = await getFile('910115863871')
@@ -541,17 +541,17 @@ function filterCheckBox(data) {
     const selectedFilters = Array.from(document.getElementsByClassName('filter-var')).filter(dt => dt.checked);
 
     const selectedDecisions = selectedFilters.filter(dt => dt.dataset.variableColumn === 'Decision').map(dt => dt.dataset.variableType)
-    const selectedSubmitters = selectedFilters.filter(dt => dt.dataset.variableColumn === 'Submitter').map(dt => dt.dataset.variableType)
+    // const selectedSubmitters = selectedFilters.filter(dt => dt.dataset.variableColumn === 'Submitter').map(dt => dt.dataset.variableType)
     console.log('Current filters', selectedFilters);
     console.log('Current Decision', selectedDecisions);
-    console.log('Current Submitter(s)', selectedSubmitters);
+    // console.log('Current Submitter(s)', selectedSubmitters);
     console.log(data);
 
     //Set filter values
     let filteredData = data;
     const filter = {};
     if (selectedDecisions.length > 0) filter['Decision'] = selectedDecisions;
-    if (selectedSubmitters.length > 0) filter['Submitter'] = selectedSubmitters;
+    // if (selectedSubmitters.length > 0) filter['Submitter'] = selectedSubmitters;
 
     if (selectedFilters.length === 0) filteredData = data;
     else {
@@ -560,14 +560,14 @@ function filterCheckBox(data) {
         filteredData = filteredData.filter(dt => {
             for (const key in filter) {
                 if (key === 'Decision') {
-                    if (!filter[key].includes(dt.parent.name)) {
+                    if (!filter[key].includes(dt.decision)) {
                         return false
                     }
                 }
-                if (key === 'Submitter') {
-                    if (!filter[key].includes(dt.created_by.name))
-                        return false;
-                }
+                // if (key === 'Submitter') {
+                //     if (!filter[key].includes(dt.created_by.name))
+                //         return false;
+                // }
             }
 
             return true;
@@ -591,13 +591,13 @@ function filterCheckBox(data) {
 
         searchedData = JSON.parse(JSON.stringify(filteredData)).filter(dt => {
             let found = false;
-            if (dt.name.toLowerCase().includes(currentValue)) {
+            if (dt.file.name.toLowerCase().includes(currentValue)) {
                 found = true;
             }
-            if (dt.created_by.name.toLowerCase().includes(currentValue)) {
+            if (dt.file.created_by.name.toLowerCase().includes(currentValue)) {
                 found = true;
             }
-            if (dt.parent.name.toLowerCase().includes(currentValue)) {
+            if (dt.decision.toLowerCase().includes(currentValue)) {
                 found = true;
             }
             if (found) return dt;
@@ -610,8 +610,8 @@ function filterCheckBox(data) {
     console.log('Searched Data', searchedData);
     //If file not in the showRows then add it
     let showRows = [];
-    searchedData.forEach(file => {
-        const row_id = 'file' + file.id;
+    searchedData.forEach(dt => {
+        const row_id = 'file' + dt.file.id;
         console.log(row_id);
         if (showRows.indexOf(row_id) === -1) {
             showRows.push(row_id);

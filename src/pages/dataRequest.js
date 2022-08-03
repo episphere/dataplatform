@@ -2408,10 +2408,10 @@ export async function viewFinalDecisionFilesTemplate(files) {
 export function viewFinalDecisionFilesColumns() {
   return `
   <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
-    <div class="col-md-4 text-left font-bold ws-nowrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept name"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-3 text-left font-bold ws-nowrap header-sortable">Submitted By <button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-1 text-center font-bold ws-nowrap header-sortable">Decision<button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-4 text-center font-bold ws-nowrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-4 text-left font-bold ws-nowrap header-sortable">Concept Name <!--button class="transparent-btn sort-column" data-column-name="Concept name"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-3 text-left font-bold ws-nowrap header-sortable">Submitted By <!--button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-1 text-center font-bold ws-nowrap header-sortable">Decision<!--button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-4 text-center font-bold ws-nowrap header-sortable">Submission Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
   </div>`;
 
 }
