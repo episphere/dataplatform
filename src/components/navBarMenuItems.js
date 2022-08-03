@@ -52,9 +52,9 @@ export const navBarMenutemplate = () => {
                         Data Access
                     </button>
                     <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-                <!--h6 class="dropdown-header dropdown-header-bg font-bold">Data Access</h6-->
                     <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/overview" title="Data Access" id="dataRequest"> Overview </a>
                     <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/form" title="Data Form" id="dataForm"> Project Concept Form </a>
+                    <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#userSubmissions" title='View Your Submissions' id="userSubmissions">View Submissions</a>
                     <!--a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/accepted" title="Accepted Studies" id="dataAccepted"> Accepted </a-->
                     ${emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/chairView" title="Chair File View" id="chairView"> Chair Menu </a>`:``}
                     ${emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1 ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/daccView" title="DACC Menu" id="daccView"> DACC Menu </a>`:``}
@@ -73,7 +73,6 @@ export const navBarMenutemplate = () => {
                         ${JSON.parse(localStorage.parms).name}
                     </button>
                     <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#userSubmissions" id="userSubmissionsBtn">View Submissions</a>
                         <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#logout" id="logOutBtn">Log Out</a>
                     </div>
                 </div>

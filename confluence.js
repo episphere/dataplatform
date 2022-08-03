@@ -1,6 +1,6 @@
 import { navBarMenutemplate } from './src/components/navBarMenuItems.js';
 import { infoDeck, infoDeckAfterLoggedIn } from './src/pages/homePage.js';
-import { dataSubmissionTemplate, lazyload, userSubmissionTemplate} from './src/pages/dataSubmission.js';
+import { dataSubmissionTemplate, lazyload, userSubmissionsView, userSubmissionTemplate} from './src/pages/dataSubmission.js';
 import { dataSummary, dataSummaryMissingTemplate, dataSummaryStatisticsTemplate } from './src/pages/dataExploration.js';
 import { dataAccess as dataRequestTemplate, dataAccessNotSignedIn, dataForm, dataApproval, formSection, approveRejectSection, daccSection, chairSection, chairFileView, daccFileView, formSectionOther, formFunctions } from './src/pages/dataRequest.js';
 import { checkAccessTokenValidity, loginAppDev, loginObs, loginAppEpisphere, logOut, loginAppProd } from './src/manageAuthentication.js';
@@ -56,7 +56,7 @@ export const confluence = async () => {
         }
         navBarOptions.innerHTML = navBarMenutemplate();
         document.getElementById('logOutBtn').addEventListener('click', logOut);
-        const viewUserSubmissionElement = document.getElementById('userSubmissionsBtn');
+        const viewUserSubmissionElement = document.getElementById('userSubmissions');
 
         const dataSubmissionElement = document.getElementById('dataSubmission');
         const dataSummaryElement = document.getElementById('dataSummary');
@@ -70,14 +70,7 @@ export const confluence = async () => {
         // const platformTutorialElement = document.getElementById('platformTutorial');
         // const dataAnalysisElement = document.getElementById('dataAnalysis');
 
-        viewUserSubmissionElement.addEventListener('click', async() => {
-            showAnimation();
-            // assignNavbarActive(viewUserSubmissionElement, 1)
-            document.title = 'BCRPP - Your Submissions';
-            // confluenceDiv.innerHTML = await userSubmissionTemplate();
-            userSubmissionTemplate();
-            hideAnimation();
-        })
+        
         dataSubmissionElement.addEventListener('click', async () => {
             if (dataSubmissionElement.classList.contains('navbar-active')) return;
             showAnimation();
@@ -120,7 +113,7 @@ export const confluence = async () => {
             dataSummarySubsetElement.addEventListener('click', () => {
                 if (dataSummarySubsetElement.classList.contains('navbar-active')) return;
                 const confluenceDiv = document.getElementById('confluenceDiv');
-                // showAnimation();
+                showAnimation();
                 assignNavbarActive(dataSummarySubsetElement, 1);
                 document.title = 'BCRPP - Subset Statistics';
                 confluenceDiv.innerHTML = dataSummary('Subset Statistics', false, true, true);
@@ -128,6 +121,28 @@ export const confluence = async () => {
                 removeActiveClass('nav-link', 'active');
                 document.querySelectorAll('[href="#data_exploration/subset"]')[0].classList.add('active');
                 dataSummaryMissingTemplate();
+            })
+        }
+        if(viewUserSubmissionElement){
+            viewUserSubmissionElement.addEventListener('click', async() => {
+                if (viewUserSubmissionElement.classList.contains('navbar-active')) return;
+                const confluenceDiv = document.getElementById('confluenceDiv');
+                showAnimation();
+                assignNavbarActive(viewUserSubmissionElement, 1);
+                document.title = 'BCRPP - Your Submissions';
+                // confluenceDiv.innerHTML = dataSummary('Data Dictionary', true, false, false);
+                confluenceDiv.innerHTML = userSubmissionTemplate('Your Submissions');
+                // addEventUpdateSummaryStatsData();
+                removeActiveClass('nav-link', 'active');
+                userSubmissionsView();
+                // console.log(document.querySelectorAll('[href="#data_exploration/dictionary"]'));//[1].classList.add('active');
+                // dataDictionaryTemplate();
+                // showAnimation();
+                // // assignNavbarActive(viewUserSubmissionElement, 1)
+                // document.title = 'BCRPP - Your Submissions';
+                // // confluenceDiv.innerHTML = await userSubmissionTemplate();
+                // userSubmissionTemplate();
+                hideAnimation();
             })
         }
         if(dataDictionaryElement){
@@ -323,6 +338,7 @@ const manageRouter = async () => {
     document.querySelector("[role='contentinfo']").innerHTML = footerTemplate();
     if(localStorage.parms !== undefined) return;
     const hash = decodeURIComponent(window.location.hash);
+    console.log(hash);
     if(!document.getElementById('navBarBtn').classList.contains('collapsed') && document.getElementById('navbarToggler').classList.contains('show')) document.getElementById('navBarBtn').click();
     if(hash === '#home'){
         const element = document.getElementById('homePage');
@@ -428,14 +444,22 @@ const manageRouter = async () => {
         document.querySelectorAll('[href="#data_exploration/dictionary"]')[1].classList.add('active');
         dataDictionaryTemplate();
     }
-    else if (hash === '#data_exploration/dictionary') {
-        const viewUserSubmissionElement = document.getElementById('userSubmissions')
-        if (viewUserSubmissionElement.classList.contains('navbar-active')) return;
+    else if (hash === '#userSubmissions') {
+        const viewUserSubmissionElement = document.getElementById('userSubmissions');
+        if (!viewUserSubmissionElement || viewUserSubmissionElement.classList.contains('navbar-active')) return;
         showAnimation();
-        // assignNavbarActive(viewUserSubmissionElement, 1)
+        assignNavbarActive(viewUserSubmissionElement, 1);
         document.title = 'BCRPP - Your Submissions';
-        // confluenceDiv.innerHTML = await userSubmissionTemplate();
-        userSubmissionTemplate();
+        userSubmissionTemplate('Your Submissions');
+        removeActiveClass('nav-link', 'active');
+        // userSubmissionsView();
+        // const viewUserSubmissionElement = document.getElementById('userSubmissions')
+        // if (viewUserSubmissionElement.classList.contains('navbar-active')) return;
+        // showAnimation();
+        // // assignNavbarActive(viewUserSubmissionElement, 1)
+        // document.title = 'BCRPP - Your Submissions';
+        // // confluenceDiv.innerHTML = await userSubmissionTemplate();
+        // userSubmissionTemplate();
         hideAnimation();
     }
 
@@ -446,6 +470,7 @@ const manageHash = async () => {
     document.querySelector("[role='contentinfo']").innerHTML = footerTemplate();
     if(localStorage.parms === undefined) return;
     const hash = decodeURIComponent(window.location.hash);
+    console.log(hash);
     if(!document.getElementById('navBarBtn').classList.contains('collapsed') && document.getElementById('navbarToggler').classList.contains('show')) document.getElementById('navBarBtn').click();
     if(hash === '#data_exploration/summary') {
         const element = document.getElementById('dataSummary');
@@ -459,6 +484,11 @@ const manageHash = async () => {
     }
     else if(hash === '#data_exploration/dictionary') {
         const element = document.getElementById('dataDictionary');
+        if(!element) return;
+        element.click()
+    }
+    else if (hash === '#userSubmissions') {
+        const element = document.getElementById('userSubmissions');
         if(!element) return;
         element.click()
     }
@@ -515,10 +545,7 @@ const manageHash = async () => {
         const element = document.getElementById('logOutBtn');
         element.click();
     }
-    else if (hash === '#userSubmissions') {
-        const element = document.getElementById('userSubmissionsBtn');
-        element.click();
-    }
+    
     else if(hash === '#home'){
         const element = document.getElementById('homePage');
         if(!element) return;
