@@ -294,7 +294,7 @@ export async function userSubmissionTemplate(pageHeader) {
 
     document.getElementById('confluenceDiv').innerHTML = template;
 
-    userSubmissionFiles(files)
+    userSubmissionFiles(files);
 
     for (const element of files) {
         document.getElementById(`study${element.file.id}`).addEventListener('click', showCommentsDropDown(element.file.id))
@@ -327,7 +327,7 @@ export async function userSubmissionTemplate(pageHeader) {
         header.addEventListener('click', (e) => {
             const sortDirection = header.classList.contains('header-sort-asc');
             console.log(sortDirection);
-            sortTableByColumn(table, index, !sortDirection);
+            sortUserSubmissions(table, index, !sortDirection);
         });
     });
 
@@ -335,12 +335,12 @@ export async function userSubmissionTemplate(pageHeader) {
     userSubmissionFilters(files);
     Array.from(document.getElementsByClassName('filter-var')).forEach(el => {
         el.addEventListener('click', () => {
-            filterCheckBox(files);
+            filterUserSubmissions(files);
         })
     })
     const input = document.getElementById('searchDataDictionary');
     input.addEventListener('input', () => {
-        filterCheckBox(files);
+        filterUserSubmissions(files);
     })
 
 
@@ -475,7 +475,7 @@ function userSubmissionFilters(files) {
 
 }
 
-function sortTableByColumn(table, column, ascending = true) {
+function sortUserSubmissions(table, column, ascending = true) {
     const direction = ascending ? 1 : -1;
     const rows = Array.from(document.getElementsByClassName('filedata'));
 
@@ -533,7 +533,7 @@ function sortTableByColumn(table, column, ascending = true) {
 
 }
 
-function filterCheckBox(data) {
+function filterUserSubmissions(data) {
     //Get all the elements
     const rows = Array.from(document.getElementsByClassName('filedata'));
 
