@@ -526,10 +526,9 @@ export const formSection = async (activeTab, showDescripton) => {
 
               <p><u><b>Core Covariate, Mammography and Incident Breast Cancer Data Requested</b></u></p>
               <div class="input-group">
-                <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables requested from BCRPP, broken down into three domains (tabs on the data dictionary): 
-                CORE covariates and risk factors (currently available only at cohort baseline), MMD mammographic density, and BRCA incident breast cancer data.
-                Data availability and descriptive statistics can be explored via the <a href="#data_exploration/summary">Data menu </a> on the BCRPP portal. If data from a particular domain are requested,
-                all variables from that domain will be provided. Please list the variables to be included in analyses (along with a brief justification) in the following boxes.</p>
+                <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables shared by cohorts participating in the BCRPP. 
+                Data availability and descriptive statistics can be explored via the <a href="#data_exploration/summary">Explore Data</a> tool. If data from a particular category is requested,
+                all variables from that category will be provided.</p>
               </div>
               
               <div class="input-group">
