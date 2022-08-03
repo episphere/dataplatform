@@ -528,7 +528,7 @@ export const formSection = async (activeTab, showDescripton) => {
               <div class="input-group">
                 <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables requested from BCRPP, broken down into three domains (tabs on the data dictionary): 
                 CORE covariates and risk factors (currently available only at cohort baseline), MMD mammographic density, and BRCA incident breast cancer data.
-                Data availability and descriptive statistics can be explored via the <a href="#data_exploration/subset">Data menu </a> on the BCRPP portal. If data from a particular domain are requested,
+                Data availability and descriptive statistics can be explored via the <a href="#data_exploration/summary">Data menu </a> on the BCRPP portal. If data from a particular domain are requested,
                 all variables from that domain will be provided. Please list the variables to be included in analyses (along with a brief justification) in the following boxes.</p>
               </div>
               
@@ -591,11 +591,10 @@ export const formSection = async (activeTab, showDescripton) => {
                 <label>
                   <input id="ibcvarv" name="ibcvarv" type="checkbox" value="ibcvarv"/>
                   Check All
-              </label>
+                </label>
               </div>
 
               <div class="input-group">
-
                 <ul class="form" id='ibcvarlist'>
                   <div class="inline-field">
                     <input id="diag" name="ibcvar" type="checkbox" value="Diagnostic"/>
@@ -609,26 +608,25 @@ export const formSection = async (activeTab, showDescripton) => {
                 </ul>
               </div>
 
+
+
               <div class="input-group">
                 <label for="mmdvar"><b>Mammographic Density</b></label>
                 <label>
                   <input id="mmdvarv" name="mmdvarv" type="checkbox" value="Mammographic Density"/>
-                  Check
                 </label>
               </div>
 
               <div class="input-group">
-                <p>By default, data from all participating cohorts will be requested. If you wish to only select data from a subset of cohorts, 
-                please list them here with a justification for the restriction. Proposals only requesting data from a single cohort will not be approved. 
-                If you are interested in only analyzing data froma particular cohort, please contact that cohort directly.</p>
+                <p>Select cohorts from which data is being requested. Proposals only requesting data from a single cohort will not be approved. If you are interested in only analyzing data from a particular cohort, please contact that cohort directly. Information on cohorts can be found <a href="#about/description">here</a>.</p>
+                <label for="reqcoh"><b>Requested Cohorts</b></label>
+                <label>
+                  <input id="reqcohv" name="reqcohv" type="checkbox" value="reqcohv"/>
+                  Check All
+                </label>
               </div>
 
               <div class="input-group">
-                <label for="reqcoh"><b>Requested Cohorts</b> <i>(please check all boxes that apply)</i></label>
-              </div>
-
-              <div class="input-group">
-
                 <ul class="form" id='reqcohlist'>
                   <div class="inline-field">
                     <input id="CSDLH" name="reqcoh" type="checkbox" value="CSDLH"/>
@@ -2409,10 +2407,10 @@ export function viewFinalDecisionFilesColumns() {
   return `
   <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
     <div class="col-md-3 text-left font-bold ws-nowrap header-sortable">Concept Name <!--button class="transparent-btn sort-column" data-column-name="Concept name"><i class="fas fa-sort"></i></button--></div>
-    <div class="col-md-3 text-left font-bold ws-nowrap header-sortable">Submitted By <!--button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Submitted By <!--button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button--></div>
     <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Submission Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
     <div class="col-md-1 text-left font-bold ws-nowrap header-sortable">Decision<!--button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button--></div>
-    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Decision Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Decision Date<!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
   </div>`;
 
 }
@@ -2432,7 +2430,7 @@ export function viewFinalDecisionFiles(files) {
     <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
         <div class="row">
             <div class="col-md-3 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
-            <div class="col-md-3 text-left">${fileInfo.created_by.name}</div>
+            <div class="col-md-2 text-left">${fileInfo.created_by.name}</div>
             <div class="col-md-2 text-left">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
             <div class="col-md-1 text-center">${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success">Accepted</h6>' : fileInfo.parent.name === 'Denied' ? '<h6 class="badge badge-pill badge-danger">Denied</h6>': '<h6 class="badge badge-pill badge-warning">Chair Review</h6>'}</div>
             <div class="col-md-2 text-left">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
@@ -2477,7 +2475,7 @@ export function viewFinalDecisionFiles(files) {
 function filterSection(files) {
   //Get all possible values for filters (Submitted By and Decision)
   let template = '';
-  const submitterFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.created_by.name)])];
+  // const submitterFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.created_by.name)])];
   const decisionFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.parent.name)])];
   template += `<div class="main-summary-row">
   <div style="width: 100%;">
@@ -2495,20 +2493,20 @@ function filterSection(files) {
   <div style="width: 100%;">
       <div class="form-group" margin:0px>
    `;
-  if (submitterFilterButtons.length !== 0) {
-    template += `       
-     <label class="filter-label font-size-13" for="variableTypeList">Submitter</label>
-     <ul class="remove-padding-left font-size-15 allow-overflow" id="submitterFilterList"> </ul>`;
-  }
-  let submitterTemp = '';
-  submitterFilterButtons.forEach((submitter, index) => {
-    submitterTemp += `
-    <li class="filter-list-item">
-      <input type="checkbox" data-variable-type="${submitter}" name='submitter_${submitter}' id="submitter${index}" value='${submitter}' class="filter-var" style="margin-left: 1px !important;" data-variable-column='Submitter'>
-      <label for="label${submitter}" class="sub-category" title="${submitter}">${submitter}</label>
-      `;
+  // if (submitterFilterButtons.length !== 0) {
+  //   template += `       
+  //    <label class="filter-label font-size-13" for="variableTypeList">Submitter</label>
+  //    <ul class="remove-padding-left font-size-15 allow-overflow" id="submitterFilterList"> </ul>`;
+  // }
+  // let submitterTemp = '';
+  // submitterFilterButtons.forEach((submitter, index) => {
+  //   submitterTemp += `
+  //   <li class="filter-list-item">
+  //     <input type="checkbox" data-variable-type="${submitter}" name='submitter_${submitter}' id="submitter${index}" value='${submitter}' class="filter-var" style="margin-left: 1px !important;" data-variable-column='Submitter'>
+  //     <label for="label${submitter}" class="sub-category" title="${submitter}">${submitter}</label>
+  //     `;
 
-  });
+  // });
   if (decisionFilterButtons.length !== 0) {
     template += `       
     <label class="filter-label font-size-13" for="variableTypeList">Decision</label>
@@ -2525,7 +2523,7 @@ function filterSection(files) {
   });
 
   document.getElementById('filterData').innerHTML = template;
-  document.getElementById('submitterFilterList').innerHTML = submitterTemp;
+  //document.getElementById('submitterFilterList').innerHTML = submitterTemp;
   document.getElementById('decisionFilterList').innerHTML = decisionFilterTemp;
 
 }
@@ -2547,6 +2545,19 @@ export const formFunctions = () => {
 
   document.getElementById('ibcvarv').addEventListener('click', (e) => {
     const inputList = document.getElementById('ibcvarlist').getElementsByTagName('input');
+
+    if (e.target.checked) {
+      for (const element of inputList) {
+        element.checked = true;
+      }
+    } else {
+      for (const element of inputList) {
+        element.checked = false;
+      }
+    }
+  });
+  document.getElementById('reqcohv').addEventListener('click', (e) => {
+    const inputList = document.getElementById('reqcohlist').getElementsByTagName('input');
 
     if (e.target.checked) {
       for (const element of inputList) {
