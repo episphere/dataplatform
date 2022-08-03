@@ -782,7 +782,7 @@ export const formSection = async (activeTab, showDescripton) => {
                   <textarea id="authorship" name="authorship" rows="4" cols="65" required></textarea>
                 </div>
                 
-                <button type="submit" id="submitFormButton" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+                <button type="submit" id="submitFormButton" class="buttonsubmit"> 
                   <span class="buttonsubmit__text"> Send Form </span>
                 </button>
               </form>
@@ -1835,6 +1835,7 @@ export const dataForm = async () => {
 
   async function handleFormSubmit(eventtest) {
     const btn = document.activeElement;
+    btn.classList.toggle("buttonsubmit--loading");
     btn.disabled = true;
     eventtest.preventDefault();
 
