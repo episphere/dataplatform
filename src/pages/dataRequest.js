@@ -2398,9 +2398,10 @@ export async function viewFinalDecisionFilesTemplate(files) {
 
   document.getElementById('decided').innerHTML = template;
 
-  viewFinalDecisionFiles(filesInfo);
+  await viewFinalDecisionFiles(filesInfo);
   for (const file of filesInfo) {
     document.getElementById(`study${file.id}`).addEventListener('click', showCommentsDropDown(file.id))
+
     // e.stopPropagation();
     // document.getElementById(`study${file.id}`).addEventListener('click', (e) => {
     //     showPreview(file.id, `filePreview${file.id}` );
@@ -2413,6 +2414,7 @@ export async function viewFinalDecisionFilesTemplate(files) {
     btn.addEventListener('click', (e) => {
       // e.stopPropagation();
       console.log('Modal popping up');
+      btn.dataset.target = '#bcrppPreviewerModal';
       const header = document.getElementById('bcrppPreviewerModalHeader');
       const body = document.getElementById('bcrppPreviewerModalBody');
       header.innerHTML = `<h5 class="modal-title">File preview</h5>
