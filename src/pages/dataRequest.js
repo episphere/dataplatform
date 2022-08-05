@@ -517,9 +517,27 @@ export const formSection = async (activeTab, showDescripton) => {
                 <label><input id="confirmation" name="confirmation" type="checkbox" value="Yes" required/><b> Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b></label>
               </div>
 
+              <br>
+
+              <p><u><b>Project Description</b></u></p>
+
               <div class="input-group">
-                <label for="background"><b>Proposal Description</b> <i>Please provide a concise description of Background, Aims, and Analysis Plan (max. two pages).</i></label>
-                <textarea id="background" name="background" rows="4" cols="65" placeholder="Provide enough detail so contributing cohorts can assess whether Aims (i) align with participant consents and (ii) overlap with other cohort projects. Please list all planned analyses." required></textarea>
+              <p>Please provide a concise description of Background, Aims, and Analysis Plan. Provide enough detail so contributing cohorts can assess whether Aims (i) align with participant consents and (ii) overlap with other cohort projects. Please list all planned analyses.</p>
+            </div>
+
+              <div class="input-group">
+                <label for="background"><b>Background</b></label>
+                <textarea id="background" name="background" rows="4" cols="65" required></textarea>
+              </div>
+
+              <div class="input-group">
+                <label for="aims"><b>Aims</b></label>
+                <textarea id="aims" name="aims" rows="4" cols="65" required> </textarea>
+              </div>
+
+              <div class="input-group">
+                <label for="analyplan"><b>Analysis Plan</b></label>
+                <textarea id="analyplan" name="analyplan" rows="4" cols="65" required> </textarea>
               </div>
 
               <br>
@@ -606,8 +624,6 @@ export const formSection = async (activeTab, showDescripton) => {
                   </div>
                 </ul>
               </div>
-
-
 
               <div class="input-group">
                 <label for="mmdvar"><b>Mammographic Density</b></label>
@@ -775,10 +791,13 @@ export const formSection = async (activeTab, showDescripton) => {
               <br>
               <p><u><b>Authorship</b></u></p>
                 <div class="input-group">
-                  <label for="authorship">Please confirm that you acknowledge the intention to include representatives of the 
+                  <label for="authconf"><input id="authconf" name="authconf" type="checkbox" value="Yes" required/> Please confirm that you acknowledge the intention to include representatives of the 
                   contributing cohorts as co-authors and that you will provide contributing cohorts 30 days to review the draft manuscript 
-                  before submission (per section 3.4 of the BCRPP Recipient DTA). Please include any special considerations you would like to bring to the DACC’s attention.</label>
-                  <textarea id="authorship" name="authorship" rows="4" cols="65" required></textarea>
+                  before submission (per section 3.4 of the BCRPP Recipient DTA). </label>
+                  
+                  <label for="Authorship"><i>Please include any special considerations you would like to bring to the DACC’s attention.</i></label>
+
+                  <textarea id="authorship" name="authorship" rows="4" cols="65"></textarea>
                 </div>
                 
                 <button type="submit" id="submitFormButton" class="buttonsubmit"> 
@@ -2053,9 +2072,35 @@ export const dataForm = async () => {
             heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
             children: [new docx.TextRun({
-              text: "Proposal Description: "
+              text: "Background: "
             }), new docx.TextRun({
               text: jsondata.background,
+              bold: false
+            })],
+            spacing: {
+              after: 150
+            },
+          }),
+          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
+            alignment: docx.AlignmentType.START,
+            children: [new docx.TextRun({
+              text: "Aims: "
+            }), new docx.TextRun({
+              text: jsondata.aims,
+              bold: false
+            })],
+            spacing: {
+              after: 150
+            },
+          }),
+          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
+            alignment: docx.AlignmentType.START,
+            children: [new docx.TextRun({
+              text: "Analysis Plan: "
+            }), new docx.TextRun({
+              text: jsondata.analyplan,
               bold: false
             })],
             spacing: {
@@ -2353,9 +2398,10 @@ export async function viewFinalDecisionFilesTemplate(files) {
 
   document.getElementById('decided').innerHTML = template;
 
-  viewFinalDecisionFiles(filesInfo);
+  await viewFinalDecisionFiles(filesInfo);
   for (const file of filesInfo) {
     document.getElementById(`study${file.id}`).addEventListener('click', showCommentsDropDown(file.id))
+
     // e.stopPropagation();
     // document.getElementById(`study${file.id}`).addEventListener('click', (e) => {
     //     showPreview(file.id, `filePreview${file.id}` );
@@ -2368,6 +2414,7 @@ export async function viewFinalDecisionFilesTemplate(files) {
     btn.addEventListener('click', (e) => {
       // e.stopPropagation();
       console.log('Modal popping up');
+      btn.dataset.target = '#bcrppPreviewerModal';
       const header = document.getElementById('bcrppPreviewerModalHeader');
       const body = document.getElementById('bcrppPreviewerModalBody');
       header.innerHTML = `<h5 class="modal-title">File preview</h5>
