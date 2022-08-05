@@ -625,8 +625,6 @@ export const formSection = async (activeTab, showDescripton) => {
                 </ul>
               </div>
 
-
-
               <div class="input-group">
                 <label for="mmdvar"><b>Mammographic Density</b></label>
                 <label>
@@ -793,10 +791,13 @@ export const formSection = async (activeTab, showDescripton) => {
               <br>
               <p><u><b>Authorship</b></u></p>
                 <div class="input-group">
-                  <label for="authorship">Please confirm that you acknowledge the intention to include representatives of the 
+                  <label for="authconf"><input id="authconf" name="authconf" type="checkbox" value="Yes" required/> Please confirm that you acknowledge the intention to include representatives of the 
                   contributing cohorts as co-authors and that you will provide contributing cohorts 30 days to review the draft manuscript 
-                  before submission (per section 3.4 of the BCRPP Recipient DTA). Please include any special considerations you would like to bring to the DACC’s attention.</label>
-                  <textarea id="authorship" name="authorship" rows="4" cols="65" required></textarea>
+                  before submission (per section 3.4 of the BCRPP Recipient DTA). </label>
+                  
+                  <label for="Authorship"><i>Please include any special considerations you would like to bring to the DACC’s attention.</i></label>
+
+                  <textarea id="authorship" name="authorship" rows="4" cols="65"></textarea>
                 </div>
                 
                 <button type="submit" id="submitFormButton" class="buttonsubmit"> 
