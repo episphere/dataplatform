@@ -1170,6 +1170,7 @@ export const chairFileView = async () => {
     showPreview(filesincomplete[0].id);
     document.getElementById('toBeCompletedselectedDoc').children[0].selected = true;
     document.getElementById('boxFilePreview').classList.remove('col-8');
+    document.getElementById('fileComments').style.display = 'none';
   } else {
     // if (typeof classList === 'undefined') {
     //   console.log('No files exist');
@@ -2453,11 +2454,11 @@ export async function viewFinalDecisionFilesTemplate(files) {
 export function viewFinalDecisionFilesColumns() {
   return `
   <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
-    <div class="col-md-3 text-left font-bold ws-nowrap header-sortable">Concept Name <!--button class="transparent-btn sort-column" data-column-name="Concept name"><i class="fas fa-sort"></i></button--></div>
-    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Submitted By <!--button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button--></div>
-    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Submission Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
-    <div class="col-md-1 text-left font-bold ws-nowrap header-sortable">Decision<!--button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button--></div>
-    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Decision Date<!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-3 text-left font-bold ws-nowrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept Name"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Submitted By <button class="transparent-btn sort-column" data-column-name="Submitted By"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Submission Date"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-1 text-left font-bold ws-nowrap header-sortable">Decision<button class="transparent-btn sort-column" data-column-name="Decision"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Decision Date<button class="transparent-btn sort-column" data-column-name="Decision Date"><i class="fas fa-sort"></i></button></div>
   </div>`;
 
 }
@@ -2495,17 +2496,8 @@ export function viewFinalDecisionFiles(files) {
                     </div>
                     </div>
                     <div class="row mb-1 m-0">
-                    <div class="col-md-2 font-bold">
-                    Comments
-                    </div>
-                    </div>
-                    <div class="row mb-1 m-0">
                       <div id='file${fileId}Comments' class='col-12'></div>
                     </div>
-                    <!--div class='row'>
-                      <div id='filePreview${fileId}' class="col-8 preview-container"></div>
-                      <div id='file${fileId}Comments' class='col-4 mt-2'></div>
-                    </div-->
         </div>
     </div>
     </div>

@@ -12,8 +12,10 @@ import {
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
 export const emailforChair = ['garciacm@nih.gov','kopchickbp@nih.gov', 'ahearntu@nih.gov','Roger.Milne@cancervic.org.au']; 
+// export const emailforChair = ['wraynr@nih.gov'];
 
-export const emailforDACC = ['ahearntu@nih.gov', 'garciacm@nih.gov', 'mukopadhyays2@nih.gov','wraynr@nih.gov', 'troisir@nih.gov'];//,  'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
+export const emailforDACC = ['ahearntu@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov', 'troisir@nih.gov'];//, 'mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
+// export const emailforDACC = ['wraynr@nih.gov'];
 
 export const publicDataFileId = 697309514903; //Unknown
 
@@ -1075,16 +1077,16 @@ export async function showCommentsDropDown(id) {
 
     let comments = JSON.parse(response).entries;
     if (comments.length === 0){
-        const dropdownSection = document.getElementById(`study${id}`);
-        dropdownSection.innerHTML = ` <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
-        <div class="row mb-1 m-0">
-            No comments to show
-        </div>
-        </div>`;
+        const dropdownSection = document.getElementById(`file${id}Comments`);
+        console.log(dropdownSection);
+        dropdownSection.innerHTML = `
+              
+                    No Comments to show.
+        `;
 
         return;
     }
-    let template = `
+    let template = ` 
     <div class='container-fluid'>`;
     const user = JSON.parse(localStorage.parms).login;
 
