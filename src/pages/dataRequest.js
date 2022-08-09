@@ -517,19 +517,36 @@ export const formSection = async (activeTab, showDescripton) => {
                 <label><input id="confirmation" name="confirmation" type="checkbox" value="Yes" required/><b> Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b></label>
               </div>
 
+              <br>
+
+              <p><u><b>Project Description</b></u></p>
+
               <div class="input-group">
-                <label for="background"><b>Proposal Description</b> <i>Please provide a concise description of Background, Aims, and Analysis Plan (max. two pages).</i></label>
-                <textarea id="background" name="background" rows="4" cols="65" placeholder="Provide enough detail so contributing cohorts can assess whether Aims (i) align with participant consents and (ii) overlap with other cohort projects. Please list all planned analyses." required></textarea>
+              <p>Please provide a concise description of Background, Aims, and Analysis Plan. Provide enough detail so contributing cohorts can assess whether Aims (i) align with participant consents and (ii) overlap with other cohort projects. Please list all planned analyses.</p>
+            </div>
+
+              <div class="input-group">
+                <label for="background"><b>Background</b></label>
+                <textarea id="background" name="background" rows="4" cols="65" required></textarea>
+              </div>
+
+              <div class="input-group">
+                <label for="aims"><b>Aims</b></label>
+                <textarea id="aims" name="aims" rows="4" cols="65" required> </textarea>
+              </div>
+
+              <div class="input-group">
+                <label for="analyplan"><b>Analysis Plan</b></label>
+                <textarea id="analyplan" name="analyplan" rows="4" cols="65" required> </textarea>
               </div>
 
               <br>
 
               <p><u><b>Core Covariate, Mammography and Incident Breast Cancer Data Requested</b></u></p>
               <div class="input-group">
-                <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables requested from BCRPP, broken down into three domains (tabs on the data dictionary): 
-                CORE covariates and risk factors (currently available only at cohort baseline), MMD mammographic density, and BRCA incident breast cancer data.
-                Data availability and descriptive statistics can be explored via the <a href="#data_exploration/subset">Data menu </a> on the BCRPP portal. If data from a particular domain are requested,
-                all variables from that domain will be provided. Please list the variables to be included in analyses (along with a brief justification) in the following boxes.</p>
+                <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables shared by cohorts participating in the BCRPP. 
+                Data availability and descriptive statistics can be explored via the <a href="#data_exploration/summary">Explore Data</a> tool. If data from a particular category is requested,
+                all variables from that category will be provided.</p>
               </div>
               
               <div class="input-group">
@@ -591,11 +608,10 @@ export const formSection = async (activeTab, showDescripton) => {
                 <label>
                   <input id="ibcvarv" name="ibcvarv" type="checkbox" value="ibcvarv"/>
                   Check All
-              </label>
+                </label>
               </div>
 
               <div class="input-group">
-
                 <ul class="form" id='ibcvarlist'>
                   <div class="inline-field">
                     <input id="diag" name="ibcvar" type="checkbox" value="Diagnostic"/>
@@ -613,22 +629,19 @@ export const formSection = async (activeTab, showDescripton) => {
                 <label for="mmdvar"><b>Mammographic Density</b></label>
                 <label>
                   <input id="mmdvarv" name="mmdvarv" type="checkbox" value="Mammographic Density"/>
-                  Check
                 </label>
               </div>
 
               <div class="input-group">
-                <p>By default, data from all participating cohorts will be requested. If you wish to only select data from a subset of cohorts, 
-                please list them here with a justification for the restriction. Proposals only requesting data from a single cohort will not be approved. 
-                If you are interested in only analyzing data froma particular cohort, please contact that cohort directly.</p>
+                <p>Select cohorts from which data is being requested. Proposals only requesting data from a single cohort will not be approved. If you are interested in only analyzing data from a particular cohort, please contact that cohort directly. Information on cohorts can be found <a href="#about/description">here</a>.</p>
+                <label for="reqcoh"><b>Requested Cohorts</b></label>
+                <label>
+                  <input id="reqcohv" name="reqcohv" type="checkbox" value="reqcohv"/>
+                  Check All
+                </label>
               </div>
 
               <div class="input-group">
-                <label for="reqcoh"><b>Requested Cohorts</b> <i>(please check all boxes that apply)</i></label>
-              </div>
-
-              <div class="input-group">
-
                 <ul class="form" id='reqcohlist'>
                   <div class="inline-field">
                     <input id="CSDLH" name="reqcoh" type="checkbox" value="CSDLH"/>
@@ -778,13 +791,16 @@ export const formSection = async (activeTab, showDescripton) => {
               <br>
               <p><u><b>Authorship</b></u></p>
                 <div class="input-group">
-                  <label for="authorship">Please confirm that you acknowledge the intention to include representatives of the 
+                  <label for="authconf"><input id="authconf" name="authconf" type="checkbox" value="Yes" required/> Please confirm that you acknowledge the intention to include representatives of the 
                   contributing cohorts as co-authors and that you will provide contributing cohorts 30 days to review the draft manuscript 
-                  before submission (per section 3.4 of the BCRPP Recipient DTA). Please include any special considerations you would like to bring to the DACC’s attention.</label>
-                  <textarea id="authorship" name="authorship" rows="4" cols="65" required></textarea>
+                  before submission (per section 3.4 of the BCRPP Recipient DTA). </label>
+                  
+                  <label for="Authorship"><i>Please include any special considerations you would like to bring to the DACC’s attention.</i></label>
+
+                  <textarea id="authorship" name="authorship" rows="4" cols="65"></textarea>
                 </div>
                 
-                <button type="submit" id="submitFormButton" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+                <button type="submit" id="submitFormButton" class="buttonsubmit"> 
                   <span class="buttonsubmit__text"> Send Form </span>
                 </button>
               </form>
@@ -1837,6 +1853,7 @@ export const dataForm = async () => {
 
   async function handleFormSubmit(eventtest) {
     const btn = document.activeElement;
+    btn.classList.toggle("buttonsubmit--loading");
     btn.disabled = true;
     eventtest.preventDefault();
 
@@ -1874,18 +1891,18 @@ export const dataForm = async () => {
         default: {
           heading1: {
             run: {
-              size: 26,
+              size: 22,
               bold: true,
               color: "#000000",
-              font: "Noto Sans",
+              font: "Verdana",
             },
           },
           heading2: {
             run: {
-              size: 22,
+              size: 18,
               bold: true,
               color: "#000000",
-              font: "Noto Sans",
+              font: "Verdana",
             },
           },
         },
@@ -2055,9 +2072,35 @@ export const dataForm = async () => {
             heading: docx.HeadingLevel.HEADING_2,
             alignment: docx.AlignmentType.START,
             children: [new docx.TextRun({
-              text: "Proposal Description: "
+              text: "Background: "
             }), new docx.TextRun({
               text: jsondata.background,
+              bold: false
+            })],
+            spacing: {
+              after: 150
+            },
+          }),
+          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
+            alignment: docx.AlignmentType.START,
+            children: [new docx.TextRun({
+              text: "Aims: "
+            }), new docx.TextRun({
+              text: jsondata.aims,
+              bold: false
+            })],
+            spacing: {
+              after: 150
+            },
+          }),
+          new docx.Paragraph({
+            heading: docx.HeadingLevel.HEADING_2,
+            alignment: docx.AlignmentType.START,
+            children: [new docx.TextRun({
+              text: "Analysis Plan: "
+            }), new docx.TextRun({
+              text: jsondata.analyplan,
               bold: false
             })],
             spacing: {
@@ -2355,9 +2398,10 @@ export async function viewFinalDecisionFilesTemplate(files) {
 
   document.getElementById('decided').innerHTML = template;
 
-  viewFinalDecisionFiles(filesInfo);
+  await viewFinalDecisionFiles(filesInfo);
   for (const file of filesInfo) {
     document.getElementById(`study${file.id}`).addEventListener('click', showCommentsDropDown(file.id))
+
     // e.stopPropagation();
     // document.getElementById(`study${file.id}`).addEventListener('click', (e) => {
     //     showPreview(file.id, `filePreview${file.id}` );
@@ -2370,6 +2414,7 @@ export async function viewFinalDecisionFilesTemplate(files) {
     btn.addEventListener('click', (e) => {
       // e.stopPropagation();
       console.log('Modal popping up');
+      btn.dataset.target = '#bcrppPreviewerModal';
       const header = document.getElementById('bcrppPreviewerModalHeader');
       const body = document.getElementById('bcrppPreviewerModalBody');
       header.innerHTML = `<h5 class="modal-title">File preview</h5>
@@ -2409,10 +2454,10 @@ export function viewFinalDecisionFilesColumns() {
   return `
   <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
     <div class="col-md-3 text-left font-bold ws-nowrap header-sortable">Concept Name <!--button class="transparent-btn sort-column" data-column-name="Concept name"><i class="fas fa-sort"></i></button--></div>
-    <div class="col-md-3 text-left font-bold ws-nowrap header-sortable">Submitted By <!--button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Submitted By <!--button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button--></div>
     <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Submission Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
     <div class="col-md-1 text-left font-bold ws-nowrap header-sortable">Decision<!--button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button--></div>
-    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Decision Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
+    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Decision Date<!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
   </div>`;
 
 }
@@ -2432,7 +2477,7 @@ export function viewFinalDecisionFiles(files) {
     <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
         <div class="row">
             <div class="col-md-3 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
-            <div class="col-md-3 text-left">${fileInfo.created_by.name}</div>
+            <div class="col-md-2 text-left">${fileInfo.created_by.name}</div>
             <div class="col-md-2 text-left">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
             <div class="col-md-1 text-center">${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success">Accepted</h6>' : fileInfo.parent.name === 'Denied' ? '<h6 class="badge badge-pill badge-danger">Denied</h6>': '<h6 class="badge badge-pill badge-warning">Chair Review</h6>'}</div>
             <div class="col-md-2 text-left">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
@@ -2477,7 +2522,7 @@ export function viewFinalDecisionFiles(files) {
 function filterSection(files) {
   //Get all possible values for filters (Submitted By and Decision)
   let template = '';
-  const submitterFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.created_by.name)])];
+  // const submitterFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.created_by.name)])];
   const decisionFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.parent.name)])];
   template += `<div class="main-summary-row">
   <div style="width: 100%;">
@@ -2495,20 +2540,20 @@ function filterSection(files) {
   <div style="width: 100%;">
       <div class="form-group" margin:0px>
    `;
-  if (submitterFilterButtons.length !== 0) {
-    template += `       
-     <label class="filter-label font-size-13" for="variableTypeList">Submitter</label>
-     <ul class="remove-padding-left font-size-15 allow-overflow" id="submitterFilterList"> </ul>`;
-  }
-  let submitterTemp = '';
-  submitterFilterButtons.forEach((submitter, index) => {
-    submitterTemp += `
-    <li class="filter-list-item">
-      <input type="checkbox" data-variable-type="${submitter}" name='submitter_${submitter}' id="submitter${index}" value='${submitter}' class="filter-var" style="margin-left: 1px !important;" data-variable-column='Submitter'>
-      <label for="label${submitter}" class="sub-category" title="${submitter}">${submitter}</label>
-      `;
+  // if (submitterFilterButtons.length !== 0) {
+  //   template += `       
+  //    <label class="filter-label font-size-13" for="variableTypeList">Submitter</label>
+  //    <ul class="remove-padding-left font-size-15 allow-overflow" id="submitterFilterList"> </ul>`;
+  // }
+  // let submitterTemp = '';
+  // submitterFilterButtons.forEach((submitter, index) => {
+  //   submitterTemp += `
+  //   <li class="filter-list-item">
+  //     <input type="checkbox" data-variable-type="${submitter}" name='submitter_${submitter}' id="submitter${index}" value='${submitter}' class="filter-var" style="margin-left: 1px !important;" data-variable-column='Submitter'>
+  //     <label for="label${submitter}" class="sub-category" title="${submitter}">${submitter}</label>
+  //     `;
 
-  });
+  // });
   if (decisionFilterButtons.length !== 0) {
     template += `       
     <label class="filter-label font-size-13" for="variableTypeList">Decision</label>
@@ -2525,7 +2570,7 @@ function filterSection(files) {
   });
 
   document.getElementById('filterData').innerHTML = template;
-  document.getElementById('submitterFilterList').innerHTML = submitterTemp;
+  //document.getElementById('submitterFilterList').innerHTML = submitterTemp;
   document.getElementById('decisionFilterList').innerHTML = decisionFilterTemp;
 
 }
@@ -2547,6 +2592,19 @@ export const formFunctions = () => {
 
   document.getElementById('ibcvarv').addEventListener('click', (e) => {
     const inputList = document.getElementById('ibcvarlist').getElementsByTagName('input');
+
+    if (e.target.checked) {
+      for (const element of inputList) {
+        element.checked = true;
+      }
+    } else {
+      for (const element of inputList) {
+        element.checked = false;
+      }
+    }
+  });
+  document.getElementById('reqcohv').addEventListener('click', (e) => {
+    const inputList = document.getElementById('reqcohlist').getElementsByTagName('input');
 
     if (e.target.checked) {
       for (const element of inputList) {
