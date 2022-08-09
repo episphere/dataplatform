@@ -371,10 +371,10 @@ export function userSubmissionsView(files) {
 function userSubmissionHeaders() {
     return `
     <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
-        <div class="col-md-4 text-center font-bold ws-nowrap header-sortable">Concept Name <!--button class="transparent-btn sort-column" data-column-name="Cohort name"><i class="fas fa-sort"></i></button--></div>
-        <div class="col-md-3 text-center font-bold ws-nowrap header-sortable">Status <!--button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button--></div>
-        <div class="col-md-3 text-center font-bold ws-nowrap header-sortable">Submission Date <!--button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button--></div>
-        <div class="col-md-1 text-center font-bold ws-nowrap header-sortable">Decision<!--button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button--></div>
+        <div class="col-md-4 text-center font-bold ws-nowrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Cohort name"><i class="fas fa-sort"></i></button></div>
+        <div class="col-md-3 text-center font-bold ws-nowrap header-sortable">Status <button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button></div>
+        <div class="col-md-3 text-center font-bold ws-nowrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button></div>
+        <div class="col-md-1 text-center font-bold ws-nowrap header-sortable">Decision<button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button></div>
     </div>`;
 }
 
@@ -521,6 +521,7 @@ function sortUserSubmissions(table, column, ascending = true) {
     //Remember how colmmn is sorted
     Array.from(table.querySelectorAll('.header-sortable')).forEach(header => {
         header.classList.remove('header-sort-asc', 'header-sort-desc');
+        Array.from(document.getElementsByClassName('sort-column')).forEach(btn => btn.remove());
     })
     console.log(direction);
     if (direction === 1) {
