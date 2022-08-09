@@ -397,10 +397,10 @@ function userSubmissionFiles(files) {
             <div id="study${element.file.id}" class="collapse" aria-labelledby="file${element.file.id}">
                         <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
                         <div class="row mb-1 m-0">
-                        <div class="col-md-2 font-bold">
-                        Comments
-                        </div>
-                        </div>
+                    <div class="col-12 font-bold">
+                    Concept: ${element.file.name}
+                    </div>
+                    </div>
                         <div class="row mb-1 m-0">
                           <div id='file${element.file.id}Comments' class='col-12'></div>
                         </div>
