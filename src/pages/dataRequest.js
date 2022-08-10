@@ -1567,8 +1567,8 @@ export const daccFileView = async () => {
             </ul>`;
 
   const filesincomplete = [],
-    filescompleted = [],
     filesreviewed = [];
+  let filescompleted = [];
   for (let obj of filearrayDACC) {
     let id = obj.id;
     let tasks = await getTaskList(id);
@@ -1711,6 +1711,8 @@ export const daccFileView = async () => {
     </div>`
   //}
   document.getElementById('daccFileView').innerHTML = template;
+
+  filescompleted = [...filearrayAccepted, ...filearrayDenied];
   viewFinalDecisionFilesTemplate(filescompleted);
   if (filesincomplete.length != 0) {
     switchFiles('dacctoBeCompleted');
@@ -2484,8 +2486,8 @@ export function viewFinalDecisionFiles(files) {
             <div class="col-lg-3 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
             <div class="col-lg-2 text-left">${fileInfo.created_by.name}</div>
             <div class="col-lg-2 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
-            <div class="col-lg-2 pl-6 text-right">${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success">Accepted</h6>' : fileInfo.parent.name === 'Denied' ? '<h6 class="badge badge-pill badge-danger">Denied</h6>': '<h6 class="badge badge-pill badge-warning">Chair Review</h6>'}</div>
-            <div class="col-lg-2 text-right">${new Date(fileInfo.modified_at).toDateString().substring(4,)}</div>
+            <div class="col-lg-2 pl-6 text-right">${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success">Accepted</h6>' : fileInfo.parent.name === 'Denied' ? '<h6 class="badge badge-pill badge-danger">Denied</h6>': '<h6 class="badge badge-pill badge-warning">Under Review</h6>'}</div>
+            <div class="col-lg-2 pl-6 text-right">${new Date(fileInfo.modified_at).toDateString().substring(4,)}</div>
             <div class="col-lg-1 text-right">
                 <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
                     <i class="fas fa-caret-down fa-2x"></i>
@@ -2520,21 +2522,23 @@ function filterSection(files) {
   let template = '';
   // const submitterFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.created_by.name)])];
   const decisionFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.parent.name)])];
-  template += `<div class="main-summary-row">
-  <div style="width: 100%;">
+  template += `
+  <div class='row'>
+    <div class='col-lg-7'>
       <div class="form-group" margin:0px>
-          <div class="input-group">
+          <div class="input-group ">
               <input type="search" class="form-control rounded" autocomplete="off" placeholder="Search min. 3 characters" aria-label="Search" id="searchDataDictionary" aria-describedby="search-addon" />
               <span class="input-group-text border-0 search-input">
                   <i class="fas fa-search"></i>
               </span>
+              
           </div>
+          
       </div>
+      
   </div>
-</div>
-<div class="main-summary-row">
-  <div style="width: 100%;">
-      <div class="form-group" margin:0px>
+  <div class='col-lg-5'>
+
    `;
   // if (submitterFilterButtons.length !== 0) {
   //   template += `       
@@ -2551,16 +2555,20 @@ function filterSection(files) {
 
   // });
   if (decisionFilterButtons.length !== 0) {
-    template += `       
-    <label class="filter-label font-size-13" for="variableTypeList">Decision</label>
-    <ul class="remove-padding-left font-size-15 allow-overflow" id="decisionFilterList"> </ul>`;
+    template += `
+    <label class="filter-label font-size-17 font-bold" for="variableTypeList">Decision</label>
+    <div class='row' id="decisionFilterList">
+    <!--ul class="remove-padding-left font-size-15 allow-overflow" id="decisionFilterList"--> </ul></div>`;
   }
   let decisionFilterTemp = '';
   decisionFilterButtons.forEach((decision, index) => {
+    if(decision === 'Chair Final Review'){
+      decision = 'Under Review';
+    }
     decisionFilterTemp += `
    <li class="filter-list-item">
      <input type="checkbox" data-variable-type="${decision}" name='decision${decision}' id="decision${index}" value='${decision}' class="filter-var" style="margin-left: 1px !important;" data-variable-column='Decision'>
-     <label for="label${decision}" class="sub-category" title="${decision}">${decision}</label>
+     <label for="label${decision}" class="sub-category px-1" title="${decision}">${decision}</label>
      `;
 
   });

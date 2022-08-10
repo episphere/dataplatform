@@ -521,7 +521,7 @@ function sortUserSubmissions(table, column, ascending = true) {
     //Remember how colmmn is sorted
     Array.from(table.querySelectorAll('.header-sortable')).forEach(header => {
         header.classList.remove('header-sort-asc', 'header-sort-desc');
-        document.getElementsByClassName('sort-column')[column].remove();
+        // document.getElementsByClassName('sort-column')[column].remove();
     })
     console.log(direction);
     if (direction === 1) {
