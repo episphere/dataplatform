@@ -1787,8 +1787,14 @@ export function sortTableByColumn(table, column, ascending = true) {
     //Remember how colmmn is sorted
     Array.from(table.querySelectorAll('.header-sortable')).forEach(header => {
         header.classList.remove('header-sort-asc', 'header-sort-desc');
-        Array.from(document.getElementsByClassName('sort-column')).forEach(btn => btn.remove());
+        
     })
+    // const columnIcons = document.getElementsByClassName('sort-column');
+    // let i = 0;
+    // while(columnIcons.length != 0){
+    //     columnIcons[i].remove();
+    //     i++;
+    // }
     console.log(direction);
     if (direction === 1) {
         console.log('Ascending');

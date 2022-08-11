@@ -2091,7 +2091,7 @@ ul.form {
     user-select: none;
 }
 
-.header-sort-asc::after {
+/* .header-sort-asc::after {
     content: '\25b4';
 }
 .header-sort-desc::after {
@@ -2102,7 +2102,7 @@ ul.form {
 .header-sort-desc::after {
     margin-left: .2rem;
     font-size: x-large;
-}
+} */
 
 .header-sortable:hover {
     text-decoration:none;

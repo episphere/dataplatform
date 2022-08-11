@@ -287,65 +287,63 @@ export async function userSubmissionTemplate(pageHeader) {
         template += '<div id="files"> </div>';
     } else {
         template += `
-                  No files to show.            
+                No files to show.           
         </div>
         </div>`
     }
 
     document.getElementById('confluenceDiv').innerHTML = template;
 
-    userSubmissionFiles(files);
+    if (files.length > 0){
+        userSubmissionFiles(files);
 
-    for (const element of files) {
-        document.getElementById(`study${element.file.id}`).addEventListener('click', showCommentsDropDown(element.file.id))
-        // e.stopPropagation();
-        // document.getElementById(`study${file.id}`).addEventListener('click', (e) => {
-        //     showPreview(file.id, `filePreview${file.id}` );
-        //     showCommentsDropDown(file.id);
-        // })
-    }
-
-    let btns = Array.from(document.querySelectorAll('.preview-file'));
-    btns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        for (const element of files) {
+            document.getElementById(`study${element.file.id}`).addEventListener('click', showCommentsDropDown(element.file.id))
             // e.stopPropagation();
-            console.log('Modal popping up');
-            const header = document.getElementById('bcrppPreviewerModalHeader');
-            const body = document.getElementById('bcrppPreviewerModalBody');
-            header.innerHTML = `<h5 class="modal-title">File preview</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>`;
-            const fileId = btn.dataset.fileId;
-            $('#bcrppPreviewerModal').modal('show');
-            showPreview(fileId, 'bcrppPreviewerModalBody');
-        })
-    })
-    const table = document.getElementById('decidedFiles');
-    const headers = table.querySelector(`.div-sticky`);
-    Array.from(headers.children).forEach((header, index) => {
-        header.addEventListener('click', (e) => {
-            const sortDirection = header.classList.contains('header-sort-asc');
-            console.log(sortDirection);
-            sortUserSubmissions(table, index, !sortDirection);
-        });
-    });
+            // document.getElementById(`study${file.id}`).addEventListener('click', (e) => {
+            //     showPreview(file.id, `filePreview${file.id}` );
+            //     showCommentsDropDown(file.id);
+            // })
+        }
 
-    //Filtering and Sorting
-    userSubmissionFilters(files);
-    Array.from(document.getElementsByClassName('filter-var')).forEach(el => {
-        el.addEventListener('click', () => {
+        let btns = Array.from(document.querySelectorAll('.preview-file'));
+        btns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // e.stopPropagation();
+                console.log('Modal popping up');
+                const header = document.getElementById('bcrppPreviewerModalHeader');
+                const body = document.getElementById('bcrppPreviewerModalBody');
+                header.innerHTML = `<h5 class="modal-title">File preview</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>`;
+                const fileId = btn.dataset.fileId;
+                $('#bcrppPreviewerModal').modal('show');
+                showPreview(fileId, 'bcrppPreviewerModalBody');
+            })
+        })
+        const table = document.getElementById('decidedFiles');
+        const headers = table.querySelector(`.div-sticky`);
+        Array.from(headers.children).forEach((header, index) => {
+            header.addEventListener('click', (e) => {
+                const sortDirection = header.classList.contains('header-sort-asc');
+                console.log(sortDirection);
+                sortUserSubmissions(table, index, !sortDirection);
+            });
+        });
+
+        //Filtering and Sorting
+        userSubmissionFilters(files);
+        Array.from(document.getElementsByClassName('filter-var')).forEach(el => {
+            el.addEventListener('click', () => {
+                filterUserSubmissions(files);
+            })
+        })
+        const input = document.getElementById('searchDataDictionary');
+        input.addEventListener('input', () => {
             filterUserSubmissions(files);
         })
-    })
-    const input = document.getElementById('searchDataDictionary');
-    input.addEventListener('input', () => {
-        filterUserSubmissions(files);
-    })
-
-
-
-
+    }
 }
 
 export function userSubmissionsView(files) {
@@ -521,7 +519,7 @@ function sortUserSubmissions(table, column, ascending = true) {
     //Remember how colmmn is sorted
     Array.from(table.querySelectorAll('.header-sortable')).forEach(header => {
         header.classList.remove('header-sort-asc', 'header-sort-desc');
-        Array.from(document.getElementsByClassName('sort-column')).forEach(btn => btn.remove());
+        // document.getElementsByClassName('sort-column')[column].remove();
     })
     console.log(direction);
     if (direction === 1) {

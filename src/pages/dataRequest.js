@@ -1567,8 +1567,8 @@ export const daccFileView = async () => {
             </ul>`;
 
   const filesincomplete = [],
-    filescompleted = [],
     filesreviewed = [];
+  let filescompleted = [];
   for (let obj of filearrayDACC) {
     let id = obj.id;
     let tasks = await getTaskList(id);
@@ -1657,14 +1657,16 @@ export const daccFileView = async () => {
 
   template += `<div class='tab-pane fade show active'
                 id='dacctoBeCompleted' role='tabpanel'
-              aria-labeledby='dacctoBeCompletedTab'>`;
+              aria-labeledby='dacctoBeCompletedTab'>
+              <a href="mailto:${emailforChair[0]}" id='email' class='btn btn-dark'>Send Email to Chair</a>`;
   template += renderFilePreviewDropdown(filesincomplete, 'dacctoBeCompleted');
 
   template += `<div class='tab-pane fade'
                 id='daccReview' role='tabpanel'
-                aria-labeledby='daccReviewTab'> `
+                aria-labeledby='daccReviewTab'>
+                <a href="mailto:${emailforChair[0]}" id='email' class='btn btn-dark'>Send Email to Chair</a> `
   template += renderFilePreviewDropdown(filesreviewed, 'daccReview');
-
+  
   template += `<div class='tab-pane fade' 
                 id='decided' role='tabpanel'
                 aria-labelledby='decidedTab'>
@@ -1709,6 +1711,8 @@ export const daccFileView = async () => {
     </div>`
   //}
   document.getElementById('daccFileView').innerHTML = template;
+
+  filescompleted = [...filearrayAccepted, ...filearrayDenied];
   viewFinalDecisionFilesTemplate(filescompleted);
   if (filesincomplete.length != 0) {
     switchFiles('dacctoBeCompleted');
@@ -2375,7 +2379,7 @@ export async function viewFinalDecisionFilesTemplate(files) {
     template += `
     <div id='decidedFiles'>
     <div class='row'>
-      <div class="col-xl-2 filter-column" id="summaryFilterSiderBar">
+      <div class="col-xl-12 filter-column" id="summaryFilterSiderBar">
           <div class="div-border white-bg align-left p-2">
               <div class="main-summary-row">
                   <div class="col-xl-12 pl-1 pr-0">
@@ -2385,7 +2389,9 @@ export async function viewFinalDecisionFilesTemplate(files) {
               </div>
           </div>
       </div>
-      <div class='col-xl-10 pr-0'>`;
+      </div>
+      <div class='row'>
+      <div class='col-xl-12 pr-0'>`;
 
     template += viewFinalDecisionFilesColumns();
 
@@ -2454,11 +2460,11 @@ export async function viewFinalDecisionFilesTemplate(files) {
 export function viewFinalDecisionFilesColumns() {
   return `
   <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
-    <div class="col-md-3 text-left font-bold ws-nowrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept Name"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Submitted By <button class="transparent-btn sort-column" data-column-name="Submitted By"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Submission Date"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-1 text-left font-bold ws-nowrap header-sortable">Decision<button class="transparent-btn sort-column" data-column-name="Decision"><i class="fas fa-sort"></i></button></div>
-    <div class="col-md-2 text-left font-bold ws-nowrap header-sortable">Decision Date<button class="transparent-btn sort-column" data-column-name="Decision Date"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-3 text-left font-bold ws-nowrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept Name"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-2 text-left font-bold ws-nowrap header-sortable">Submitted By <button class="transparent-btn sort-column" data-column-name="Submitted By"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-3 text-left font-bold ws-nowrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Submission Date"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-2 text-left font-bold ws-nowrap header-sortable">Decision<button class="transparent-btn sort-column" data-column-name="Decision"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-2 text-left font-bold ws-nowrap header-sortable">Decided On<button class="transparent-btn sort-column" data-column-name="Decision Date"><i class="fas fa-sort"></i></button></div>
   </div>`;
 
 }
@@ -2469,7 +2475,7 @@ export function viewFinalDecisionFiles(files) {
   for (const fileInfo of files) {
     const fileId = fileInfo.id;
     let filename = fileInfo.name.split('_')[0];
-    const shortfilename = filename.length > 25 ? filename.substring(0, 26) + '...' : filename;
+    const shortfilename = filename.length > 21 ? filename.substring(0, 20) + '...' : filename;
     console.log(fileId, fileInfo);
 
     template += `
@@ -2477,12 +2483,12 @@ export function viewFinalDecisionFiles(files) {
       <div class="card mt-1 mb-1 align-left" >
     <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
         <div class="row">
-            <div class="col-md-3 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
-            <div class="col-md-2 text-left">${fileInfo.created_by.name}</div>
-            <div class="col-md-2 text-left">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
-            <div class="col-md-1 text-center">${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success">Accepted</h6>' : fileInfo.parent.name === 'Denied' ? '<h6 class="badge badge-pill badge-danger">Denied</h6>': '<h6 class="badge badge-pill badge-warning">Chair Review</h6>'}</div>
-            <div class="col-md-2 text-left">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
-            <div class="col-md-1 text-right">
+            <div class="col-lg-3 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
+            <div class="col-lg-2 text-left">${fileInfo.created_by.name}</div>
+            <div class="col-lg-2 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
+            <div class="col-lg-2 pl-6 text-right">${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success">Accepted</h6>' : fileInfo.parent.name === 'Denied' ? '<h6 class="badge badge-pill badge-danger">Denied</h6>': '<h6 class="badge badge-pill badge-warning">Under Review</h6>'}</div>
+            <div class="col-lg-2 pl-6 text-right">${new Date(fileInfo.modified_at).toDateString().substring(4,)}</div>
+            <div class="col-lg-1 text-right">
                 <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
                     <i class="fas fa-caret-down fa-2x"></i>
                 </button>
@@ -2516,21 +2522,23 @@ function filterSection(files) {
   let template = '';
   // const submitterFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.created_by.name)])];
   const decisionFilterButtons = [...new Set([...files.map(fileInfo => fileInfo.parent.name)])];
-  template += `<div class="main-summary-row">
-  <div style="width: 100%;">
+  template += `
+  <div class='row'>
+    <div class='col-lg-7'>
       <div class="form-group" margin:0px>
-          <div class="input-group">
+          <div class="input-group ">
               <input type="search" class="form-control rounded" autocomplete="off" placeholder="Search min. 3 characters" aria-label="Search" id="searchDataDictionary" aria-describedby="search-addon" />
               <span class="input-group-text border-0 search-input">
                   <i class="fas fa-search"></i>
               </span>
+              
           </div>
+          
       </div>
+      
   </div>
-</div>
-<div class="main-summary-row">
-  <div style="width: 100%;">
-      <div class="form-group" margin:0px>
+  <div class='col-lg-5'>
+
    `;
   // if (submitterFilterButtons.length !== 0) {
   //   template += `       
@@ -2547,16 +2555,20 @@ function filterSection(files) {
 
   // });
   if (decisionFilterButtons.length !== 0) {
-    template += `       
-    <label class="filter-label font-size-13" for="variableTypeList">Decision</label>
-    <ul class="remove-padding-left font-size-15 allow-overflow" id="decisionFilterList"> </ul>`;
+    template += `
+    <label class="filter-label font-size-17 font-bold" for="variableTypeList">Decision</label>
+    <div class='row' id="decisionFilterList">
+    <!--ul class="remove-padding-left font-size-15 allow-overflow" id="decisionFilterList"--> </ul></div>`;
   }
   let decisionFilterTemp = '';
   decisionFilterButtons.forEach((decision, index) => {
+    if(decision === 'Chair Final Review'){
+      decision = 'Under Review';
+    }
     decisionFilterTemp += `
    <li class="filter-list-item">
      <input type="checkbox" data-variable-type="${decision}" name='decision${decision}' id="decision${index}" value='${decision}' class="filter-var" style="margin-left: 1px !important;" data-variable-column='Decision'>
-     <label for="label${decision}" class="sub-category" title="${decision}">${decision}</label>
+     <label for="label${decision}" class="sub-category px-1" title="${decision}">${decision}</label>
      `;
 
   });
