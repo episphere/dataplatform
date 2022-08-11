@@ -1658,13 +1658,13 @@ export const daccFileView = async () => {
   template += `<div class='tab-pane fade show active'
                 id='dacctoBeCompleted' role='tabpanel'
               aria-labeledby='dacctoBeCompletedTab'>
-              <a href="mailto:${emailforChair.join("; ")}" id='email' class='btn btn-dark'>Send Email to Chair</a>`;
+              <a href="mailto:${emailforChair[0]}" id='email' class='btn btn-dark'>Send Email to Chair</a>`;
   template += renderFilePreviewDropdown(filesincomplete, 'dacctoBeCompleted');
 
   template += `<div class='tab-pane fade'
                 id='daccReview' role='tabpanel'
                 aria-labeledby='daccReviewTab'>
-                <a href="mailto:${emailforChair.join("; ")}" id='email' class='btn btn-dark'>Send Email to Chair</a> `
+                <a href="mailto:${emailforChair[0]}" id='email' class='btn btn-dark'>Send Email to Chair</a> `
   template += renderFilePreviewDropdown(filesreviewed, 'daccReview');
   
   template += `<div class='tab-pane fade' 
