@@ -2109,3 +2109,8 @@ ul.form {
     color:#2a72a5;
     cursor: pointer;
 }
+
+.required-label {
+    content:"*";
+    color:red;
+  }
