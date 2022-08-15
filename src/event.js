@@ -1588,18 +1588,21 @@ export function switchTabs(show, hide, files) {
                             document.getElementById('sendtodaccButton').style.display = "block";
                             document.getElementById('finalChairDecision').style.display = "none";
                             document.getElementById('daccOverride').style.display = 'none';
+                            document.getElementById('fileComments').style.display = 'none';
                             // document.getElementById('fileComments').innerHTML = listComments(files[0].id);
                         }
                         if (show === 'inProgress') {
                             document.getElementById('sendtodaccButton').style.display = "none";
                             document.getElementById('finalChairDecision').style.display = "none";
                             document.getElementById('daccOverride').style.display = 'block';
+                            document.getElementById('fileComments').style.display = 'block';
 
                         }
                         if (show === 'daccCompleted') {
                             document.getElementById('sendtodaccButton').style.display = "none";
                             document.getElementById('daccOverride').style.display = 'none';
                             document.getElementById('finalChairDecision').style.display = "block";
+                            document.getElementById('fileComments').style.display = 'block';
                         }
                         if (show === 'dacctoBeCompleted') {
                             document.getElementById('daccComment').style.display = "block";
