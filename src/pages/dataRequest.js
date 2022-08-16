@@ -1139,16 +1139,16 @@ export const chairFileView = async () => {
 
         <div id='finalChairDecision' class="card-body approvedeny" style="background-color:#f6f6f6; display:none">
           <form>
-            <label for="message">Enter Message for Submitter</label>
+            <label for="message">Enter Message for submitter or the DACC</label>
             <div class='text-muted small'>Submitter will only see the below comment after approve or deny. </div>
             <div class="input-group">
                 <textarea id="message" name="message" rows="6" cols="65"></textarea>
             </div>
-            <button type="submit" class="buttonsubmit" value="approved">
+            <button type="submit" class="buttonsubmit" value="approved" onclick="this.classList.toggle('buttonsubmit--loading')">
               <span class="buttonsubmit__text"> Approve </span></button>
-            <button type="submit" class="buttonsubmit" value="rejected">
+            <button type="submit" class="buttonsubmit" value="rejected" onclick="this.classList.toggle('buttonsubmit--loading')">
               <span class="buttonsubmit__text"> Deny </span></button>
-            <button type="submit" class="buttonsubmit" value="daccReview">
+            <button type="submit" class="buttonsubmit" value="daccReview" onclick="this.classList.toggle('buttonsubmit--loading')">
               <span class="buttonsubmit__text"> Return to DACC </span></button>  
           </form>
         </div>
@@ -1179,8 +1179,8 @@ export const chairFileView = async () => {
     document.getElementById('filePreview').classList.remove('d-block');
     document.getElementById('filePreview').classList.add('d-none');
 
-    document.getElementById('fileComments').classList.remove('d-block');
-    document.getElementById('fileComments').classList.add('d-none');
+    // document.getElementById('fileComments').classList.remove('d-block');
+    // document.getElementById('fileComments').classList.add('d-none');
     //}
   }
 
@@ -2390,12 +2390,16 @@ export async function viewFinalDecisionFilesTemplate(files) {
           </div>
       </div>
       </div>
-      <div class='table-responsive'>
-      <table class='table table-striped'>`;
+      <!--div class='table-responsive'>
+      <table class='table'-->
+      
+      <div class='col-xl-12 pr-0'>`;
 
-    template += viewFinalDecisionFilesColumns();
+      template += viewFinalDecisionFilesColumns();
+  
+      template += '<div id="files"> </div>';
 
-    template += '<tbody id="files">';
+    template += '<!--tbody id="files"-->';
   } else {
     template += `
               No files to show.            
@@ -2434,19 +2438,27 @@ export async function viewFinalDecisionFilesTemplate(files) {
     })
   })
   // const table = document.getElementById('decidedFiles');
-  document.querySelectorAll(".header-sortable").forEach(headerCell => {
-    headerCell.addEventListener("click", () => {
-      console.log(headerCell);
-        const tableElement = headerCell.parentElement.parentElement.parentElement;
-        const headerIndex = Array.prototype.indexOf.call(headerCell.parentElement.children, headerCell);
-        const currentIsAscending = headerCell.classList.contains("th-sort-asc");
-        console.log(tableElement);
-        sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
-    });
+//   document.querySelectorAll(".header-sortable").forEach(headerCell => {
+//     headerCell.addEventListener("click", () => {
+//       console.log(headerCell);
+//         const tableElement = headerCell.parentElement.parentElement.parentElement;
+//         const headerIndex = Array.prototype.indexOf.call(headerCell.parentElement.children, headerCell);
+//         const currentIsAscending = headerCell.classList.contains("th-sort-asc");
+//         console.log(tableElement);
+//         sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
+//     });
+// });
+//Filtering and Sorting
+const table = document.getElementById('decidedFiles');
+const headers = table.querySelector(`.div-sticky`);
+Array.from(headers.children).forEach((header, index) => {
+  header.addEventListener('click', (e) => {
+    const sortDirection = header.classList.contains('header-sort-asc');
+    console.log(sortDirection);
+    sortTableByColumn(table, index, !sortDirection);
+  });
 });
 
-
-  //Filtering and Sorting
   filterSection(filesInfo);
   Array.from(document.getElementsByClassName('filter-var')).forEach(el => {
     el.addEventListener('click', () => {
@@ -2467,16 +2479,23 @@ export async function viewFinalDecisionFilesTemplate(files) {
 }
 
 export function viewFinalDecisionFilesColumns() {
-  return `
-  <thead>
-  <tr>
-    <th class="header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept Name"><i class="fas fa-sort"></i></button></th>
-    <th class="header-sortable">Submitted By <button class="transparent-btn sort-column" data-column-name="Submitted By"><i class="fas fa-sort"></i></button></th>
-    <th class="header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Submission Date"><i class="fas fa-sort"></i></button></th>
-    <th class="header-sortable">Decision<button class="transparent-btn sort-column" data-column-name="Decision"><i class="fas fa-sort"></i></button></th>
-    <th class="header-sortable">Decided On<button class="transparent-btn sort-column" data-column-name="Decision Date"><i class="fas fa-sort"></i></button></th>
-  </tr>
-  </thead>`;
+  return `<div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
+    <div class="col-lg-3 text-left font-bold ws-nowrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept Name"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-2 text-left font-bold ws-nowrap header-sortable">Submitted By <button class="transparent-btn sort-column" data-column-name="Submitted By"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-3 text-left font-bold ws-nowrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Submission Date"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-2 text-left font-bold ws-nowrap header-sortable">Decision<button class="transparent-btn sort-column" data-column-name="Decision"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-2 text-left font-bold ws-nowrap header-sortable">Decided On<button class="transparent-btn sort-column" data-column-name="Decision Date"><i class="fas fa-sort"></i></button></div>
+  </div>`;
+  // return `
+  // <thead>
+  // <tr>
+  //   <th class="header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept Name"><i class="fas fa-sort"></i></button></th>
+  //   <th class="header-sortable">Submitted By <button class="transparent-btn sort-column" data-column-name="Submitted By"><i class="fas fa-sort"></i></button></th>
+  //   <th class="header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Submission Date"><i class="fas fa-sort"></i></button></th>
+  //   <th class="header-sortable">Decision<button class="transparent-btn sort-column" data-column-name="Decision"><i class="fas fa-sort"></i></button></th>
+  //   <th class="header-sortable">Decided On<button class="transparent-btn sort-column" data-column-name="Decision Date"><i class="fas fa-sort"></i></button></th>
+  // </tr>
+  // </thead>`;
 
 }
 
@@ -2485,26 +2504,28 @@ export function viewFinalDecisionFiles(files) {
 
   for (const fileInfo of files) {
     const fileId = fileInfo.id;
-    let filename = fileInfo.name.split('_')[0];
-    console.log(filename);
+    let filename = fileInfo.name.split('_').slice(0, -4).join(' ');// fileInfo.name.split('_')[0];
+    console.log(fileInfo.name.split('_').slice(0, -4).join(' '));
     const shortfilename = filename.length > 21 ? filename.substring(0, 20) + '...' : filename;
     console.log(fileId, fileInfo);
 
-    template += `
-        <tr id='file${fileId}'>
-            <td>${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></td>
-            <td>${fileInfo.created_by.name}</td>
-            <td class="fileDate">${new Date(fileInfo.created_at).toDateString().substring(4,)}</td>
-            <td>${fileInfo.parent.name === 'Accepted' ? '<h6 class="badge badge-pill badge-success">Accepted</h6>' : fileInfo.parent.name === 'Denied' ? '<h6 class="badge badge-pill badge-danger">Denied</h6>': '<h6 class="badge badge-pill badge-warning">Under Review</h6>'}</td>
-            <td>${new Date(fileInfo.modified_at).toDateString().substring(4,)}</td>
-            <td>
+template += `
+<div class="card mt-1 mb-1 align-left" >
+    <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
+        <div class="row">
+            <div class="col-lg-3 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
+            <div class="col-lg-2 text-left">${fileInfo.created_by.name}</div>
+            <div class="col-lg-2 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
+            <div class="col-lg-2 pl-6 text-right">${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success">Accepted</h6>' : fileInfo.parent.name === 'Denied' ? '<h6 class="badge badge-pill badge-danger">Denied</h6>': '<h6 class="badge badge-pill badge-warning">Under Review</h6>'}</div>
+            <div class="col-lg-2 pl-6 text-right">${new Date(fileInfo.modified_at).toDateString().substring(4,)}</div>
+            <div class="col-lg-1 text-right">
                 <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
                     <i class="fas fa-caret-down fa-2x"></i>
                 </button>
-            </td>
-        </tr>
-        <div id="study${fileId}" class="collapse w-100" aria-labelledby="file${fileId}">
-                    <div class="card-body">
+            </div>
+        </div>
+        <div id="study${fileId}" class="collapse" aria-labelledby="file${fileId}">
+                    <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
                     <div class="row mb-1 m-0">
                     <div class="col-12 font-bold">
                     Concept: ${filename}
@@ -2513,13 +2534,40 @@ export function viewFinalDecisionFiles(files) {
                     <div class="row mb-1 m-0">
                       <div id='file${fileId}Comments' class='col-12'></div>
                     </div>
-        </div>`
+        </div>
+    </div>
+    </div>
+    </div>`;
   }
 
-  template += `</div></tbody></table></div>
-  
+  template += `</div></div></div></div>`;
+  //   template += `
+  //       <tr id='file${fileId}'>
+  //           <td>${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></td>
+  //           <td>${fileInfo.created_by.name}</td>
+  //           <td class="fileDate">${new Date(fileInfo.created_at).toDateString().substring(4,)}</td>
+  //           <td>${fileInfo.parent.name === 'Accepted' ? '<h6 class="badge badge-pill badge-success">Accepted</h6>' : fileInfo.parent.name === 'Denied' ? '<h6 class="badge badge-pill badge-danger">Denied</h6>': '<h6 class="badge badge-pill badge-warning">Under Review</h6>'}</td>
+  //           <td>${new Date(fileInfo.modified_at).toDateString().substring(4,)}</td>
+  //           <td>
+  //               <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
+  //                   <i class="fas fa-caret-down fa-2x"></i>
+  //               </button>
+  //           </td>
+  //       </tr>
+  //       <div id="study${fileId}" class="collapse" aria-labelledby="file${fileId}" style="background:#f6f6f6">
+  //                   <div class='row m-0'>
+  //                   <div class="font-bold">
+  //                   Concept: ${filename}
+  //                   </div>
+  //                   </div>
+  //                   <div class="row mb-1 m-0">
+  //                     <div id='file${fileId}Comments'></div>
+  //                   </div>
+  //       </div>
+  //       `
+  // }
 
-`;
+  // template += `</div></tbody></table></div>`;
   document.getElementById('files').innerHTML = template;
 }
 

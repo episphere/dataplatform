@@ -2113,4 +2113,8 @@ ul.form {
 .required-label {
     content:"*";
     color:red;
-  }
+}
+
+.decidedDropdown {
+    width: 100%;
+}
