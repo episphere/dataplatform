@@ -1596,6 +1596,7 @@ export function switchTabs(show, hide, files) {
                             document.getElementById('fileComments').style.display = 'block';
                             document.getElementById('finalChairDecision').style.display = "none";
                             document.getElementById('daccOverride').style.display = 'block';
+                            document.getElementById('fileComments').style.display = 'block';
 
                         }
                         if (show === 'daccCompleted') {
@@ -1603,6 +1604,7 @@ export function switchTabs(show, hide, files) {
                             document.getElementById('daccOverride').style.display = 'none';
                             document.getElementById('fileComments').style.display = 'block';
                             document.getElementById('finalChairDecision').style.display = "block";
+                            document.getElementById('fileComments').style.display = 'block';
                         }
                         if (show === 'dacctoBeCompleted') {
                             document.getElementById('daccComment').style.display = "block";

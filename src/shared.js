@@ -11,17 +11,9 @@ import {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-<<<<<<< HEAD
-// export const emailforChair = ['wraynr@nih.gov', 'garciacm@nih.gov','kopchickbp@nih.gov', 'ahearntu@nih.gov','Roger.Milne@cancervic.org.au']; 
-export const emailforChair = ['wraynr@nih.gov'];
-
-// export const emailforDACC = ['ahearntu@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov', 'troisir@nih.gov'];//, 'mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
-export const emailforDACC = ['wraynr@nih.gov'];
-=======
 export const emailforChair = ['ahearntu@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov','kopchickbp@nih.gov', 'ahearntu@nih.gov','Roger.Milne@cancervic.org.au']; 
 
 export const emailforDACC = ['ahearntu@nih.gov', 'troisir@nih.gov', 'mukopadhyays2@nih.gov'];//, 'mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
->>>>>>> 04090a996406565c219374ca79c85a223909a1a6
 
 export const publicDataFileId = 697309514903; //Unknown
 
