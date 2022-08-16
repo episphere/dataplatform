@@ -1593,6 +1593,7 @@ export function switchTabs(show, hide, files) {
                         }
                         if (show === 'inProgress') {
                             document.getElementById('sendtodaccButton').style.display = "none";
+                            document.getElementById('fileComments').style.display = 'block';
                             document.getElementById('finalChairDecision').style.display = "none";
                             document.getElementById('daccOverride').style.display = 'block';
                             document.getElementById('fileComments').style.display = 'block';
@@ -1601,6 +1602,7 @@ export function switchTabs(show, hide, files) {
                         if (show === 'daccCompleted') {
                             document.getElementById('sendtodaccButton').style.display = "none";
                             document.getElementById('daccOverride').style.display = 'none';
+                            document.getElementById('fileComments').style.display = 'block';
                             document.getElementById('finalChairDecision').style.display = "block";
                             document.getElementById('fileComments').style.display = 'block';
                         }
@@ -1653,8 +1655,12 @@ export function switchFiles(tab) {
     });
 }
 
-export function filterCheckBox(data) {
+export function filterCheckBox(table, data) {
     //Get all the elements
+    // const tBody = table.tBodies[0];
+
+    // const rows = Array.from(tBody.querySelectorAll('tr'));
+
     const rows = Array.from(document.getElementsByClassName('filedata'));
 
     //Get all selected filter variables
@@ -1737,74 +1743,102 @@ export function filterCheckBox(data) {
             showRows.push(row_id);
         }
     })
+    console.log('Show rows', showRows);
     rows.forEach(row => {
+        console.log(row);
         if (showRows.includes(row.id))
-            row.parentElement.style.display = 'block';
+            row.style.display = 'block';
         else
-            row.parentElement.style.display = 'none';
+            row.style.display = 'none';
     })
 
 }
-export function sortTableByColumn(table, column, ascending = true) {
-    const direction = ascending ? 1 : -1;
+export function sortTableByColumn(table, column, asc = true) {
+    const direction = asc ? 1 : -1;
     const rows = Array.from(document.getElementsByClassName('filedata'));
+    // const tBody = table.tBodies[0];
+
+    // const rows = Array.from(tBody.querySelectorAll('tr'));
 
     //Get only visible rows
     let filteredRows = rows;
     filteredRows = filteredRows.filter(row => row.parentElement.style.display !== 'none');
     //Sort each row
+    // if (column === 2 || column === 4) {
+    //     let dateCols = Array.from(document.getElementsByClassName('fileDate'));
+    //     let dates = dateCols.map(date => {
+
+    //         console.log(new Date(date.innerText));
+    //         return new Date(date.innerText)
+    //     })
+
+    // } else {
     const sortedRows = filteredRows.sort((a, b) => {
         let aContent = '';
         let bContent = '';
         if (column === 0) {
             aContent = a.firstElementChild.firstElementChild.textContent.trim().toLowerCase();
             bContent = b.firstElementChild.firstElementChild.textContent.trim().toLowerCase();
-        } else {
-            aContent = a.querySelector(`div:nth-child(${ column + 1})`).textContent.trim().toLowerCase();
+        }    
+        else {
             bContent = b.querySelector(`div:nth-child(${ column + 1})`).textContent.trim().toLowerCase();
+            aContent = a.querySelector(`div:nth-child(${ column + 1})`).textContent.trim().toLowerCase();
 
-
+        }
+        // bContent = b.querySelector(`td:nth-child(${ column + 1})`).textContent.trim().toLowerCase();
+        // aContent = a.querySelector(`td:nth-child(${ column + 1})`).textContent.trim().toLowerCase();
+        if(!isNaN(Date.parse(aContent)) && !isNaN(Date.parse(bContent))){
+            console.log(Date.parse(aContent) - Date.parse(bContent));
+                return Date.parse(aContent) - Date.parse(bContent) > 0 ? 1 * direction : -1 * direction;
         }
 
         return aContent > bContent ? (1 * direction) : (-1 * direction);
     })
+// console.log(dates);
+console.log(sortedRows);
+//Remove all filedata
+// while(document.getElementById('files').firstChild){
+//     document.getElementById('files').removeChilddocument.getElementById('files').firstChild;
+// }
+sortedRows.forEach(row => {
+    row.parentElement.remove();
+})
 
-    console.log(sortedRows);
+// while(tBody.firstChild){
+//     tBody.removeChild(tBody.firstChild);
+// }
 
-    //Remove all filedata
-    // while(document.getElementById('files').firstChild){
-    //     document.getElementById('files').removeChilddocument.getElementById('f(iles').firstChild);
-    // }
-    sortedRows.forEach(row => {
-        row.parentElement.remove();
-    })
+//Add Data Back
+sortedRows.forEach(row => {
+    const divEl = document.createElement('div')
+    divEl.classList.add('card', 'mt-1', 'mb-1', 'align-left');
+    divEl.appendChild(row);
+    document.getElementById('files').appendChild(divEl);
+})
+// tBody.append(...sortedRows);
 
-    //Add Data Back
-    sortedRows.forEach(row => {
-        const divEl = document.createElement('div')
-        divEl.classList.add('card', 'mt-1', 'mb-1', 'align-left');
-        divEl.appendChild(row);
-        document.getElementById('files').appendChild(divEl);
-    })
+//Remember how colmmn is sorted
+// table.querySelectorAll("th").forEach(th => th.classList.remove("th-sort-asc", "th-sort-desc"));
+//     table.querySelector(`th:nth-child(${ column + 1})`).classList.toggle("th-sort-asc", asc);
+//     table.querySelector(`th:nth-child(${ column + 1})`).classList.toggle("th-sort-desc", !asc);
+// }
+Array.from(table.querySelectorAll('.header-sortable')).forEach(header => {
+    header.classList.remove('header-sort-asc', 'header-sort-desc');
 
-    //Remember how colmmn is sorted
-    Array.from(table.querySelectorAll('.header-sortable')).forEach(header => {
-        header.classList.remove('header-sort-asc', 'header-sort-desc');
-        
-    })
-    // const columnIcons = document.getElementsByClassName('sort-column');
-    // let i = 0;
-    // while(columnIcons.length != 0){
-    //     columnIcons[i].remove();
-    //     i++;
-    // }
-    console.log(direction);
-    if (direction === 1) {
-        console.log('Ascending');
-        table.querySelector(`.div-sticky`).children[column].classList.toggle('header-sort-asc', direction);
-    } else {
-        console.log('Descending');
-        table.querySelector(`.div-sticky`).children[column].classList.toggle('header-sort-desc', -direction);
-    }
+})
+// const columnIcons = document.getElementsByClassName('sort-column');
+// let i = 0;
+// while(columnIcons.length != 0){
+//     columnIcons[i].remove();
+//     i++;
+// }
+console.log(direction);
+if (direction === 1) {
+    console.log('Ascending');
+    table.querySelector(`.div-sticky`).children[column].classList.toggle('header-sort-asc', direction);
+} else {
+    console.log('Descending');
+    table.querySelector(`.div-sticky`).children[column].classList.toggle('header-sort-desc', -direction);
+}
 
 }

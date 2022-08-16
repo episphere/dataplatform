@@ -461,17 +461,17 @@ export const formSection = async (activeTab, showDescripton) => {
             each of whose Institutions will need to sign the BCRPP DTA.</p>
             <form>
               <div class="input-group">
-                <label for="date"><b>Date</b></label>
+                <label for="date"><b>Date</b><span class='required-label'>*</span></label>
                 <input id="date" name="date" type="date" value='${today}' required/>
               </div>
 
               <div class="input-group">
-                <label for="projname"><b>Title of Proposed Project</b></label>
+                <label for="projname"><b>Title of Proposed Project</b><span class='required-label'>*</span></label>
                 <input id="projname" name="projname" type="text" required/>
               </div>
 
               <div class="input-group">
-                <label for="amendment"> <b>Is this an amendment?</b> </label>      
+                <label for="amendment"> <b>Is this an amendment?</b><span class='required-label'>*</span> </label>      
                   <input id="amendmentyes" name="amendment" type="radio" value="Yes" required/>
                     <label class="inline" for="amendmentyes"> Yes </label>
                   <input id="amendmentno" name="amendment" type="radio" value="No" required/>
@@ -481,22 +481,22 @@ export const formSection = async (activeTab, showDescripton) => {
               </div>
 
               <div class="input-group">
-                <label for="investigators"><b>Contact Investigator(s)</b></label>
+                <label for="investigators"><b>Contact Investigator(s)</b> <span class='required-label'>*</span></label>
                 <input id="investigators" name="investigators" type="text" required/>
               </div>
 
               <div class="input-group">
-                <label for="institution"><b>Institution(s)</b></label>
+                <label for="institution"><b>Institution(s)</b><span class='required-label'>*</span></label>
                 <input id="institution" name="institution" type="text" required/>
               </div>
                 
               <div class="input-group">
-                <label for="email"><b>Contact Email</b></label>
+                <label for="email"><b>Contact Email</b><span class='required-label'>*</span></label>
                 <input id="email" name="email" type="email" required/>
               </div>
 
               <div class="input-group">
-                <label for="member"> <b>Are you a member of BCRPP?</b> </label>
+                <label for="member"> <b>Are you a member of BCRPP?</b> <span class='required-label'>*</span></label>
                   <input id="memberyes" name="member" type="radio" value="Yes" required/>
                     <label class="inline" for="memberyes"> Yes </label>
                   <input id="memberno" name="member" type="radio" value="No" required/>
@@ -504,17 +504,17 @@ export const formSection = async (activeTab, showDescripton) => {
               </div>
 
               <div class="input-group">
-                <label for="acro"><b>BCRPP Study Acronym(s) for the Contact Investigator</b></label>
+                <label for="acro"><b>BCRPP Study Acronym(s) for the Contact Investigator</b><span class='required-label'>*</span></label>
                 <textarea id="acro" name="acro" rows="2" cols="65" required></textarea>
               </div>
 
               <div class="input-group">
-                <label for="allinvest"><b>ALL Investigators (and their institutions) who will require access to the data requested</b></label>
+                <label for="allinvest"><b>ALL Investigators (and their institutions) who will require access to the data requested</b><span class='required-label'>*</span></label>
                 <textarea id="allinvest" name="allinvest" rows="2" cols="65" required></textarea>
               </div>
 
               <div class="input-group">
-                <label><input id="confirmation" name="confirmation" type="checkbox" value="Yes" required/><b> Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b></label>
+                <label><input id="confirmation" name="confirmation" type="checkbox" value="Yes" required/><b> Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b><span class='required-label'>*</span></label>
               </div>
 
               <br>
@@ -526,17 +526,17 @@ export const formSection = async (activeTab, showDescripton) => {
             </div>
 
               <div class="input-group">
-                <label for="background"><b>Background</b></label>
+                <label for="background"><b>Background</b><span class='required-label'>*</span></label>
                 <textarea id="background" name="background" rows="4" cols="65" required></textarea>
               </div>
 
               <div class="input-group">
-                <label for="aims"><b>Aims</b></label>
+                <label for="aims"><b>Aims</b><span class='required-label'>*</span></label>
                 <textarea id="aims" name="aims" rows="4" cols="65" required> </textarea>
               </div>
 
               <div class="input-group">
-                <label for="analyplan"><b>Analysis Plan</b></label>
+                <label for="analyplan"><b>Analysis Plan</b><span class='required-label'>*</span></label>
                 <textarea id="analyplan" name="analyplan" rows="4" cols="65" required> </textarea>
               </div>
 
@@ -550,7 +550,7 @@ export const formSection = async (activeTab, showDescripton) => {
               </div>
               
               <div class="input-group">
-                <label for="basevar"><b>Baseline</b></label>
+                <label for="basevar"><b>Baseline</b><span class='required-label'>*</span></label>
 
                 <label>
                   <input id="basevarv" name="basevarv" type="checkbox" value="basevarv"/>
@@ -604,7 +604,7 @@ export const formSection = async (activeTab, showDescripton) => {
               </div>
 
               <div class="input-group">
-                <label for="ibcvar"><b>Incident Breast Cancer</b></label>
+                <label for="ibcvar"><b>Incident Breast Cancer</b><span class='required-label'>*</span></label>
                 <label>
                   <input id="ibcvarv" name="ibcvarv" type="checkbox" value="ibcvarv"/>
                   Check All
@@ -626,7 +626,7 @@ export const formSection = async (activeTab, showDescripton) => {
               </div>
 
               <div class="input-group">
-                <label for="mmdvar"><b>Mammographic Density</b></label>
+                <label for="mmdvar"><b>Mammographic Density</b><span class='required-label'>*</span></label>
                 <label>
                   <input id="mmdvarv" name="mmdvarv" type="checkbox" value="Mammographic Density"/>
                 </label>
@@ -634,7 +634,7 @@ export const formSection = async (activeTab, showDescripton) => {
 
               <div class="input-group">
                 <p>Select cohorts from which data is being requested. Proposals only requesting data from a single cohort will not be approved. If you are interested in only analyzing data from a particular cohort, please contact that cohort directly. Information on cohorts can be found <a href="#about/description">here</a>.</p>
-                <label for="reqcoh"><b>Requested Cohorts</b></label>
+                <label for="reqcoh"><b>Requested Cohorts</b><span class='required-label'>*</span></label>
                 <label>
                   <input id="reqcohv" name="reqcohv" type="checkbox" value="reqcohv"/>
                   Check All
@@ -781,7 +781,7 @@ export const formSection = async (activeTab, showDescripton) => {
               </div>
 
               <br>
-              <p><u><b>Timeline</b></u></p>
+              <p><u><b>Timeline</b></u><span class='required-label'>*</span></p>
                 <div class="input-group">
                   <label for="timeline">Please indicate estimated time from receipt of data to completion of analysesand submission of paper; 
                   the expectation (per the BCRPP Recipient DTA) is that results will be published within one year after completion</label>
@@ -789,7 +789,7 @@ export const formSection = async (activeTab, showDescripton) => {
                 </div>
 
               <br>
-              <p><u><b>Authorship</b></u></p>
+              <p><u><b>Authorship</b></u><span class='required-label'>*</span></p>
                 <div class="input-group">
                   <label for="authconf"><input id="authconf" name="authconf" type="checkbox" value="Yes" required/> Please confirm that you acknowledge the intention to include representatives of the 
                   contributing cohorts as co-authors and that you will provide contributing cohorts 30 days to review the draft manuscript 
@@ -1139,16 +1139,16 @@ export const chairFileView = async () => {
 
         <div id='finalChairDecision' class="card-body approvedeny" style="background-color:#f6f6f6; display:none">
           <form>
-            <label for="message">Enter Message for Submitter</label>
+            <label for="message">Enter Message for submitter or the DACC</label>
             <div class='text-muted small'>Submitter will only see the below comment after approve or deny. </div>
             <div class="input-group">
                 <textarea id="message" name="message" rows="6" cols="65"></textarea>
             </div>
-            <button type="submit" class="buttonsubmit" value="approved">
+            <button type="submit" class="buttonsubmit" value="approved" onclick="this.classList.toggle('buttonsubmit--loading')">
               <span class="buttonsubmit__text"> Approve </span></button>
-            <button type="submit" class="buttonsubmit" value="rejected">
+            <button type="submit" class="buttonsubmit" value="rejected" onclick="this.classList.toggle('buttonsubmit--loading')">
               <span class="buttonsubmit__text"> Deny </span></button>
-            <button type="submit" class="buttonsubmit" value="daccReview">
+            <button type="submit" class="buttonsubmit" value="daccReview" onclick="this.classList.toggle('buttonsubmit--loading')">
               <span class="buttonsubmit__text"> Return to DACC </span></button>  
           </form>
         </div>
@@ -1179,8 +1179,8 @@ export const chairFileView = async () => {
     document.getElementById('filePreview').classList.remove('d-block');
     document.getElementById('filePreview').classList.add('d-none');
 
-    //document.getElementById('fileComments').classList.remove('d-block');
-    //document.getElementById('fileComments').classList.add('d-none');
+    // document.getElementById('fileComments').classList.remove('d-block');
+    // document.getElementById('fileComments').classList.add('d-none');
     //}
   }
 
@@ -2390,12 +2390,16 @@ export async function viewFinalDecisionFilesTemplate(files) {
           </div>
       </div>
       </div>
-      <div class='row'>
+      <!--div class='table-responsive'>
+      <table class='table'-->
+      
       <div class='col-xl-12 pr-0'>`;
 
-    template += viewFinalDecisionFilesColumns();
+      template += viewFinalDecisionFilesColumns();
+  
+      template += '<div id="files"> </div>';
 
-    template += '<div id="files"> </div>';
+    template += '<!--tbody id="files"-->';
   } else {
     template += `
               No files to show.            
@@ -2433,39 +2437,65 @@ export async function viewFinalDecisionFilesTemplate(files) {
       showPreview(fileId, 'bcrppPreviewerModalBody');
     })
   })
-  const table = document.getElementById('decidedFiles');
-  const headers = table.querySelector(`.div-sticky`);
-  Array.from(headers.children).forEach((header, index) => {
-    header.addEventListener('click', (e) => {
-      const sortDirection = header.classList.contains('header-sort-asc');
-      console.log(sortDirection);
-      sortTableByColumn(table, index, !sortDirection);
-    });
+  // const table = document.getElementById('decidedFiles');
+//   document.querySelectorAll(".header-sortable").forEach(headerCell => {
+//     headerCell.addEventListener("click", () => {
+//       console.log(headerCell);
+//         const tableElement = headerCell.parentElement.parentElement.parentElement;
+//         const headerIndex = Array.prototype.indexOf.call(headerCell.parentElement.children, headerCell);
+//         const currentIsAscending = headerCell.classList.contains("th-sort-asc");
+//         console.log(tableElement);
+//         sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
+//     });
+// });
+//Filtering and Sorting
+const table = document.getElementById('decidedFiles');
+const headers = table.querySelector(`.div-sticky`);
+Array.from(headers.children).forEach((header, index) => {
+  header.addEventListener('click', (e) => {
+    const sortDirection = header.classList.contains('header-sort-asc');
+    console.log(sortDirection);
+    sortTableByColumn(table, index, !sortDirection);
   });
+});
 
-  //Filtering and Sorting
   filterSection(filesInfo);
   Array.from(document.getElementsByClassName('filter-var')).forEach(el => {
     el.addEventListener('click', () => {
-      filterCheckBox(filesInfo);
+      const headerCell = document.getElementsByClassName('header-sortable')[0];
+      console.log(headerCell);
+      const tableElement = headerCell.parentElement.parentElement.parentElement;
+      console.log(tableElement.tBodies);
+      filterCheckBox(tableElement, filesInfo);
     })
   })
   const input = document.getElementById('searchDataDictionary');
   input.addEventListener('input', () => {
-    filterCheckBox(filesInfo);
+    const headerCell = document.getElementsByClassName('header-sortable')[0];
+    const tableElement = headerCell.parentElement.parentElement.parentElement;
+    filterCheckBox(tableElement, filesInfo);
   })
 
 }
 
 export function viewFinalDecisionFilesColumns() {
-  return `
-  <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
+  return `<div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
     <div class="col-lg-3 text-left font-bold ws-nowrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept Name"><i class="fas fa-sort"></i></button></div>
     <div class="col-lg-2 text-left font-bold ws-nowrap header-sortable">Submitted By <button class="transparent-btn sort-column" data-column-name="Submitted By"><i class="fas fa-sort"></i></button></div>
     <div class="col-lg-3 text-left font-bold ws-nowrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Submission Date"><i class="fas fa-sort"></i></button></div>
     <div class="col-lg-2 text-left font-bold ws-nowrap header-sortable">Decision<button class="transparent-btn sort-column" data-column-name="Decision"><i class="fas fa-sort"></i></button></div>
     <div class="col-lg-2 text-left font-bold ws-nowrap header-sortable">Decided On<button class="transparent-btn sort-column" data-column-name="Decision Date"><i class="fas fa-sort"></i></button></div>
   </div>`;
+  // return `
+  // <thead>
+  // <tr>
+  //   <th class="header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept Name"><i class="fas fa-sort"></i></button></th>
+  //   <th class="header-sortable">Submitted By <button class="transparent-btn sort-column" data-column-name="Submitted By"><i class="fas fa-sort"></i></button></th>
+  //   <th class="header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Submission Date"><i class="fas fa-sort"></i></button></th>
+  //   <th class="header-sortable">Decision<button class="transparent-btn sort-column" data-column-name="Decision"><i class="fas fa-sort"></i></button></th>
+  //   <th class="header-sortable">Decided On<button class="transparent-btn sort-column" data-column-name="Decision Date"><i class="fas fa-sort"></i></button></th>
+  // </tr>
+  // </thead>`;
 
 }
 
@@ -2474,13 +2504,13 @@ export function viewFinalDecisionFiles(files) {
 
   for (const fileInfo of files) {
     const fileId = fileInfo.id;
-    let filename = fileInfo.name.split('_')[0];
+    let filename = fileInfo.name.split('_').slice(0, -4).join(' ');// fileInfo.name.split('_')[0];
+    console.log(fileInfo.name.split('_').slice(0, -4).join(' '));
     const shortfilename = filename.length > 21 ? filename.substring(0, 20) + '...' : filename;
     console.log(fileId, fileInfo);
 
-    template += `
-          
-      <div class="card mt-1 mb-1 align-left" >
+template += `
+<div class="card mt-1 mb-1 align-left" >
     <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
         <div class="row">
             <div class="col-lg-3 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
@@ -2507,13 +2537,37 @@ export function viewFinalDecisionFiles(files) {
         </div>
     </div>
     </div>
-    </div>`
+    </div>`;
   }
 
-  template += `</div></div></div></div>
-  
+  template += `</div></div></div></div>`;
+  //   template += `
+  //       <tr id='file${fileId}'>
+  //           <td>${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></td>
+  //           <td>${fileInfo.created_by.name}</td>
+  //           <td class="fileDate">${new Date(fileInfo.created_at).toDateString().substring(4,)}</td>
+  //           <td>${fileInfo.parent.name === 'Accepted' ? '<h6 class="badge badge-pill badge-success">Accepted</h6>' : fileInfo.parent.name === 'Denied' ? '<h6 class="badge badge-pill badge-danger">Denied</h6>': '<h6 class="badge badge-pill badge-warning">Under Review</h6>'}</td>
+  //           <td>${new Date(fileInfo.modified_at).toDateString().substring(4,)}</td>
+  //           <td>
+  //               <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
+  //                   <i class="fas fa-caret-down fa-2x"></i>
+  //               </button>
+  //           </td>
+  //       </tr>
+  //       <div id="study${fileId}" class="collapse" aria-labelledby="file${fileId}" style="background:#f6f6f6">
+  //                   <div class='row m-0'>
+  //                   <div class="font-bold">
+  //                   Concept: ${filename}
+  //                   </div>
+  //                   </div>
+  //                   <div class="row mb-1 m-0">
+  //                     <div id='file${fileId}Comments'></div>
+  //                   </div>
+  //       </div>
+  //       `
+  // }
 
-`;
+  // template += `</div></tbody></table></div>`;
   document.getElementById('files').innerHTML = template;
 }
 
@@ -2557,8 +2611,7 @@ function filterSection(files) {
   if (decisionFilterButtons.length !== 0) {
     template += `
     <label class="filter-label font-size-17 font-bold" for="variableTypeList">Decision</label>
-    <div class='row' id="decisionFilterList">
-    <!--ul class="remove-padding-left font-size-15 allow-overflow" id="decisionFilterList"--> </ul></div>`;
+    <div class='row' id="decisionFilterList"></div>`;
   }
   let decisionFilterTemp = '';
   decisionFilterButtons.forEach((decision, index) => {
@@ -2572,7 +2625,7 @@ function filterSection(files) {
      `;
 
   });
-
+  console.log('Filter template', template);
   document.getElementById('filterData').innerHTML = template;
   //document.getElementById('submitterFilterList').innerHTML = submitterTemp;
   document.getElementById('decisionFilterList').innerHTML = decisionFilterTemp;
