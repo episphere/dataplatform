@@ -9,7 +9,7 @@ import {
 } from '../confluence.js';
 
 
-export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
+export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov']
 
 export const emailforChair = ['Roger.Milne@cancervic.org.au','ahearntu@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov','kopchickbp@nih.gov']; 
 
