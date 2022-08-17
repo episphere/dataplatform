@@ -1204,6 +1204,7 @@ export const chairFileView = async () => {
     }
   }
 
+  
   hideAnimation();
 }
 
@@ -2499,7 +2500,7 @@ export function viewFinalDecisionFilesColumns() {
 
 }
 
-export function viewFinalDecisionFiles(files) {
+export async function viewFinalDecisionFiles(files) {
   let template = '';
 
   for (const fileInfo of files) {
@@ -2509,6 +2510,30 @@ export function viewFinalDecisionFiles(files) {
     const shortfilename = filename.length > 21 ? filename.substring(0, 20) + '...' : filename;
     console.log(fileId, fileInfo);
 
+    let fileTasks = await getTaskList(fileId);
+    let completion_date = '';
+
+    fileTasks.entries.forEach(task => {
+      if(task.action === 'review'){
+        let task_assignments = task.task_assignment_collection.entries;
+        task_assignments.forEach(task_assignment => {
+          if(task_assignment.completed_at !== null){
+            completion_date = new Date(task_assignment.completed_at).toDateString().substring(4,);
+          }
+        })
+      }
+    })
+    // fileTasks.entries.forEach(task => {
+    // if (task.action === 'review'){
+    //   let task_assignments = task.task_assignment_collection.entries;
+    //   task_assignments.forEach(task_assignment => {
+    //     if(task_assignment.completed_at !== null) {
+    //       const completion_date = task_assignment.completed_at;
+    //       completion_date = new Date(completion_date).toDateString.substring(4,));
+    //     }
+    //     }
+    //   }
+    
 template += `
 <div class="card mt-1 mb-1 align-left" >
     <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
@@ -2517,7 +2542,7 @@ template += `
             <div class="col-lg-2 text-left">${fileInfo.created_by.name}</div>
             <div class="col-lg-2 text-center">${new Date(fileInfo.created_at).toDateString().substring(4,)}</div>
             <div class="col-lg-2 pl-6 text-right">${fileInfo.parent.name === 'Accepted' ?'<h6 class="badge badge-pill badge-success">Accepted</h6>' : fileInfo.parent.name === 'Denied' ? '<h6 class="badge badge-pill badge-danger">Denied</h6>': '<h6 class="badge badge-pill badge-warning">Under Review</h6>'}</div>
-            <div class="col-lg-2 pl-6 text-right">${new Date(fileInfo.modified_at).toDateString().substring(4,)}</div>
+            <div class="col-lg-2 pl-6 text-right">${completion_date}</div>
             <div class="col-lg-1 text-right">
                 <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
                     <i class="fas fa-caret-down fa-2x"></i>

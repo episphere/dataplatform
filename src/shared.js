@@ -11,17 +11,11 @@ import {
 
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov', 'ajayiat@nih.gov']
 
-<<<<<<< HEAD
 // export const emailforChair = ['wraynr@nih.gov', 'garciacm@nih.gov','kopchickbp@nih.gov', 'ahearntu@nih.gov','Roger.Milne@cancervic.org.au']; 
 export const emailforChair = ['wraynr@nih.gov'];
 
 // export const emailforDACC = ['ahearntu@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov', 'troisir@nih.gov'];//, 'mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
 export const emailforDACC = ['wraynr@nih.gov'];
-=======
-export const emailforChair = ['ahearntu@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov','kopchickbp@nih.gov', 'ahearntu@nih.gov','Roger.Milne@cancervic.org.au']; 
-
-export const emailforDACC = ['ahearntu@nih.gov', 'troisir@nih.gov', 'mukopadhyays2@nih.gov'];//, 'mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
->>>>>>> 04090a996406565c219374ca79c85a223909a1a6
 
 export const publicDataFileId = 697309514903; //Unknown
 
@@ -30,6 +24,8 @@ export const summaryStatsFileId = 956943662666; //861342561526;//908600664259; /
 export const summaryStatsCasesFileId = 862065772362; //958869203942; //927803436743; //862065772362; //cases => Pilot - BCRP_Summary_Results_Cases.csv
 
 export const missingnessStatsFileId = 653087731560; //Unknown, TUA Commented out July 21, file needs to be updated to missingness stats using BCRPP data, not confluence data
+
+export const cps2StatsFileId = 908522264695;
 
 export const uploadFormFolder = 155292358576;
 
@@ -480,6 +476,7 @@ export const uploadWordFile = async (data, fileName, folderId, html) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
         //const user = await getCurrentUser();
+        //Check for bad data
         const form = new FormData();
         form.append('file', data);
         form.append('attributes', `{
@@ -495,6 +492,9 @@ export const uploadWordFile = async (data, fileName, folderId, html) => {
         });
         if (response.status === 400) {
             console.log(response.status);
+            if(response.code === 'bad_request'){
+                return 'Bad request';
+            }
             if ((await refreshToken()) === true) return await uploadWordFile(data, fileName, folderId, html);
         } else if (response.status === 201) {
             return response.json();

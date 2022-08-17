@@ -1,8 +1,12 @@
+import { hideAnimation, tsv2Json, } from './shared.js';
+
+
+
 //create chart objects
 bChart = dc.barChart('#dcPlot');
 var chart = document.getElementById('dcPlot');
 //load the data
-const data = d3.csv('Pilot - BCRP_Summary_Results_AllSubjects_Edited.csv');
+const data = d3.csv('CPS2_simulated_20220120.txt');
 //create crossfilters
 
 const crossdata = crossfilter(data);

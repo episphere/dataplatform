@@ -1745,9 +1745,9 @@ export function filterCheckBox(table, data) {
     rows.forEach(row => {
         console.log(row);
         if (showRows.includes(row.id))
-            row.style.display = 'block';
+            row.parentElement.style.display = 'block';
         else
-            row.style.display = 'none';
+            row.parentElement.style.display = 'none';
     })
 
 }
