@@ -198,223 +198,6 @@ export const formSectionOther = async (activeTab, showDescripton) => {
   return template;
 }
 
-// export const formSection = async (activeTab, showDescripton) => {
-//   let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
-//   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
-
-//   let navBarItems = '';
-//   if (authDacc && authChair) {
-//     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu', 'DACC Menu');
-//     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu', 'DACC Menu');
-//   } else if (authChair) {
-//     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Chair Menu');
-//     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'Chair Menu');
-//   } else if (authDacc) {
-//     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'DACC Menu');
-//     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted', 'DACC Menu');
-//   } else {
-//     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form');
-//     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Submission Form', 'Accepted');
-//   }
-//   let template = `
-//       <div class="general-bg body-min-height padding-bottom-1rem">
-//           <div class="container">
-//             ${navBarItems}
-
-//       </div>
-//       `;
-//       const date = new Date();
-//       const today = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
-//   template += ` 
-//                   <div class="general-bg padding-bottom-1rem">
-//                           <div class="container body-min-height">
-
-//                               <div class="main-summary-row">
-//                                   <div class="align-left">
-//                                       <h1 class="page-header">Form Submission</h1>
-//                                   </div>
-//                               </div>
-//                           <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">             
-//                             <section class="contact-form">
-//                               <p>Please fill out the form below in order to get approval for access to data.</p>
-//                               <form>
-
-//                               <div class="input-group">
-//                               <label for="date"><b>Date</b></label>
-//                               <input id="date" name="date" type="date" value='${today}'/>
-//                             </div>
-
-//                             <div class="input-group">
-//                               <label for="projname"><b>Title of Proposed Project</b></label>
-//                               <input id="projname" name="projname" type="text"/>
-//                             </div>
-
-//                             <div class="input-group">
-//                                 <label for="amendment"> <b>Is this an amendment?</b> </label>
-
-//                                     <input id="amendmentyes" name="amendment" type="radio" value="Yes"/>
-//                                         <label class="inline" for="amendmentyes">Yes</label>
-//                                     <input id="amendmentno" name="amendment" type="radio" value="No"/>
-//                                         <label class="inline" for="amendmentno">No</label>
-//                                 <label for="ifamendmentyes"> If yes, provide Concept Number of original form </label>
-//                                     <input type="text" id="conNum" name="conNum"/>
-//                             </div>
-
-//                             <div class="input-group">
-//                             <label for="investigators"><b>Contact Investigator(s)</b></label>
-//                             <input id="investigators" name="investigators" type="text"/>
-//                           </div>
-
-//                           <div class="input-group">
-//                               <label for="institution"><b>Institution(s)</b></label>
-//                               <input id="institution" name="institution" type="text"/>
-//                             </div>
-
-//                               <div class="input-group">
-//                                 <label for="email"><b>Contact Email</b></label>
-//                                 <input id="email" name="email" type="email"/>
-//                               </div>
-
-//                               <div class="input-group">
-//                                 <label for="amendment"> <b>Are you a member of BCRPP?</b> </label>
-
-//                                     <input id="amendmentyes" name="amendment" type="radio" value="Yes"/>
-//                                         <label class="inline" for="amendmentyes"> Yes</label>
-//                                     <input id="amendmentno" name="amendment" type="radio" value="No" />
-//                                         <label class="inline" for="amendmentno"> No</label>
-//                             </div>
-
-//                             <div class="input-group">
-//                               <label for="acro"><b>Confluence Study Acronym(s) for the Contact Investigator</b></label>
-//                               <textarea id="acro" name="acro" rows="2" cols="65"></textarea>
-//                             </div>
-
-//                               <div class="input-group">
-//                                 <label for="keywords"><b>Keywords</b></label>
-//                                 <input id="keywords" name="keywords" type="text"/>
-//                               </div>
-
-//                               <div class="input-group">
-//                                 <label for="allinvest"><b>ALL Investigators (and their institutions) who will require access to the data requested</b></label>
-//                                 <textarea id="allinvest" name="allinvest" rows="2" cols="65"></textarea>
-//                             </div>
-
-
-
-
-
-//                               <!--div class="input-group">
-//                                 <label for="additional"><b>Please provide any additional information</b></label>
-//                                 <textarea id="additional" name="additional" rows="4" cols="65"></textarea>
-//                               </div-->
-
-//                               <div class="input-group">
-//                               <label for="confirmation"><b>Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b></label>
-//                               <div class="input-group">
-//                                 <input id="confirm-agree" name="confirm-agree" type="checkbox" value="Yes" />
-//                                 <label class="inline" for="confirm-agree"> Yes</label>
-//                               </div>
-//                             </div>
-
-//                             <div class="input-group">
-//                                 <label for="background"><b>Please provide a concise description of Background/Aims</b></label>
-//                                 <textarea id="background" name="background" rows="4" cols="65"></textarea>
-//                               </div>
-
-//                               <br>
-//                               <p><u>1. GENETIC DATA REQUESTED</u></p>
-//                               <div class="input-group">
-//                                 <p>All data requests will be provided access to the Confluence core variables. <br>
-//                                 <i>No dates (e.g. intDate, DateDiagnosis, etc.) can be sent.</i></p>
-//                             </div>
-
-//                             <div class="input-group">
-//                                 <label for="corevar"><b>Core Variables</b></label>
-
-//                                 <label> 
-//                                 <input id="corevarv" name="corevarv" type="checkbox" value="corevarv"/>
-//                                   Check all 
-//                                 </label>
-//                             </div>
-
-//                             <div class="input-group">
-//                                 <label for="mmdvar"><b>MMD Variables</b></label>
-
-//                                 <label> 
-//                                 <input id="mmdvarv" name="mmdvarv" type="checkbox" value="mmdvarv"/>
-//                                   Check all 
-//                                 </label>
-//                             </div>
-
-//                             <div class="input-group">
-//                             <label for="brcavarv"><b>BRCA Variables</b></label>
-
-//                             <label> 
-//                             <input id="brcavarv" name="brcavarv" type="checkbox" value="brcavarv"/>
-//                               Check all 
-//                             </label>
-//                         </div>
-
-
-//                               <div class="input-group">
-//                                   <label for="cohort"><b>Cohort Data Requested: </b></label>
-//                                   <input id="nhs" name="cohort" type="checkbox" value="NHS"/>
-//                                   <label class="inline" for="cohort-nhs">NHS</label>
-//                                   <input id="nhs2" name="cohort" type="checkbox" value="NHS2"/>
-//                                   <label class="inline" for="cohort-nhs2">NHS2</label>
-//                                   <input id="cps2" name="cohort" type="checkbox" value="CPS2"/>
-//                                   <label class="inline" for="cohort-cps2">CPS2</label>
-//                                   <input id="cps3" name="cohort" type="checkbox" value="CPS3"/>
-//                                   <label class="inline" for="cohort-cps3">CPS3</label>
-//                               </div>
-
-//                               <br>
-//                             <p><u>Timeline</u></p>
-//                               <div class="input-group">
-//                                 <label for="timeline"><b>Please indicate estimated time from receipt of data to completion of analysesand submission of paper; the expectation (per the BCRPP Recipient DTA)is that results will be published within one year after completion</b></label>
-//                                 <textarea id="timeline" name="timeline" rows="4" cols="65"></textarea>
-//                               </div>
-
-//                               <br>
-//                             <p><u>Authorship</u></p>
-//                               <div class="input-group">
-//                                 <label for="authorship"><b>Please confirm that you acknowledge the intention to include representatives of the contributing cohorts as co-authors and that you will provide contributing cohorts 30 days to review the draft manuscript before submission (per section 3.4 of the BCRPP Recipient DTA). Please include any special considerations you would like to bring to the DACC’s attention.</b></label>
-//                                 <textarea id="authorship" name="authorship" rows="4" cols="65"></textarea>
-//                               </div>
-
-//                               <button type="submit" id="submitFormButton" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
-//                                 <span class="buttonsubmit__text"> Send Form </span>
-//                               </button>
-//                             </form>
-//                           </section>
-//                           <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
-//                           <div class="modal-dialog" role="document">
-//                             <div class="modal-content">
-//                               <div class="modal-header">
-//                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-//                                   <span aria-hidden="true">&times;</span>
-//                                 </button>
-//                               </div>
-//                               <div class="modal-body" id='modalBody'>
-
-//                               </div>
-//                               <div class="modal-footer">
-
-//                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-//                               </div>
-//                             </div>
-//                           </div>
-//                         </div>
-//                           <div class="results">
-//                           <h2>Form Data</h2>
-//                           <pre></pre>
-//                           </div>
-//                         </div>
-//                       </div>
-//                     </div>`;
-//   return template;
-// }
-
 export const formSection = async (activeTab, showDescripton) => {
   let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
@@ -504,8 +287,8 @@ export const formSection = async (activeTab, showDescripton) => {
               </div>
 
               <div class="input-group">
-                <label for="acro"><b>BCRPP Study Acronym(s) for the Contact Investigator</b><span class='required-label'>*</span></label>
-                <textarea id="acro" name="acro" rows="2" cols="65" required></textarea>
+                <label for="acro"><b>BCRPP Study Acronym(s) for the Contact Investigator</b></span></label>
+                <textarea id="acro" name="acro" rows="2" cols="65"></textarea>
               </div>
 
               <div class="input-group">
@@ -1270,10 +1053,10 @@ export const daccOverride = () => {
       if (entries.length !== 0) {
         for (let item of entries) {
           if (item.is_completed == false && item.action == 'complete') {
-            for (let taskassignment of item.task_assignment_collection.entries) {
-              updateTaskAssignment(taskassignment.id, 'completed')
-            }
-
+            deleteTask(item.id);
+            // for (let taskassignment of item.task_assignment_collection.entries) {
+            //   updateTaskAssignment(taskassignment.id, 'completed')
+            // }
           }
         }
         await moveFile(fileId, chairReviewFolder);
@@ -1566,8 +1349,8 @@ export const daccFileView = async () => {
 
             </ul>`;
 
-  const filesincomplete = [],
-    filesreviewed = [];
+  const filesincomplete = [];
+  const filesreviewed = [];
   let filescompleted = [];
   for (let obj of filearrayDACC) {
     let id = obj.id;
@@ -1648,7 +1431,30 @@ export const daccFileView = async () => {
   }
 
   for (const obj of filearrayDACCChairReview) {
-    filesreviewed.push(obj);
+    let id = obj.id;
+    let tasks = await getTaskList(id);
+  
+      if (tasks.entries.length != 0) {
+        for (let items of tasks.entries) {
+          if (items.is_completed == false && items.action == 'complete') {
+            for (let itemtasks of items.task_assignment_collection.entries) {
+              if (itemtasks.status == 'incomplete' && itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+                filesreviewed.push(obj);
+              } else if (itemtasks.status == 'complete' && itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+                filescompleted.push(obj);
+              }
+            }
+          } else if (items.is_completed == true && items.action == 'complete') {
+            for (let itemtasks of items.task_assignment_collection.entries) {
+              if (itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+                if (!filescompleted.includes(obj)) {
+                  filescompleted.push(obj);
+                }
+              }
+            }
+          }
+        }
+      }
   }
   //console.log("incomplete: " + filesincomplete);
   //console.log("complete: " + filescompleted);
