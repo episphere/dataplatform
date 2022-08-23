@@ -330,6 +330,7 @@ export const formSection = async (activeTab, showDescripton) => {
               <br>
 
               <p><u><b>Core Covariate, Mammography and Incident Breast Cancer Data Requested</b></u></p>
+              <button class='btn btn-primary' type='button' id='importDictvars'>Import Variables From Data Dictionary</button>
               <div class="input-group">
                 <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables shared by cohorts participating in the BCRPP. 
                 Data availability and descriptive statistics can be explored via the <a href="#data_exploration/summary">Explore Data</a> tool. If data from a particular category is requested,
@@ -369,8 +370,8 @@ export const formSection = async (activeTab, showDescripton) => {
                   </div>
 
                   <div class="inline-field">
-                    <input id="pershist" name="basevar" type="checkbox" value="Personal/Family Health History"/>
-                    <label class="container-ul" for="pershist">Personal/Family Health History</label>
+                    <input id="pershist" name="basevar" type="checkbox" value="Personal and Family Health History"/>
+                    <label class="container-ul" for="pershist">Personal and Family Health History</label>
                   </div>
 
                   <div class="inline-field">
@@ -618,6 +619,8 @@ export const formSection = async (activeTab, showDescripton) => {
           </div>
         </div>
       </div>`;
+
+      
   return template;
 }
 
@@ -656,6 +659,23 @@ export const approveRejectSection = () => {
                           </div>`
 
   return template
+}
+
+export const importDictVars = () => {
+  console.log('Importing...');
+  const mmdArr = Array.from(document.getElementsByName('mmdvarv'));
+  const baseArr = Array.from(document.getElementsByName('basevar'));
+  const ibcArr = Array.from(document.getElementsByName('ibcvar'));
+
+  const vars = [...mmdArr, ...baseArr, ...ibcArr];
+
+  console.log(vars);
+  const dictionaryVars = localStorage.getItem('dictionaryVars').split(',').map(v => v.toLowerCase());
+  
+  vars.forEach(v => {
+      if(dictionaryVars.includes(v.value.toLowerCase()))
+      v.checked = true;
+  })
 }
 
 export const acceptedStudiesSection = (activeTab) => {
