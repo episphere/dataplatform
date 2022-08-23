@@ -36,7 +36,8 @@ import {
   getCollaboration,
   checkDataSubmissionPermissionLevel,
   deleteTask,
-  showCommentsDropDown
+  showCommentsDropDown,
+  getChairApprovalDate
 } from '../shared.js';
 import {
   addEventToggleCollapsePanelBtn
@@ -2216,6 +2217,7 @@ export async function viewFinalDecisionFilesTemplate(files) {
 
   document.getElementById('decided').innerHTML = template;
 
+  if(filesInfo.length !== 0){
   await viewFinalDecisionFiles(filesInfo);
   for (const file of filesInfo) {
     document.getElementById(`study${file.id}`).addEventListener('click', showCommentsDropDown(file.id))
@@ -2282,6 +2284,7 @@ Array.from(headers.children).forEach((header, index) => {
     const tableElement = headerCell.parentElement.parentElement.parentElement;
     filterCheckBox(tableElement, filesInfo);
   })
+}
 
 }
 
@@ -2316,19 +2319,7 @@ export async function viewFinalDecisionFiles(files) {
     const shortfilename = filename.length > 21 ? filename.substring(0, 20) + '...' : filename;
     console.log(fileId, fileInfo);
 
-    let fileTasks = await getTaskList(fileId);
-    let completion_date = '';
-
-    fileTasks.entries.forEach(task => {
-      if(task.action === 'review'){
-        let task_assignments = task.task_assignment_collection.entries;
-        task_assignments.forEach(task_assignment => {
-          if(task_assignment.completed_at !== null){
-            completion_date = new Date(task_assignment.completed_at).toDateString().substring(4,);
-          }
-        })
-      }
-    })
+    let completion_date = await getChairApprovalDate(fileId);
     // fileTasks.entries.forEach(task => {
     // if (task.action === 'review'){
     //   let task_assignments = task.task_assignment_collection.entries;
@@ -2399,6 +2390,7 @@ template += `
   // }
 
   // template += `</div></tbody></table></div>`;
+  if(document.getElementById('files') != null)
   document.getElementById('files').innerHTML = template;
 }
 

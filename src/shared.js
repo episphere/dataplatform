@@ -903,6 +903,26 @@ export const updateTaskAssignment = async (id, res_state, msg = "") => {
     }
 }
 
+export const getChairApprovalDate = async (id) => {
+    let fileTasks = await getTaskList(id);
+    let completion_date = '';
+
+    fileTasks.entries.forEach(task => {
+      if(task.action === 'review'){
+        let task_assignments = task.task_assignment_collection.entries;
+        task_assignments.forEach(task_assignment => {
+          if(task_assignment.completed_at !== undefined){
+            console.log(task_assignment.completed_at);
+            completion_date = new Date(task_assignment.completed_at).toDateString().substring(4,);
+          }
+        })
+      }
+    })
+
+    if(completion_date !== '') return completion_date
+    else return 'Not Completed';
+}
+
 export const createComment = async (id, msg = "") => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
