@@ -581,6 +581,32 @@ export const uploadWordFileVersion = async (data, fileId) => {
     }
 }
 
+export const updateDuplicateFileName = async (fileId) => {
+    let file = await getFileInfo(fileId);
+    const fileFolder = file.parent.id;
+    const filename = file.name
+    const folderItems = await getFolderItems(fileFolder);
+    const folderFilenames = folderItems.map(item => item.name);
+    const [name, extension] = filename.split('.');
+    let i = 1;
+    console.log(name);
+
+    while (folderFilenames.includes(filename)) {
+
+      if (filename.includes(')')) {
+
+        const [name, version] = filename.split('(');
+        filename = name + `(${i})` + version.substring(2, );
+      } else {
+        filename = name + `(${i}).` + extension;
+      }
+      console.log('New name', filename);
+      i++;
+    }
+
+    return filename;
+}
+
 export const getCollaboration = async (id, type) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;

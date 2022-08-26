@@ -119,8 +119,9 @@ export const confluence = async () => {
                 confluenceDiv.innerHTML = dataSummary('Subset Statistics', false, true, true);
                 addEventUpdateSummaryStatsData();
                 removeActiveClass('nav-link', 'active');
-                document.querySelectorAll('[href="#data_exploration/subset"]')[0].classList.add('active');
+                document.querySelectorAll('[href="#data_exploration/subset"]')[1].classList.add('active');
                 dataSummaryMissingTemplate();
+                hideAnimation();
             })
         }
         if(viewUserSubmissionElement){

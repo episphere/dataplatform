@@ -330,7 +330,9 @@ export const formSection = async (activeTab, showDescripton) => {
               <br>
 
               <p><u><b>Core Covariate, Mammography and Incident Breast Cancer Data Requested</b></u></p>
-              <button class='btn btn-primary' type='button' id='importDictvars'>Import Variables From Data Dictionary</button>
+              <div class='col-3'>
+                <button class='btn btn-primary btn-sm' type='button' id='importDictvars'>Import Variables From Data Dictionary</button>
+              </div>
               <div class="input-group">
                 <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables shared by cohorts participating in the BCRPP. 
                 Data availability and descriptive statistics can be explored via the <a href="#data_exploration/summary">Explore Data</a> tool. If data from a particular category is requested,
