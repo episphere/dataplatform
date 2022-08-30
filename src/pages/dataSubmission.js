@@ -1,13 +1,20 @@
-import { getFolderItems, filterStudiesDataTypes, filterConsortiums, hideAnimation, checkDataSubmissionPermissionLevel, getCollaboration } from "../shared.js";
+import { getFolderItems, filterStudiesDataTypes, filterConsortiums, hideAnimation, checkDataSubmissionPermissionLevel, getCollaboration, getFile, tsv2Json, consortiumSelection } from "../shared.js";
 import { uploadInStudy } from "../components/modal.js";
 
 export const dataSubmissionTemplate = async () => {
-    const response = await getFolderItems(0);
-    const array = filterConsortiums(response.entries);
+    const response = await getFolderItems('145996351913'); //Should be 0 for those without access to this folder
+    const studiesList = await getFile('910115863871')
+    let studyIDs = [];
+    if(studiesList) studyIDs = tsv2Json(studiesList).data.map(dt => dt['Folder ID'].trim());
+    const studies = response.entries.filter(obj => studyIDs.includes(obj.id));
+    const consortias = filterConsortiums(response.entries);
+    const array = [...studies];//, ...consortias];
+    console.log(array)
     let bool = false;
     for(let consortia of array){
         if(bool) continue;
         const permitted = checkDataSubmissionPermissionLevel(await getCollaboration(consortia.id, `${consortia.type}s`), JSON.parse(localStorage.parms).login);
+        console.log('910115863871 '+permitted);
         if(permitted) bool = true;
     }
     if(array.length <= 0) {
@@ -48,7 +55,7 @@ export const dataSubmissionTemplate = async () => {
 
     template += await uploadInStudy('uploadInStudy');
     
-    template += '<div class="data-submission div-border white-bg"><ul class="ul-list-style first-list-item collapsible-items">';
+    template += '<div class="data-submission div-border white-bg"><ul class="ul-list-style first-list-item collapsible-items mb-0">';
 
     for(let obj of array){
         const consortiaName = obj.name;

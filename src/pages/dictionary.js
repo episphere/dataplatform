@@ -5,7 +5,8 @@ import { addEventToggleCollapsePanelBtn, pageSizeTemplate, dataPagination, pagin
 let previousValue = '';
 
 export const dataDictionaryTemplate = async () => {
-    const data = await (await fetch('./BCAC_Confluence_Extended_Dictionary_v2 40_Oct8_2019.txt')).text();
+    //const data = await (await fetch('./BCAC_Confluence_Extended_Dictionary_v2 40_Oct8_2019.txt')).text();
+    const data = await (await fetch('./BCRP_DataDictionary.txt')).text();
     const tsvData = tsv2Json(data);
     const dictionary = tsvData.data;
     const headers = tsvData.headers;
@@ -24,7 +25,7 @@ export const dataDictionaryTemplate = async () => {
         <button id="filterBarToggle"><i class="fas fa-lg fa-caret-left"></i></button>
         <div class="main-summary-row pl-2" style="min-height: 10px;margin-bottom: 1rem;">
             <div class="col white-bg div-border align-left font-size-17" style="padding: 0.5rem;" id="listFilters">
-                <span class="font-bold">Data Type:</span> All
+                <span class="font-bold">Data Categories:</span> All
             </div>
         </div>
         <div class="main-summary-row pl-2">
@@ -80,7 +81,7 @@ const addEventPageBtns = (pageSize, data, headers) => {
 }
 
 const renderDataDictionaryFilters = (dictionary, headers) => {
-    const allVariableType = Object.values(dictionary).map(dt => dt['Data Type']);
+    const allVariableType = Object.values(dictionary).map(dt => dt['Sub-Category']);
     const uniqueType = allVariableType.filter((d,i) => allVariableType.indexOf(d) === i).sort();
 
     let template = '';
@@ -100,14 +101,14 @@ const renderDataDictionaryFilters = (dictionary, headers) => {
     <div class="main-summary-row">
         <div style="width: 100%;">
             <div class="form-group" margin:0px>
-                <label class="filter-label font-size-13" for="variableTypeList">Data Type</label>
-                <ul class="remove-padding-left font-size-15 filter-sub-div allow-overflow" id="variableTypeList">
+                <label class="filter-label font-size-13" for="variableTypeList">Sub-Category</label>
+                <ul class="remove-padding-left font-size-15 allow-overflow" id="variableTypeList">
                 `
                 uniqueType.forEach(vt => {
                     template += `
                         <li class="filter-list-item">
                             <input type="checkbox" data-variable-type="${vt}" id="label${vt}" class="select-variable-type" style="margin-left: 1px !important;">
-                            <label for="label${vt}" class="country-name" title="${vt}">${shortenText(vt, 60)}</label>
+                            <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(vt, 60)}</label>
                         </li>
                     `
                 })
@@ -161,15 +162,15 @@ const filterDataHandler = (dictionary) => {
     
     let filteredData = dictionary;
     if(variableTypeSelection.length > 0) {
-        filteredData = filteredData.filter(dt => variableTypeSelection.indexOf(dt['Data Type']) !== -1);
+        filteredData = filteredData.filter(dt => variableTypeSelection.indexOf(dt['Sub-Category']) !== -1);
     }
     if(variableTypeSelection.length === 0) filteredData = dictionary;
     
     document.getElementById('listFilters').innerHTML = `
     ${variableTypeSelection.length > 0 ? `
-        <span class="font-bold">Data Type: </span>${variableTypeSelection[0]} ${variableTypeSelection.length > 1 ? `and <span class="other-variable-count">${variableTypeSelection.length-1} other</span>`:``}
+        <span class="font-bold">Sub-Category: </span>${variableTypeSelection[0]} ${variableTypeSelection.length > 1 ? `and <span class="other-variable-count">${variableTypeSelection.length-1} other</span>`:``}
     `:`
-        <span class="font-bold">Data Type:</span> All`}
+        <span class="font-bold">Sub-Category:</span> All`}
     `;
 
     const input = document.getElementById('searchDataDictionary');
@@ -181,13 +182,13 @@ const filterDataHandler = (dictionary) => {
     let searchedData = JSON.parse(JSON.stringify(filteredData));
     searchedData = searchedData.filter(dt => {
         let found = false;
-        if(dt['Variable'].toLowerCase().includes(currentValue)) found = true;
+        if(dt['Variable Name'].toLowerCase().includes(currentValue)) found = true;
         if(dt['Label'].toLowerCase().includes(currentValue)) found = true;
         if(found) return dt;
     });
     let highlightData = JSON.parse(JSON.stringify(searchedData));
     highlightData.map(dt => {
-        dt['Variable'] = dt['Variable'].replace(new RegExp(currentValue, 'gi'), '<b>$&</b>');
+        dt['Variable Name'] = dt['Variable Name'].replace(new RegExp(currentValue, 'gi'), '<b>$&</b>');
         dt['Label'] = dt['Label'].replace(new RegExp(currentValue, 'gi'), '<b>$&</b>');
         return dt;
     })
@@ -210,9 +211,9 @@ const renderDataDictionary = (dictionary, pageSize, headers) => {
         <div class="row pt-md-3 pb-md-3 m-0 align-left div-sticky">
             <div class="col-md-11">
                 <div class="row">
-                    <div class="col-md-4 font-bold">Variable <button class="transparent-btn sort-column" data-column-name="Variable"><i class="fas fa-sort"></i></button></div>
+                    <div class="col-md-4 font-bold">Variable <button class="transparent-btn sort-column" data-column-name="Variable Name"><i class="fas fa-sort"></i></button></div>
                     <div class="col-md-5 font-bold">Label <button class="transparent-btn sort-column" data-column-name="Label"><i class="fas fa-sort"></i></button></div>
-                    <div class="col-md-3 font-bold">Data Type <button class="transparent-btn sort-column" data-column-name="Data Type"><i class="fas fa-sort"></i></button></div>
+                    <div class="col-md-3 font-bold">Sub-Category <button class="transparent-btn sort-column" data-column-name="Sub-Category"><i class="fas fa-sort"></i></button></div>
                 </div>
             </div>
             <div class="ml-auto"></div>
@@ -223,27 +224,25 @@ const renderDataDictionary = (dictionary, pageSize, headers) => {
         if(index > pageSize ) return
         template += `
         <div class="card border-0 mt-1 mb-1 align-left w-100 pt-md-1">
-            <div class="pl-3 pt-1 pr-3 pb-1" aria-expanded="false" id="heading${desc['Variable']}">
+            <div class="pl-3 pt-1 pr-3 pb-1" aria-expanded="false" id="heading${desc['Variable Name']}">
                 <div class="row">
                     <div class="col-md-11">
                         <div class="row">
-                            <div class="col-md-4">${desc['Variable'] ? desc['Variable'] : ''}</div>
+                            <div class="col-md-4">${desc['Variable Name'] ? desc['Variable Name'] : ''}</div>
                             <div class="col-md-5">${desc['Label'] ? desc['Label'] : ''}</div>
-                            <div class="col-md-3">${desc['Data Type'] ? desc['Data Type'] : ''}</div>
+                            <div class="col-md-3">${desc['Sub-Category'] ? desc['Sub-Category'] : ''}</div>
                         </div>
                     </div>
                     <div class="ml-auto">
-                        <div class="col-md-12"><button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${desc['Variable'].replace(/(<b>)|(<\/b>)/g, '')}"><i class="fas fa-caret-down fa-2x"></i></button></div>
+                        <div class="col-md-12"><button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${desc['Variable Name'].replace(/(<b>)|(<\/b>)/g, '')}"><i class="fas fa-caret-down fa-2x"></i></button></div>
                     </div>
                 </div>
             </div>
-            <div id="study${desc['Variable'].replace(/(<b>)|(<\/b>)/g, '')}" class="collapse" aria-labelledby="heading${desc['Variable']}">
+            <div id="study${desc['Variable Name'].replace(/(<b>)|(<\/b>)/g, '')}" class="collapse" aria-labelledby="heading${desc['Variable Name']}">
                 <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
                     ${desc['Category'] ? `<div class="row mb-1 m-0"><div class="col-md-2 pl-2 font-bold">Category</div><div class="col">${desc['Category']}</div></div>`: ``}
                     ${desc['Coding'] ? `<div class="row mb-1 m-0"><div class="col-md-2 pl-2 font-bold">Coding</div><div class="col">${desc['Coding']}</div></div>`: ``}
-                    ${desc['Variable type'] ? `<div class="row mb-1 m-0"><div class="col-md-2 pl-2 font-bold">Variable type</div><div class="col">${desc['Variable type']}</div></div>`: ``}
-                    ${desc['Comment'] ? `<div class="row mb-1 m-0"><div class="col-md-2 pl-2 font-bold">Comment</div><div class="col">${desc['Comment']}</div></div>`: ``}
-                    ${desc['Confluence Variable'] ? `<div class="row mb-1 m-0"><div class="col-md-2 pl-2 font-bold">Confluence Variable</div><div class="col">${desc['Confluence Variable']}</div></div>`: ``}
+                    ${desc['Variable Type'] ? `<div class="row mb-1 m-0"><div class="col-md-2 pl-2 font-bold">Variable Type</div><div class="col">${desc['Variable Type']}</div></div>`: ``}
                 `;
                 template +=`
                 </div>

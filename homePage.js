@@ -1,4 +1,5 @@
 // Major updates required
+// Need to update infoDeck and infoDeckAfterLoggedIn to match template
 import { getFileInfo } from "./../shared.js";
 
 export const infoDeck = () => {
@@ -6,20 +7,19 @@ export const infoDeck = () => {
     template += `
         <div class="secondary-bg padding-bottom-1rem">
             <div class="confluence-banner">
-                <div class="banner-logo">
-                    <div class="banner-overlay-text row justify-content-center text-center">
-                        <div class="col-xl-12">
-                            <h1 class="banner-overlay-h1">The Breast Cancer Risk Prediction Project (BCRPP)</h1>
-                            <div class="banner-overlay-line"></div>
-                            <h2 class="banner-overlay-h3" style="font-size:1.7vw;"> Building an integrated, multi-ethnic breast cancer risk prediction model</h2>
-                        </div>
+                <img src="./static/images/nci-vol-10623-150.jpg" class="banner-logo" style="min-height: 120px;  max-height=450px;" alt="Confluence logo">
+                <div class="banner-overlay-text row justify-content-center text-center">
+                    <div class="col-xl-12">
+                        <h1 class="banner-overlay-h1">The Breast Cancer Risk Prediction Project (BCRPP)</h1>
+                        <div class="banner-overlay-line"></div>
+                        <h2 class="banner-overlay-h3" style="font-size:1.7vw;"> Building an integrated, multi-ethnic breast cancer risk prediction model</h2>
                     </div>
                 </div>
             </div>
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`
                     template += cardContents({header: 'Learn about BCRPP', button: 'Learn about BCRPP', href: '#about/overview', icon: 'fa-download', explanation: 'View main goals and collaborating institutions.'})
-                    //template += cardContents({header: 'Participating Studies', button: 'Study Description', href: '#join', icon: 'fa-chart-bar', explanation: 'View description of prospective cohort studies.'})
+                    template += cardContents({header: 'Participating Studies', button: 'Study Description', href: '#join', icon: 'fa-chart-bar', explanation: 'View description of prospective cohort studies.'})
                     template += cardContents({header: 'Data Access', button: 'Data Access', href: '#data_access/overview', icon: 'fa-handshake', explanation: 'View procedures for accessing data.'})
                     template += cardContents({header: 'Data Dictionary', button: 'Data Dictionary', href: '#data_exploration/dictionary', icon: 'fa-database', explanation: 'View data types collected from participating cohort studies.'})
                 template += `</div>
@@ -27,7 +27,7 @@ export const infoDeck = () => {
         </div>
         <div class="secondary-bg inverse-triangle"></div>
         <div class="container align-center">
-            <div class="font-size-28 font-bold font-family-montserrat our-goals mt-3 mb-2">OUR GOALS</div>
+            <div class="font-size-28 font-bold font-family-helvetica our-goals mt-3 mb-2">OUR GOALS</div>
             <div class="row">
                 <div class="col-lg-3"></div>
                 <div class="col-lg-6 font-size-18 align-left">To build a large-scale collaborative research resource with data from over 1.5 million women of different race/ethnic backgrounds participating in prospective cohort studies or trials to:</div>
@@ -47,7 +47,9 @@ export const infoDeck = () => {
         </div>
         <div class="ternary-bg">
             <div class="container align-left confluence-info font-family-montserrat">
-            <div>The BCRPP is funded by the US National Cancer Institute (NCI) grant number <a href="https://maps.cancer.gov/overview/DCCPSGrants/abstract.jsp?applId=10263893&term=CA249866">1U01CA249866-01</a> and the NCI Intramural Research Funds. BCRPP is coordinated by the Harvard T.H. Chan School of Public Health and the Division of Cancer Epidemiology and Genetics (DCEG) of NCI, in collaboration with the NCI Cohort Consortium.</div>
+
+                <!---<div>The BCRPP is funded by the US National Cancer Institute (NCI) and coordinated by the Division of Cancer Epidemiology and Genetics (DCEG) of NCI and the Harvard T.H. Chan School of Public Health in collaboration with the NCI Cohort Consortium.</div>--->
+                <div>The BCRPP is funded by the US National Cancer Institute (NCI) grant number <a href="https://maps.cancer.gov/overview/DCCPSGrants/abstract.jsp?applId=10263893&term=CA249866">1U01CA249866-01</a> and the NCI Intramural Research Funds. BCRPP is coordinated by the Harvard T.H. Chan School of Public Health and the Division of Cancer Epidemiology and Genetics (DCEG) of NCI, in collaboration with the NCI Cohort Consortium.</div>
             </div>
         </div>
     `
@@ -55,18 +57,17 @@ export const infoDeck = () => {
 }
 
 export const infoDeckAfterLoggedIn = async () => {
-    const studyDescription = await getFileInfo(904897189551); //new: 904897189551
+    const studyDescription = await getFileInfo(761599566277);
     let template = '';
     template += `
         <div class="secondary-bg padding-bottom-1rem">
             <div class="confluence-banner">
-                <div class="banner-logo">
-                    <div class="banner-overlay-text row justify-content-center text-center">
-                        <div class="col-md-12">
-                            <h1 class="banner-overlay-h1">The Breast Cancer Risk Prediction Project (BCRPP)</h1>
-                            <div class="banner-overlay-line"></div>
-                            <h2 class="banner-overlay-h3" style="font-size:1.7vw;"> Building an integrated, multi-ethnic breast cancer risk prediction model</h2>
-                        </div>
+                <img src="./static/images/nci-vol-10623-150.jpg" class="banner-logo" style="min-height: 120px;  max-height=250px;" alt="Confluence logo">
+                <div class="banner-overlay-text row justify-content-center text-center">
+                    <div class="col-md-12">
+                        <h1 class="banner-overlay-h1">The Breast Cancer Risk Prediction Project (BCRPP)</h1>
+                        <div class="banner-overlay-line"></div>
+                        <h2 class="banner-overlay-h3" style="font-size:1.7vw;"> Building an integrated, multi-ethnic breast cancer risk prediction model</h2>
                     </div>
                 </div>
             </div>
@@ -101,6 +102,8 @@ export const infoDeckAfterLoggedIn = async () => {
         </div>
         <div class="ternary-bg">
             <div class="container align-left confluence-info font-family-montserrat">
+
+            <!---<div>The BCRPP is funded by the US National Cancer Institute (NCI) and coordinated by the Division of Cancer Epidemiology and Genetics (DCEG) of NCI and the Harvard T.H. Chan School of Public Health in collaboration with the NCI Cohort Consortium.</div>--->
             <div>The BCRPP is funded by the US National Cancer Institute (NCI) grant number <a href="https://maps.cancer.gov/overview/DCCPSGrants/abstract.jsp?applId=10263893&term=CA249866">1U01CA249866-01</a> and the NCI Intramural Research Funds. BCRPP is coordinated by the Harvard T.H. Chan School of Public Health and the Division of Cancer Epidemiology and Genetics (DCEG) of NCI, in collaboration with the NCI Cohort Consortium.</div>
             </div>
         </div>

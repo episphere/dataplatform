@@ -1,5 +1,5 @@
 export const variables = {
-    BCAC: {
+    BCRPP: {
         Carrier_status: {
             'label': 'Carrier status'
         },
@@ -75,11 +75,20 @@ export const variables = {
         },
         bYear: {
             888: "Don't Know",
-            'label': 'Year of birth'
+            'label': 'Birth Year'
+        },
+        dxdate_primary: {
+            888: "Don't Know",
+            'label': 'Year of Diagnosis'
+        },
+        invasive_primary: {
+            888: "Don't Know",
+            'label': 'Breast Cancer Behavior'
+            //'label': 'Count of Cancer Invasiveness'
         },
         ageInt: {
             888: "Don't Know",
-            'label': 'Age'
+            'label': 'Age at Baseline'
         },
         intDate : {
             '08/08/8000': "Don't Know",
@@ -171,7 +180,7 @@ export const variables = {
             0: 'negative',
             1: 'positive',
             888: "Don't Know",
-            'label': 'Estrogen receptor status'
+            'label': 'Estrogen Receptor Status'
         },
         eduCat: {
             'label': 'Highest level of education received'
@@ -181,7 +190,7 @@ export const variables = {
         },
         ageMenarche: {
             888: "Don't Know",
-            'label': 'Age at menarche'
+            'label': 'Age at Menarche'
         },
         mensAgeLast: {
             777: 'Not Applicable (still menstruating)',
@@ -198,11 +207,12 @@ export const variables = {
             0: 'nulliparous',
             1: '1+ full term pregnancies',
             888: "Don't Know",
-            'label': 'Nulliparous v parous'
+            //'label': 'Nulliparous v parous'
+            'label': 'Parity'
         },
         parity: {
             888: "Don't Know",
-            'label': 'Number of full-term pregnancies'
+            'label': 'Number of pregnancies (full-term)'
         },
         ageFFTP: {
             777: 'Not Applicable',
@@ -233,7 +243,8 @@ export const variables = {
             'label': 'Adult body height'
         },
         BMI: {
-            'label': 'Body mass index at interview/questionnaire in kg'
+            //'label': 'Body mass index at interview/questionnaire in kg'
+            'label': 'BMI'
         },
         OCEver: {
             0: 'never',
@@ -304,7 +315,7 @@ export const variables = {
             2: 'other methods of detection',
             777: 'Not Applicable',
             888: "Don't Know",
-            'label': 'Mode of detection of first breast cancer diagnosis'
+            'label': 'Mode of Detection of First Breast Cancer Diagnosis'
         },
         Index: {
             1: 'ascertained for first tumour',
@@ -341,7 +352,7 @@ export const variables = {
             2: 'moderately differentiated',
             3: 'poorly/un-differentiated',
             888: "Don't Know",
-            'label': 'Histopathological grade'
+            'label': 'Histopathological Grade'
         },
         Grade2: {
             1: 'well differentiated',
@@ -503,12 +514,12 @@ export const variables = {
             888: "Don't Know",
             'label': 'Estrogen receptor status of second tumour'
         },
-        ER_statusIndex: {
-            0: 'negative',
-            1: 'positive',
-            888: "Don't Know",
-            'label': 'ER status for cases'
-        },
+        // ER_statusIndex: {
+        //     0: 'negative',
+        //     1: 'positive',
+        //     888: "Don't Know",
+        //     'label': 'ER status for cases'
+        // },
         ER_status1_source: {
             0: 'clinical records',
             1: 'IHC stain of whole sections',
