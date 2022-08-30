@@ -242,6 +242,17 @@ export const formSection = async (activeTab, showDescripton) => {
             representatives from the BCRPP Steering Committee and representatives of individual cohorts. Proposals will be reviewed 
             once every four months. Data for approved concepts will be sent only to the Investigators listed below, 
             each of whose Institutions will need to sign the BCRPP DTA.</p>
+
+            <div id="drop-area">
+              <form class="my-form">
+                <p>Upload JSON file here to autocomplete form.</p>
+                <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+                <label class="button" for="fileElem">Select some files</label>
+              </form>
+              <progress id="progress-bar" max=100 value=0></progress>
+              <div id="gallery" /></div>
+            </div>
+
             <form>
               <div class="input-group">
                 <label for="date"><b>Date</b><span class='required-label'>*</span></label>
@@ -871,7 +882,8 @@ export const chairFileView = async () => {
 
   template += `<div class='tab-pane fade'
                  id='inProgress' role='tabpanel'
-                 aria-labeledby='inProgressTab'>`
+                 aria-labeledby='inProgressTab'>
+                 <a href="mailto:${emailforDACC.join("; ")}" id='email' class='btn btn-dark'>Send Email to DACC</a>`
   template += renderFilePreviewDropdown(filesinprogress, 'inProgress');
 
   template += `<div class='tab-pane fade'
@@ -967,9 +979,9 @@ export const chairFileView = async () => {
     //}
   }
 
-  if (filescompleted.length == 0) {
-    document.getElementById('email').style.display = 'none';
-  }
+  // if (filescompleted.length == 0) {
+  //   document.getElementById('email').style.display = 'none';
+  // }
 
   //Switch Tabs
   switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'decided'], filesincomplete);
@@ -2479,4 +2491,106 @@ export const formFunctions = () => {
       }
     }
   });
+  
+  // ************************ Drag and drop ***************** //
+let dropArea = document.getElementById("drop-area")
+
+// Prevent default drag behaviors
+;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+  dropArea.addEventListener(eventName, preventDefaults, false)   
+  document.body.addEventListener(eventName, preventDefaults, false)
+})
+
+// Highlight drop area when item is dragged over it
+;['dragenter', 'dragover'].forEach(eventName => {
+  dropArea.addEventListener(eventName, highlight, false)
+})
+
+;['dragleave', 'drop'].forEach(eventName => {
+  dropArea.addEventListener(eventName, unhighlight, false)
+})
+
+// Handle dropped files
+dropArea.addEventListener('drop', handleDrop, false)
+
+function preventDefaults (e) {
+  e.preventDefault()
+  e.stopPropagation()
+}
+
+function highlight(e) {
+  dropArea.classList.add('highlight')
+}
+
+function unhighlight(e) {
+  dropArea.classList.remove('active')
+}
+
+function handleDrop(e) {
+  var dt = e.dataTransfer
+  var files = dt.files
+
+  handleFiles(files)
+}
+
+let uploadProgress = []
+let progressBar = document.getElementById('progress-bar')
+
+function initializeProgress(numFiles) {
+  progressBar.value = 0
+  uploadProgress = []
+
+  for(let i = numFiles; i > 0; i--) {
+    uploadProgress.push(0)
+  }
+}
+
+function updateProgress(fileNumber, percent) {
+  uploadProgress[fileNumber] = percent
+  let total = uploadProgress.reduce((tot, curr) => tot + curr, 0) / uploadProgress.length
+  progressBar.value = total
+}
+
+function handleFiles(files) {
+  files = [...files]
+  initializeProgress(files.length)
+  files.forEach(uploadFile)
+  files.forEach(previewFile)
+}
+
+function previewFile(file) {
+  let reader = new FileReader()
+  reader.readAsDataURL(file)
+  reader.onloadend = function() {
+    let img = document.createElement('img')
+    img.src = reader.result
+    document.getElementById('gallery').appendChild(img)
+  }
+}
+
+function uploadFile(file, i) {
+  var url = 'https://api.cloudinary.com/v1_1/joezimim007/image/upload'
+  var xhr = new XMLHttpRequest()
+  var formData = new FormData()
+  xhr.open('POST', url, true)
+  xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
+
+  // Update progress (can be used to show progress indicator)
+  xhr.upload.addEventListener("progress", function(e) {
+    updateProgress(i, (e.loaded * 100.0 / e.total) || 100)
+  })
+
+  xhr.addEventListener('readystatechange', function(e) {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      updateProgress(i, 100) // <- Add this
+    }
+    else if (xhr.readyState == 4 && xhr.status != 200) {
+      // Error. Inform the user
+    }
+  })
+
+  formData.append('upload_preset', 'ujpu6gyk')
+  formData.append('file', file)
+  //xhr.send(formData)
+}
 }
