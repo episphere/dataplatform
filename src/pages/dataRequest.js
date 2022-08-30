@@ -263,8 +263,12 @@ export const formSection = async (activeTab, showDescripton) => {
                     <label class="inline" for="amendmentyes"> Yes </label>
                   <input id="amendmentno" name="amendment" type="radio" value="No" required/>
                     <label class="inline" for="amendmentno"> No </label>
-                  <label for="ifamendmentyes"> If yes, provide Concept Number of original form </label>
-                    <input type="text" id="conNum" name="conNum"/>
+                  <!--label for="ifamendmentyes"> If yes, provide Concept Number of original form </label>
+                    <input type="text" id="conNum" name="conNum"/-->
+              </div>
+
+              <div class='input-group d-none' >
+                <select class='form-select' id='amendmentSelect'></select>
               </div>
 
               <div class="input-group">
@@ -678,6 +682,42 @@ export const importDictVars = () => {
       if(dictionaryVars.includes(v.value.toLowerCase()))
       v.checked = true;
   })
+}
+
+export const amendFormSelect = async () => {
+  const yesEl = document.getElementById('amendmentyes');
+  const amendmentEl = document.getElementById('amendmentSelect');
+
+  amendmentEl.parentElement.classList.toggle('d-none', !yesEl.checked);
+}
+
+export const populateAmendSelect = async () => {
+  const items = await getFolderItems('162222418449');
+  const folders = items.entries;
+  console.log(folders);
+
+  let options = [];
+  for(const folder of folders){
+    if(folder.name === JSON.parse(localStorage.parms).login){
+      console.log('Found user folder', folder)
+      const userFolder = await getFolderItems(folder.id);
+      const userFiles = userFolder.entries;
+
+      console.log(userFiles);
+      options = [...userFiles];
+    }
+  }
+
+  console.log(options);
+
+  const amendmentEl = document.getElementById('amendmentSelect');
+ options.forEach( option => {
+    console.log(option);
+    const optionEl = document.createElement('option');
+    optionEl.text = option.name;
+    console.log(optionEl);
+    amendmentEl.appendChild(optionEl);
+  });
 }
 
 export const acceptedStudiesSection = (activeTab) => {
