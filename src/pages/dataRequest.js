@@ -99,16 +99,16 @@ export const dataAccess = (activeTab, showDescripton) => {
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'Chair Menu', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'Chair Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
   let template = `
@@ -158,16 +158,16 @@ export const formSectionOther = async (activeTab, showDescripton) => {
 
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'Chair Menu', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'Chair Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions',);
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
 
@@ -205,16 +205,16 @@ export const formSection = async (activeTab, showDescripton) => {
 
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'Chair Menu', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'Chair Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions',);
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
   let template = `
@@ -334,9 +334,8 @@ export const formSection = async (activeTab, showDescripton) => {
               <br>
 
               <p><u><b>Core Covariate, Mammography and Incident Breast Cancer Data Requested</b></u></p>
-              <div class='col-3'>
-                <button class='btn btn-primary btn-sm' type='button' id='importDictvars'>Import Variables From Data Dictionary</button>
-              </div>
+                <button class='btn btn-primary btn-sm' type='button' id='importDictvars'>Import Variables</button>
+
               <div class="input-group">
                 <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables shared by cohorts participating in the BCRPP. 
                 Data availability and descriptive statistics can be explored via the <a href="#data_exploration/summary">Explore Data</a> tool. If data from a particular category is requested,
@@ -725,16 +724,16 @@ export const acceptedStudiesSection = (activeTab) => {
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'Chair Menu', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'Chair Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions',);
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
   let template = `
@@ -811,16 +810,16 @@ export const chairSection = (activeTab) => {
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'Chair Menu', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'Chair Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions',);
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
   let template = `
@@ -1338,16 +1337,16 @@ export const daccSection = (activeTab) => {
   let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = '';
   if (authDacc && authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'Chair Menu', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Chair Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'Chair Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'DACC Menu');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form');
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions',);
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
   let template = `

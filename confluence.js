@@ -130,8 +130,7 @@ export const confluence = async () => {
                 showAnimation();
                 assignNavbarActive(viewUserSubmissionElement, 1);
                 document.title = 'BCRPP - Your Submissions';
-                await userSubmissionTemplate('Your Submissions');
-                removeActiveClass('nav-link', 'active');
+                await userSubmissionTemplate('Your Submissions', 'User Submissions');
                 hideAnimation();
             })
         }
@@ -444,8 +443,7 @@ const manageRouter = async () => {
         showAnimation();
         assignNavbarActive(viewUserSubmissionElement, 1);
         document.title = 'BCRPP - Your Submissions';
-        userSubmissionTemplate('Your Submissions');
-        removeActiveClass('nav-link', 'active');
+        userSubmissionTemplate('Your Submissions', 'User Submissions');
         hideAnimation();
     }
 

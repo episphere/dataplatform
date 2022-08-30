@@ -118,6 +118,12 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
             if(activeTab === 'form')
                 link.classList.add('active');
         }
+        if(header === 'View Submissions'){
+            link.href = `#userSubmissions`
+            console.log('Active Tab in View Submissions', activeTab === 'User Submissions');
+            if(activeTab === 'User Submissions')
+                link.classList.add('active');
+        }
         if(header === 'Chair Menu'){
             link.href = `#${page}/chairView`
             if(activeTab === 'chairView')
