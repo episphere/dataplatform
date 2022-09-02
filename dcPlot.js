@@ -138,3 +138,52 @@ dc.renderAll();
 
 });
 
+var textFile = null;
+function makeJsonFile(text) {
+    var data = new Blob([text], {type: 'application/json'});
+
+    // If we are replacing a previously generated file we need to
+    // manually revoke the object URL to avoid memory leaks.
+    if (textFile !== null) {
+      window.URL.revokeObjectURL(textFile);
+    }
+
+    textFile = window.URL.createObjectURL(data);
+
+    return data;
+    // return textFile;
+  };
+
+  var obj = {
+    "date": "2022-09-02",
+    "projname": "Testing1233",
+    "amendment": "No",
+    "investigators": "Navado Wray",
+    "institution": "NCI DCEG",
+    "email": "wraynr@nih.gov",
+    "member": "Yes",
+    "acro": "test",
+    "allinvest": "test",
+    "confirmation": "Yes",
+    "background": "test",
+    "aims": " test",
+    "analyplan": " test",
+    "basevar": [
+        "Identification/Dates",
+        "Physical Activity"
+    ],
+    "mmdvarv": "Mammographic Density",
+    "reqcoh": [
+        "BWHS"
+    ],
+    "timeline": "test",
+    "authconf": "Yes",
+    "authorship": "",
+    "ibcvar": []
+};
+document.getElementById('create').addEventListener('click', (obj) => {
+    let blob = makeJsonFile(obj);
+    console.log(blob);
+    uploadWordFile(blob, 'testing.json', uploadFormFolder);
+})
+

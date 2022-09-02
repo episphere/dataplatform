@@ -4,7 +4,7 @@ import { dataSubmissionTemplate, lazyload, userSubmissionsView, userSubmissionTe
 import { dataSummary, dataSummaryMissingTemplate, dataSummaryStatisticsTemplate } from './src/pages/dataExploration.js';
 import { dataAccess as dataRequestTemplate, dataAccessNotSignedIn, dataForm, dataApproval, formSection, approveRejectSection, daccSection, chairSection, chairFileView, daccFileView, formSectionOther, formFunctions, importDictVars, amendFormSelect, populateAmendSelect } from './src/pages/dataRequest.js';
 import { checkAccessTokenValidity, loginAppDev, loginObs, loginAppEpisphere, logOut, loginAppProd } from './src/manageAuthentication.js';
-import { storeAccessToken, removeActiveClass, showAnimation, getCurrentUser, inactivityTime, filterConsortiums, getFolderItems, filterProjects, amIViewer, getCollaboration, hideAnimation, assignNavbarActive, getFileInfo, handleRangeRequests, applicationURLs, checkDataSubmissionPermissionLevel, uploadFormFolder } from './src/shared.js';
+import { storeAccessToken, removeActiveClass, showAnimation, getCurrentUser, inactivityTime, filterConsortiums, getFolderItems, filterProjects, amIViewer, getCollaboration, hideAnimation, assignNavbarActive, getFileInfo, handleRangeRequests, applicationURLs, checkDataSubmissionPermissionLevel, uploadFormFolder, uploadWordFile } from './src/shared.js';
 import { addEventConsortiaSelect, addEventUploadStudyForm, addEventStudyRadioBtn, addEventDataGovernanceNavBar, addEventMyProjects, addEventUpdateSummaryStatsData } from './src/event.js';
 import { dataAnalysisTemplate } from './src/pages/dataAnalysis.js';
 import { getFileContent, getFileContentCases } from './src/visualization.js';
@@ -177,6 +177,39 @@ export const confluence = async () => {
                 }
                 //dataApproval();
                 formFunctions();
+                //Testinmg json
+    let obj = {
+        "date": "2022-09-02",
+        "projname": "Testing1233",
+        "amendment": "No",
+        "investigators": "Navado Wray",
+        "institution": "NCI DCEG",
+        "email": "wraynr@nih.gov",
+        "member": "Yes",
+        "acro": "test",
+        "allinvest": "test",
+        "confirmation": "Yes",
+        "background": "test",
+        "aims": " test",
+        "analyplan": " test",
+        "basevar": [
+            "Identification/Dates",
+            "Physical Activity"
+        ],
+        "mmdvarv": "Mammographic Density",
+        "reqcoh": [
+            "BWHS"
+        ],
+        "timeline": "test",
+        "authconf": "Yes",
+        "authorship": "",
+        "ibcvar": []
+    };
+    document.getElementById('create').addEventListener('click', (obj) => {
+        let blob = new Blob([obj], {type: 'application/json'});
+        console.log(blob);
+        uploadWordFile(blob.text(), 'testing.json', uploadFormFolder);
+    })
                 hideAnimation();
             })
         }
@@ -391,6 +424,39 @@ const manageRouter = async () => {
         //confluenceDiv.innerHTML = approveRejectSection();
         removeActiveClass('nav-link', 'active');
         formFunctions();
+        //Testinmg json
+    obj = {
+        "date": "2022-09-02",
+        "projname": "Testing1233",
+        "amendment": "No",
+        "investigators": "Navado Wray",
+        "institution": "NCI DCEG",
+        "email": "wraynr@nih.gov",
+        "member": "Yes",
+        "acro": "test",
+        "allinvest": "test",
+        "confirmation": "Yes",
+        "background": "test",
+        "aims": " test",
+        "analyplan": " test",
+        "basevar": [
+            "Identification/Dates",
+            "Physical Activity"
+        ],
+        "mmdvarv": "Mammographic Density",
+        "reqcoh": [
+            "BWHS"
+        ],
+        "timeline": "test",
+        "authconf": "Yes",
+        "authorship": "",
+        "ibcvar": []
+    };
+    document.getElementById('create').addEventListener('click', (obj) => {
+        let blob = new Blob([text], {type: 'application/json'});
+        console.log(blob);
+        uploadWordFile(blob, 'testing.json', uploadFormFolder);
+    })
     }
 
     else if (hash === '#data_access/acceptedStudies'){

@@ -236,6 +236,7 @@ export const formSection = async (activeTab, showDescripton) => {
             <div class="align-left">
 
                 <h1 class="page-header">Analysis Proposal Form</h1>
+                <button id='create'>Create</button>
 
             </div>
         </div>
@@ -1742,11 +1743,48 @@ export const dataForm = async () => {
     formJSON.reqcoh = data.getAll("reqcoh")
     console.log(formJSON);
     const results = document.querySelector('.results pre');
+    
     results.innerText = JSON.stringify(formJSON, null, 2);
+    // fs.wrtieFile('test.json', formJSON);
     await generateWord(formJSON);
     console.log('generatewordcomplete');
     btn.classList.toggle("buttonsubmit--loading");
     btn.disabled = false;
+
+
+    //Testinmg json
+    obj = {
+      "date": "2022-09-02",
+      "projname": "Testing1233",
+      "amendment": "No",
+      "investigators": "Navado Wray",
+      "institution": "NCI DCEG",
+      "email": "wraynr@nih.gov",
+      "member": "Yes",
+      "acro": "test",
+      "allinvest": "test",
+      "confirmation": "Yes",
+      "background": "test",
+      "aims": " test",
+      "analyplan": " test",
+      "basevar": [
+          "Identification/Dates",
+          "Physical Activity"
+      ],
+      "mmdvarv": "Mammographic Density",
+      "reqcoh": [
+          "BWHS"
+      ],
+      "timeline": "test",
+      "authconf": "Yes",
+      "authorship": "",
+      "ibcvar": []
+  };
+  document.getElementById('create').addEventListener('click', (obj) => {
+      let blob = new Blob([text], {type: 'application/json'});
+      console.log(blob);
+      uploadWordFile(blob, 'testing.json', uploadFormFolder);
+  })
   };
 
   async function assigntasktochair() {
