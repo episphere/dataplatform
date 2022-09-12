@@ -4,7 +4,7 @@ import { dataSubmissionTemplate, lazyload, userSubmissionsView, userSubmissionTe
 import { dataSummary, dataSummaryMissingTemplate, dataSummaryStatisticsTemplate } from './src/pages/dataExploration.js';
 import { dataAccess as dataRequestTemplate, dataAccessNotSignedIn, dataForm, dataApproval, formSection, approveRejectSection, daccSection, chairSection, chairFileView, daccFileView, formSectionOther, formFunctions, importDictVars, amendFormSelect, populateAmendSelect } from './src/pages/dataRequest.js';
 import { checkAccessTokenValidity, loginAppDev, loginObs, loginAppEpisphere, logOut, loginAppProd } from './src/manageAuthentication.js';
-import { storeAccessToken, removeActiveClass, showAnimation, getCurrentUser, inactivityTime, filterConsortiums, getFolderItems, filterProjects, amIViewer, getCollaboration, hideAnimation, assignNavbarActive, getFileInfo, handleRangeRequests, applicationURLs, checkDataSubmissionPermissionLevel, uploadFormFolder, uploadWordFile } from './src/shared.js';
+import { storeAccessToken, removeActiveClass, showAnimation, getCurrentUser, inactivityTime, filterConsortiums, getFolderItems, filterProjects, amIViewer, getCollaboration, hideAnimation, assignNavbarActive, getFileInfo, handleRangeRequests, applicationURLs, checkDataSubmissionPermissionLevel, uploadFormFolder, uploadFile, uploadWordFile, getFile } from './src/shared.js';
 import { addEventConsortiaSelect, addEventUploadStudyForm, addEventStudyRadioBtn, addEventDataGovernanceNavBar, addEventMyProjects, addEventUpdateSummaryStatsData } from './src/event.js';
 import { dataAnalysisTemplate } from './src/pages/dataAnalysis.js';
 import { getFileContent, getFileContentCases } from './src/visualization.js';
@@ -15,8 +15,7 @@ import { footerTemplate } from './src/components/footer.js';
 import { renderDescription } from './src/pages/description.js';
 import { dataDictionaryTemplate } from './src/pages/dictionary.js';
 import { showPreview } from './src/components/boxPreview.js';
-
-
+// import jsonfile from './node_modules/jsonfile/index';
 
 export const confluence = async () => {
     // handleRangeRequests();
@@ -179,36 +178,42 @@ export const confluence = async () => {
                 formFunctions();
                 //Testinmg json
     let obj = {
-        "date": "2022-09-02",
-        "projname": "Testing1233",
-        "amendment": "No",
-        "investigators": "Navado Wray",
-        "institution": "NCI DCEG",
-        "email": "wraynr@nih.gov",
-        "member": "Yes",
-        "acro": "test",
-        "allinvest": "test",
-        "confirmation": "Yes",
-        "background": "test",
-        "aims": " test",
-        "analyplan": " test",
-        "basevar": [
+        date: "2022-09-02",
+        projname: "Testing1233",
+        amendment: "No",
+        investigators: "Navado Wray",
+        institution: "NCI DCEG",
+        email: "wraynr@nih.gov",
+        member: "Yes",
+        acro: "test",
+        allinvest: "test",
+        confirmation: "Yes",
+        background: "test",
+        aims: " test",
+        analyplan: " test",
+        basevar: [
             "Identification/Dates",
             "Physical Activity"
         ],
-        "mmdvarv": "Mammographic Density",
-        "reqcoh": [
+        mmdvarv: "Mammographic Density",
+        reqcoh: [
             "BWHS"
         ],
-        "timeline": "test",
-        "authconf": "Yes",
-        "authorship": "",
-        "ibcvar": []
+        timeline: "test",
+        authconf: "Yes",
+        authorship: "",
+        ibcvar: []
     };
-    document.getElementById('create').addEventListener('click', (obj) => {
-        let blob = new Blob([obj], {type: 'application/json'});
+    document.getElementById('createJson').addEventListener('click', async () => {
+        let blob = new Blob([obj], {type: 'text/plain'});
         console.log(blob);
-        uploadWordFile(blob.text(), 'testing.json', uploadFormFolder);
+        console.log(obj)
+
+        uploadFile(obj, 'testing.json', uploadFormFolder);
+    })
+    document.getElementById('autofillJson').addEventListener('click', async () => {
+       let response = await getFile('1012486081122');
+       console.log(JSON.parse(response)); 
     })
                 hideAnimation();
             })

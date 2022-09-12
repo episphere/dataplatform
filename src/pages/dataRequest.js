@@ -236,7 +236,8 @@ export const formSection = async (activeTab, showDescripton) => {
             <div class="align-left">
 
                 <h1 class="page-header">Analysis Proposal Form</h1>
-                <button id='create'>Create</button>
+                <button id='createJson'>Create JSON</button>
+                <button id='autofillJson'>Autofill JSON</button>
 
             </div>
         </div>
@@ -1752,39 +1753,7 @@ export const dataForm = async () => {
     btn.disabled = false;
 
 
-    //Testinmg json
-    obj = {
-      "date": "2022-09-02",
-      "projname": "Testing1233",
-      "amendment": "No",
-      "investigators": "Navado Wray",
-      "institution": "NCI DCEG",
-      "email": "wraynr@nih.gov",
-      "member": "Yes",
-      "acro": "test",
-      "allinvest": "test",
-      "confirmation": "Yes",
-      "background": "test",
-      "aims": " test",
-      "analyplan": " test",
-      "basevar": [
-          "Identification/Dates",
-          "Physical Activity"
-      ],
-      "mmdvarv": "Mammographic Density",
-      "reqcoh": [
-          "BWHS"
-      ],
-      "timeline": "test",
-      "authconf": "Yes",
-      "authorship": "",
-      "ibcvar": []
-  };
-  document.getElementById('create').addEventListener('click', (obj) => {
-      let blob = new Blob([text], {type: 'application/json'});
-      console.log(blob);
-      uploadWordFile(blob, 'testing.json', uploadFormFolder);
-  })
+    
   };
 
   async function assigntasktochair() {
@@ -2117,6 +2086,7 @@ export const dataForm = async () => {
 
     await docx.Packer.toBlob(doc).then(async blob => {
       console.log(blob);
+      console.log(blob.text());
       //saveAs(blob, "BCRPPexample.docx");
       console.log("Document created successfully");
       //let files = getFolderItems(uploadFormFolder);//149098174998);
