@@ -42,7 +42,7 @@
     <script type="text/javascript" src="https://unpkg.com/crossfilter2@1.4/crossfilter.js"></script>
     <script type="text/javascript" src="https://unpkg.com/dc@4/dist/dc.js"></script>
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/dc@4/dist/style/dc.css"/>
-
+    <script type="module" src="./dcPlot.js"></script>
 </head>
 
 <body>
@@ -78,8 +78,8 @@
         style='visibility: hidden;'>reset</a>
         
     </div>
-    <div id="bmiPlot">
-        <p class="text-center text-bold">BMI</p>
+    <div id="agePlot">
+        <p class="text-center text-bold">Age</p>
         <span class='reset' style='visibility: hidden;'>
             Current filter: <span class='filter'></span>
           </span>
@@ -88,16 +88,7 @@
         style='visibility: hidden;'>reset</a>
         
     </div>
-    <!-- <div id="bmiPlot">
-        <strong>BMI</strong>
-        
-        <span class='reset' style='visibility: hidden;'>
-            Current filter: <span class='filter'></span>
-          </span>
-        <a class='reset'
-        href='javascript:bChart3.filterAll();dc.redrawAll();'
-        style='visibility: hidden;'>reset</a>
-    </div> -->
+
     <div class='data-count'>
        
        </div>

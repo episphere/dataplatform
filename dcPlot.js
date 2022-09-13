@@ -1,8 +1,27 @@
+//import { hideAnimation, getFile, csvJSON, numberWithCommas, summaryStatsFileId, getFileInfo, mapReduce, summaryStatsCasesFileId, reSizePlots } from './src/shared.js';
+
+// export const getFileContentVis = async () => {
+//     const {jsonData, headers} = csvJSON(await getFile(fileid)); // Get summary level data
+//     const lastModified = (await getFileInfo(fileid)).modified_at;
+//     document.getElementById('dataLastModified').innerHTML = `Data last modified at - ${new Date(lastModified).toLocaleString()}`;
+//     hideAnimation();
+//     if(jsonData.length === 0) {
+//         document.getElementById('confluenceDiv').innerHTML = `You don't have access to summary level data, please contact NCI for the access.`
+//         return;
+//     };
+// };
+
+//import { getFile } from "./src/shared";
 
 //create chart objects
+//const fileid = '956943662666';
+//const test = csvJSON(await getFile(fileid));
+//console.log(test);
+
+
 var bChart1 = dc.barChart('#heightPlot'),
 bChart2 = dc.barChart('#weightPlot'),
-bChart3 = dc.barChart('#bmiPlot'),
+bChart3 = dc.barChart('#agePlot'),
 dataTable = new dc.DataTable('#data-table');
 dataCount = new dc.DataCount('.data-count');
 
@@ -10,7 +29,8 @@ dataCount = new dc.DataCount('.data-count');
 let w = 1280, h = 480;
 // var chart = document.getElementById('dcPlot1');
 //load the data
-d3.tsv('CPS2_simulated_20220120.txt').then( data => {
+
+d3.tsv('test.txt').then( data => {
 
 //Format data
 let i = 0;
@@ -19,7 +39,7 @@ data.forEach( d => {
  
     d.weight = +d.weight;
 
-    d.bmi = +d.bmi;
+    d.age = +d.age;
 
     d.fakeid = +d.fakeid;
 })
@@ -27,7 +47,7 @@ data.forEach( d => {
 data = data.filter(d => {
     if(d.height === 888) return false;
     if(d.weight === 888) return false;
-    if(d.bmi === 888) return false;
+    if(d.age === 888) return false;
     
     return true;
 })
@@ -76,26 +96,26 @@ bChart2.width(w)
 .xAxisLabel("Weight (lbs)")
 .centerBar(true);
 
-const bmiDimension = crossdata.dimension(d => d.bmi);
-const groupByBMI = bmiDimension.group();
+const ageDimension = crossdata.dimension(d => d.age);
+const groupByage = ageDimension.group();
 
-const bmiScaleX = d3.scaleLinear().domain([0,bmiDimension.top(1)[0].bmi]).range([0,w]);
-const bmiScaleY = d3.scaleLinear().domain([0, groupByBMI.top(1)[0].value]).range([h,0]);
+const ageScaleX = d3.scaleLinear().domain([0,ageDimension.top(1)[0].age]).range([0,w]);
+const ageScaleY = d3.scaleLinear().domain([0, groupByage.top(1)[0].value]).range([h,0]);
 
-console.log(bmiDimension.top(1)[0].bmi);
-console.log(d3.max(data, d => {return d.bmi}));
+console.log(ageDimension.top(1)[0].age);
+console.log(d3.max(data, d => {return d.age}));
 
 bChart3.width(w)
 .height(h)
-.group(groupByBMI)
-.dimension(bmiDimension)
+.group(groupByage)
+.dimension(ageDimension)
 .centerBar(true)
-.x(d3.scaleLinear().domain([0,d3.max(data, d => {return d.bmi})]))
+.x(d3.scaleLinear().domain([0,d3.max(data, d => {return d.age})]))
 .margins({top: 10, right: 50, bottom: 30, left: 40})
 .elasticY(true)
 .elasticX(true)
 .yAxisLabel('# of Subjects')
-.xAxisLabel('BMI')
+.xAxisLabel('AGE')
 // .title('Chart Title')
 // .shareTitle(true);
 // .text('Chart Title')
@@ -125,7 +145,7 @@ dataCount
 
 dataTable
 .dimension(weightDimension)
-.columns(['fakeid', 'height', 'weight', 'bmi'])
+.columns(['fakeid', 'height', 'weight', 'age'])
 .sortBy(d => d.fakeid)
 .size(10)
 .showSections(false)
