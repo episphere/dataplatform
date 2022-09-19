@@ -123,8 +123,12 @@ export const getFile = async (id) => {
         if (r.status === 401) {
             if ((await refreshToken()) === true) return await getFile(id);
         } else if (r.status === 200) {
+            console.log(r);
             return r.text();
-        } else {
+        } else if(r.status === 404) {
+            return "{'status':'File does not exist'}"
+            
+        }else {
             hideAnimation();
             console.error(r);
         }

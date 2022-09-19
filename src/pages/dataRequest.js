@@ -37,7 +37,8 @@ import {
   checkDataSubmissionPermissionLevel,
   deleteTask,
   showCommentsDropDown,
-  getChairApprovalDate
+  getChairApprovalDate,
+  uploadFile
 } from '../shared.js';
 import {
   addEventToggleCollapsePanelBtn
@@ -167,7 +168,7 @@ export const formSectionOther = async (activeTab, showDescripton) => {
     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions',);
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', );
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
 
@@ -214,7 +215,7 @@ export const formSection = async (activeTab, showDescripton) => {
     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions',);
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', );
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
   let template = `
@@ -228,7 +229,7 @@ export const formSection = async (activeTab, showDescripton) => {
   const today = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
 
   const dictionaryVars = localStorage.getItem('dictionaryVars');
-  console.log(dictionaryVars.split(',')) ;
+  console.log(dictionaryVars.split(','));
   template += ` 
     <div class="general-bg padding-bottom-1rem">
       <div class="container body-min-height">
@@ -236,6 +237,7 @@ export const formSection = async (activeTab, showDescripton) => {
             <div class="align-left">
 
                 <h1 class="page-header">Analysis Proposal Form</h1>
+                <button id='autofillJson' class='d-none'>AutoFill JSON</button>
 
             </div>
         </div>
@@ -247,6 +249,9 @@ export const formSection = async (activeTab, showDescripton) => {
             once every four months. Data for approved concepts will be sent only to the Investigators listed below, 
             each of whose Institutions will need to sign the BCRPP DTA.</p>
             <form>
+            <div class='col-3 mb-3 input-group'>
+              <input type='file' class='' id='uploadJSON' />
+            </div>
               <div class="input-group">
                 <label for="date"><b>Date</b><span class='required-label'>*</span></label>
                 <input id="date" name="date" type="date" value='${today}' required/>
@@ -596,6 +601,16 @@ export const formSection = async (activeTab, showDescripton) => {
                 <button type="submit" id="submitFormButton" class="buttonsubmit"> 
                   <span class="buttonsubmit__text"> Send Form </span>
                 </button>
+                <button type="button" id="downloadJSON" class="buttonsubmit"> 
+                  <span class="buttonsubmit__text"> Download JSON </span>
+                </button>
+                <!--button type="button" id="downloadWord" class="buttonsubmit d-none"> 
+                  <span class="buttonsubmit__text"> Download Word </span>
+                </button>
+                
+                <button type="submit" id="otherButton" class="buttonsubmit d-none"> 
+                  <span class="buttonsubmit__text"> Something else </span>
+                </button-->
               </form>
 
             </section>
@@ -625,7 +640,7 @@ export const formSection = async (activeTab, showDescripton) => {
         </div>
       </div>`;
 
-      
+
   return template;
 }
 
@@ -676,9 +691,9 @@ export const importDictVars = () => {
 
   console.log(vars);
   const dictionaryVars = localStorage.getItem('dictionaryVars').split(',').map(v => v.toLowerCase());
-  
+
   vars.forEach(v => {
-      if(dictionaryVars.includes(v.value.toLowerCase()))
+    if (dictionaryVars.includes(v.value.toLowerCase()))
       v.checked = true;
   })
 }
@@ -696,8 +711,8 @@ export const populateAmendSelect = async () => {
   console.log(folders);
 
   let options = [];
-  for(const folder of folders){
-    if(folder.name === JSON.parse(localStorage.parms).login){
+  for (const folder of folders) {
+    if (folder.name === JSON.parse(localStorage.parms).login) {
       console.log('Found user folder', folder)
       const userFolder = await getFolderItems(folder.id);
       const userFiles = userFolder.entries;
@@ -710,7 +725,7 @@ export const populateAmendSelect = async () => {
   console.log(options);
 
   const amendmentEl = document.getElementById('amendmentSelect');
- options.forEach( option => {
+  options.forEach(option => {
     console.log(option);
     const optionEl = document.createElement('option');
     optionEl.text = option.name;
@@ -733,7 +748,7 @@ export const acceptedStudiesSection = (activeTab) => {
     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions',);
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', );
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
   let template = `
@@ -819,7 +834,7 @@ export const chairSection = (activeTab) => {
     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions',);
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', );
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
   let template = `
@@ -1052,7 +1067,7 @@ export const chairFileView = async () => {
     }
   }
 
-  
+
   hideAnimation();
 }
 
@@ -1346,7 +1361,7 @@ export const daccSection = (activeTab) => {
     navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'DACC Menu');
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
-    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions',);
+    navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', );
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }
   let template = `
@@ -1499,28 +1514,28 @@ export const daccFileView = async () => {
   for (const obj of filearrayDACCChairReview) {
     let id = obj.id;
     let tasks = await getTaskList(id);
-  
-      if (tasks.entries.length != 0) {
-        for (let items of tasks.entries) {
-          if (items.is_completed == false && items.action == 'complete') {
-            for (let itemtasks of items.task_assignment_collection.entries) {
-              if (itemtasks.status == 'incomplete' && itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
-                filesreviewed.push(obj);
-              } else if (itemtasks.status == 'complete' && itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
-                filescompleted.push(obj);
-              }
+
+    if (tasks.entries.length != 0) {
+      for (let items of tasks.entries) {
+        if (items.is_completed == false && items.action == 'complete') {
+          for (let itemtasks of items.task_assignment_collection.entries) {
+            if (itemtasks.status == 'incomplete' && itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+              filesreviewed.push(obj);
+            } else if (itemtasks.status == 'complete' && itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+              filescompleted.push(obj);
             }
-          } else if (items.is_completed == true && items.action == 'complete') {
-            for (let itemtasks of items.task_assignment_collection.entries) {
-              if (itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
-                if (!filescompleted.includes(obj)) {
-                  filescompleted.push(obj);
-                }
+          }
+        } else if (items.is_completed == true && items.action == 'complete') {
+          for (let itemtasks of items.task_assignment_collection.entries) {
+            if (itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login) {
+              if (!filescompleted.includes(obj)) {
+                filescompleted.push(obj);
               }
             }
           }
         }
       }
+    }
   }
   //console.log("incomplete: " + filesincomplete);
   //console.log("complete: " + filescompleted);
@@ -1538,7 +1553,7 @@ export const daccFileView = async () => {
                 aria-labeledby='daccReviewTab'>
                 <a href="mailto:${emailforChair[0]}" id='email' class='btn btn-dark'>Send Email to Chair</a> `
   template += renderFilePreviewDropdown(filesreviewed, 'daccReview');
-  
+
   template += `<div class='tab-pane fade' 
                 id='decided' role='tabpanel'
                 aria-labelledby='decidedTab'>
@@ -1702,6 +1717,7 @@ export const dataApproval = () => {
 
   const form = document.querySelector('.data-approval')
   form.addEventListener('submit', approveDoc)
+
 }
 
 export const dataForm = async () => {
@@ -1728,25 +1744,382 @@ export const dataForm = async () => {
     filesinfolderids.push(files.entries[i].id);
   }
 
+  async function handleFormDownload(eventtest) {
+    const btn = document.activeElement;
+    btn.classList.toggle("buttonsubmit--loading");
+    btn.disabled = true;
+    eventtest.preventDefault();
+
+    console.log(eventtest);
+
+    const form = document.querySelector('.contact-form form');
+    console.log(form);
+    const data = new FormData(form);
+
+    const jsondata = Object.fromEntries(data.entries());
+    jsondata.basevar = data.getAll("basevar");
+    jsondata.ibcvar = data.getAll("ibcvar");
+    jsondata.reqcoh = data.getAll("reqcoh")
+    console.log(jsondata);
+
+    let parentEl = eventtest.target.parentElement;
+    let blob;
+    if (parentEl.id === 'downloadWord') {
+      console.log('creating word DOC');
+      const doc = new docx.Document({
+        styles: {
+          default: {
+            heading1: {
+              run: {
+                size: 22,
+                bold: true,
+                color: "#000000",
+                font: "Verdana",
+              },
+            },
+            heading2: {
+              run: {
+                size: 18,
+                bold: true,
+                color: "#000000",
+                font: "Verdana",
+              },
+            },
+          },
+        },
+        sections: [{
+          properties: {},
+          headers: {
+            default: new docx.Header({
+              children: [new docx.Paragraph({
+                text: "Breast Cancer Risk Prediction Project Analysis Proposal",
+                heading: docx.HeadingLevel.HEADING_1,
+                alignment: docx.AlignmentType.CENTER,
+              }), ],
+            }),
+          },
+          children: [
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "Date: "
+              }), new docx.TextRun({
+                text: jsondata.date,
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "Project Title: "
+              }), new docx.TextRun({
+                text: jsondata.projname,
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "Is this an amendment: "
+              }), new docx.TextRun({
+                text: jsondata.amendment,
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            //New sections
+            // new docx.Paragraph({
+            //   text: "Keywords: ",
+            //   heading: docx.HeadingLevel.HEADING_2
+            // }),
+            // new docx.Paragraph({
+            //   alignment: docx.AlignmentType.START,
+            //   style: {
+            //     paragraph: {
+            //       indent: 500
+            //     },
+            //   },
+            //   children: [
+            //     new docx.TextRun({
+            //       text: jsondata.keywords,
+            //       bold: true,
+            //     }),
+            //   ],
+            // }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "Amendment: "
+              }), new docx.TextRun({
+                text: jsondata.conNum,
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "Contact Investigator(s): "
+              }), new docx.TextRun({
+                text: jsondata.investigators,
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "Institution(s): "
+              }), new docx.TextRun({
+                text: jsondata.institution,
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "Contact Email: "
+              }), new docx.TextRun({
+                text: jsondata.email,
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "Are you a member of BCRPP "
+              }), new docx.TextRun({
+                text: jsondata.member,
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "BCRPP Study Acronym(s) for the Contact Investigator: "
+              }), new docx.TextRun({
+                text: jsondata.acro,
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "All Investigators (and Institutions) who require access: "
+              }), new docx.TextRun({
+                text: jsondata.investigators,
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "Background: "
+              }), new docx.TextRun({
+                text: jsondata.background,
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "Aims: "
+              }), new docx.TextRun({
+                text: jsondata.aims,
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "Analysis Plan: "
+              }), new docx.TextRun({
+                text: jsondata.analyplan,
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "Core Variables: "
+              }), new docx.TextRun({
+                text: JSON.stringify(jsondata.basevar, null, 2).replace('[', '').replace(']', ''),
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "MMD Variables: "
+              }), new docx.TextRun({
+                text: jsondata.mmdvarv,
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "BRCA Variables: "
+              }), new docx.TextRun({
+                text: JSON.stringify(jsondata.ibcvar, null, 2).replace('[', '').replace(']', ''),
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "Requested Cohorts: "
+              }), new docx.TextRun({
+                text: JSON.stringify(jsondata.reqcoh, null, 2).replace('[', '').replace(']', ''),
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "Timeline: "
+              }), new docx.TextRun({
+                text: jsondata.timeline,
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+            new docx.Paragraph({
+              heading: docx.HeadingLevel.HEADING_2,
+              alignment: docx.AlignmentType.START,
+              children: [new docx.TextRun({
+                text: "Authorship: "
+              }), new docx.TextRun({
+                text: jsondata.authorship,
+                bold: false
+              })],
+              spacing: {
+                after: 150
+              },
+            }),
+          ],
+        }]
+      });
+
+
+
+      blob = docx.Packer.toBlob(doc);
+
+      }
+
+    if (parentEl.id === 'downloadJSON') {
+      blob = new Blob([JSON.stringify(jsondata)], {
+        type: 'application/json'
+      });
+    }
+
+    console.log(blob);
+    console.log(jsondata.projname);
+    const downloadLink = URL.createObjectURL(blob);
+    let filename = jsondata.projname;
+
+
+    let a = document.createElement('a');
+
+    a.href = downloadLink;
+    a.download = filename;
+
+    a.click();
+    btn.classList.toggle("buttonsubmit--loading");
+  }
   async function handleFormSubmit(eventtest) {
     const btn = document.activeElement;
     btn.classList.toggle("buttonsubmit--loading");
     btn.disabled = true;
     eventtest.preventDefault();
 
+    console.log(eventtest);
     const data = new FormData(eventtest.target);
 
     const formJSON = Object.fromEntries(data.entries());
     formJSON.basevar = data.getAll("basevar");
     formJSON.ibcvar = data.getAll("ibcvar");
-    formJSON.reqcoh = data.getAll("reqcoh")
+    formJSON.reqcoh = data.getAll("reqcoh");
     console.log(formJSON);
     const results = document.querySelector('.results pre');
+
     results.innerText = JSON.stringify(formJSON, null, 2);
+    // fs.wrtieFile('test.json', formJSON);
     await generateWord(formJSON);
     console.log('generatewordcomplete');
     btn.classList.toggle("buttonsubmit--loading");
     btn.disabled = false;
+
+
+
   };
 
   async function assigntasktochair() {
@@ -2079,6 +2452,7 @@ export const dataForm = async () => {
 
     await docx.Packer.toBlob(doc).then(async blob => {
       console.log(blob);
+      console.log(blob.text());
       //saveAs(blob, "BCRPPexample.docx");
       console.log("Document created successfully");
       //let files = getFolderItems(uploadFormFolder);//149098174998);
@@ -2113,20 +2487,28 @@ export const dataForm = async () => {
       } else {
         console.log("Saving File to Box: " + filename + " " + jsondata.projname); // Adding keywords
         let response = await uploadWordFile(blob, filename, uploadFormFolder);
-        await assigntasktochair();
-        let fileid = response.entries[0].id;
-        //Modal code here
-        document.getElementById('modalBody').innerHTML = `
+        if (response.status === 201) {
+          await assigntasktochair();
+          let fileid = response.entries[0].id;
+          //Modal code here
+          document.getElementById('modalBody').innerHTML = `
         <p>File was successfully uploaded.</p>
         <p>Document ID: ${fileid}</p>`;
-        $('#popUpModal').modal('show');
-        console.log('popup');
+          $('#popUpModal').modal('show');
+          console.log('popup');
+        } else {
+          console.log('File not successfully uploaded');
+        }
       }
     });
   }
 
   const form = await document.querySelector('.contact-form');
   form.addEventListener('submit', handleFormSubmit);
+
+
+  const downloadJSON = document.getElementById('downloadJSON');
+  downloadJSON.addEventListener('click', handleFormDownload);
 }
 
 const viewFiles = async (files) => {
@@ -2267,9 +2649,9 @@ export async function viewFinalDecisionFilesTemplate(files) {
       
       <div class='col-xl-12 pr-0'>`;
 
-      template += viewFinalDecisionFilesColumns();
-  
-      template += '<div id="files"> </div>';
+    template += viewFinalDecisionFilesColumns();
+
+    template += '<div id="files"> </div>';
 
     template += '<!--tbody id="files"-->';
   } else {
@@ -2281,74 +2663,74 @@ export async function viewFinalDecisionFilesTemplate(files) {
 
   document.getElementById('decided').innerHTML = template;
 
-  if(filesInfo.length !== 0){
-  await viewFinalDecisionFiles(filesInfo);
-  for (const file of filesInfo) {
-    document.getElementById(`study${file.id}`).addEventListener('click', showCommentsDropDown(file.id))
+  if (filesInfo.length !== 0) {
+    await viewFinalDecisionFiles(filesInfo);
+    for (const file of filesInfo) {
+      document.getElementById(`study${file.id}`).addEventListener('click', showCommentsDropDown(file.id))
 
-    // e.stopPropagation();
-    // document.getElementById(`study${file.id}`).addEventListener('click', (e) => {
-    //     showPreview(file.id, `filePreview${file.id}` );
-    //     showCommentsDropDown(file.id);
-    // })
-  }
-
-  let btns = Array.from(document.querySelectorAll('.preview-file'));
-  btns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
       // e.stopPropagation();
-      console.log('Modal popping up');
-      btn.dataset.target = '#bcrppPreviewerModal';
-      const header = document.getElementById('bcrppPreviewerModalHeader');
-      const body = document.getElementById('bcrppPreviewerModalBody');
-      header.innerHTML = `<h5 class="modal-title">File preview</h5>
+      // document.getElementById(`study${file.id}`).addEventListener('click', (e) => {
+      //     showPreview(file.id, `filePreview${file.id}` );
+      //     showCommentsDropDown(file.id);
+      // })
+    }
+
+    let btns = Array.from(document.querySelectorAll('.preview-file'));
+    btns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        // e.stopPropagation();
+        console.log('Modal popping up');
+        btn.dataset.target = '#bcrppPreviewerModal';
+        const header = document.getElementById('bcrppPreviewerModalHeader');
+        const body = document.getElementById('bcrppPreviewerModalBody');
+        header.innerHTML = `<h5 class="modal-title">File preview</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>`;
-      const fileId = btn.dataset.fileId;
-      $('#bcrppPreviewerModal').modal('show');
-      showPreview(fileId, 'bcrppPreviewerModalBody');
+        const fileId = btn.dataset.fileId;
+        $('#bcrppPreviewerModal').modal('show');
+        showPreview(fileId, 'bcrppPreviewerModalBody');
+      })
     })
-  })
-  // const table = document.getElementById('decidedFiles');
-//   document.querySelectorAll(".header-sortable").forEach(headerCell => {
-//     headerCell.addEventListener("click", () => {
-//       console.log(headerCell);
-//         const tableElement = headerCell.parentElement.parentElement.parentElement;
-//         const headerIndex = Array.prototype.indexOf.call(headerCell.parentElement.children, headerCell);
-//         const currentIsAscending = headerCell.classList.contains("th-sort-asc");
-//         console.log(tableElement);
-//         sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
-//     });
-// });
-//Filtering and Sorting
-const table = document.getElementById('decidedFiles');
-const headers = table.querySelector(`.div-sticky`);
-Array.from(headers.children).forEach((header, index) => {
-  header.addEventListener('click', (e) => {
-    const sortDirection = header.classList.contains('header-sort-asc');
-    console.log(sortDirection);
-    sortTableByColumn(table, index, !sortDirection);
-  });
-});
+    // const table = document.getElementById('decidedFiles');
+    //   document.querySelectorAll(".header-sortable").forEach(headerCell => {
+    //     headerCell.addEventListener("click", () => {
+    //       console.log(headerCell);
+    //         const tableElement = headerCell.parentElement.parentElement.parentElement;
+    //         const headerIndex = Array.prototype.indexOf.call(headerCell.parentElement.children, headerCell);
+    //         const currentIsAscending = headerCell.classList.contains("th-sort-asc");
+    //         console.log(tableElement);
+    //         sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
+    //     });
+    // });
+    //Filtering and Sorting
+    const table = document.getElementById('decidedFiles');
+    const headers = table.querySelector(`.div-sticky`);
+    Array.from(headers.children).forEach((header, index) => {
+      header.addEventListener('click', (e) => {
+        const sortDirection = header.classList.contains('header-sort-asc');
+        console.log(sortDirection);
+        sortTableByColumn(table, index, !sortDirection);
+      });
+    });
 
-  filterSection(filesInfo);
-  Array.from(document.getElementsByClassName('filter-var')).forEach(el => {
-    el.addEventListener('click', () => {
+    filterSection(filesInfo);
+    Array.from(document.getElementsByClassName('filter-var')).forEach(el => {
+      el.addEventListener('click', () => {
+        const headerCell = document.getElementsByClassName('header-sortable')[0];
+        console.log(headerCell);
+        const tableElement = headerCell.parentElement.parentElement.parentElement;
+        console.log(tableElement.tBodies);
+        filterCheckBox(tableElement, filesInfo);
+      })
+    })
+    const input = document.getElementById('searchDataDictionary');
+    input.addEventListener('input', () => {
       const headerCell = document.getElementsByClassName('header-sortable')[0];
-      console.log(headerCell);
       const tableElement = headerCell.parentElement.parentElement.parentElement;
-      console.log(tableElement.tBodies);
       filterCheckBox(tableElement, filesInfo);
     })
-  })
-  const input = document.getElementById('searchDataDictionary');
-  input.addEventListener('input', () => {
-    const headerCell = document.getElementsByClassName('header-sortable')[0];
-    const tableElement = headerCell.parentElement.parentElement.parentElement;
-    filterCheckBox(tableElement, filesInfo);
-  })
-}
+  }
 
 }
 
@@ -2378,7 +2760,7 @@ export async function viewFinalDecisionFiles(files) {
 
   for (const fileInfo of files) {
     const fileId = fileInfo.id;
-    let filename = fileInfo.name.split('_').slice(0, -4).join(' ');// fileInfo.name.split('_')[0];
+    let filename = fileInfo.name.split('_').slice(0, -4).join(' '); // fileInfo.name.split('_')[0];
     console.log(fileInfo.name.split('_').slice(0, -4).join(' '));
     const shortfilename = filename.length > 21 ? filename.substring(0, 20) + '...' : filename;
     console.log(fileId, fileInfo);
@@ -2394,8 +2776,8 @@ export async function viewFinalDecisionFiles(files) {
     //     }
     //     }
     //   }
-    
-template += `
+
+    template += `
 <div class="card mt-1 mb-1 align-left" >
     <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
         <div class="row">
@@ -2454,8 +2836,8 @@ template += `
   // }
 
   // template += `</div></tbody></table></div>`;
-  if(document.getElementById('files') != null)
-  document.getElementById('files').innerHTML = template;
+  if (document.getElementById('files') != null)
+    document.getElementById('files').innerHTML = template;
 }
 
 function filterSection(files) {
@@ -2502,7 +2884,7 @@ function filterSection(files) {
   }
   let decisionFilterTemp = '';
   decisionFilterButtons.forEach((decision, index) => {
-    if(decision === 'Chair Final Review'){
+    if (decision === 'Chair Final Review') {
       decision = 'Under Review';
     }
     decisionFilterTemp += `
