@@ -109,6 +109,7 @@ const allFilters = (jsonData, headers, caseSelection) => {
                     <option value='CPS3'>CPS3</option>
                     <option value='CARET'>CARET</option>
                     <option value='WHI'>WHI</option>
+                    <option value='SNMC'>SNMC</option>
                 </select>
             </div>
     `;
