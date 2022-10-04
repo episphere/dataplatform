@@ -22,15 +22,17 @@
 var bChart1 = dc.barChart('#heightPlot'),
 bChart2 = dc.barChart('#weightPlot'),
 bChart3 = dc.barChart('#agePlot'),
+rChart = new dc.PieChart('#racePlot'),
+sMenu = new dc.SelectMenu('#selectMenu'),
 dataTable = new dc.DataTable('#data-table');
 dataCount = new dc.DataCount('.data-count');
 
 //Chart constants
-let w = 1280, h = 480;
+let w = 640, h = 320;
 // var chart = document.getElementById('dcPlot1');
 //load the data
 
-d3.tsv('test.txt').then( data => {
+d3.tsv('CPS2_simulated_doubled_rows_20220609.txt').then( data => {
 
 //Format data
 let i = 0;
@@ -42,20 +44,32 @@ data.forEach( d => {
     d.age = +d.age;
 
     d.fakeid = +d.fakeid;
+
+    d.race = +d.race;
+
+    d.ethnicity = +d.ethnicity;
 })
 
 data = data.filter(d => {
     if(d.height === 888) return false;
     if(d.weight === 888) return false;
     if(d.age === 888) return false;
+    if(d.race === 888) return false;
     
     return true;
 })
+
+// data = data.map(d => {
+//     if (d.race === 1) {
+//         return 'white';
+//     }
+//     return d;
+// });
 //create crossfilters
 
 const crossdata = crossfilter(data);
 const all = crossdata.groupAll();
-console.log(data);
+//console.log(data);
 // data.forEach(d => d.height === null ? console.log(d.height) : '');
 
 const heightDimension = crossdata.dimension(d => d.height/2.54);
@@ -115,23 +129,30 @@ bChart3.width(w)
 .elasticY(true)
 .elasticX(true)
 .yAxisLabel('# of Subjects')
-.xAxisLabel('AGE')
-// .title('Chart Title')
-// .shareTitle(true);
-// .text('Chart Title')
-;
-// bChart3.width(w)
-// .height(h)
-// .group(groupByBMI)
-// .x(bmiScaleX)
-// // .y(bmiScaleY)
-// .dimension(bmiDimension)
-// .centerBar(true);
+.xAxisLabel('Age')
 
+const ethDimension = crossdata.dimension(d => d.ethnicity);
+const ethGroup = ethDimension.group();
+
+rChart.width(h)
+.height(h)
+.radius(h)
+.dimension(ethDimension)
+.group(ethGroup)
+
+const raceDimension = crossdata.dimension(d => d.race);
+const raceGroup = raceDimension.group();
+
+sMenu.dimension(raceDimension)
+.group(raceGroup)
+.multiple(true)
+.numberVisible(10)
 
 bChart1.controlsUseVisibility(true);
 bChart2.controlsUseVisibility(true);
 bChart3.controlsUseVisibility(true);
+rChart.controlsUseVisibility(true);
+sMenu.controlsUseVisibility(true);
 
 
 dataCount
@@ -145,7 +166,7 @@ dataCount
 
 dataTable
 .dimension(weightDimension)
-.columns(['fakeid', 'height', 'weight', 'age'])
+.columns(['fakeid', 'height', 'weight', 'age', 'race'])
 .sortBy(d => d.fakeid)
 .size(10)
 .showSections(false)
@@ -158,52 +179,52 @@ dc.renderAll();
 
 });
 
-var textFile = null;
-function makeJsonFile(text) {
-    var data = new Blob([text], {type: 'application/json'});
+// var textFile = null;
+// function makeJsonFile(text) {
+//     var data = new Blob([text], {type: 'application/json'});
 
-    // If we are replacing a previously generated file we need to
-    // manually revoke the object URL to avoid memory leaks.
-    if (textFile !== null) {
-      window.URL.revokeObjectURL(textFile);
-    }
+//     // If we are replacing a previously generated file we need to
+//     // manually revoke the object URL to avoid memory leaks.
+//     if (textFile !== null) {
+//       window.URL.revokeObjectURL(textFile);
+//     }
 
-    textFile = window.URL.createObjectURL(data);
+//     textFile = window.URL.createObjectURL(data);
 
-    return data;
-    // return textFile;
-  };
+//     return data;
+//     // return textFile;
+//   };
 
-  var obj = {
-    "date": "2022-09-02",
-    "projname": "Testing1233",
-    "amendment": "No",
-    "investigators": "Navado Wray",
-    "institution": "NCI DCEG",
-    "email": "wraynr@nih.gov",
-    "member": "Yes",
-    "acro": "test",
-    "allinvest": "test",
-    "confirmation": "Yes",
-    "background": "test",
-    "aims": " test",
-    "analyplan": " test",
-    "basevar": [
-        "Identification/Dates",
-        "Physical Activity"
-    ],
-    "mmdvarv": "Mammographic Density",
-    "reqcoh": [
-        "BWHS"
-    ],
-    "timeline": "test",
-    "authconf": "Yes",
-    "authorship": "",
-    "ibcvar": []
-};
-document.getElementById('create').addEventListener('click', (obj) => {
-    let blob = makeJsonFile(obj);
-    console.log(blob);
-    uploadWordFile(blob, 'testing.json', uploadFormFolder);
-})
+//   var obj = {
+//     "date": "2022-09-02",
+//     "projname": "Testing1233",
+//     "amendment": "No",
+//     "investigators": "Navado Wray",
+//     "institution": "NCI DCEG",
+//     "email": "wraynr@nih.gov",
+//     "member": "Yes",
+//     "acro": "test",
+//     "allinvest": "test",
+//     "confirmation": "Yes",
+//     "background": "test",
+//     "aims": " test",
+//     "analyplan": " test",
+//     "basevar": [
+//         "Identification/Dates",
+//         "Physical Activity"
+//     ],
+//     "mmdvarv": "Mammographic Density",
+//     "reqcoh": [
+//         "BWHS"
+//     ],
+//     "timeline": "test",
+//     "authconf": "Yes",
+//     "authorship": "",
+//     "ibcvar": []
+// };
+// document.getElementById('create').addEventListener('click', (obj) => {
+//     let blob = makeJsonFile(obj);
+//     console.log(blob);
+//     uploadWordFile(blob, 'testing.json', uploadFormFolder);
+// })
 
