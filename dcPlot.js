@@ -26,12 +26,5 @@ bChart.width(800)
 
 bChart.turnOnControls(true);
 
-
-
-
-
-
-
-
 dc.renderAll();
 
