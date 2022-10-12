@@ -22,7 +22,7 @@
 var bChart1 = dc.barChart('#heightPlot'),
 bChart2 = dc.barChart('#weightPlot'),
 bChart3 = dc.barChart('#agePlot'),
-rChart = new dc.PieChart('#racePlot'),
+studyChart = new dc.PieChart('#studyPlot'),
 sMenu = new dc.SelectMenu('#selectMenu'),
 dataTable = new dc.DataTable('#data-table');
 dataCount = new dc.DataCount('.data-count');
@@ -32,82 +32,208 @@ let w = 640, h = 320;
 // var chart = document.getElementById('dcPlot1');
 //load the data
 
-d3.tsv('CPS2_simulated_doubled_rows_20220609.txt').then( data => {
-
-//Format data
-let i = 0;
-data.forEach( d => {
-    d.height = +d.height;
- 
-    d.weight = +d.weight;
-
-    d.age = +d.age;
-
-    d.fakeid = +d.fakeid;
-
-    d.race = +d.race;
-
-    d.ethnicity = +d.ethnicity;
+// d3.tsv('Simulated_data_doubled_rows_CPS2_3_NHS_1_2.txt', function(d) {
+//     return {
+//         height: +d.height,
+//         weight: +d.weight,
+//         age: +d.age,
+//         fakeid: +d.fakeid,
+//         race: +d.race,
+//         ethnicity: +d.ethnicity
+//     };
+// }).then(function(data) {
+//     console.log(data[0]);
+// });
+Promise.all([
+d3.tsv('Simulated_data_doubled_rows_CPS2_3_NHS_1_2.txt', function(d) {
+    return {
+        height: +d.height,
+        weight: +d.weight,
+        age: +d.age,
+        fakeid: +d.fakeid,
+        race: d.race,
+        ethnicity: +d.ethnicity,
+        study: d.Study
+    };
+}),
+d3.tsv('Simulated_data_doubled_rows_CPS2_3_NHS_1_2.txt', function(d) {
+    return {
+        height: +d.height,
+        weight: +d.weight,
+        age: +d.age,
+        fakeid: +d.fakeid,
+        race: d.race,
+        ethnicity: +d.ethnicity,
+        study: d.Study
+    };
+}),
+d3.tsv('Simulated_data_doubled_rows_CPS2_3_NHS_1_2.txt', function(d) {
+    return {
+        height: +d.height,
+        weight: +d.weight,
+        age: +d.age,
+        fakeid: +d.fakeid,
+        race: d.race,
+        ethnicity: +d.ethnicity,
+        study: d.Study
+    };
+}),
+d3.tsv('Simulated_data_doubled_rows_CPS2_3_NHS_1_2.txt', function(d) {
+    return {
+        height: +d.height,
+        weight: +d.weight,
+        age: +d.age,
+        fakeid: +d.fakeid,
+        race: d.race,
+        ethnicity: +d.ethnicity,
+        study: d.Study
+    };
+}),
+// d3.tsv('Simulated_data_doubled_rows_CPS2_3_NHS_1_2.txt', function(d) {
+//     return {
+//         height: +d.height,
+//         weight: +d.weight,
+//         age: +d.age,
+//         fakeid: +d.fakeid,
+//         race: d.race,
+//         ethnicity: +d.ethnicity,
+//         study: d.Study
+//     };
+// }),
+d3.tsv('NHS_simulated_20220120.txt', function(d) {
+    return {
+        height: +d.height,
+        weight: +d.weight,
+        age: +d.age,
+        fakeid: +d.fakeid,
+        race: d.race,
+        ethnicity: +d.ethnicity,
+        study: d.Study
+    };
+}),
+d3.tsv('NHS2_simulated_20220120.txt', function(d) {
+    return {
+        height: +d.height,
+        weight: +d.weight,
+        age: +d.age,
+        fakeid: +d.fakeid,
+        race: d.race,
+        ethnicity: +d.ethnicity,
+        study: "NHS2"
+    };
 })
+// d3.tsv('CPS2_simulated_doubled_rows_20220609.txt', function(d) {
+//     return {
+//         height: +d.height,
+//         weight: +d.weight,
+//         age: +d.age,
+//         fakeid: +d.fakeid,
+//         race: +d.race,
+//         ethnicity: +d.ethnicity
+//     };
+// })
+]).then( allData => {
+//d3.tsv('CPS2_simulated_20220120.txt').then( data => {
+//Format data
+// let i = 0;
+// data.forEach( d => {
+//     d.height = +d.height;
+ 
+//     d.weight = +d.weight;
 
+//     d.age = +d.age;
+
+//     d.fakeid = +d.fakeid;
+
+//     d.race = +d.race;
+
+//     d.ethnicity = +d.ethnicity;
+// })
+
+const chartLabels = {
+    '1': 'White',
+    '2': 'Black/African American',
+    '3': 'Asian',
+    '4': 'Native Hawaiin/ Pacific Islander',
+    '5': 'American Indian/Alaska Native',
+    '6': 'Other, including multiracial'
+}
+
+data = d3.merge(allData)
 data = data.filter(d => {
     if(d.height === 888) return false;
     if(d.weight === 888) return false;
     if(d.age === 888) return false;
-    if(d.race === 888) return false;
+    if(d.race === '888') return false;
+    if(d.race === '') return false;
     
     return true;
 })
+
+
 
 // data = data.map(d => {
 //     if (d.race === 1) {
 //         return 'white';
 //     }
-//     return d;
+//     return d.race;
 // });
-//create crossfilters
 
+//create crossfilters
+// var testingdata = data.map(function(d) {
+//     return {
+//         height: d.height,
+//         weight: d.weight,
+//         age: d.age,
+//         fakeid: d.fakeid,
+//         race: d.race,
+//         ethnicity: d.ethnicity
+//     }
+// });
+//data = null;
+//console.log(testingdata);
+//console.log(data);
 const crossdata = crossfilter(data);
 const all = crossdata.groupAll();
 //console.log(data);
 // data.forEach(d => d.height === null ? console.log(d.height) : '');
 
-const heightDimension = crossdata.dimension(d => d.height/2.54);
+const heightDimension = crossdata.dimension(d => d.height);
 const groupByHeight = heightDimension.group();
 
 
-console.log(heightDimension.top(1)[0].height/2.54);
-console.log(d3.max(data, d => {return d.height/2.54}));
+//console.log(heightDimension.top(1)[0].height);
+//console.log(d3.max(data, d => {return d.height}));
 //Define chart attributes
 bChart1.width(w)
 .height(h)
 .group(groupByHeight)
 .dimension(heightDimension)
-.x(d3.scaleLinear().domain([0,d3.max(data, d => d.height/2.54)]))
+.x(d3.scaleLinear().domain([0,d3.max(data, d => d.height)]))
 .margins({top: 10, right: 50, bottom: 30, left: 40})
 .elasticY(true)
 .elasticX(true)
 .yAxisLabel("# of Subjects")
-.xAxisLabel("Height (inches)")
+.xAxisLabel("Height (cm)")
 .centerBar(true);
 
 
-const weightDimension = crossdata.dimension(d => d.weight * 2.2);
+const weightDimension = crossdata.dimension(d => d.weight);
 const groupByWeight = weightDimension.group();
 
-console.log(weightDimension.top(1)[0].weight*2.2);
-console.log(d3.max(data, d => {return d.weight * 2.2}));
+//console.log(weightDimension.top(1)[0].weight);
+//console.log(d3.max(data, d => {return d.weight}));
 
 bChart2.width(w)
 .height(h)
 .group(groupByWeight)
 .dimension(weightDimension)
-.x(d3.scaleLinear().domain([0,d3.max(data, d => {return d.weight*2.2})]))
+.x(d3.scaleLinear().domain([0,d3.max(data, d => {return d.weight})]))
 .margins({top: 10, right: 50, bottom: 30, left: 40})
 .elasticY(true)
 .elasticX(true)
 .yAxisLabel("# of Subjects")
-.xAxisLabel("Weight (lbs)")
+.xAxisLabel("Weight (kg)")
 .centerBar(true);
 
 const ageDimension = crossdata.dimension(d => d.age);
@@ -116,8 +242,8 @@ const groupByage = ageDimension.group();
 const ageScaleX = d3.scaleLinear().domain([0,ageDimension.top(1)[0].age]).range([0,w]);
 const ageScaleY = d3.scaleLinear().domain([0, groupByage.top(1)[0].value]).range([h,0]);
 
-console.log(ageDimension.top(1)[0].age);
-console.log(d3.max(data, d => {return d.age}));
+//console.log(ageDimension.top(1)[0].age);
+//console.log(d3.max(data, d => {return d.age}));
 
 bChart3.width(w)
 .height(h)
@@ -131,14 +257,14 @@ bChart3.width(w)
 .yAxisLabel('# of Subjects')
 .xAxisLabel('Age')
 
-const ethDimension = crossdata.dimension(d => d.ethnicity);
-const ethGroup = ethDimension.group();
+const studyDimension = crossdata.dimension(d => d.study);
+const studyGroup = studyDimension.group();
 
-rChart.width(h)
+studyChart.width(h)
 .height(h)
 .radius(h)
-.dimension(ethDimension)
-.group(ethGroup)
+.dimension(studyDimension)
+.group(studyGroup)
 
 const raceDimension = crossdata.dimension(d => d.race);
 const raceGroup = raceDimension.group();
@@ -151,7 +277,7 @@ sMenu.dimension(raceDimension)
 bChart1.controlsUseVisibility(true);
 bChart2.controlsUseVisibility(true);
 bChart3.controlsUseVisibility(true);
-rChart.controlsUseVisibility(true);
+studyChart.controlsUseVisibility(true);
 sMenu.controlsUseVisibility(true);
 
 
@@ -166,7 +292,7 @@ dataCount
 
 dataTable
 .dimension(weightDimension)
-.columns(['fakeid', 'height', 'weight', 'age', 'race'])
+.columns(['fakeid','study', 'height', 'weight', 'age', 'race'])
 .sortBy(d => d.fakeid)
 .size(10)
 .showSections(false)
@@ -178,53 +304,4 @@ dc.renderAll();
 
 
 });
-
-// var textFile = null;
-// function makeJsonFile(text) {
-//     var data = new Blob([text], {type: 'application/json'});
-
-//     // If we are replacing a previously generated file we need to
-//     // manually revoke the object URL to avoid memory leaks.
-//     if (textFile !== null) {
-//       window.URL.revokeObjectURL(textFile);
-//     }
-
-//     textFile = window.URL.createObjectURL(data);
-
-//     return data;
-//     // return textFile;
-//   };
-
-//   var obj = {
-//     "date": "2022-09-02",
-//     "projname": "Testing1233",
-//     "amendment": "No",
-//     "investigators": "Navado Wray",
-//     "institution": "NCI DCEG",
-//     "email": "wraynr@nih.gov",
-//     "member": "Yes",
-//     "acro": "test",
-//     "allinvest": "test",
-//     "confirmation": "Yes",
-//     "background": "test",
-//     "aims": " test",
-//     "analyplan": " test",
-//     "basevar": [
-//         "Identification/Dates",
-//         "Physical Activity"
-//     ],
-//     "mmdvarv": "Mammographic Density",
-//     "reqcoh": [
-//         "BWHS"
-//     ],
-//     "timeline": "test",
-//     "authconf": "Yes",
-//     "authorship": "",
-//     "ibcvar": []
-// };
-// document.getElementById('create').addEventListener('click', (obj) => {
-//     let blob = makeJsonFile(obj);
-//     console.log(blob);
-//     uploadWordFile(blob, 'testing.json', uploadFormFolder);
-// })
 

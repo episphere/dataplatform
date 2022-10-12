@@ -46,6 +46,16 @@
 </head>
 
 <body>
+
+        <div style="display:inline-block;margin:20px;vertical-align:top">
+            <div id="selectMenu">
+                <p class="text-center text-bold">Race</p>
+                <div class='reset' style='visibility: hidden;'> Current filter: <span class='filter'></span>
+                    <a class='reset' href='javascript:sMenu.filterAll();dc.redrawAll();' style='visibility: hidden;'>reset</a> 
+                </div>        
+            </div>
+        </div>
+
         <div style="display:inline-block;margin:20px;vertical-align:top">
             <div id="heightPlot">
                 <p class="text-center text-bold">Height</p>
@@ -74,20 +84,11 @@
         </div>
 
         <div style="display:inline-block;margin:20px;vertical-align:top">
-            <div id="racePlot">
-                <p class="text-center text-bold">Ethnicity</p>
-                <!-- <div class='reset' style='visibility: hidden;'> Current filter: <span class='filter'></span>
-                    <a class='reset' href='javascript:rChart.filterAll();dc.redrawAll();' style='visibility: hidden;'>reset</a> 
-                </div>         -->
-            </div>
-        </div>
-
-        <div style="display:inline-block;margin:20px;vertical-align:top">
-            <div id="selectMenu">
-                <p class="text-center text-bold">Race</p>
-                <!-- <div class='reset' style='visibility: hidden;'> Current filter: <span class='filter'></span>
-                    <a class='reset' href='javascript:sMenu.filterAll();dc.redrawAll();' style='visibility: hidden;'>reset</a> 
-                </div>         -->
+            <div id="studyPlot">
+                <p class="text-center text-bold">Study</p>
+                <div class='reset' style='visibility: hidden;'> Current filter: <span class='filter'></span>
+                    <a class='reset' href='javascript:studyChart.filterAll();dc.redrawAll();' style='visibility: hidden;'>reset</a> 
+                </div>        
             </div>
         </div>
 
