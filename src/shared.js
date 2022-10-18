@@ -8,7 +8,6 @@ import {
     confluence
 } from '../confluence.js';
 
-
 export const emailsAllowedToUpdateData = ['patelbhp@nih.gov', 'ahearntu@nih.gov']
 
 export const emailforChair = ['Roger.Milne@cancervic.org.au','ahearntu@nih.gov', 'garciacm@nih.gov', 'wraynr@nih.gov','kopchickbp@nih.gov']; 
@@ -21,7 +20,9 @@ export const summaryStatsFileId = 956943662666; //861342561526;//908600664259; /
 
 export const summaryStatsCasesFileId = 862065772362; //958869203942; //927803436743; //862065772362; //cases => Pilot - BCRP_Summary_Results_Cases.csv
 
-export const missingnessStatsFileId = 653087731560; //Unknown, TUA Commented out July 21, file needs to be updated to missingness stats using BCRPP data, not confluence data
+export const missingnessStatsFileId = 1043323929905;//653087731560; //Unknown, TUA Commented out July 21, file needs to be updated to missingness stats using BCRPP data, not confluence data
+
+export const cps2StatsFileId = 908522264695;
 
 export const uploadFormFolder = 155292358576;
 
@@ -119,8 +120,12 @@ export const getFile = async (id) => {
         if (r.status === 401) {
             if ((await refreshToken()) === true) return await getFile(id);
         } else if (r.status === 200) {
+            console.log(r);
             return r.text();
-        } else {
+        } else if(r.status === 404) {
+            return "{'status':'File does not exist'}"
+            
+        }else {
             hideAnimation();
             console.error(r);
         }
@@ -472,6 +477,7 @@ export const uploadWordFile = async (data, fileName, folderId, html) => {
     try {
         const access_token = JSON.parse(localStorage.parms).access_token;
         //const user = await getCurrentUser();
+        //Check for bad data
         const form = new FormData();
         form.append('file', data);
         form.append('attributes', `{
@@ -487,6 +493,9 @@ export const uploadWordFile = async (data, fileName, folderId, html) => {
         });
         if (response.status === 400) {
             console.log(response.status);
+            if(response.code === 'bad_request'){
+                return 'Bad request';
+            }
             if ((await refreshToken()) === true) return await uploadWordFile(data, fileName, folderId, html);
         } else if (response.status === 201) {
             return response.json();
@@ -571,6 +580,32 @@ export const uploadWordFileVersion = async (data, fileId) => {
     } catch (err) {
         if ((await refreshToken()) === true) return await uploadFileVersion(data, fileId, 'text/html');
     }
+}
+
+export const updateDuplicateFileName = async (fileId) => {
+    let file = await getFileInfo(fileId);
+    const fileFolder = file.parent.id;
+    const filename = file.name
+    const folderItems = await getFolderItems(fileFolder);
+    const folderFilenames = folderItems.map(item => item.name);
+    const [name, extension] = filename.split('.');
+    let i = 1;
+    console.log(name);
+
+    while (folderFilenames.includes(filename)) {
+
+      if (filename.includes(')')) {
+
+        const [name, version] = filename.split('(');
+        filename = name + `(${i})` + version.substring(2, );
+      } else {
+        filename = name + `(${i}).` + extension;
+      }
+      console.log('New name', filename);
+      i++;
+    }
+
+    return filename;
 }
 
 export const getCollaboration = async (id, type) => {
@@ -893,6 +928,26 @@ export const updateTaskAssignment = async (id, res_state, msg = "") => {
     } catch (err) {
         if ((await refreshToken()) === true) return await updateTaskAssignment(id, res_state, msg);
     }
+}
+
+export const getChairApprovalDate = async (id) => {
+    let fileTasks = await getTaskList(id);
+    let completion_date = '';
+
+    fileTasks.entries.forEach(task => {
+      if(task.action === 'review'){
+        let task_assignments = task.task_assignment_collection.entries;
+        task_assignments.forEach(task_assignment => {
+          if(task_assignment.completed_at !== undefined){
+            console.log(task_assignment.completed_at);
+            completion_date = new Date(task_assignment.completed_at).toDateString().substring(4,);
+          }
+        })
+      }
+    })
+
+    if(completion_date !== '') return completion_date
+    else return 'Not Completed';
 }
 
 export const createComment = async (id, msg = "") => {

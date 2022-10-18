@@ -1,30 +1,112 @@
-import { navBarMenutemplate } from './src/components/navBarMenuItems.js';
-import { infoDeck, infoDeckAfterLoggedIn } from './src/pages/homePage.js';
-import { dataSubmissionTemplate, lazyload, userSubmissionsView, userSubmissionTemplate} from './src/pages/dataSubmission.js';
-import { dataSummary, dataSummaryMissingTemplate, dataSummaryStatisticsTemplate } from './src/pages/dataExploration.js';
-import { dataAccess as dataRequestTemplate, dataAccessNotSignedIn, dataForm, dataApproval, formSection, approveRejectSection, daccSection, chairSection, chairFileView, daccFileView, formSectionOther, formFunctions } from './src/pages/dataRequest.js';
-import { checkAccessTokenValidity, loginAppDev, loginObs, loginAppEpisphere, logOut, loginAppProd } from './src/manageAuthentication.js';
-import { storeAccessToken, removeActiveClass, showAnimation, getCurrentUser, inactivityTime, filterConsortiums, getFolderItems, filterProjects, amIViewer, getCollaboration, hideAnimation, assignNavbarActive, getFileInfo, handleRangeRequests, applicationURLs, checkDataSubmissionPermissionLevel, uploadFormFolder } from './src/shared.js';
-import { addEventConsortiaSelect, addEventUploadStudyForm, addEventStudyRadioBtn, addEventDataGovernanceNavBar, addEventMyProjects, addEventUpdateSummaryStatsData } from './src/event.js';
-import { dataAnalysisTemplate } from './src/pages/dataAnalysis.js';
-import { getFileContent, getFileContentCases } from './src/visualization.js';
-import { aboutConfluence, renderOverView } from './src/pages/about.js';
-import { confluenceResources } from './src/pages/join.js';
-import { confluenceContactPage } from './src/pages/contact.js';
-import { footerTemplate } from './src/components/footer.js';
-import { renderDescription } from './src/pages/description.js';
-import { dataDictionaryTemplate } from './src/pages/dictionary.js';
-import { showPreview } from './src/components/boxPreview.js';
-
-
+import {
+    navBarMenutemplate
+} from './src/components/navBarMenuItems.js';
+import {
+    infoDeck,
+    infoDeckAfterLoggedIn
+} from './src/pages/homePage.js';
+import {
+    dataSubmissionTemplate,
+    lazyload,
+    userSubmissionsView,
+    userSubmissionTemplate
+} from './src/pages/dataSubmission.js';
+import {
+    dataSummary,
+    dataSummaryMissingTemplate,
+    dataSummaryStatisticsTemplate
+} from './src/pages/dataExploration.js';
+import {
+    dataAccess as dataRequestTemplate,
+    dataAccessNotSignedIn,
+    dataForm,
+    dataApproval,
+    formSection,
+    approveRejectSection,
+    daccSection,
+    chairSection,
+    chairFileView,
+    daccFileView,
+    formSectionOther,
+    formFunctions,
+    importDictVars,
+    amendFormSelect,
+    populateAmendSelect
+} from './src/pages/dataRequest.js';
+import {
+    checkAccessTokenValidity,
+    loginAppDev,
+    loginObs,
+    loginAppEpisphere,
+    logOut,
+    loginAppProd
+} from './src/manageAuthentication.js';
+import {
+    storeAccessToken,
+    removeActiveClass,
+    showAnimation,
+    getCurrentUser,
+    inactivityTime,
+    filterConsortiums,
+    getFolderItems,
+    filterProjects,
+    amIViewer,
+    getCollaboration,
+    hideAnimation,
+    assignNavbarActive,
+    getFileInfo,
+    handleRangeRequests,
+    applicationURLs,
+    checkDataSubmissionPermissionLevel,
+    uploadFormFolder,
+    uploadFile,
+    uploadWordFile,
+    getFile
+} from './src/shared.js';
+import {
+    addEventConsortiaSelect,
+    addEventUploadStudyForm,
+    addEventStudyRadioBtn,
+    addEventDataGovernanceNavBar,
+    addEventMyProjects,
+    addEventUpdateSummaryStatsData
+} from './src/event.js';
+import {
+    dataAnalysisTemplate
+} from './src/pages/dataAnalysis.js';
+import {
+    getFileContent,
+    getFileContentCases
+} from './src/visualization.js';
+import {
+    aboutConfluence,
+    renderOverView
+} from './src/pages/about.js';
+import {
+    confluenceResources
+} from './src/pages/join.js';
+import {
+    confluenceContactPage
+} from './src/pages/contact.js';
+import {
+    footerTemplate
+} from './src/components/footer.js';
+import {
+    renderDescription
+} from './src/pages/description.js';
+import {
+    dataDictionaryTemplate
+} from './src/pages/dictionary.js';
+import {
+    showPreview
+} from './src/components/boxPreview.js';
 
 export const confluence = async () => {
     // handleRangeRequests();
-    if('serviceWorker' in navigator){
+    if ('serviceWorker' in navigator) {
         try {
             navigator.serviceWorker.register('./serviceWorker.js');
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
         }
     }
@@ -52,7 +134,10 @@ export const confluence = async () => {
         showAnimation();
         if (response) {
             const lclStr = JSON.parse(localStorage.parms);
-            localStorage.parms = JSON.stringify({...lclStr, ...response});
+            localStorage.parms = JSON.stringify({
+                ...lclStr,
+                ...response
+            });
         }
         navBarOptions.innerHTML = navBarMenutemplate();
         document.getElementById('logOutBtn').addEventListener('click', logOut);
@@ -70,7 +155,7 @@ export const confluence = async () => {
         // const platformTutorialElement = document.getElementById('platformTutorial');
         // const dataAnalysisElement = document.getElementById('dataAnalysis');
 
-        
+
         dataSubmissionElement.addEventListener('click', async () => {
             if (dataSubmissionElement.classList.contains('navbar-active')) return;
             showAnimation();
@@ -103,13 +188,13 @@ export const confluence = async () => {
             // })
             await getFileContent();
             const subcasesSelection = document.getElementById('subcasesSelection');
-            subcasesSelection.addEventListener('change', function(event) {
+            subcasesSelection.addEventListener('change', function (event) {
                 if (event.target.value == 'all') getFileContent()
                 if (event.target.value == 'cases') getFileContentCases()
             });
         });
 
-        if(dataSummarySubsetElement) {
+        if (dataSummarySubsetElement) {
             dataSummarySubsetElement.addEventListener('click', () => {
                 if (dataSummarySubsetElement.classList.contains('navbar-active')) return;
                 const confluenceDiv = document.getElementById('confluenceDiv');
@@ -119,22 +204,22 @@ export const confluence = async () => {
                 confluenceDiv.innerHTML = dataSummary('Subset Statistics', false, true, true);
                 addEventUpdateSummaryStatsData();
                 removeActiveClass('nav-link', 'active');
-                document.querySelectorAll('[href="#data_exploration/subset"]')[0].classList.add('active');
+                document.querySelectorAll('[href="#data_exploration/subset"]')[1].classList.add('active');
                 dataSummaryMissingTemplate();
+                hideAnimation();
             })
         }
-        if(viewUserSubmissionElement){
-            viewUserSubmissionElement.addEventListener('click', async() => {
+        if (viewUserSubmissionElement) {
+            viewUserSubmissionElement.addEventListener('click', async () => {
                 if (viewUserSubmissionElement.classList.contains('navbar-active')) return;
                 showAnimation();
                 assignNavbarActive(viewUserSubmissionElement, 1);
                 document.title = 'BCRPP - Your Submissions';
-                await userSubmissionTemplate('Your Submissions');
-                removeActiveClass('nav-link', 'active');
+                await userSubmissionTemplate('Your Submissions', 'User Submissions');
                 hideAnimation();
             })
         }
-        if(dataDictionaryElement){
+        if (dataDictionaryElement) {
             dataDictionaryElement.addEventListener('click', () => {
                 if (dataDictionaryElement.classList.contains('navbar-active')) return;
                 const confluenceDiv = document.getElementById('confluenceDiv');
@@ -148,41 +233,242 @@ export const confluence = async () => {
                 dataDictionaryTemplate();
             })
         }
-        if(dataFormElement){
-            dataFormElement.addEventListener('click', async() => {
+        if (dataFormElement) {
+            dataFormElement.addEventListener('click', async () => {
                 if (dataFormElement.classList.contains('navbar-active')) return;
                 const element = document.getElementById('dataForm');
                 showAnimation();
-                if(!element) return;
-                if(element.classList.contains('navbar-active')) return;
+                if (!element) return;
+                if (element.classList.contains('navbar-active')) return;
                 document.title = 'BCRPP - Data Form';
                 assignNavbarActive(element, 1);
                 //dataForm();
                 const getCollaborators = await getCollaboration(uploadFormFolder, 'folders'); //144028521583, 155292358576
                 let getMyPermissionLevel = false;
-                if(getCollaborators) getMyPermissionLevel =  checkDataSubmissionPermissionLevel(getCollaborators, JSON.parse(localStorage.parms).login);
+                if (getCollaborators) getMyPermissionLevel = checkDataSubmissionPermissionLevel(getCollaborators, JSON.parse(localStorage.parms).login);
                 //console.log(getMyPermissionLevel);
-                if(getMyPermissionLevel){
+                if (getMyPermissionLevel) {
                     confluenceDiv.innerHTML = await formSection('form');
-                //confluenceDiv.innerHTML = approveRejectSection();
+                    //confluenceDiv.innerHTML = approveRejectSection();
+                    document.getElementById('importDictvars').addEventListener('click', importDictVars);
+                    populateAmendSelect();
+                    document.getElementById('amendmentyes').addEventListener('click', amendFormSelect);
+                    document.getElementById('amendmentno').addEventListener('click', amendFormSelect);
                     await dataForm();
-                }
-                else {
+                } else {
                     console.log(getMyPermissionLevel);
                     confluenceDiv.innerHTML = await formSectionOther('form');
                 }
                 //dataApproval();
                 formFunctions();
+                //Testing json
+                // let obj = {
+                //     date: "2022-09-02",
+                //     projname: "Testing1233",
+                //     amendment: "Yes",
+                //     investigators: "Navado Wray",
+                //     institution: "NCI DCEG",
+                //     email: "wraynr@nih.gov",
+                //     member: "Yes",
+                //     acro: "test",
+                //     allinvest: "test",
+                //     confirmation: "Yes",
+                //     background: "test",
+                //     aims: " test",
+                //     analyplan: " test",
+                //     basevar: [
+                //         "Identification/Dates",
+                //         "Physical Activity"
+                //     ],
+                //     mmdvarv: "Mammographic Density",
+                //     reqcoh: [
+                //         "BWHS"
+                //     ],
+                //     timeline: "test",
+                //     authconf: "Yes",
+                //     authorship: "",
+                //     ibcvar: ['Pathology']
+                // };
+                // document.getElementById('downloadJSON').addEventListener('click', async () => {
+                //     let response = await getFile('1013095224409');
+                //     // let projname = document.getElementById('projname');
+                //     let blob = new Blob([response], {
+                //         type: 'application/json'
+                //     });
+
+                //     const docUrl = URL.createObjectURL(blob);
+
+                //     let el = document.createElement('a');
+
+                //     el.href = docUrl;
+                //     el.download = JSON.parse(response).projname;
+
+                //     el.click();
+                // })
+                // document.getElementById('downloadWord').addEventListener('click', async () => {
+                //     let response = await getFile('1002570031083');
+                //     console.log(response);
+                //     //blob type application/vnd.openxmlformats-officedocument.wordprocessingml.document
+                //     let blob = new Blob([response], {
+                //         type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                //     });
+
+                //     console.log(blob);
+                //     const docUrl = URL.createObjectURL(blob);
+
+                //     let el = document.createElement('a');
+
+                //     el.href = docUrl;
+                //     // el.download = '';
+
+                //     // el.click();
+                // })
+                document.getElementById('uploadJSON').addEventListener('change', (e) => {
+                    const jsonFile = document.getElementById('uploadJSON').files[0];
+                    console.log(jsonFile);
+                    const reader = new FileReader();
+                    let fileContent;
+                    console.log(reader);
+                    reader.readAsText(jsonFile);
+                    reader.onload = function (e) {
+                        fileContent = reader.result;
+                        console.log(fileContent);
+
+                        const fileData = JSON.parse(reader.result);
+                        console.log(fileData);
+                        for (let [k, v] of Object.entries(fileData)) {
+                            let inputField;
+                            if (k === 'amendment') {
+                                k = 'amendment' + v.toLowerCase();
+                                inputField = document.getElementById(k);
+                            } else if (k === 'member') {
+                                k = 'member' + v.toLowerCase();
+                                inputField = document.getElementById(k);
+                            } else if (k === 'reqcoh') {
+                                console.log('Request cohorts');
+                                inputField = document.getElementsByName('reqcoh');
+                            } else if (k === 'basevar') {
+                                console.log('basevarsss');
+                                inputField = document.getElementsByName(k);
+                            } else if (k === 'mmdvarv') {
+                                console.log('mmdvarvvv');
+                                inputField = document.getElementById(k);
+                                inputField.checked = true;
+                                continue;
+                            } else if (k === 'ibcvar') {
+                                console.log('ibcvar');
+                                inputField = document.getElementsByName(k);
+                            } else if (k === 'confirmation') {
+                                inputField = document.getElementById(k);
+                                inputField.checked = true;
+                                continue;
+                            } else {
+                                console.log('regular');
+                                inputField = document.getElementById(k);
+                            }
+                            if (k.startsWith('amendment')) {
+                                inputField.checked = true;
+                            } else if (k.startsWith('member')) {
+                                inputField.checked = true;
+                            } else if (k === 'basevar') {
+                                for (const el of inputField) {
+                                    if (v.includes(el.value)) {
+                                        el.checked = true;
+                                    }
+                                }
+                            } else if (k === 'reqcoh') {
+                                for (const el of inputField) {
+                                    if (v.includes(el.value)) {
+                                        el.checked = true;
+                                    }
+                                }
+                            } else if (k === 'ibcvar') {
+                                for (const el of inputField) {
+                                    if (v.includes(el.value)) {
+                                        el.checked = true;
+                                    }
+                                }
+                            } else {
+                                inputField.value = v;
+                            }
+                        }
+                    };
+
+                }, false);
+                // document.getElementById('otherButton').addEventListener('click', async () => {
+                //     //    let response = await getFile('1012486081122');
+                //     let response = await getFile('1013095224409');
+                //     console.log(response);
+                //     const fileData = JSON.parse(response);
+
+                //     for (let [k, v] of Object.entries(fileData)) {
+                //         let inputField;
+                //         if (k === 'amendment') {
+                //             k = 'amendment' + v.toLowerCase();
+                //             inputField = document.getElementById(k);
+                //         } else if (k === 'member') {
+                //             k = 'member' + v.toLowerCase();
+                //             inputField = document.getElementById(k);
+                //         } else if (k === 'reqcoh') {
+                //             console.log('Request cohorts');
+                //             inputField = document.getElementsByName('reqcoh');
+                //         } else if (k === 'basevar') {
+                //             console.log('basevarsss');
+                //             inputField = document.getElementsByName(k);
+                //         } else if (k === 'mmdvarv') {
+                //             console.log('mmdvarvvv');
+                //             inputField = document.getElementById(k);
+                //             inputField.checked = true;
+                //             continue;
+                //         } else if (k === 'ibcvar') {
+                //             console.log('ibcvar');
+                //             inputField = document.getElementsByName(k);
+                //         } else if (k === 'confirmation') {
+                //             inputField = document.getElementById(k);
+                //             inputField.checked = true;
+                //             continue;
+                //         } else {
+                //             console.log('regular');
+                //             inputField = document.getElementById(k);
+                //         }
+                //         if (k.startsWith('amendment')) {
+                //             inputField.checked = true;
+                //         } else if (k.startsWith('member')) {
+                //             inputField.checked = true;
+                //         } else if (k === 'basevar') {
+                //             for (const el of inputField) {
+                //                 if (v.includes(el.value)) {
+                //                     el.checked = true;
+                //                 }
+                //             }
+                //         } else if (k === 'reqcoh') {
+                //             for (const el of inputField) {
+                //                 if (v.includes(el.value)) {
+                //                     el.checked = true;
+                //                 }
+                //             }
+                //         } else if (k === 'ibcvar') {
+                //             for (const el of inputField) {
+                //                 if (v.includes(el.value)) {
+                //                     el.checked = true;
+                //                 }
+                //             }
+                //         } else {
+                //             inputField.value = v;
+                //         }
+                //     }
+
+                // })
                 hideAnimation();
             })
         }
-        if(studyAcceptedElement){
+        if (studyAcceptedElement) {
             studyAcceptedElement.addEventListener('click', () => {
                 if (studyAcceptedElement.classList.contains('navbar-active')) return;
                 const element = document.getElementById('acceptedStudiesView');
                 showAnimation();
-                if(!element) return;
-                if(element.classList.contains('navbar-active')) return;
+                if (!element) return;
+                if (element.classList.contains('navbar-active')) return;
                 document.title = 'BCRPP - Accepted Studies';
                 assignNavbarActive(element, 1);
                 //dataForm();
@@ -193,13 +479,13 @@ export const confluence = async () => {
                 hideAnimation();
             })
         }
-        if(chairViewElement){
+        if (chairViewElement) {
             chairViewElement.addEventListener('click', () => {
                 if (chairViewElement.classList.contains('navbar-active')) return;
                 const element = document.getElementById('chairView');
                 showAnimation();
-                if(!element) return;
-                if(element.classList.contains('navbar-active')) return;
+                if (!element) return;
+                if (element.classList.contains('navbar-active')) return;
                 document.title = 'BCRPP - Chair View';
                 assignNavbarActive(element, 1);
                 //dataForm();
@@ -210,13 +496,13 @@ export const confluence = async () => {
                 //hideAnimation();
             })
         }
-        if(daccViewElement){
+        if (daccViewElement) {
             daccViewElement.addEventListener('click', () => {
                 if (daccViewElement.classList.contains('navbar-active')) return;
                 const element = document.getElementById('daccView');
                 showAnimation();
-                if(!element) return;
-                if(element.classList.contains('navbar-active')) return;
+                if (!element) return;
+                if (element.classList.contains('navbar-active')) return;
                 document.title = 'BCRPP - DACC View';
                 assignNavbarActive(element, 1);
                 //dataForm();
@@ -239,8 +525,8 @@ export const confluence = async () => {
             //dataApproval();
             //hideAnimation();
             const element = document.getElementById('dataRequest');
-            if(!element) return;
-            if(element.classList.contains('navbar-active')) return;
+            if (!element) return;
+            if (element.classList.contains('navbar-active')) return;
             document.title = 'BCRPP - Data Access';
             assignNavbarActive(element, 1);
             //dataRequestTemplate();
@@ -272,7 +558,7 @@ export const confluence = async () => {
         const projectArray = filterProjects(folders.entries);
         const getCollaborators = await getCollaboration(145995765326, 'folders');
         let getMyPermissionLevel = false;
-        if(getCollaborators) getMyPermissionLevel =  checkDataSubmissionPermissionLevel(getCollaborators, JSON.parse(localStorage.parms).login);
+        if (getCollaborators) getMyPermissionLevel = checkDataSubmissionPermissionLevel(getCollaborators, JSON.parse(localStorage.parms).login);
         //console.log('145995765326 '+getMyPermissionLevel);
         let showProjects = false;
         // for (let obj of projectArray) {
@@ -310,8 +596,7 @@ export const confluence = async () => {
                 </a>
             `;
             addEventMyProjects();
-        }
-        else if (getMyPermissionLevel) {
+        } else if (getMyPermissionLevel) {
             document.getElementById('governanceNav').innerHTML = `
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links navbar-active" href="#data_governance" title="Data Governance" id="dataGovernance">
                     Data Governance
@@ -325,49 +610,45 @@ export const confluence = async () => {
 
 const manageRouter = async () => {
     document.querySelector("[role='contentinfo']").innerHTML = footerTemplate();
-    if(localStorage.parms !== undefined) return;
+    if (localStorage.parms !== undefined) return;
     const hash = decodeURIComponent(window.location.hash);
     console.log(hash);
-    if(!document.getElementById('navBarBtn').classList.contains('collapsed') && document.getElementById('navbarToggler').classList.contains('show')) document.getElementById('navBarBtn').click();
-    if(hash === '#home'){
+    if (!document.getElementById('navBarBtn').classList.contains('collapsed') && document.getElementById('navbarToggler').classList.contains('show')) document.getElementById('navBarBtn').click();
+    if (hash === '#home') {
         const element = document.getElementById('homePage');
-        if(!element) return;
-        if(element.classList.contains('navbar-active')) return;
+        if (!element) return;
+        if (element.classList.contains('navbar-active')) return;
         document.title = 'BCRP Data Platform';
         assignNavbarActive(element)
         infoDeck();
         hideAnimation();
-    }
-    else if(hash === '#about/overview'){
+    } else if (hash === '#about/overview') {
         const element = document.getElementById('aboutBCRPP');
-        if(!element) return;
-        if(element.classList.contains('navbar-active')) return;
+        if (!element) return;
+        if (element.classList.contains('navbar-active')) return;
         document.title = 'BCRPP - Overview';
         console.log("Overview")
         assignNavbarActive(element, 1);
         aboutConfluence('overview');
         renderOverView();
-    }
-    else if(hash === '#join'){
+    } else if (hash === '#join') {
         const element = document.getElementById('resourcesBCRPP');
-        if(!element) return;
-        if(element.classList.contains('navbar-active')) return;
+        if (!element) return;
+        if (element.classList.contains('navbar-active')) return;
         document.title = 'BCRPP - Resources';
         assignNavbarActive(element, 1);
         confluenceResources();
-    }
-    else if(hash === '#contact'){
+    } else if (hash === '#contact') {
         const element = document.getElementById('contactBCRPP');
-        if(!element) return;
-        if(element.classList.contains('navbar-active')) return;
+        if (!element) return;
+        if (element.classList.contains('navbar-active')) return;
         document.title = 'BCRPP - Contact';
         assignNavbarActive(element, 1);
         confluenceDiv.innerHTML = confluenceContactPage();
-    }
-    else if (hash === '#data_access/overview') {
+    } else if (hash === '#data_access/overview') {
         const element = document.getElementById('dataRequest');
-        if(!element) return;
-        if(element.classList.contains('navbar-active')) return;
+        if (!element) return;
+        if (element.classList.contains('navbar-active')) return;
         document.title = 'BCRPP - Data Access';
         assignNavbarActive(element, 1);
         confluenceDiv.innerHTML = dataAccessNotSignedIn();
@@ -375,11 +656,10 @@ const manageRouter = async () => {
         //dataForm();
         //dataApproval();
         //hideAnimation();
-    }
-    else if (hash === '#data_access/form'){
+    } else if (hash === '#data_access/form') {
         const dataFormElement = document.getElementById('dataForm');
         if (!dataFormElement) return;
-        if(dataFormElement.classList.contains('navbar-active')) return;
+        if (dataFormElement.classList.contains('navbar-active')) return;
         showAnimation();
         assignNavbarActive(dataFormElement, 1);
         document.title = 'BCRPP - Data Form';
@@ -387,42 +667,36 @@ const manageRouter = async () => {
         //confluenceDiv.innerHTML = approveRejectSection();
         removeActiveClass('nav-link', 'active');
         formFunctions();
-    }
 
-    else if (hash === '#data_access/acceptedStudies'){
+    } else if (hash === '#data_access/acceptedStudies') {
         const acceptedStudiesElement = document.getElementById('acceptedStudiesView');
         if (!acceptedStudiesElement) return;
-        if(acceptedStudiesElement.classList.contains('navbar-active')) return;
+        if (acceptedStudiesElement.classList.contains('navbar-active')) return;
         showAnimation();
         assignNavbarActive(acceptedStudiesElement, 1);
         document.title = 'BCRPP - Accepted Studies';
         confluenceDiv.innerHTML = acceptedStudiesSection();
         removeActiveClass('nav-link', 'active');
-    }
-    else if (hash === '#data_access/chairView'){
+    } else if (hash === '#data_access/chairView') {
         const chairViewElement = document.getElementById('chairView');
         if (!chairViewElement) return;
-        if(chairViewElement.classList.contains('navbar-active')) return;
+        if (chairViewElement.classList.contains('navbar-active')) return;
         showAnimation();
         assignNavbarActive(chairViewElement, 1);
         document.title = 'BCRPP - Chair View';
         confluenceDiv.innerHTML = chairSection();
         removeActiveClass('nav-link', 'active');
-    }
-
-    else if (hash === '#data_access/daccView'){
+    } else if (hash === '#data_access/daccView') {
         const daccViewElement = document.getElementById('daccView');
         showAnimation();
         console.log('hello world');
         if (!daccViewElement) return;
-        if(daccViewElement.classList.contains('navbar-active')) return;
+        if (daccViewElement.classList.contains('navbar-active')) return;
         assignNavbarActive(daccViewElement, 1);
         document.title = 'BCRPP - DACC View';
         confluenceDiv.innerHTML = daccSection();
         removeActiveClass('nav-link', 'active');
-    }
-
-    else if (hash === '#data_exploration/dictionary') {
+    } else if (hash === '#data_exploration/dictionary') {
         const dataDictionaryElement = document.getElementById('dataDictionary');
         if (!dataDictionaryElement || dataDictionaryElement.classList.contains('navbar-active')) return;
         showAnimation();
@@ -432,45 +706,38 @@ const manageRouter = async () => {
         removeActiveClass('nav-link', 'active');
         document.querySelectorAll('[href="#data_exploration/dictionary"]')[1].classList.add('active');
         dataDictionaryTemplate();
-    }
-    else if (hash === '#userSubmissions') {
+    } else if (hash === '#userSubmissions') {
         const viewUserSubmissionElement = document.getElementById('userSubmissions');
         if (!viewUserSubmissionElement || viewUserSubmissionElement.classList.contains('navbar-active')) return;
         showAnimation();
         assignNavbarActive(viewUserSubmissionElement, 1);
         document.title = 'BCRPP - Your Submissions';
-        userSubmissionTemplate('Your Submissions');
-        removeActiveClass('nav-link', 'active');
+        userSubmissionTemplate('Your Submissions', 'User Submissions');
         hideAnimation();
-    }
-
-    else window.location.hash = '#home';
+    } else window.location.hash = '#home';
 }
 
 const manageHash = async () => {
     document.querySelector("[role='contentinfo']").innerHTML = footerTemplate();
-    if(localStorage.parms === undefined) return;
+    if (localStorage.parms === undefined) return;
     const hash = decodeURIComponent(window.location.hash);
     console.log(hash);
-    if(!document.getElementById('navBarBtn').classList.contains('collapsed') && document.getElementById('navbarToggler').classList.contains('show')) document.getElementById('navBarBtn').click();
-    if(hash === '#data_exploration/summary') {
+    if (!document.getElementById('navBarBtn').classList.contains('collapsed') && document.getElementById('navbarToggler').classList.contains('show')) document.getElementById('navBarBtn').click();
+    if (hash === '#data_exploration/summary') {
         const element = document.getElementById('dataSummary');
-        if(!element) return;
+        if (!element) return;
         element.click();
-    }
-    else if(hash === '#data_exploration/subset' && !location.origin.match(applicationURLs.prod)) {
+    } else if (hash === '#data_exploration/subset' && !location.origin.match(applicationURLs.prod)) {
         const element = document.getElementById('dataSummarySubset');
-        if(!element) return;
+        if (!element) return;
         element.click()
-    }
-    else if(hash === '#data_exploration/dictionary') {
+    } else if (hash === '#data_exploration/dictionary') {
         const element = document.getElementById('dataDictionary');
-        if(!element) return;
+        if (!element) return;
         element.click()
-    }
-    else if (hash === '#userSubmissions') {
+    } else if (hash === '#userSubmissions') {
         const element = document.getElementById('userSubmissions');
-        if(!element) return;
+        if (!element) return;
         element.click()
     }
     // else if (hash === '#data_analysis') {
@@ -480,25 +747,21 @@ const manageHash = async () => {
     else if (hash === '#data_access/overview') {
         const element = document.getElementById('dataRequest');
         element.click();
-    }
-    else if (hash === '#data_access/form') {
+    } else if (hash === '#data_access/form') {
         const element = document.getElementById('dataForm');
-        if(!element) return;
+        if (!element) return;
         element.click();
-    }
-    else if (hash === '#data_access/acceptedStudies') {
+    } else if (hash === '#data_access/acceptedStudies') {
         const element = document.getElementById('acceptedStudies');
-        if(!element) return;
+        if (!element) return;
         element.click();
-    }
-    else if (hash === '#data_access/chairView') {
+    } else if (hash === '#data_access/chairView') {
         const element = document.getElementById('chairView');
-        if(!element) return;
+        if (!element) return;
         element.click();
-    }
-    else if (hash === '#data_access/daccView') {
+    } else if (hash === '#data_access/daccView') {
         const element = document.getElementById('daccView');
-        if(!element) return;
+        if (!element) return;
         element.click();
     }
     // else if (hash === '#tutorials') {
@@ -508,37 +771,30 @@ const manageHash = async () => {
     else if (hash === '#data_submission') {
         const element = document.getElementById('dataSubmission');
         element.click();
-    }
-    else if (hash === '#data_governance') {
+    } else if (hash === '#data_governance') {
         const element = document.getElementById('dataGovernance');
         if (element) {
             element.click();
-        }
-        else window.location.hash = '#';
-    }
-    else if (hash === '#my_projects') {
+        } else window.location.hash = '#';
+    } else if (hash === '#my_projects') {
         const element = document.getElementById('myProjects');
         if (element) {
             element.click();
         } else window.location.hash = '#';
-    } 
-    else if (hash === '#logout') {
+    } else if (hash === '#logout') {
         const element = document.getElementById('logOutBtn');
         element.click();
-    }
-    
-    else if(hash === '#home'){
+    } else if (hash === '#home') {
         const element = document.getElementById('homePage');
-        if(!element) return;
-        if(element.classList.contains('navbar-active')) return;
+        if (!element) return;
+        if (element.classList.contains('navbar-active')) return;
         assignNavbarActive(element);
         document.title = 'BCRP Data Platform';
         infoDeckAfterLoggedIn();
         hideAnimation();
-    }
-    else if(hash === '#about/overview'){
+    } else if (hash === '#about/overview') {
         const element = document.getElementById('aboutBCRPP');
-        if(!element) return;
+        if (!element) return;
         // if(element.classList.contains('navbar-active')) return;
         assignNavbarActive(element, 1);
         document.title = 'BCRP - Overview';
@@ -547,10 +803,9 @@ const manageHash = async () => {
         aboutConfluence('overview', fileInfo ? true : false);
         renderOverView();
         hideAnimation();
-    }
-    else if(hash === '#about/description'){
+    } else if (hash === '#about/description') {
         const element = document.getElementById('aboutBCRPP');
-        if(!element) return;
+        if (!element) return;
         // if(element.classList.contains('navbar-active')) return;
         assignNavbarActive(element, 1);
         document.title = 'BCRP - Study Description';
@@ -564,26 +819,23 @@ const manageHash = async () => {
         aboutConfluence('description', fileInfo ? true : false);
         renderDescription(fileInfo['content_modified_at']);
         hideAnimation();
-    }
-    else if(hash === '#join'){
+    } else if (hash === '#join') {
         const element = document.getElementById('resourcesBCRPP');
-        if(!element) return;
-        if(element.classList.contains('navbar-active')) return;
+        if (!element) return;
+        if (element.classList.contains('navbar-active')) return;
         assignNavbarActive(element, 1);
         document.title = 'BCRP - Resources';
         confluenceResources();
         hideAnimation();
-    }
-    else if(hash === '#contact'){
+    } else if (hash === '#contact') {
         const element = document.getElementById('contactBCRPP');
-        if(!element) return;
-        if(element.classList.contains('navbar-active')) return;
+        if (!element) return;
+        if (element.classList.contains('navbar-active')) return;
         assignNavbarActive(element, 1);
         document.title = 'BCRP - Committee';
         confluenceDiv.innerHTML = confluenceContactPage();
         hideAnimation();
-    }
-    else window.location.hash = '#home';
+    } else window.location.hash = '#home';
 };
 
 window.onload = async () => {
@@ -602,7 +854,7 @@ window.onhashchange = () => {
 };
 
 window.onstorage = () => {
-    if(localStorage.parms === undefined) logOut();
+    if (localStorage.parms === undefined) logOut();
     else {
         confluence();
         document.getElementById('loginBoxAppDev').hidden = true;
@@ -614,8 +866,6 @@ window.onstorage = () => {
 
 window.addEventListener('beforeinstallprompt', e => {
     e.userChoice.then(choiceResult => {
-        gtag('send', 'event', 'A2H', choiceResult.outcome); 
+        gtag('send', 'event', 'A2H', choiceResult.outcome);
     });
 });
-
-

@@ -7,6 +7,8 @@ import {
     checkDataSubmissionPermissionLevel,
     getCollaboration,
     getFile,
+    emailforChair,
+    emailforDACC,
     tsv2Json,
     consortiumSelection,
     uploadFormFolder,
@@ -20,6 +22,12 @@ import {
 import {
     uploadInStudy
 } from "../components/modal.js";
+import {
+    pageNavBar
+} from '../components/navBarMenuItems.js';
+import {
+    showPreview
+} from '../components/boxPreview.js';
 import {
     template
 } from "./dataGovernance.js";
@@ -183,8 +191,7 @@ export const dataSubmission = (element) => {
     // });
 };
 
-export async function userSubmissionTemplate(pageHeader) {
-    let template = '';
+export async function userSubmissionTemplate(pageHeader, activeTab) {
     const uploads = await getFolderItems(uploadFormFolder);
     const daccReview = await getFolderItems(daccReviewFolder);
     const resubmit = await getFolderItems(daccReviewChairFolder);
@@ -228,6 +235,7 @@ export async function userSubmissionTemplate(pageHeader) {
     }
 
     for (const file of chairReview.entries) {
+        console.log(chairReview);
         const fileInfo = await getFileInfo(file.id);
         if (fileInfo.created_by.login === JSON.parse(localStorage.parms).login) {
             files.push({
@@ -259,10 +267,28 @@ export async function userSubmissionTemplate(pageHeader) {
             });
         }
     }
+    let authChair = emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+    let authDacc = emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+    let navBarItems = '';
+    if (authDacc && authChair) {
+        navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'Chair Menu', 'DACC Menu');
+        // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu', 'DACC Menu');
+    } else if (authChair) {
+        navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'Chair Menu');
+        // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu');
+    } else if (authDacc) {
+        navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', 'DACC Menu');
+        // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
+    } else {
+        navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'View Submissions', );
+        // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
+    }
+    let template = `
+      <div class="general-bg body-min-height padding-bottom-1rem">
+          <div class="container">
+            ${navBarItems}
+      `;
     template += `
-    <div class="general-bg">
-        <div class="container body-min-height">
-            
             <div class="main-summary-row">
                 <div class="row align-left w-100 m-0">
                     <h1 class="col page-header pl-0 pt-2">${pageHeader}</h1>
@@ -287,14 +313,29 @@ export async function userSubmissionTemplate(pageHeader) {
         template += '<div id="files"> </div>';
     } else {
         template += `
-                No files to show.           
+        <div class="div-border white-bg align-left p-2">
+                <div class='row'>
+                <div class='col-5'></div> 
+                        <div class='col-3'> 
+                            <h4 class='text-dark'>No Submissions</h4>
+                            <!--div class='row'>
+                                <a class='btn btn-primary' href='#data_access/form'>Submit a Form</a>
+                            </div-->
+                        </div>
+                        <div class='col-4'></div> 
+                </div>
+                <div class='row'>
+                
+                </div>
+        
+        </div>
         </div>
         </div>`
     }
 
     document.getElementById('confluenceDiv').innerHTML = template;
 
-    if (files.length > 0){
+    if (files.length > 0) {
         userSubmissionFiles(files);
 
         for (const element of files) {
@@ -311,13 +352,15 @@ export async function userSubmissionTemplate(pageHeader) {
             btn.addEventListener('click', (e) => {
                 // e.stopPropagation();
                 console.log('Modal popping up');
+                btn.dataset.target = '#bcrppPreviewerModal';
                 const header = document.getElementById('bcrppPreviewerModalHeader');
                 const body = document.getElementById('bcrppPreviewerModalBody');
                 header.innerHTML = `<h5 class="modal-title">File preview</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>`;
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>`;
                 const fileId = btn.dataset.fileId;
+                console.log(fileId);
                 $('#bcrppPreviewerModal').modal('show');
                 showPreview(fileId, 'bcrppPreviewerModalBody');
             })
@@ -379,10 +422,13 @@ function userSubmissionHeaders() {
 function userSubmissionFiles(files) {
     let template = '';
     for (const element of files) {
-        template += `<div class="card mt-1 mb-1 align-left" data-toggle="collapse" data-target="#study${element.file.id}">
+        let filename = element.file.name.split('_').slice(0, -4).join(' '); // fileInfo.name.split('_')[0];
+        const shortfilename = filename.length > 21 ? filename.substring(0, 20) + '...' : filename;
+
+        template += `<div class="card mt-1 mb-1 align-left">
         <div style="padding: 10px" aria-expanded="false" id="file${element.file.id}" class='filedata'>
             <div class="row">
-                <div class="col-md-4 text-center">${element.file.name}</div>
+                <div class="col-md-4 text-center">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${element.file.id}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
                 <div class="col-md-3 text-center">${element.status}</div>
                 <div class="col-md-3 text-center">${new Date(element.file.created_at).toDateString().substring(4,)}</div>
                 <div class="col-md-1 text-center">${element.decision === 'Accepted' ? '<h6 class="badge badge-pill badge-success">Accepted</h6>' : element.decision === 'Denied' ? '<h6 class="badge badge-pill badge-danger">Denied</h6>' : '<h6 class="badge badge-pill badge-warning">In Progress</h6>'}</div>
@@ -396,7 +442,7 @@ function userSubmissionFiles(files) {
                         <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
                         <div class="row mb-1 m-0">
                     <div class="col-12 font-bold">
-                    Concept: ${element.file.name}
+                    Concept: ${filename}
                     </div>
                     </div>
                         <div class="row mb-1 m-0">

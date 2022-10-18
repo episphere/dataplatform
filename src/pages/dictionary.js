@@ -1,7 +1,20 @@
 //Changes required regarding dictionary
-import { addEventFilterBarToggle } from "../event.js";
-import { getFile, hideAnimation, shortenText, tsv2Json, json2other } from "./../shared.js";
-import { addEventToggleCollapsePanelBtn, pageSizeTemplate, dataPagination, paginationTemplate } from "./description.js";
+import {
+    addEventFilterBarToggle
+} from "../event.js";
+import {
+    getFile,
+    hideAnimation,
+    shortenText,
+    tsv2Json,
+    json2other
+} from "./../shared.js";
+import {
+    addEventToggleCollapsePanelBtn,
+    pageSizeTemplate,
+    dataPagination,
+    paginationTemplate
+} from "./description.js";
 let previousValue = '';
 
 export const dataDictionaryTemplate = async () => {
@@ -20,6 +33,8 @@ export const dataDictionaryTemplate = async () => {
                 </div>
             </div>
         </div>
+        <button class='btn btn-primary' id='saveVars'>Save Variables</button>
+
     </div>
     <div class="col-xl-10 padding-right-zero" id="summaryStatsCharts">
         <button id="filterBarToggle"><i class="fas fa-lg fa-caret-left"></i></button>
@@ -40,16 +55,32 @@ export const dataDictionaryTemplate = async () => {
     renderDataDictionary(dictionary, 60, headers);
     paginationHandler(dictionary, 60, headers);
     addEventFilterBarToggle();
+    document.getElementById('saveVars').addEventListener('click', saveVariables);
     hideAnimation();
+}
+
+const saveVariables = () => {
+    //Get all the checked data variables
+    const vars = Array.from(document.getElementsByClassName('select-variable-type'));
+    const varArr = [];
+
+    vars.forEach(v => {
+        if (v.checked) {
+            console.log(v.id.split('label')[1]);
+            varArr.push(v.id.split('label')[1]);
+        }
+    })
+
+    localStorage.setItem('dictionaryVars', varArr);
 }
 
 const paginationHandler = (data, pageSize, headers) => {
     const dataLength = data.length;
-    const pages = Math.ceil(dataLength/pageSize);
+    const pages = Math.ceil(dataLength / pageSize);
     const array = [];
 
-    for(let i = 0; i< pages; i++){
-        array.push(i+1);
+    for (let i = 0; i < pages; i++) {
+        array.push(i + 1);
     }
     document.getElementById('pagesContainer').innerHTML = paginationTemplate(array);
     addEventPageBtns(pageSize, data, headers);
@@ -61,18 +92,18 @@ const addEventPageBtns = (pageSize, data, headers) => {
         element.addEventListener('click', () => {
             let previous = parseInt(element.dataset.previous);
             let next = parseInt(element.dataset.next);
-            if(previous && !isNaN(previous) && previous === 1) previous = document.querySelectorAll('[data-page]').length + 1;
-            if(next && !isNaN(next) && next === document.querySelectorAll('[data-page]').length) next = 0;
+            if (previous && !isNaN(previous) && previous === 1) previous = document.querySelectorAll('[data-page]').length + 1;
+            if (next && !isNaN(next) && next === document.querySelectorAll('[data-page]').length) next = 0;
             const pageNumber = !isNaN(previous) ? previous - 1 : !isNaN(next) ? next + 1 : element.dataset.page;
-            
-            if(pageNumber < 1 || pageNumber > Math.ceil(data.length/pageSize)) return;
-            
-            if(!element.classList.contains('active-page')){
+
+            if (pageNumber < 1 || pageNumber > Math.ceil(data.length / pageSize)) return;
+
+            if (!element.classList.contains('active-page')) {
                 let start = (pageNumber - 1) * pageSize;
                 let end = pageNumber * pageSize;
                 document.getElementById('previousPage').dataset.previous = pageNumber;
                 document.getElementById('nextPage').dataset.next = pageNumber;
-                renderDataDictionary(dataPagination(start,end,data), document.getElementById('pageSizeSelector').value, headers);
+                renderDataDictionary(dataPagination(start, end, data), document.getElementById('pageSizeSelector').value, headers);
                 Array.from(elements).forEach(ele => ele.classList.remove('active-page'));
                 document.querySelector(`button[data-page="${pageNumber}"]`).classList.add('active-page');
             }
@@ -81,30 +112,24 @@ const addEventPageBtns = (pageSize, data, headers) => {
 }
 
 const renderDataDictionaryFilters = (dictionary, headers) => {
-    var coreArray = Object.values(dictionary).filter( function (el)
-        {
-            return el.Category === 'Core'
-        }
-    );
-    var mamArray = Object.values(dictionary).filter( function (el)
-        {
-            return el.Category === 'Mammographic density'
-        }
-    );
-    var incArray = Object.values(dictionary).filter( function (el)
-        {
-            return el.Category === 'Incident Breast Cancer '
-        }
-    );
-    
+    var coreArray = Object.values(dictionary).filter(function (el) {
+        return el.Category === 'Core'
+    });
+    var mamArray = Object.values(dictionary).filter(function (el) {
+        return el.Category === 'Mammographic density'
+    });
+    var incArray = Object.values(dictionary).filter(function (el) {
+        return el.Category === 'Incident Breast Cancer '
+    });
+
     const coreVariableType = coreArray.map(dt => dt['Sub-Category']);
     const mamVariableType = mamArray.map(dt => dt['Sub-Category']);
     const incVariableType = incArray.map(dt => dt['Sub-Category']);
     //const allVariableType = Object.values(dictionary).map(dt => dt['Sub-Category']);
     //const uniqueType = allVariableType.filter((d,i) => allVariableType.indexOf(d) === i).sort();
-    const coreuniqueType = coreVariableType.filter((d,i) => coreVariableType.indexOf(d) === i).sort();
-    const mamuniqueType = mamVariableType.filter((d,i) => mamVariableType.indexOf(d) === i).sort();
-    const incuniqueType = incVariableType.filter((d,i) => incVariableType.indexOf(d) === i).sort();
+    const coreuniqueType = coreVariableType.filter((d, i) => coreVariableType.indexOf(d) === i).sort();
+    const mamuniqueType = mamVariableType.filter((d, i) => mamVariableType.indexOf(d) === i).sort();
+    const incuniqueType = incVariableType.filter((d, i) => incVariableType.indexOf(d) === i).sort();
 
     let template = '';
     template += `
@@ -126,43 +151,43 @@ const renderDataDictionaryFilters = (dictionary, headers) => {
                 <label class="filter-label font-size-13" for="variableTypeList">Baseline</label>
                 <ul class="remove-padding-left font-size-15 allow-overflow" id="variableTypeList">
                 `
-                coreuniqueType.forEach(vt => {
-                    template += `
+    coreuniqueType.forEach(vt => {
+        template += `
                         <li class="filter-list-item">
                             <input type="checkbox" data-variable-type="${vt}" id="label${vt}" class="select-variable-type" style="margin-left: 1px !important;">
                             <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(vt, 60)}</label>
                         </li>
                     `
-                })
-                template +=`
+    })
+    template += `
                 </ul>
 
                 <label class="filter-label font-size-13" for="variableTypeList">Mammographic density</label>
                 <ul class="remove-padding-left font-size-15 allow-overflow" id="variableTypeList">
                 `
-                mamuniqueType.forEach(vt => {
-                    template += `
+    mamuniqueType.forEach(vt => {
+        template += `
                         <li class="filter-list-item">
                             <input type="checkbox" data-variable-type="${vt}" id="label${vt}" class="select-variable-type" style="margin-left: 1px !important;">
                             <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(vt, 60)}</label>
                         </li>
                     `
-                })
-                template +=`
+    })
+    template += `
                 </ul>
 
                 <label class="filter-label font-size-13" for="variableTypeList">Incident Breast Cancer</label>
                 <ul class="remove-padding-left font-size-15 allow-overflow" id="variableTypeList">
                 `
-                incuniqueType.forEach(vt => {
-                    template += `
+    incuniqueType.forEach(vt => {
+        template += `
                         <li class="filter-list-item">
                             <input type="checkbox" data-variable-type="${vt}" id="label${vt}" class="select-variable-type" style="margin-left: 1px !important;">
                             <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(vt, 60)}</label>
                         </li>
                     `
-                })
-                template +=`
+    })
+    template += `
                 </ul>
 
             </div>
@@ -210,13 +235,13 @@ const filterDataBasedOnSelection = (dictionary, headers) => {
 
 const filterDataHandler = (dictionary) => {
     const variableTypeSelection = Array.from(document.getElementsByClassName('select-variable-type')).filter(dt => dt.checked).map(dt => dt.dataset.variableType);
-    
+
     let filteredData = dictionary;
-    if(variableTypeSelection.length > 0) {
+    if (variableTypeSelection.length > 0) {
         filteredData = filteredData.filter(dt => variableTypeSelection.indexOf(dt['Sub-Category']) !== -1);
     }
-    if(variableTypeSelection.length === 0) filteredData = dictionary;
-    
+    if (variableTypeSelection.length === 0) filteredData = dictionary;
+
     document.getElementById('listFilters').innerHTML = `
     ${variableTypeSelection.length > 0 ? `
         <span class="font-bold">Category: </span>${variableTypeSelection[0]} ${variableTypeSelection.length > 1 ? `and <span class="other-variable-count">${variableTypeSelection.length-1} other</span>`:``}
@@ -226,16 +251,16 @@ const filterDataHandler = (dictionary) => {
 
     const input = document.getElementById('searchDataDictionary');
     const currentValue = input.value.trim().toLowerCase();
-    if(currentValue.length <= 2 && (previousValue.length > 2 || previousValue.length === 0)) {
+    if (currentValue.length <= 2 && (previousValue.length > 2 || previousValue.length === 0)) {
         return filteredData;
     }
     previousValue = currentValue;
     let searchedData = JSON.parse(JSON.stringify(filteredData));
     searchedData = searchedData.filter(dt => {
         let found = false;
-        if(dt['Variable Name'].toLowerCase().includes(currentValue)) found = true;
-        if(dt['Label'].toLowerCase().includes(currentValue)) found = true;
-        if(found) return dt;
+        if (dt['Variable Name'].toLowerCase().includes(currentValue)) found = true;
+        if (dt['Label'].toLowerCase().includes(currentValue)) found = true;
+        if (found) return dt;
     });
     let highlightData = JSON.parse(JSON.stringify(searchedData));
     highlightData.map(dt => {
@@ -250,12 +275,28 @@ const addEventSortColumn = (dictionary, pageSize, headers) => {
     const btns = document.getElementsByClassName('sort-column');
     Array.from(btns).forEach(btn => {
         btn.addEventListener('click', () => {
+            const sortDirection = !(btn.classList.contains('sort-column-asc')) ? 1 : -1;
+            console.log(sortDirection);
             const columnName = btn.dataset.columnName;
-            dictionary = dictionary.sort((a, b) => (a[columnName] > b[columnName]) ? 1 : ((b[columnName] > a[columnName]) ? -1 : 0))
-            renderDataDictionary(dictionary, pageSize, headers)
+            dictionary = dictionary.sort((a, b) => (a[columnName] > b[columnName]) ? 1 * sortDirection : ((b[columnName] > a[columnName]) ? -1 * sortDirection : 0))
+            btn.classList.remove('sort-column-asc', 'sort-column-desc');
+
+
+            renderDataDictionary(dictionary, pageSize, headers);
+
+            if (sortDirection === 1) {
+                console.log('Ascending');
+                document.querySelectorAll(`[data-column-name="${columnName}"]`)[0].classList.add('sort-column-asc');
+
+            } else {
+                console.log('Descending');
+                document.querySelectorAll(`[data-column-name="${columnName}"]`)[0].classList.add('sort-column-desc');
+            }
         })
     })
 }
+
+
 
 const renderDataDictionary = (dictionary, pageSize, headers) => {
     let template = `
@@ -272,9 +313,9 @@ const renderDataDictionary = (dictionary, pageSize, headers) => {
         <div class="row m-0 align-left allow-overflow w-100">
         `
     dictionary.forEach((desc, index) => {
-        if(index > pageSize ) return
+        if (index > pageSize) return
         template += `
-        <div class="card border-0 mt-1 mb-1 align-left w-100 pt-md-1">
+        <div class="card border-0 mt-1 mb-1 align-left w-100 pt-md-1 dictionaryData">
             <div class="pl-3 pt-1 pr-3 pb-1" aria-expanded="false" id="heading${desc['Variable Name']}">
                 <div class="row">
                     <div class="col-md-11">
@@ -295,7 +336,7 @@ const renderDataDictionary = (dictionary, pageSize, headers) => {
                     ${desc['Coding'] ? `<div class="row mb-1 m-0"><div class="col-md-2 pl-2 font-bold">Coding</div><div class="col">${desc['Coding']}</div></div>`: ``}
                     ${desc['Variable Type'] ? `<div class="row mb-1 m-0"><div class="col-md-2 pl-2 font-bold">Variable Type</div><div class="col">${desc['Variable Type']}</div></div>`: ``}
                 `;
-                template +=`
+        template += `
                 </div>
             </div>
         </div>`
@@ -307,24 +348,25 @@ const renderDataDictionary = (dictionary, pageSize, headers) => {
 }
 
 export const downloadFiles = (data, headers, fileName, studyDescription) => {
-    if(studyDescription) {
+    if (studyDescription) {
         let flatArray = [];
         headers.splice(headers.indexOf('PI'), 1)
         headers.splice(headers.indexOf('PI_Email'), 1)
         data.forEach(dt => {
-            if(dt.pis) {
-                const flatObj = {...dt};
+            if (dt.pis) {
+                const flatObj = {
+                    ...dt
+                };
                 dt.pis.forEach((obj, index) => {
                     const piColumnName = `PI_${index+1}`;
                     const piEmailColumnName = `PI_Email_${index+1}`;
                     flatObj[piColumnName] = obj.PI;
                     flatObj[piEmailColumnName] = obj.PI_Email;
-                    if(headers.indexOf(piColumnName) === -1) headers.push(piColumnName);
-                    if(headers.indexOf(piEmailColumnName) === -1) headers.push(piEmailColumnName);
+                    if (headers.indexOf(piColumnName) === -1) headers.push(piColumnName);
+                    if (headers.indexOf(piEmailColumnName) === -1) headers.push(piEmailColumnName);
                 });
                 flatArray.push(flatObj);
-            }
-            else flatArray.push(dt);
+            } else flatArray.push(dt);
         });
         data = flatArray;
     }
@@ -337,7 +379,7 @@ export const downloadFiles = (data, headers, fileName, studyDescription) => {
         link.setAttribute("href", encodedUri);
         link.setAttribute("download", `${fileName}.csv`);
         document.body.appendChild(link);
-        link.click(); 
+        link.click();
         document.body.removeChild(link);
     })
 
@@ -350,7 +392,7 @@ export const downloadFiles = (data, headers, fileName, studyDescription) => {
         link.setAttribute("href", encodedUri);
         link.setAttribute("download", `${fileName}.tsv`);
         document.body.appendChild(link);
-        link.click(); 
+        link.click();
         document.body.removeChild(link);
     })
 }
