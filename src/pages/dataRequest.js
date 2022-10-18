@@ -951,7 +951,8 @@ export const chairFileView = async () => {
 
   template += `<div class='tab-pane fade'
                  id='inProgress' role='tabpanel'
-                 aria-labeledby='inProgressTab'>`
+                 aria-labeledby='inProgressTab' style="vertical-align:top">
+                 <a href="mailto:${emailforDACC.join("; ")}" id='email' class='btn btn-dark'>Send Email to DACC</a>`
   template += renderFilePreviewDropdown(filesinprogress, 'inProgress');
 
   template += `<div class='tab-pane fade'
@@ -1047,9 +1048,9 @@ export const chairFileView = async () => {
     //}
   }
 
-  if (filescompleted.length == 0) {
-    document.getElementById('email').style.display = 'none';
-  }
+  // if (filescompleted.length == 0) {
+  //   document.getElementById('email').style.display = 'none';
+  // }
 
   //Switch Tabs
   switchTabs('toBeCompleted', ['inProgress', 'daccCompleted', 'decided'], filesincomplete);
