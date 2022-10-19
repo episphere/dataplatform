@@ -250,7 +250,7 @@ export const confluence = async () => {
                 if (getMyPermissionLevel) {
                     confluenceDiv.innerHTML = await formSection('form');
                     //confluenceDiv.innerHTML = approveRejectSection();
-                    document.getElementById('importDictvars').addEventListener('click', importDictVars);
+                    //document.getElementById('importDictvars').addEventListener('click', importDictVars);
                     populateAmendSelect();
                     document.getElementById('amendmentyes').addEventListener('click', amendFormSelect);
                     document.getElementById('amendmentno').addEventListener('click', amendFormSelect);
@@ -323,78 +323,78 @@ export const confluence = async () => {
 
                 //     // el.click();
                 // })
-                document.getElementById('uploadJSON').addEventListener('change', (e) => {
-                    const jsonFile = document.getElementById('uploadJSON').files[0];
-                    console.log(jsonFile);
-                    const reader = new FileReader();
-                    let fileContent;
-                    console.log(reader);
-                    reader.readAsText(jsonFile);
-                    reader.onload = function (e) {
-                        fileContent = reader.result;
-                        console.log(fileContent);
+                // document.getElementById('uploadJSON').addEventListener('change', (e) => {
+                //     const jsonFile = document.getElementById('uploadJSON').files[0];
+                //     console.log(jsonFile);
+                //     const reader = new FileReader();
+                //     let fileContent;
+                //     console.log(reader);
+                //     reader.readAsText(jsonFile);
+                //     reader.onload = function (e) {
+                //         fileContent = reader.result;
+                //         console.log(fileContent);
 
-                        const fileData = JSON.parse(reader.result);
-                        console.log(fileData);
-                        for (let [k, v] of Object.entries(fileData)) {
-                            let inputField;
-                            if (k === 'amendment') {
-                                k = 'amendment' + v.toLowerCase();
-                                inputField = document.getElementById(k);
-                            } else if (k === 'member') {
-                                k = 'member' + v.toLowerCase();
-                                inputField = document.getElementById(k);
-                            } else if (k === 'reqcoh') {
-                                console.log('Request cohorts');
-                                inputField = document.getElementsByName('reqcoh');
-                            } else if (k === 'basevar') {
-                                console.log('basevarsss');
-                                inputField = document.getElementsByName(k);
-                            } else if (k === 'mmdvarv') {
-                                console.log('mmdvarvvv');
-                                inputField = document.getElementById(k);
-                                inputField.checked = true;
-                                continue;
-                            } else if (k === 'ibcvar') {
-                                console.log('ibcvar');
-                                inputField = document.getElementsByName(k);
-                            } else if (k === 'confirmation') {
-                                inputField = document.getElementById(k);
-                                inputField.checked = true;
-                                continue;
-                            } else {
-                                console.log('regular');
-                                inputField = document.getElementById(k);
-                            }
-                            if (k.startsWith('amendment')) {
-                                inputField.checked = true;
-                            } else if (k.startsWith('member')) {
-                                inputField.checked = true;
-                            } else if (k === 'basevar') {
-                                for (const el of inputField) {
-                                    if (v.includes(el.value)) {
-                                        el.checked = true;
-                                    }
-                                }
-                            } else if (k === 'reqcoh') {
-                                for (const el of inputField) {
-                                    if (v.includes(el.value)) {
-                                        el.checked = true;
-                                    }
-                                }
-                            } else if (k === 'ibcvar') {
-                                for (const el of inputField) {
-                                    if (v.includes(el.value)) {
-                                        el.checked = true;
-                                    }
-                                }
-                            } else {
-                                inputField.value = v;
-                            }
-                        }
-                    };
+                //         const fileData = JSON.parse(reader.result);
+                //         console.log(fileData);
+                //         for (let [k, v] of Object.entries(fileData)) {
+                //             let inputField;
+                //             if (k === 'amendment') {
+                //                 k = 'amendment' + v.toLowerCase();
+                //                 inputField = document.getElementById(k);
+                //             } else if (k === 'member') {
+                //                 k = 'member' + v.toLowerCase();
+                //                 inputField = document.getElementById(k);
+                //             } else if (k === 'reqcoh') {
+                //                 console.log('Request cohorts');
+                //                 inputField = document.getElementsByName('reqcoh');
+                //             } else if (k === 'basevar') {
+                //                 console.log('basevarsss');
+                //                 inputField = document.getElementsByName(k);
+                //             } else if (k === 'mmdvarv') {
+                //                 console.log('mmdvarvvv');
+                //                 inputField = document.getElementById(k);
+                //                 inputField.checked = true;
+                //                 continue;
+                //             } else if (k === 'ibcvar') {
+                //                 console.log('ibcvar');
+                //                 inputField = document.getElementsByName(k);
+                //             } else if (k === 'confirmation') {
+                //                 inputField = document.getElementById(k);
+                //                 inputField.checked = true;
+                //                 continue;
+                //             } else {
+                //                 console.log('regular');
+                //                 inputField = document.getElementById(k);
+                //             }
+                //             if (k.startsWith('amendment')) {
+                //                 inputField.checked = true;
+                //             } else if (k.startsWith('member')) {
+                //                 inputField.checked = true;
+                //             } else if (k === 'basevar') {
+                //                 for (const el of inputField) {
+                //                     if (v.includes(el.value)) {
+                //                         el.checked = true;
+                //                     }
+                //                 }
+                //             } else if (k === 'reqcoh') {
+                //                 for (const el of inputField) {
+                //                     if (v.includes(el.value)) {
+                //                         el.checked = true;
+                //                     }
+                //                 }
+                //             } else if (k === 'ibcvar') {
+                //                 for (const el of inputField) {
+                //                     if (v.includes(el.value)) {
+                //                         el.checked = true;
+                //                     }
+                //                 }
+                //             } else {
+                //                 inputField.value = v;
+                //             }
+                //         }
+                //     };
 
-                }, false);
+                // }, false);
                 // document.getElementById('otherButton').addEventListener('click', async () => {
                 //     //    let response = await getFile('1012486081122');
                 //     let response = await getFile('1013095224409');

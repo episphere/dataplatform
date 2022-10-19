@@ -33,7 +33,7 @@ export const dataDictionaryTemplate = async () => {
                 </div>
             </div>
         </div>
-        <button class='btn btn-primary' id='saveVars'>Save Variables</button>
+        <!---<button class='btn btn-primary' id='saveVars'>Save Variables</button>--->
 
     </div>
     <div class="col-xl-10 padding-right-zero" id="summaryStatsCharts">
@@ -55,7 +55,7 @@ export const dataDictionaryTemplate = async () => {
     renderDataDictionary(dictionary, 60, headers);
     paginationHandler(dictionary, 60, headers);
     addEventFilterBarToggle();
-    document.getElementById('saveVars').addEventListener('click', saveVariables);
+    //document.getElementById('saveVars').addEventListener('click', saveVariables);
     hideAnimation();
 }
 

@@ -1640,6 +1640,27 @@ export const tsv2Json = (tsv) => {
     };
 }
 
+export const tsv2Json2 = (tsv) => {
+    const lines = tsv.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '').split(/\r?\n/);
+    const result = [];
+    const headers = lines[0].replace(/"/g, '').split(/[\t]/g);
+    for (let i = 1; i < lines.length; i++) {
+        const obj = {};
+        const currentline = lines[i].split(/[\t]/g);
+        for (let j = 0; j < headers.length; j++) {
+            if (currentline[j]) {
+                let value = headers[j];
+                obj[value] = currentline[j];
+            }
+        }
+        if (Object.keys(obj).length > 0) result.push(obj);
+    }
+    return {
+        data: result,
+        headers
+    };
+}
+
 export const csv2Json = (csv) => {
     const lines = csv.replace(/"/g, '').split(/[\r\n]+/g);
     const result = [];
