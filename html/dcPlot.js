@@ -1,8 +1,16 @@
-import {tsv2Json, csvJSON} from '../src/shared.js';
+import {tsv2Json, tsv2Json2, csvJSON, getFile} from '../src/shared.js';
 
-const data = await (await fetch('../NHS2_simulated_20220120.csv')).text();
-const {jsonData, headers} = csvJSON(data);
-console.log(headers);
+const txtid = '908521040771';
+
+
+const data = await getFile(txtid);
+const tsv2json = tsv2Json2(data);
+const json = tsv2json.data;
+const headers = tsv2json.headers;
+
+//const data = await (await fetch('../NHS2_simulated_20220120.csv')).text();
+//const {jsonData, headers} = csvJSON(data);
+console.log(json);
 
 const variables0 = (headers) => {
     var theDiv = document.getElementById("graph0");
@@ -71,22 +79,42 @@ const button = () => {
         var out0 = var0.value;
         var out1 = var1.value;
         var out2 = var2.value;
+        var keys = [out0, out1, out2, 'race', 'study'];
         console.log(out0);
         console.log(out1);
         console.log(out2);
         //alert("Selection 1: " + out0 + " Selection 2: " + out1 + " Selection 3: " + out2);
-        
-        Promise.all([
-            d3.tsv('../NHS2_simulated_20220120.txt', function(d) {
-                return {
-                    var0: +d[out0],
-                    var1: +d[out1],
-                    var2: +d[out2],
-                    race: d.race,
-                    study: "NHS2"
-                };
-            })
-            ]).then( allData => {
+        // const txtfile = await getFile(txtid);
+        // const tsv2json = tsv2Json(data);
+        // const json = tsv2json.data;
+        // const headers = tsv2json.headers;
+        // console.log(txtfile);
+        // console.log(json);
+        // console.log(headers);
+
+        // Promise.all([
+        //     d3.tsv('../NHS2_simulated_20220120.txt', function(d) {
+        //         //console.log(d);
+        //         return {
+        //             var0: +d[out0],
+        //             var1: +d[out1],
+        //             var2: +d[out2],
+        //             race: d.race,
+        //             study: "NHS2"
+        //         };
+        //     })
+        //     ]).then( allData => {
+
+        let data = json.map(element => Object.assign({}, ...keys.map(key => ({[key]: element[key]}))))
+        data.forEach(function(d) {
+            d[out0] = +d[out0],
+            d[out1] = +d[out1],
+            d[out2] = +d[out2],
+            d['study'] = 'NHS2'
+        })
+
+        console.log(data);
+
             console.log('All data');
 
             var graph0 = dc.barChart('#graph0');
@@ -95,14 +123,14 @@ const button = () => {
             var sMenu = new dc.SelectMenu('#sMenu');
             var dataCount = new dc.DataCount('.data-count');
 
-            var data = d3.merge(allData)
+            //var data = d3.merge(allData);
             data = data.filter(d => {
-                if(d.var0 === 888) return false;
-                if(d.var0 === 777) return false;
-                if(d.var1 === 888) return false;
-                if(d.var0 === 777) return false;
-                if(d.var2 === 888) return false;
-                if(d.var0 === 777) return false;
+                if(d[out0] === 888) return false;
+                if(d[out0] === 777) return false;
+                if(d[out1] === 888) return false;
+                if(d[out0] === 777) return false;
+                if(d[out2] === 888) return false;
+                if(d[out0] === 777) return false;
                 if(d.race === '888') return false;
                 if(d.race === '') return false;
                 return true;
@@ -112,13 +140,13 @@ const button = () => {
             const all = crossdata.groupAll();
             console.log("Filter Complete.")
 
-            const out0Dimension = crossdata.dimension(d => d.var0);
+            const out0Dimension = crossdata.dimension(d => d[out0]);
             const groupByout0 = out0Dimension.group();
 
-            const out1Dimension = crossdata.dimension(d => d.var1);
+            const out1Dimension = crossdata.dimension(d => d[out1]);
             const groupByout1 = out1Dimension.group();
 
-            const out2Dimension = crossdata.dimension(d => d.var2);
+            const out2Dimension = crossdata.dimension(d => d[out2]);
             const groupByout2 = out2Dimension.group();
 
             const raceDimension = crossdata.dimension(d => d.race);
@@ -126,9 +154,9 @@ const button = () => {
 
             console.log('Creating Charts...');
             let w = 640, h = 320;
-            dcBarChart(graph0, out0Dimension, groupByout0, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d.var0})]), '# of Subjects', out0);
-            dcBarChart(graph1, out1Dimension, groupByout1, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d.var1})]), '# of Subjects', out1);
-            dcBarChart(graph2, out2Dimension, groupByout2, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d.var2})]), '# of Subjects', out2);
+            dcBarChart(graph0, out0Dimension, groupByout0, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d[out0]})]), '# of Subjects', out0);
+            dcBarChart(graph1, out1Dimension, groupByout1, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d[out1]})]), '# of Subjects', out1);
+            dcBarChart(graph2, out2Dimension, groupByout2, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d[out2]})]), '# of Subjects', out2);
 
             console.log('Smenu');
             sMenu
@@ -156,12 +184,13 @@ const button = () => {
             //     <a class='reset' href='javascript:graph0.filterAll();dc.redrawAll();' style='visibility: hidden;'>reset</a> 
             // </div>` 
 
-            document.getElementById('sMenu').innerHTML += 
-            `<p class="text-center text-bold">Race</p> ` 
+            // document.getElementById('sMenu').innerHTML += 
+            // `<p class="text-center text-bold">Race</p> ` 
+            document.getElementById("raceTitle").removeAttribute('hidden')
 
             dc.renderAll();
-        });
-    };
+        //});
+     };
     theDiv.appendChild(btn);
 }
 

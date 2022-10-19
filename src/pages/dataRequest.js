@@ -73,7 +73,7 @@ export const dataAccessNotSignedIn = () => {
               </div>
               <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
                   <div class="row m-0">
-                      The Breast Cancer Risk Prediction Project is currently generating genotyping data and harmonizing risk factor and clinical data. Data is expected to be available for request in late 2022. Data access will be facilitated through this platform, in accordance to the data transfer agreements signed between participating studies (originator) and the BCRPP Data Coordinating Center (DCC) at the Division of Cancer Epidemiology and Genetics at the National Cancer Institute.
+                      The Breast Cancer Risk Prediction Project is currently generating genotyping data and harmonizing risk factor and clinical data. Data is expected to be available for request in 2023. Data access will be facilitated through this platform, in accordance to the data transfer agreements signed between participating studies (originator) and the BCRPP Data Coordinating Center (DCC) at the Division of Cancer Epidemiology and Genetics at the National Cancer Institute.
                   </div></br>
                   <div class="row m-0">
                       The following data access procedures are planned:
@@ -229,7 +229,7 @@ export const formSection = async (activeTab, showDescripton) => {
   const today = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
 
   const dictionaryVars = localStorage.getItem('dictionaryVars');
-  console.log(dictionaryVars.split(','));
+  //console.log(dictionaryVars.split(','));
   template += ` 
     <div class="general-bg padding-bottom-1rem">
       <div class="container body-min-height">
@@ -249,9 +249,9 @@ export const formSection = async (activeTab, showDescripton) => {
             once every four months. Data for approved concepts will be sent only to the Investigators listed below, 
             each of whose Institutions will need to sign the BCRPP DTA.</p>
             <form>
-            <div class='col-3 mb-3 input-group'>
+            <!---<div class='col-3 mb-3 input-group'>
               <input type='file' class='' id='uploadJSON' />
-            </div>
+            </div>--->
               <div class="input-group">
                 <label for="date"><b>Date</b><span class='required-label'>*</span></label>
                 <input id="date" name="date" type="date" value='${today}' required/>
@@ -338,8 +338,8 @@ export const formSection = async (activeTab, showDescripton) => {
 
               <br>
 
-              <p><u><b>Core Covariate, Mammography and Incident Breast Cancer Data Requested</b></u></p>
-                <button class='btn btn-primary btn-sm' type='button' id='importDictvars'>Import Variables</button>
+              <!---<p><u><b>Core Covariate, Mammography and Incident Breast Cancer Data Requested</b></u></p>
+                <button class='btn btn-primary btn-sm' type='button' id='importDictvars'>Import Variables</button>--->
 
               <div class="input-group">
                 <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables shared by cohorts participating in the BCRPP. 
