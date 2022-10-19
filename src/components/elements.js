@@ -139,7 +139,8 @@ export function renderFilePreviewDropdown(files, tab){
     
     } else {
     template += `
-              No files to show.            
+    <br>
+              No files to show.    
     </div>
     
     `
