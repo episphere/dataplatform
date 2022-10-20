@@ -119,7 +119,7 @@ export const dataSummaryMissingTemplate = async () => {
             </div>
         </div>
     </div>`;
-    document.getElementById('dataSummaryStatistics').appendChild(div1);
+    document.getElementById('dataSummaryStatistics').appendChild(div1);}
 //     const response = await getFile(missingnessStatsFileId);
 //     const lastModified = (await getFileInfo(missingnessStatsFileId)).modified_at;
 //     document.getElementById('dataLastModified').innerHTML = `Data last modified at - ${new Date(lastModified).toLocaleString()}`;
@@ -134,7 +134,7 @@ export const dataSummaryMissingTemplate = async () => {
 //     const studies = {};
 //     data.forEach(dt => {
 //         if (studies[dt['Consortia']] === undefined) studies[dt['Consortia']] = {};
-//         if (dt['study'] && studies[dt['Consortia']][dt['study']] === undefined) studies[dt['Consortia']][dt['study']] = {};
+//         if (dt['Cohort'] && studies[dt['Consortia']][dt['Cohort']] === undefined) studies[dt['Consortia']][dt['Cohort']] = {};
 //     });
 //     const ancestory = headers.filter(dt => /ethnicityClass_/i.test(dt) === true);
 
@@ -151,7 +151,7 @@ export const dataSummaryMissingTemplate = async () => {
 //         </button>
 //         <div class="main-summary-row" style="min-height: 10px;margin-bottom: 1rem;margin-left: 1rem;">
 //             <div class="col white-bg div-border align-left font-size-17" style="padding: 0.5rem;" id="listFilters">
-//                 <span class="font-bold">Status:</span> All<span class="vertical-line"></span>
+//                 <!---<span class="font-bold">Status:</span> All<span class="vertical-line"></span>--->
 //                 <span class="font-bold">Ancestry:</span> All
 //                 ${initialSelection.length > 0 ? `
 //                     <span class="vertical-line"></span><span class="font-bold">Variable: </span>${initialSelection[0]} ${initialSelection.length > 1 ? `and <span class="other-variable-count">${initialSelection.length-1} other</span>`:``}
@@ -168,10 +168,10 @@ export const dataSummaryMissingTemplate = async () => {
 //     document.getElementById('dataSummaryStatistics').appendChild(div1);
 //     document.getElementById('dataSummaryStatistics').appendChild(div2);
 
-    // renderFilter(data, initialSelection, variables, status, studies, ancestory);
-    // midset(data, initialSelection);
-    // addEventMissingnessFilterBarToggle()
-}
+//     renderFilter(data, initialSelection, variables, status, studies, ancestory);
+//     midset(data, initialSelection);
+//     addEventMissingnessFilterBarToggle()
+// }
 
 const renderFilter = (data, acceptedVariables, headers, status, studies, ancestory) => {
     let template = '';
@@ -268,10 +268,10 @@ const renderMidsetFilterData = (data, acceptedVariables, headers, status, studie
 }
 
 const addEventMidsetFilterForm = (data) => {
-    const status = document.getElementById('statusSelection');
-    status.addEventListener('change', () => {
-        filterMidsetData(data)
-    });
+    // const status = document.getElementById('statusSelection');
+    // status.addEventListener('change', () => {
+    //     filterMidsetData(data)
+    // });
 
     const ancestry = document.getElementById('ancestrySelection');
     ancestry.addEventListener('change', () => {
@@ -301,7 +301,7 @@ const addEventMidsetFilterForm = (data) => {
 };
 
 const filterMidsetData = (data) => {
-    const status = document.getElementById('statusSelection').value;
+    //const status = document.getElementById('statusSelection').value;
     const ancestry = document.getElementById('ancestrySelection').value;
     const selectedVariables = getSelectedVariables('midsetVariables');
     const studiesSelection = getSelectedStudies().map(dt => dt.split('@#$')[1]);
@@ -310,15 +310,15 @@ const filterMidsetData = (data) => {
     let newData = data;
     if (studiesSelection.length > 0 || consortiaSelection.length > 0) newData = newData.filter(dt => (studiesSelection.indexOf(dt['study']) !== -1 || consortiaSelection.indexOf(dt['Consortia']) !== -1));
 
-    if (status !== 'All') {
-        newData = newData.filter(dt => dt[status] === '1');
-    }
+    // if (status !== 'All') {
+    //     newData = newData.filter(dt => dt[status] === '1');
+    // }
 
     if (ancestry !== 'All') {
         newData = newData.filter(dt => dt[ancestry] === '1');
     }
     document.getElementById('listFilters').innerHTML = `
-    <span class="font-bold">Status: </span>${status.replace('status_', '')}<span class="vertical-line"></span>
+    <!---<span class="font-bold">Status: </span>${status.replace('status_', '')}<span class="vertical-line"></span>--->
     <span class="font-bold">Ancestry: </span>${ancestry.replace('ethnicityClass_', '')}
     ${selectedVariables.length > 0 ? `
         <span class="vertical-line"></span><span class="font-bold">Variable: </span>${selectedVariables[0]} ${selectedVariables.length > 1 ? `and <span class="other-variable-count">${selectedVariables.length-1} other</span>`:``}

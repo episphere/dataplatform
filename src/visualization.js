@@ -800,7 +800,6 @@ const dataVisulizationCards = (obj) => `
             </div>
         </div>
     `;
-
 // export const renderDCSummaryStats = async () => {
 //     //create chart objects
 //     const volumeChart = new dc.BarChart('#testChart');
