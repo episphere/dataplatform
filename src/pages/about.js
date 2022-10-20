@@ -120,11 +120,11 @@ export const renderDataSummary = (obj, caseControl) => {
                 <span class="font-size-32">${numberWithCommas(obj.totalConsortia)}</span>
             </div>
             <div class="col">
-                <span class="font-size-22">Number of Women</span></br>
+                <span class="font-size-22">Study Participants</span></br>
                 <span class="font-size-32">${numberWithCommas(obj.totalWomen)}</span>
             </div>
             <div class="col">
-                <span class="font-size-22">Number of breast cancer patients</span></br>
+                <span class="font-size-22">Breast Cancer Cases</span></br>
                 <span class="font-size-32">${numberWithCommas(obj.totalPatients)}</span>
             </div>
         </div>
