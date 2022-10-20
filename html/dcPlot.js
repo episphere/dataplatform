@@ -111,7 +111,32 @@ const button = () => {
             d[out1] = +d[out1],
             d[out2] = +d[out2],
             d['study'] = 'NHS2'
-        })
+        });
+
+        for(const obj of data) {
+            if(obj.race === '1'){
+                obj.race = 'White';
+            }
+            if(obj.race ==='2'){
+                obj.race = 'Black/African American';
+            }
+            if(obj.race ==='3'){
+                obj.race = 'Asian';
+            }
+            if(obj.race ==='4'){
+                obj.race = 'Native Hawaiian/Pacific Islander';
+            }
+            if(obj.race ==='5'){
+                obj.race = 'American Indian/Alaska Native';
+            }
+            if(obj.race ==='6'){
+                obj.race = 'Other, including multiracial';
+            }
+
+        };
+
+        console.log("race updated");
+
 
         console.log(data);
 
