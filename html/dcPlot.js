@@ -7,13 +7,14 @@ const data = await getFile(txtid);
 const tsv2json = tsv2Json2(data);
 const json = tsv2json.data;
 const headers = tsv2json.headers;
+const gsel = ['Interval Bar Chart','Ordinal Bar Chart']
 
 //const data = await (await fetch('../NHS2_simulated_20220120.csv')).text();
 //const {jsonData, headers} = csvJSON(data);
-console.log(json);
+//console.log(headers);
 
 const variables0 = (headers) => {
-    var theDiv = document.getElementById("graph0");
+    var theDiv = document.getElementById("graph0sel");
     var selectList = document.createElement("select");
     selectList.id = "select0";
     theDiv.appendChild(selectList);
@@ -27,7 +28,7 @@ const variables0 = (headers) => {
 }
 
 const variables1 = (headers) => {
-    var theDiv = document.getElementById("graph1")
+    var theDiv = document.getElementById("graph1sel")
     var selectList = document.createElement("select");
     selectList.id = "select1";
     document.body.appendChild(selectList);
@@ -42,7 +43,7 @@ const variables1 = (headers) => {
 }
 
 const variables2 = (headers) => {
-    var theDiv = document.getElementById("graph2")
+    var theDiv = document.getElementById("graph2sel")
     var selectList = document.createElement("select");
     selectList.id = "select2";
     document.body.appendChild(selectList);
@@ -56,9 +57,54 @@ const variables2 = (headers) => {
     }
 }
 
+const graphSel0 = (gsel) => {
+    var theDiv = document.getElementById("graph0sel");
+    var selectList = document.createElement("select");
+    selectList.id = "selectType0";
+    theDiv.appendChild(selectList);
+
+    for (var i = 0; i < gsel.length; i++) {
+        var option = document.createElement("option");
+        option.value = gsel[i];
+        option.text = gsel[i];
+        selectList.appendChild(option);
+    }
+}
+
+const graphSel1 = (gsel) => {
+    var theDiv = document.getElementById("graph1sel");
+    var selectList = document.createElement("select");
+    selectList.id = "selectType1";
+    theDiv.appendChild(selectList);
+
+    for (var i = 0; i < gsel.length; i++) {
+        var option = document.createElement("option");
+        option.value = gsel[i];
+        option.text = gsel[i];
+        selectList.appendChild(option);
+    }
+}
+
+const graphSel2 = (gsel) => {
+    var theDiv = document.getElementById("graph2sel");
+    var selectList = document.createElement("select");
+    selectList.id = "selectType2";
+    theDiv.appendChild(selectList);
+
+    for (var i = 0; i < gsel.length; i++) {
+        var option = document.createElement("option");
+        option.value = gsel[i];
+        option.text = gsel[i];
+        selectList.appendChild(option);
+    }
+}
+
 variables0(headers);
 variables1(headers);
 variables2(headers);
+graphSel0(gsel);
+graphSel1(gsel);
+graphSel2(gsel);
 
 // var bChart1 = dc.barChart('#heightPlot'),
 // bChart2 = dc.barChart('#weightPlot'),
@@ -80,30 +126,12 @@ const button = () => {
         var out1 = var1.value;
         var out2 = var2.value;
         var keys = [out0, out1, out2, 'race', 'study'];
+        var gsel0 = document.querySelector('#selectType0').value;
+        var gsel1 = document.querySelector('#selectType1').value;
+        var gsel2 = document.querySelector('#selectType2').value;
         console.log(out0);
         console.log(out1);
         console.log(out2);
-        //alert("Selection 1: " + out0 + " Selection 2: " + out1 + " Selection 3: " + out2);
-        // const txtfile = await getFile(txtid);
-        // const tsv2json = tsv2Json(data);
-        // const json = tsv2json.data;
-        // const headers = tsv2json.headers;
-        // console.log(txtfile);
-        // console.log(json);
-        // console.log(headers);
-
-        // Promise.all([
-        //     d3.tsv('../NHS2_simulated_20220120.txt', function(d) {
-        //         //console.log(d);
-        //         return {
-        //             var0: +d[out0],
-        //             var1: +d[out1],
-        //             var2: +d[out2],
-        //             race: d.race,
-        //             study: "NHS2"
-        //         };
-        //     })
-        //     ]).then( allData => {
 
         let data = json.map(element => Object.assign({}, ...keys.map(key => ({[key]: element[key]}))))
         data.forEach(function(d) {
@@ -140,81 +168,113 @@ const button = () => {
 
         console.log(data);
 
-            console.log('All data');
+        console.log('All data');
 
-            var graph0 = dc.barChart('#graph0');
-            var graph1 = dc.barChart('#graph1');
-            var graph2 = dc.barChart('#graph2');
-            var sMenu = new dc.SelectMenu('#sMenu');
-            var dataCount = new dc.DataCount('.data-count');
+        var graph0 = dc.barChart('#graph0in');
+        var graph1 = dc.barChart('#graph1');
+        var graph2 = dc.barChart('#graph2');
+        var sMenu = new dc.SelectMenu('#sMenu');
+        var dataCount = new dc.DataCount('.data-count');
+        //var chart = new dc.DataTable("#test");
 
-            //var data = d3.merge(allData);
-            data = data.filter(d => {
-                if(d[out0] === 888) return false;
-                if(d[out0] === 777) return false;
-                if(d[out1] === 888) return false;
-                if(d[out0] === 777) return false;
-                if(d[out2] === 888) return false;
-                if(d[out0] === 777) return false;
-                if(d.race === '888') return false;
-                if(d.race === '') return false;
-                return true;
-            })
-            console.log(data);
-            const crossdata = crossfilter(data);
-            const all = crossdata.groupAll();
-            console.log("Filter Complete.")
+        //var data = d3.merge(allData);
+        data = data.filter(d => {
+            if(d[out0] === 888) return false;
+            if(d[out0] === 777) return false;
+            if(d[out1] === 888) return false;
+            if(d[out0] === 777) return false;
+            if(d[out2] === 888) return false;
+            if(d[out0] === 777) return false;
+            if(d.race === '888') return false;
+            if(d.race === '') return false;
+            return true;
+        })
+        console.log(data);
+        const crossdata = crossfilter(data);
+        const all = crossdata.groupAll();
+        console.log("Filter Complete.")
 
-            const out0Dimension = crossdata.dimension(d => d[out0]);
-            const groupByout0 = out0Dimension.group();
+        const out0Dimension = crossdata.dimension(d => d[out0]);
+        const groupByout0 = out0Dimension.group();
 
-            const out1Dimension = crossdata.dimension(d => d[out1]);
-            const groupByout1 = out1Dimension.group();
+        const out1Dimension = crossdata.dimension(d => d[out1]);
+        const groupByout1 = out1Dimension.group();
 
-            const out2Dimension = crossdata.dimension(d => d[out2]);
-            const groupByout2 = out2Dimension.group();
+        const out2Dimension = crossdata.dimension(d => d[out2]);
+        const groupByout2 = out2Dimension.group();
 
-            const raceDimension = crossdata.dimension(d => d.race);
-            const raceGroup = raceDimension.group();
+        const raceDimension = crossdata.dimension(d => d.race);
+        const raceGroup = raceDimension.group();
 
-            console.log('Creating Charts...');
-            let w = 640, h = 320;
+        // var avgGroup0 = out0Dimension.group().reduce(
+        //     function (p,v) {
+        //         ++p.number;
+        //         p.total += v[out0];
+        //         p.avg = Math.round(p.total / p.number);
+        //         return p;
+        //     }
+        // )
+
+        // chart
+        //     .width(768)
+        //     .height(480)
+        //     .showSections(false)
+        //     .dimension(avgGroup0)
+        //     .columns([function (d) {return d.value.number},
+        //             function (d) {return d.value.avg}])
+        //     .sortBy(function (d) { return d.value.avg})
+        //     .order(d3.descending)
+
+        console.log('Creating Charts...');
+        let w = 640, h = 320;
+
+        // console.log(gsel0);
+        // console.log(gsel1);
+        // console.log(gsel2);
+
+
+        if (gsel0 === 'Interval Bar Chart') {
+            console.log('Bar Chart 0');
             dcBarChart(graph0, out0Dimension, groupByout0, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d[out0]})]), '# of Subjects', out0);
+        } else {
+            dcBarChartOrdinal(graph0, out0Dimension, groupByout0, w, h, '# of Subjects', out0);
+        }
+        if (gsel1 === 'Interval Bar Chart') {
+            console.log('Bar Chart 1');
             dcBarChart(graph1, out1Dimension, groupByout1, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d[out1]})]), '# of Subjects', out1);
+        } else {
+            dcBarChartOrdinal(graph1, out1Dimension, groupByout1, w, h, '# of Subjects', out1);
+        }
+        if (gsel2 === 'Interval Bar Chart') {
+            console.log('Bar Chart 2');
             dcBarChart(graph2, out2Dimension, groupByout2, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d[out2]})]), '# of Subjects', out2);
+        } else {
+            dcBarChartOrdinal(graph2, out2Dimension, groupByout2, w, h, '# of Subjects', out2);
+        }
 
-            console.log('Smenu');
-            sMenu
-                .dimension(raceDimension)
-                .group(raceGroup)
-                .multiple(true)
-                .numberVisible(10)
+        sMenu
+            .dimension(raceDimension)
+            .group(raceGroup)
+            .multiple(true)
+            .numberVisible(10)
 
-            graph0.controlsUseVisibility(true);
-            graph1.controlsUseVisibility(true);
-            graph2.controlsUseVisibility(true);
-            sMenu.controlsUseVisibility(true);
+        graph0.controlsUseVisibility(true);
+        graph1.controlsUseVisibility(true);
+        graph2.controlsUseVisibility(true);
+        sMenu.controlsUseVisibility(true);
 
-            dataCount
-                .crossfilter(crossdata)
-                .groupAll(all)
-                .html({
-                some: '<strong>%filter-count</strong> selected out of <strong>%total-count</strong> records' +
-                ' | <a href=\'javascript:dc.filterAll(); dc.renderAll();\'>Reset All</a>',
-                all: 'All records selected. Please click on the graph to apply filters.'
-                });
+        dataCount
+            .crossfilter(crossdata)
+            .groupAll(all)
+            .html({
+            some: '<strong>%filter-count</strong> selected out of <strong>%total-count</strong> records' +
+            ' | <a href=\'javascript:dc.filterAll(); dc.renderAll();\'>Reset All</a>',
+            all: 'All records selected. Please click on the graph to apply filters.'
+            });
 
-            // document.getElementById('graph0').innerHTML += 
-            // `<div class='reset' style='visibility: hidden;'> Current filter: <span class='filter'></span>
-            //     <a class='reset' href='javascript:graph0.filterAll();dc.redrawAll();' style='visibility: hidden;'>reset</a> 
-            // </div>` 
+        document.getElementById("raceTitle").removeAttribute('hidden')
 
-            // document.getElementById('sMenu').innerHTML += 
-            // `<p class="text-center text-bold">Race</p> ` 
-            document.getElementById("raceTitle").removeAttribute('hidden')
-
-            dc.renderAll();
-        //});
+        dc.renderAll();
      };
     theDiv.appendChild(btn);
 }
@@ -370,4 +430,20 @@ const dcBarChart = (chartname, dim, group, width, height, cenbar, xinput, yaxis,
     .elasticX(true)
     .yAxisLabel(yaxis)
     .xAxisLabel(xaxis)
+}
+
+const dcBarChartOrdinal = (chartname, dim, group, width, height, yaxis, xaxis) => {
+    chartname.width(width)
+    .height(height)
+    .x(d3.scaleBand())
+    .xUnits(dc.units.ordinal)
+    .elasticY(true)
+    .elasticX(true)
+    .yAxisLabel(yaxis)
+    .xAxisLabel(xaxis)
+    .brushOn(false)
+    .barPadding(0.1)
+    .outerPadding(0.05)
+    .dimension(dim)
+    .group(group)
 }

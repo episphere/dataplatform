@@ -51,27 +51,54 @@
 
         <div style="display:inline-block;margin:20px;vertical-align:top">
             <div id="sMenu">
-                <p id="raceTitle" hidden class="text-center text-bold">Race</p>    
+                <p id="raceTitle" hidden class="text-center text-bold">Race</p>
+                <div class='reset' style='visibility: hidden;'> Current filter: <span class='filter'></span>
+                    <a class='reset' href='javascript:dc.filterAll();dc.redrawAll();' style='visibility: hidden;'>reset</a> 
+                </div>      
             </div>
         </div>
 
         <div style="display:inline-block;margin:20px;vertical-align:top">
             <div id="graph0">
-                <p class="text-center text-bold">Graph 1</p>        
+                <p class="text-center text-bold">Graph 1</p>
+                <div id="graph0sel" class="text-center">
+
+                </div>
+                <div id="graph0in">
+                </div>      
             </div>
         </div>
 
         <div style="display:inline-block;margin:20px;vertical-align:top">
             <div id="graph1">
-                <p class="text-center text-bold">Graph 2</p>       
+                <p class="text-center text-bold">Graph 2</p>    
+                <div id="graph1sel" class="text-center">
+
+                </div>
+                <div id="graph1in">
+                </div>    
             </div>
         </div>
 
         <div style="display:inline-block;margin:20px;vertical-align:top">
             <div id="graph2">
-                <p class="text-center text-bold">Graph 3</p>     
+                <p class="text-center text-bold">Graph 3</p> 
+                <div id="graph2sel" class="text-center">
+
+                </div>
+                <div id="graph2in">
+                </div>     
             </div>
         </div>
+
+        <!-- <table id="test">
+            <thead>
+                <tr>
+                    <th>Average</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+        </table> -->
 
         <br>
 

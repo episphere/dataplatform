@@ -47,6 +47,7 @@ const allFilters = (jsonData, headers, caseSelection) => {
     const div1 = document.createElement('div')
     div1.classList = ['row select'];
     const obj = aggegrateData(jsonData);
+    console.log(jsonData);
     let template =`
         <div style="width: 100%;">
         `
@@ -71,9 +72,7 @@ const allFilters = (jsonData, headers, caseSelection) => {
         </div>`
         }
 
-    template += `
-            
-        
+    template += `  
             <div class="form-group">
                 <label class="filter-label font-size-13" for="raceSelection">Race</label>
                 <select class="form-control font-size-15" id="raceSelection" data-variable='race'>
