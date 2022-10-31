@@ -47,7 +47,7 @@ const allFilters = (jsonData, headers, caseSelection) => {
     const div1 = document.createElement('div')
     div1.classList = ['row select'];
     const obj = aggegrateData(jsonData);
-    console.log(jsonData);
+    console.log(obj);
     let template =`
         <div style="width: 100%;">
         `
@@ -160,15 +160,18 @@ const aggegrateData = (jsonData) => {
         // console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
         
         // console.log('Total subjects', totalSubjects);
-        if(obj[value.consortium] === undefined) obj[value.consortium] = {};
-        if(obj[value.consortium]){
-            if(obj[value.consortium]['consortiumTotal'] === undefined) obj[value.consortium]['consortiumTotal'] = 0;
-            obj[value.consortium]['consortiumTotal'] += parseInt(value.total);
-            if(obj[value.consortium][value.study] === undefined) {
-                obj[value.consortium][value.study] = {};
-                obj[value.consortium][value.study].total= 0;
-            }
-            obj[value.consortium][value.study].total += parseInt(value.total);
+        console.log(value);
+        //if(obj[value.consortium] === undefined) obj[value.consortium] = {};
+        if(obj[value.study] === undefined) obj[value.study] = {};
+        if(obj[value.study]){
+            if(obj[value.study]['consortiumTotal'] === undefined) obj[value.study]['consortiumTotal'] = 0;
+            obj[value.study]['consortiumTotal'] += parseInt(value.total);
+            // if(obj[value.consortium][value.study] === undefined) {
+            //     obj[value.consortium][value.study] = {};
+            //     obj[value.consortium][value.study].total= 0;
+            // }
+            //obj[value.consortium][value.study].total += parseInt(value.total);
+            obj[value.study].total += parseInt(value.total);
         }
         // obj['totalSubjects'] += parseInt(value.TotalSubjects);
     });
