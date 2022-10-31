@@ -196,23 +196,25 @@ const aggegrateData = (jsonData) => {
   // document.getElementById('participantCount').innerHTML = `# of participants: ${obj.totalSubjects}`;
   return obj;
 };
+const getStudies = (jsonData) => {
+  let obj = {};
+  // obj['totalSubjects'] = 0;
+  jsonData.forEach((value) => {
+    // console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
 
-// obj['totalSubjects'] = 0;
-jsonData.forEach((value) => {
-  // console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
-
-  // console.log('Total subjects', totalSubjects);
-  if (obj[value.study] === undefined) obj[value.study] = {};
-  if (obj[value.study]) {
-    if (obj[value.study]["consortiumTotal"] === undefined)
-      obj[value.study]["consortiumTotal"] = 0;
-    obj[value.study]["consortiumTotal"] += parseInt(value.total);
-    obj[value.study].total += parseInt(value.total);
-  }
-  // obj['totalSubjects'] += parseInt(value.TotalSubjects);
-});
-// document.getElementById('participantCount').innerHTML = `# of participants: ${obj.totalSubjects}`;
-return obj;
+    // console.log('Total subjects', totalSubjects);
+    if (obj[value.study] === undefined) obj[value.study] = {};
+    if (obj[value.study]) {
+      if (obj[value.study]["consortiumTotal"] === undefined)
+        obj[value.study]["consortiumTotal"] = 0;
+      obj[value.study]["consortiumTotal"] += parseInt(value.total);
+      obj[value.study].total += parseInt(value.total);
+    }
+    // obj['totalSubjects'] += parseInt(value.TotalSubjects);
+  });
+  // document.getElementById('participantCount').innerHTML = `# of participants: ${obj.totalSubjects}`;
+  return obj;
+};
 export const addEventConsortiumSelect = () => {
   const elements = document.getElementsByClassName("consortium-selection");
   Array.from(elements).forEach((element) => {
