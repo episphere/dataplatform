@@ -68,13 +68,30 @@ const allFilters = (jsonData, headers, caseSelection) => {
   document.getElementById("allFilters").innerHTML = "";
   const div1 = document.createElement("div");
   div1.classList = ["row select"];
-  const obj = getStudies(jsonData);
+  const studies = getStudies(jsonData);
+  const races = getRace(jsonData);
+  const ethnicities = getEthnicity(jsonData);
+  console.log({ races });
+  console.log({ ethnicities });
   console.log(headers);
   console.log(jsonData);
-  console.log(obj);
-  let options = " ";
-  Object.keys(obj).forEach((element) => {
-    options = options + `<option value='${element}'>${element}</option>`;
+  console.log({ studies });
+  let studyOptions = " ";
+  Object.keys(studies).forEach((element) => {
+    studyOptions =
+      studyOptions + `<option value='${element}'>${element}</option>`;
+  });
+
+  let raceOptions = "";
+  Object.keys(races).forEach((element) => {
+    raceOptions =
+      raceOptions + `<option value='${element}'>${element}</option>`;
+  });
+
+  let ethnicityOptions = "";
+  Object.keys(ethnicities).forEach((element) => {
+    ethnicityOptions =
+      ethnicityOptions + `<option value='${element}'>${element}</option>`;
   });
   let template = `
         <div style="width: 100%;">
@@ -106,12 +123,7 @@ const allFilters = (jsonData, headers, caseSelection) => {
                 <label class="filter-label font-size-13" for="raceSelection">Race</label>
                 <select class="form-control font-size-15" id="raceSelection" data-variable='race'>
                     <option selected value='all'>All</option>
-                    <option value='American Indian/Alaska Native'>American Indian/Alaska Native</option>
-                    <option value='Asian'>Asian</option>
-                    <option value='Black/African American'>Black/African American</option>
-                    <option value='Native Hawaiian/ Pacific Islander'>Native Hawaiian/ Pacific Islander</option>
-                    <option value='Other including multiracial'>Other including multiracial</option>
-                    <option value='White'>White</option>
+                    ${raceOptions}
                 </select>
             </div>
 
@@ -119,8 +131,7 @@ const allFilters = (jsonData, headers, caseSelection) => {
                 <label class="filter-label font-size-13" for="ethnicitySelection">Ethnicity</label>
                 <select class="form-control font-size-15" id="ethnicitySelection" data-variable='ethnicity'>
                     <option selected value='all'>All</option>
-                    <option value='Non-Hispanic/Non-Latino'>Non-Hispanic/Non-Latino</option>
-                    <option value='Hispanic/Latino'>Hispanic/Latino</option>
+                    ${ethnicityOptions}
                 </select>
             </div>
             
@@ -128,7 +139,7 @@ const allFilters = (jsonData, headers, caseSelection) => {
                 <label class="filter-label font-size-13" for="studySelection">Cohort</label>
                 <select class="form-control font-size-15" id="studySelection" data-variable='study'>
                     <option selected value='all'>All</option>
-                    ${options}
+                    ${studyOptions}
                 </select>
             </div>
     `;
@@ -177,7 +188,14 @@ const aggegrateData = (jsonData) => {
   let obj = {};
   // obj['totalSubjects'] = 0;
   jsonData.forEach((value) => {
-    // console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
+    // console.log(
+    //   "Total subjects in",
+    //   value.race,
+    //   value.study,
+    //   value.ethnicity,
+    //   "is",
+    //   value.TotalSubjects
+    // );
 
     // console.log('Total subjects', totalSubjects);
     if (obj[value.consortium] === undefined) obj[value.consortium] = {};
@@ -201,8 +219,8 @@ const getStudies = (jsonData) => {
   // obj['totalSubjects'] = 0;
   jsonData.forEach((value) => {
     // console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
-
     // console.log('Total subjects', totalSubjects);
+    console.log({ value });
     if (obj[value.study] === undefined) obj[value.study] = {};
     if (obj[value.study]) {
       if (obj[value.study]["consortiumTotal"] === undefined)
@@ -210,6 +228,31 @@ const getStudies = (jsonData) => {
       obj[value.study]["consortiumTotal"] += parseInt(value.total);
       obj[value.study].total += parseInt(value.total);
     }
+    // obj['totalSubjects'] += parseInt(value.TotalSubjects);
+  });
+  // document.getElementById('participantCount').innerHTML = `# of participants: ${obj.totalSubjects}`;
+  return obj;
+};
+const getRace = (jsonData) => {
+  let obj = {};
+  // obj['totalSubjects'] = 0;
+  jsonData.forEach((value) => {
+    // console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
+    obj[value.race] = value.race;
+
+    // console.log('Total subjects', totalSubjects);
+    // obj['totalSubjects'] += parseInt(value.TotalSubjects);
+  });
+  // document.getElementById('participantCount').innerHTML = `# of participants: ${obj.totalSubjects}`;
+  return obj;
+};
+const getEthnicity = (jsonData) => {
+  let obj = {};
+  // obj['totalSubjects'] = 0;
+  jsonData.forEach((value) => {
+    // console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
+    obj[value.ethnicity] = value.ethnicity;
+    // console.log('Total subjects', totalSubjects);
     // obj['totalSubjects'] += parseInt(value.TotalSubjects);
   });
   // document.getElementById('participantCount').innerHTML = `# of participants: ${obj.totalSubjects}`;
