@@ -134,6 +134,7 @@ const button = () => {
         console.log(out2);
 
         let data = json.map(element => Object.assign({}, ...keys.map(key => ({[key]: element[key]}))))
+
         data.forEach(function(d) {
             d[out0] = +d[out0],
             d[out1] = +d[out1],
@@ -160,13 +161,12 @@ const button = () => {
             if(obj.race ==='6'){
                 obj.race = 'Other, including multiracial';
             }
-
         };
 
         console.log("race updated");
 
 
-        console.log(data);
+       // console.log(data);
 
         console.log('All data');
 
@@ -175,7 +175,7 @@ const button = () => {
         var graph2 = dc.barChart('#graph2');
         var sMenu = new dc.SelectMenu('#sMenu');
         var dataCount = new dc.DataCount('.data-count');
-        //var chart = new dc.DataTable("#test");
+        var chart = new dc.DataTable("#test");
 
         //var data = d3.merge(allData);
         data = data.filter(d => {
@@ -189,7 +189,7 @@ const button = () => {
             if(d.race === '') return false;
             return true;
         })
-        console.log(data);
+       // console.log(data);
         const crossdata = crossfilter(data);
         const all = crossdata.groupAll();
         console.log("Filter Complete.")
@@ -206,24 +206,33 @@ const button = () => {
         const raceDimension = crossdata.dimension(d => d.race);
         const raceGroup = raceDimension.group();
 
-        // var avgGroup0 = out0Dimension.group().reduce(
-        //     function (p,v) {
-        //         ++p.number;
-        //         p.total += v[out0];
-        //         p.avg = Math.round(p.total / p.number);
-        //         return p;
-        //     }
-        // )
+        var avgGroup0 = crossdata.groupAll().reduce(
+            function (p,v) {
+                ++p.number;
+                p.total += v[out0];
+                p.avg = Math.round(p.total / p.number);
+                return p;
+            },
+            function (p,v) {
+                --p.number;
+                p.total -= v[out0];
+                p.avg = (p.number == 0) ? 0 : Math.round(p.total / p.number);
+                return p;
+            },
+            function () {
+                return {number: 0, total: 0, avg: 0};
+            }
+        )
 
-        // chart
-        //     .width(768)
-        //     .height(480)
-        //     .showSections(false)
-        //     .dimension(avgGroup0)
-        //     .columns([function (d) {return d.value.number},
-        //             function (d) {return d.value.avg}])
-        //     .sortBy(function (d) { return d.value.avg})
-        //     .order(d3.descending)
+        chart
+            .width(768)
+            .height(480)
+            .showSections(false)
+            .dimension(avgGroup0)
+            .columns([function (d) {return d.value.total},
+                    function (d) {return d.value.number}])
+            .sortBy(function (d) { return d.value.avg})
+            .order(d3.descending)
 
         console.log('Creating Charts...');
         let w = 640, h = 320;
