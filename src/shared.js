@@ -7,20 +7,22 @@ export const emailsAllowedToUpdateData = [
   "ahearntu@nih.gov",
 ];
 
-export const emailforChair = [
-  "Roger.Milne@cancervic.org.au",
-  "ahearntu@nih.gov",
-  "garciacm@nih.gov",
-  "wraynr@nih.gov",
-  "kopchickbp@nih.gov",
-];
+export const emailforChair = ["sbehpour@deloitte.com"];
+//  [
+// "Roger.Milne@cancervic.org.au",
+// "ahearntu@nih.gov",
+// "garciacm@nih.gov",
+// "wraynr@nih.gov",
+// "kopchickbp@nih.gov",
+// ];
 
-export const emailforDACC = [
-  "pkraft@hsph.harvard.edu",
-  "garciacm@nih.gov",
-  "ahearntu@nih.gov",
-  "mukopadhyays2@nih.gov",
-]; // , 'mia.gaudet@nih.gov', 'troisir@nih.gov', 'mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
+export const emailforDACC = ["sbehpour@deloitte.com"];
+// [
+//   "pkraft@hsph.harvard.edu",
+//   "garciacm@nih.gov",
+//   "ahearntu@nih.gov",
+//   "mukopadhyays2@nih.gov",
+// ]; // , 'mia.gaudet@nih.gov', 'troisir@nih.gov', 'mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
 
 export const publicDataFileId = 697309514903; //Unknown
 
@@ -1283,9 +1285,9 @@ export async function showCommentsDropDown(id) {
     }
   }
   // template += '</div>'
-  console.log(template);
+
   commentSection.innerHTML = template;
-  console.log(commentSection);
+
   return;
 }
 
