@@ -1005,6 +1005,7 @@ export const chairFileView = async () => {
           <form>
             <label for="message">Enter Message for submitter or the DACC</label>
             <div class='text-muted small'>Submitter will only see the below comment after approve or deny. </div>
+            <!--- Input for dropdown rating similar to DACC --->
             <div class="input-group">
                 <textarea id="message" name="message" rows="6" cols="65"></textarea>
             </div>
@@ -1197,6 +1198,10 @@ export const commentApproveReject = () => {
         }
       }
       let decision = e.submitter.value;
+      // let rating = e.target[0].value;
+      // let comment = e.target[1].value;
+      // let message = "" + rating + "" + comment;
+      
       let message = e.target[0].value;
       //console.log(approval);
 

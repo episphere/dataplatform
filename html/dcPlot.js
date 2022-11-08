@@ -7,7 +7,8 @@ const data = await getFile(txtid);
 const tsv2json = tsv2Json2(data);
 const json = tsv2json.data;
 const headers = tsv2json.headers;
-const gsel = ['Interval Bar Chart','Ordinal Bar Chart']
+const headerscatter = ['height', 'weight'];
+const gsel = ['Interval Bar Chart','Ordinal Bar Chart', 'Pie Chart'];
 
 //const data = await (await fetch('../NHS2_simulated_20220120.csv')).text();
 //const {jsonData, headers} = csvJSON(data);
@@ -18,14 +19,20 @@ const variables0 = (headers) => {
     var selectList = document.createElement("select");
     selectList.id = "select0";
     theDiv.appendChild(selectList);
+    var option = document.createElement("option");
+    option.text = 'Choose Variable';
+    option.selected = true;
+    option.disabled = true;
+    selectList.appendChild(option);
+    console.log(selectList);
 
-    for (var i = 0; i < headers.length; i++) {
+    for (var i = 1; i < headers.length; i++) {
         var option = document.createElement("option");
         option.value = headers[i];
         option.text = headers[i];
         selectList.appendChild(option);
     }
-}
+};
 
 const variables1 = (headers) => {
     var theDiv = document.getElementById("graph1sel")
@@ -33,14 +40,20 @@ const variables1 = (headers) => {
     selectList.id = "select1";
     document.body.appendChild(selectList);
     theDiv.appendChild(selectList);
+    var option = document.createElement("option");
+    option.text = 'Choose Variable';
+    option.selected = true;
+    option.disabled = true;
+    selectList.appendChild(option);
+    console.log(selectList);
 
-    for (var i = 0; i < headers.length; i++) {
+    for (var i = 1; i < headers.length; i++) {
         var option = document.createElement("option");
         option.value = headers[i];
         option.text = headers[i];
         selectList.appendChild(option);
     }
-}
+};
 
 const variables2 = (headers) => {
     var theDiv = document.getElementById("graph2sel")
@@ -48,20 +61,74 @@ const variables2 = (headers) => {
     selectList.id = "select2";
     document.body.appendChild(selectList);
     theDiv.appendChild(selectList);
+    var option = document.createElement("option");
+    option.text = 'Choose Variable';
+    option.selected = true;
+    option.disabled = true;
+    selectList.appendChild(option);
+    console.log(selectList);
 
-    for (var i = 0; i < headers.length; i++) {
+    for (var i = 1; i < headers.length; i++) {
         var option = document.createElement("option");
         option.value = headers[i];
         option.text = headers[i];
         selectList.appendChild(option);
     }
-}
+};
+
+const variables3_0 = (headers) => {
+    var theDiv = document.getElementById("graph3sel0")
+    var selectList = document.createElement("select");
+    selectList.id = "select3_0";
+    document.body.appendChild(selectList);
+    theDiv.appendChild(selectList);
+    var option = document.createElement("option");
+    option.text = 'Choose X Variable';
+    option.selected = true;
+    option.disabled = true;
+    selectList.appendChild(option);
+    console.log(selectList);
+
+    for (var i = 1; i < headers.length; i++) {
+        var option = document.createElement("option");
+        option.value = headers[i];
+        option.text = headers[i];
+        selectList.appendChild(option);
+    }
+};
+
+const variables3_1 = (headers) => {
+    var theDiv = document.getElementById("graph3sel0")
+    var selectList = document.createElement("select");
+    selectList.id = "select3_1";
+    document.body.appendChild(selectList);
+    theDiv.appendChild(selectList);
+    var option = document.createElement("option");
+    option.text = 'Choose Y Variable';
+    option.selected = true;
+    option.disabled = true;
+    selectList.appendChild(option);
+    console.log(selectList);
+
+    for (var i = 1; i < headers.length; i++) {
+        var option = document.createElement("option");
+        option.value = headers[i];
+        option.text = headers[i];
+        selectList.appendChild(option);
+    }
+};
 
 const graphSel0 = (gsel) => {
     var theDiv = document.getElementById("graph0sel");
     var selectList = document.createElement("select");
     selectList.id = "selectType0";
     theDiv.appendChild(selectList);
+    var option = document.createElement("option");
+    option.text = 'Choose Graph Type';
+    option.selected = true;
+    option.disabled = true;
+    selectList.appendChild(option);
+    console.log(selectList);
 
     for (var i = 0; i < gsel.length; i++) {
         var option = document.createElement("option");
@@ -69,13 +136,19 @@ const graphSel0 = (gsel) => {
         option.text = gsel[i];
         selectList.appendChild(option);
     }
-}
+};
 
 const graphSel1 = (gsel) => {
     var theDiv = document.getElementById("graph1sel");
     var selectList = document.createElement("select");
     selectList.id = "selectType1";
     theDiv.appendChild(selectList);
+    var option = document.createElement("option");
+    option.text = 'Choose Graph Type';
+    option.selected = true;
+    option.disabled = true;
+    selectList.appendChild(option);
+    console.log(selectList);
 
     for (var i = 0; i < gsel.length; i++) {
         var option = document.createElement("option");
@@ -83,13 +156,19 @@ const graphSel1 = (gsel) => {
         option.text = gsel[i];
         selectList.appendChild(option);
     }
-}
+};
 
 const graphSel2 = (gsel) => {
     var theDiv = document.getElementById("graph2sel");
     var selectList = document.createElement("select");
     selectList.id = "selectType2";
     theDiv.appendChild(selectList);
+    var option = document.createElement("option");
+    option.text = 'Choose Graph Type';
+    option.selected = true;
+    option.disabled = true;
+    selectList.appendChild(option);
+    console.log(selectList);
 
     for (var i = 0; i < gsel.length; i++) {
         var option = document.createElement("option");
@@ -97,22 +176,16 @@ const graphSel2 = (gsel) => {
         option.text = gsel[i];
         selectList.appendChild(option);
     }
-}
+};
 
 variables0(headers);
 variables1(headers);
 variables2(headers);
+variables3_0(headers);
+variables3_1(headers);
 graphSel0(gsel);
 graphSel1(gsel);
 graphSel2(gsel);
-
-// var bChart1 = dc.barChart('#heightPlot'),
-// bChart2 = dc.barChart('#weightPlot'),
-// bChart3 = dc.barChart('#agePlot'),
-// studyChart = new dc.PieChart('#studyPlot'),
-//var sMenu = new dc.SelectMenu('#selectMenu');
-//dataTable = new dc.DataTable('#data-table');
-//var dataCount = new dc.DataCount('.data-count');
 
 const button = () => {
     var theDiv = document.getElementById("createGraphs")
@@ -122,23 +195,34 @@ const button = () => {
         var var0 = document.querySelector('#select0');
         var var1 = document.querySelector('#select1');
         var var2 = document.querySelector('#select2');
+        var var3_0 = document.querySelector('#select3_0');
+        var var3_1 = document.querySelector('#select3_1');
         var out0 = var0.value;
         var out1 = var1.value;
         var out2 = var2.value;
-        var keys = [out0, out1, out2, 'race', 'study'];
+        var out3_0 = var3_0.value;
+        var out3_1 = var3_1.value;
+        var keys = [out0, out1, out2, out3_0, out3_1, 'race', 'study'];
         var gsel0 = document.querySelector('#selectType0').value;
         var gsel1 = document.querySelector('#selectType1').value;
         var gsel2 = document.querySelector('#selectType2').value;
         console.log(out0);
         console.log(out1);
         console.log(out2);
+        console.log(out3_0);
+        console.log(out3_1);
 
-        let data = json.map(element => Object.assign({}, ...keys.map(key => ({[key]: element[key]}))))
+        let data = json.map(element => Object.assign({}, ...keys.map(key => ({[key]: element[key]}))));
 
         data.forEach(function(d) {
-            d[out0] = +d[out0],
-            d[out1] = +d[out1],
-            d[out2] = +d[out2],
+            if(out0 !== 'race'){
+                d[out0] = +d[out0]};
+            if(out1 !== 'race'){
+                d[out1] = +d[out1]};
+            if(out2 !== 'race'){
+                d[out2] = +d[out2]};
+            d[out3_0] = +d[out3_0],
+            d[out3_1] = +d[out3_1],
             d['study'] = 'NHS2'
         });
 
@@ -165,19 +249,30 @@ const button = () => {
 
         console.log("race updated");
 
-
-       // console.log(data);
-
         console.log('All data');
 
-        var graph0 = dc.barChart('#graph0in');
-        var graph1 = dc.barChart('#graph1');
-        var graph2 = dc.barChart('#graph2');
+        if (gsel0 === 'Pie Chart'){
+            var graph0 = dc.pieChart('#graph0in')
+        } else {
+        var graph1 = dc.barChart('#graph1in');}
+        if (gsel1 === 'Pie Chart'){
+            var graph1 = dc.pieChart('#graph1in')
+        } else {
+        var graph1 = dc.barChart('#graph1in');}
+        if (gsel2 === 'Pie Chart'){
+            var graph2 = dc.pieChart('#graph2in')
+        } else {
+        var graph2 = dc.barChart('#graph2in');}
+        
+       // var graph1 = dc.barChart('#graph1in');
+        //var graph2 = dc.barChart('#graph2in');
         var sMenu = new dc.SelectMenu('#sMenu');
         var dataCount = new dc.DataCount('.data-count');
-        var chart = new dc.DataTable("#test");
+        var avg0 = new dc.NumberDisplay("#avg0");
+        var avg1 = new dc.NumberDisplay("#avg1");
+        var avg2 = new dc.NumberDisplay("#avg2");
+        var graph3 = new dc.ScatterPlot("#graph3in");
 
-        //var data = d3.merge(allData);
         data = data.filter(d => {
             if(d[out0] === 888) return false;
             if(d[out0] === 777) return false;
@@ -188,11 +283,11 @@ const button = () => {
             if(d.race === '888') return false;
             if(d.race === '') return false;
             return true;
-        })
-       // console.log(data);
+        });
+
         const crossdata = crossfilter(data);
         const all = crossdata.groupAll();
-        console.log("Filter Complete.")
+        console.log("Filter Complete.");
 
         const out0Dimension = crossdata.dimension(d => d[out0]);
         const groupByout0 = out0Dimension.group();
@@ -206,66 +301,120 @@ const button = () => {
         const raceDimension = crossdata.dimension(d => d.race);
         const raceGroup = raceDimension.group();
 
-        var avgGroup0 = crossdata.groupAll().reduce(
-            function (p,v) {
-                ++p.number;
-                p.total += v[out0];
-                p.avg = Math.round(p.total / p.number);
-                return p;
-            },
-            function (p,v) {
-                --p.number;
-                p.total -= v[out0];
-                p.avg = (p.number == 0) ? 0 : Math.round(p.total / p.number);
-                return p;
-            },
-            function () {
-                return {number: 0, total: 0, avg: 0};
-            }
-        )
+        const out3Dimension = crossdata.dimension(function(d) {return [d[out3_0], d[out3_1]]});
+        const groupByout3 = out3Dimension.group();
 
-        chart
-            .width(768)
-            .height(480)
-            .showSections(false)
-            .dimension(avgGroup0)
-            .columns([function (d) {return d.value.total},
-                    function (d) {return d.value.number}])
-            .sortBy(function (d) { return d.value.avg})
-            .order(d3.descending)
+        var avgGroup0 = crossdata.groupAll().reduce(
+            function (p, v) {
+                ++p.n;
+                p.tot += v[out0];
+                return p;
+            },
+            function (p, v) {
+                --p.n;
+                p.tot -= v[out0];
+                return p;
+            },
+            function () { return {n:0,tot:0}; }
+        );
+
+        var avgGroup1 = crossdata.groupAll().reduce(
+            function (p, v) {
+                ++p.n;
+                p.tot += v[out1];
+                return p;
+            },
+            function (p, v) {
+                --p.n;
+                p.tot -= v[out1];
+                return p;
+            },
+            function () { return {n:0,tot:0}; }
+        );
+
+        var avgGroup2 = crossdata.groupAll().reduce(
+            function (p, v) {
+                ++p.n;
+                p.tot += v[out2];
+                return p;
+            },
+            function (p, v) {
+                --p.n;
+                p.tot -= v[out2];
+                return p;
+            },
+            function () { return {n:0,tot:0}; }
+        );
+
+        var average = function(d) {
+            return d.n ? d.tot / d.n : 0;
+        }
+
+        avg0
+        .formatNumber(d3.format(".2f"))
+        .valueAccessor(average)
+        .group(avgGroup0);
+
+        avg1
+        .formatNumber(d3.format(".2f"))
+        .valueAccessor(average)
+        .group(avgGroup1);
+
+        avg2
+        .formatNumber(d3.format(".2f"))
+        .valueAccessor(average)
+        .group(avgGroup2);
 
         console.log('Creating Charts...');
         let w = 640, h = 320;
 
-        // console.log(gsel0);
-        // console.log(gsel1);
-        // console.log(gsel2);
-
+        graph3
+        .width(w)
+        .height(h)
+        .x(d3.scaleLinear().domain([0,d3.max(data, d => {return d[out3_0]})]))
+        //.brushOn(false)
+        //.symbolSize(8)
+        .clipPadding(10)
+        .xAxisLabel(out3_0)
+        .yAxisLabel(out3_1)
+        .highlightedSize(10)
+        .excludedOpacity(0.5)
+        .excludedColor('#ddd')
+        // .keyAccessor(function (d) {return d[out3_0]})
+        // .valueAccessor(function (d) {return d[out3_1]})
+        .dimension(out3Dimension)
+        .group(groupByout3);
 
         if (gsel0 === 'Interval Bar Chart') {
             console.log('Bar Chart 0');
             dcBarChart(graph0, out0Dimension, groupByout0, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d[out0]})]), '# of Subjects', out0);
-        } else {
+        } else if (gsel0 === 'Ordinal Bar Chart') {
             dcBarChartOrdinal(graph0, out0Dimension, groupByout0, w, h, '# of Subjects', out0);
+        } else {
+            dcPieChart(graph0, out0Dimension, groupByout0, w, h);
         }
         if (gsel1 === 'Interval Bar Chart') {
             console.log('Bar Chart 1');
             dcBarChart(graph1, out1Dimension, groupByout1, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d[out1]})]), '# of Subjects', out1);
-        } else {
+        } else if (gsel1 === 'Ordinal Bar Chart') {
             dcBarChartOrdinal(graph1, out1Dimension, groupByout1, w, h, '# of Subjects', out1);
+        } else {
+            dcPieChart(graph1, out1Dimension, groupByout1, w, h);
         }
         if (gsel2 === 'Interval Bar Chart') {
             console.log('Bar Chart 2');
             dcBarChart(graph2, out2Dimension, groupByout2, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d[out2]})]), '# of Subjects', out2);
-        } else {
+        } else if (gsel2 === 'Ordinal Bar Chart') {
             dcBarChartOrdinal(graph2, out2Dimension, groupByout2, w, h, '# of Subjects', out2);
+        } else {
+            dcPieChart(graph2, out2Dimension, groupByout2, w, h);
         }
 
         sMenu
             .dimension(raceDimension)
             .group(raceGroup)
             .multiple(true)
-            .numberVisible(10)
+            .numberVisible(20);
 
         graph0.controlsUseVisibility(true);
         graph1.controlsUseVisibility(true);
@@ -289,143 +438,6 @@ const button = () => {
 }
 
 button();
-
-//Chart constants
-//let w = 640, h = 320;
-// var chart = document.getElementById('dcPlot1');
-//load the data
-
-// Promise.all([
-// // d3.tsv('Simulated_data_doubled_rows_CPS2_3_NHS_1_2.txt', function(d) {
-// //     return {
-// //         height: +d.height,
-// //         weight: +d.weight,
-// //         age: +d.age,
-// //         fakeid: +d.fakeid,
-// //         race: d.race,
-// //         ethnicity: +d.ethnicity,
-// //         study: d.Study
-// //     };
-// // }),
-// d3.tsv('NHS2_simulated_20220120.txt', function(d) {
-//     return {
-//         height: +d.height,
-//         weight: +d.weight,
-//         age: +d.age,
-//         fakeid: +d.fakeid,
-//         race: d.race,
-//         ethnicity: +d.ethnicity,
-//         study: "NHS2"
-//     };
-// })
-// ]).then( allData => {
-
-// var data = d3.merge(allData)
-// data = data.filter(d => {
-//     if(d.height === 888) return false;
-//     if(d.weight === 888) return false;
-//     if(d.age === 888) return false;
-//     if(d.race === '888') return false;
-//     if(d.race === '') return false;
-    
-//     return true;
-// })
-
-// const crossdata = crossfilter(data);
-// const all = crossdata.groupAll();
-
-// // const heightDimension = crossdata.dimension(d => d.height);
-// // const groupByHeight = heightDimension.group();
-
-// // bChart1.width(w)
-// // .height(h)
-// // .group(groupByHeight)
-// // .dimension(heightDimension)
-// // .x(d3.scaleLinear().domain([0,d3.max(data, d => d.height)]))
-// // .margins({top: 10, right: 50, bottom: 30, left: 40})
-// // .elasticY(true)
-// // .elasticX(true)
-// // .yAxisLabel("# of Subjects")
-// // .xAxisLabel("Height (cm)")
-// // .centerBar(true);
-
-// // const weightDimension = crossdata.dimension(d => d.weight);
-// // const groupByWeight = weightDimension.group();
-
-// // bChart2.width(w)
-// // .height(h)
-// // .group(groupByWeight)
-// // .dimension(weightDimension)
-// // .x(d3.scaleLinear().domain([0,d3.max(data, d => {return d.weight})]))
-// // .margins({top: 10, right: 50, bottom: 30, left: 40})
-// // .elasticY(true)
-// // .elasticX(true)
-// // .yAxisLabel("# of Subjects")
-// // .xAxisLabel("Weight (kg)")
-// // .centerBar(true);
-
-// // const ageDimension = crossdata.dimension(d => d.age);
-// // const groupByage = ageDimension.group();
-
-// // dcBarChart(bChart3, ageDimension, groupByage, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d.age})]), '# of Subjects', 'Age')
-
-// // bChart3.width(w)
-// // .height(h)
-// // .group(groupByage)
-// // .dimension(ageDimension)
-// // .centerBar(true)
-// // .x(d3.scaleLinear().domain([0,d3.max(data, d => {return d.age})]))
-// // .margins({top: 10, right: 50, bottom: 30, left: 40})
-// // .elasticY(true)
-// // .elasticX(true)
-// // .yAxisLabel('# of Subjects')
-// // .xAxisLabel('Age')
-
-
-
-// // const studyDimension = crossdata.dimension(d => d.study);
-// // const studyGroup = studyDimension.group();
-
-// // studyChart.width(h)
-// // .height(h)
-// // .radius(h)
-// // .dimension(studyDimension)
-// // .group(studyGroup)
-
-// const raceDimension = crossdata.dimension(d => d.race);
-// const raceGroup = raceDimension.group();
-
-// sMenu.dimension(raceDimension)
-// .group(raceGroup)
-// .multiple(true)
-// .numberVisible(10)
-
-// // bChart1.controlsUseVisibility(true);
-// // bChart2.controlsUseVisibility(true);
-// // bChart3.controlsUseVisibility(true);
-// // studyChart.controlsUseVisibility(true);
-// sMenu.controlsUseVisibility(true);
-
-// // dataCount
-// // .crossfilter(crossdata)
-// // .groupAll(all)
-// // .html({
-// //     some: '<strong>%filter-count</strong> selected out of <strong>%total-count</strong> records' +
-// //         ' | <a href=\'javascript:dc.filterAll(); dc.renderAll();\'>Reset All</a>',
-// //     all: 'All records selected. Please click on the graph to apply filters.'
-// // });
-
-// // dataTable
-// // .dimension(weightDimension)
-// // .columns(['fakeid','study', 'height', 'weight', 'age', 'race'])
-// // .sortBy(d => d.fakeid)
-// // .size(10)
-// // .showSections(false)
-// // .order(d3.descending);
-
-// dc.renderAll();
-
-// });
 
 const dcBarChart = (chartname, dim, group, width, height, cenbar, xinput, yaxis, xaxis) => {
     chartname.width(width)
@@ -453,6 +465,14 @@ const dcBarChartOrdinal = (chartname, dim, group, width, height, yaxis, xaxis) =
     .brushOn(false)
     .barPadding(0.1)
     .outerPadding(0.05)
+    .dimension(dim)
+    .group(group)
+}
+
+const dcPieChart = (chartname, dim, group, width, height) => {
+    chartname.width(width)
+    .height(height)
+    .radius(width)
     .dimension(dim)
     .group(group)
 }
