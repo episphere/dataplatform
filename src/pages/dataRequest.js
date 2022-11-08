@@ -1394,7 +1394,6 @@ export const commentApproveReject = () => {
       let comment = e.target[1].value;
 
       let message = "Rating: " + grade + "\nComment: " + comment;
-
       //console.log(approval);
 
       if (decision !== "daccReview") {
