@@ -24,7 +24,6 @@ const variables0 = (headers) => {
     option.selected = true;
     option.disabled = true;
     selectList.appendChild(option);
-    console.log(selectList);
 
     for (var i = 1; i < headers.length; i++) {
         var option = document.createElement("option");
@@ -45,7 +44,6 @@ const variables1 = (headers) => {
     option.selected = true;
     option.disabled = true;
     selectList.appendChild(option);
-    console.log(selectList);
 
     for (var i = 1; i < headers.length; i++) {
         var option = document.createElement("option");
@@ -66,7 +64,6 @@ const variables2 = (headers) => {
     option.selected = true;
     option.disabled = true;
     selectList.appendChild(option);
-    console.log(selectList);
 
     for (var i = 1; i < headers.length; i++) {
         var option = document.createElement("option");
@@ -87,7 +84,6 @@ const variables3_0 = (headers) => {
     option.selected = true;
     option.disabled = true;
     selectList.appendChild(option);
-    console.log(selectList);
 
     for (var i = 1; i < headers.length; i++) {
         var option = document.createElement("option");
@@ -108,7 +104,6 @@ const variables3_1 = (headers) => {
     option.selected = true;
     option.disabled = true;
     selectList.appendChild(option);
-    console.log(selectList);
 
     for (var i = 1; i < headers.length; i++) {
         var option = document.createElement("option");
@@ -128,7 +123,6 @@ const graphSel0 = (gsel) => {
     option.selected = true;
     option.disabled = true;
     selectList.appendChild(option);
-    console.log(selectList);
 
     for (var i = 0; i < gsel.length; i++) {
         var option = document.createElement("option");
@@ -148,7 +142,6 @@ const graphSel1 = (gsel) => {
     option.selected = true;
     option.disabled = true;
     selectList.appendChild(option);
-    console.log(selectList);
 
     for (var i = 0; i < gsel.length; i++) {
         var option = document.createElement("option");
@@ -168,7 +161,6 @@ const graphSel2 = (gsel) => {
     option.selected = true;
     option.disabled = true;
     selectList.appendChild(option);
-    console.log(selectList);
 
     for (var i = 0; i < gsel.length; i++) {
         var option = document.createElement("option");
@@ -192,6 +184,7 @@ const button = () => {
     let btn = document.createElement("button");
     btn.innerHTML = "Create Graphs";
     btn.onclick = async () => {
+        dc.config.defaultColors(d3.schemeCategory10);
         var var0 = document.querySelector('#select0');
         var var1 = document.querySelector('#select1');
         var var2 = document.querySelector('#select2');
@@ -221,8 +214,10 @@ const button = () => {
                 d[out1] = +d[out1]};
             if(out2 !== 'race'){
                 d[out2] = +d[out2]};
-            d[out3_0] = +d[out3_0],
-            d[out3_1] = +d[out3_1],
+            if(out3_0 !== 'race'){
+            d[out3_0] = +d[out3_0];}
+            if(out3_1 !== 'race'){
+            d[out3_1] = +d[out3_1];}
             d['study'] = 'NHS2'
         });
 
@@ -252,17 +247,19 @@ const button = () => {
         console.log('All data');
 
         if (gsel0 === 'Pie Chart'){
-            var graph0 = dc.pieChart('#graph0in')
+            var graph0 = new dc.PieChart('#graph0in');
         } else {
-        var graph1 = dc.barChart('#graph1in');}
+        var graph1 = new dc.BarChart('#graph1in');}
+
         if (gsel1 === 'Pie Chart'){
-            var graph1 = dc.pieChart('#graph1in')
+            var graph1 = new dc.PieChart('#graph1in');
         } else {
-        var graph1 = dc.barChart('#graph1in');}
+        var graph1 = new dc.BarChart('#graph1in');}
+
         if (gsel2 === 'Pie Chart'){
-            var graph2 = dc.pieChart('#graph2in')
+            var graph2 = new dc.PieChart('#graph2in');
         } else {
-        var graph2 = dc.barChart('#graph2in');}
+        var graph2 = new dc.BarChart('#graph2in');}
         
        // var graph1 = dc.barChart('#graph1in');
         //var graph2 = dc.barChart('#graph2in');
@@ -277,9 +274,13 @@ const button = () => {
             if(d[out0] === 888) return false;
             if(d[out0] === 777) return false;
             if(d[out1] === 888) return false;
-            if(d[out0] === 777) return false;
+            if(d[out1] === 777) return false;
             if(d[out2] === 888) return false;
-            if(d[out0] === 777) return false;
+            if(d[out2] === 777) return false;
+            if(d[out3_0] === 888) return false;
+            if(d[out3_0] === 777) return false;
+            if(d[out3_1] === 888) return false;
+            if(d[out3_1] === 777) return false;
             if(d.race === '888') return false;
             if(d.race === '') return false;
             return true;
@@ -371,7 +372,7 @@ const button = () => {
         graph3
         .width(w)
         .height(h)
-        .x(d3.scaleLinear().domain([0,d3.max(data, d => {return d[out3_0]})]))
+        .x(d3.scaleLinear().domain([d3.min(data, d => {return d[out3_0]})-1,d3.max(data, d => {return d[out3_0]})]))
         //.brushOn(false)
         //.symbolSize(8)
         .clipPadding(10)
@@ -386,13 +387,14 @@ const button = () => {
         .group(groupByout3);
 
         if (gsel0 === 'Interval Bar Chart') {
-            console.log('Bar Chart 0');
+            console.log('Interval Bar Chart 0');
             dcBarChart(graph0, out0Dimension, groupByout0, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d[out0]})]), '# of Subjects', out0);
         } else if (gsel0 === 'Ordinal Bar Chart') {
             dcBarChartOrdinal(graph0, out0Dimension, groupByout0, w, h, '# of Subjects', out0);
         } else {
             dcPieChart(graph0, out0Dimension, groupByout0, w, h);
         }
+
         if (gsel1 === 'Interval Bar Chart') {
             console.log('Bar Chart 1');
             dcBarChart(graph1, out1Dimension, groupByout1, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d[out1]})]), '# of Subjects', out1);
@@ -401,6 +403,7 @@ const button = () => {
         } else {
             dcPieChart(graph1, out1Dimension, groupByout1, w, h);
         }
+
         if (gsel2 === 'Interval Bar Chart') {
             console.log('Bar Chart 2');
             dcBarChart(graph2, out2Dimension, groupByout2, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d[out2]})]), '# of Subjects', out2);
@@ -440,7 +443,8 @@ const button = () => {
 button();
 
 const dcBarChart = (chartname, dim, group, width, height, cenbar, xinput, yaxis, xaxis) => {
-    chartname.width(width)
+    chartname
+    .width(width)
     .height(height)
     .group(group)
     .dimension(dim)
@@ -454,7 +458,8 @@ const dcBarChart = (chartname, dim, group, width, height, cenbar, xinput, yaxis,
 }
 
 const dcBarChartOrdinal = (chartname, dim, group, width, height, yaxis, xaxis) => {
-    chartname.width(width)
+    chartname
+    .width(width)
     .height(height)
     .x(d3.scaleBand())
     .xUnits(dc.units.ordinal)
@@ -470,7 +475,8 @@ const dcBarChartOrdinal = (chartname, dim, group, width, height, yaxis, xaxis) =
 }
 
 const dcPieChart = (chartname, dim, group, width, height) => {
-    chartname.width(width)
+    chartname
+    .width(width)
     .height(height)
     .radius(width)
     .dimension(dim)
