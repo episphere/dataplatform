@@ -249,7 +249,7 @@ const button = () => {
         if (gsel0 === 'Pie Chart'){
             var graph0 = new dc.PieChart('#graph0in');
         } else {
-        var graph1 = new dc.BarChart('#graph1in');}
+        var graph0 = new dc.BarChart('#graph0in');}
 
         if (gsel1 === 'Pie Chart'){
             var graph1 = new dc.PieChart('#graph1in');
@@ -387,7 +387,6 @@ const button = () => {
         .group(groupByout3);
 
         if (gsel0 === 'Interval Bar Chart') {
-            console.log('Interval Bar Chart 0');
             dcBarChart(graph0, out0Dimension, groupByout0, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d[out0]})]), '# of Subjects', out0);
         } else if (gsel0 === 'Ordinal Bar Chart') {
             dcBarChartOrdinal(graph0, out0Dimension, groupByout0, w, h, '# of Subjects', out0);
@@ -396,7 +395,6 @@ const button = () => {
         }
 
         if (gsel1 === 'Interval Bar Chart') {
-            console.log('Bar Chart 1');
             dcBarChart(graph1, out1Dimension, groupByout1, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d[out1]})]), '# of Subjects', out1);
         } else if (gsel1 === 'Ordinal Bar Chart') {
             dcBarChartOrdinal(graph1, out1Dimension, groupByout1, w, h, '# of Subjects', out1);
@@ -405,7 +403,6 @@ const button = () => {
         }
 
         if (gsel2 === 'Interval Bar Chart') {
-            console.log('Bar Chart 2');
             dcBarChart(graph2, out2Dimension, groupByout2, w, h, true, d3.scaleLinear().domain([0,d3.max(data, d => {return d[out2]})]), '# of Subjects', out2);
         } else if (gsel2 === 'Ordinal Bar Chart') {
             dcBarChartOrdinal(graph2, out2Dimension, groupByout2, w, h, '# of Subjects', out2);
@@ -442,8 +439,8 @@ const button = () => {
 
 button();
 
-const dcBarChart = (chartname, dim, group, width, height, cenbar, xinput, yaxis, xaxis) => {
-    chartname
+function dcBarChart(chartname, dim, group, width, height, cenbar, xinput, yaxis, xaxis) {
+    return chartname
     .width(width)
     .height(height)
     .group(group)
@@ -454,11 +451,11 @@ const dcBarChart = (chartname, dim, group, width, height, cenbar, xinput, yaxis,
     .elasticY(true)
     .elasticX(true)
     .yAxisLabel(yaxis)
-    .xAxisLabel(xaxis)
+    .xAxisLabel(xaxis);
 }
 
-const dcBarChartOrdinal = (chartname, dim, group, width, height, yaxis, xaxis) => {
-    chartname
+function dcBarChartOrdinal(chartname, dim, group, width, height, yaxis, xaxis) {
+    return chartname
     .width(width)
     .height(height)
     .x(d3.scaleBand())
@@ -471,14 +468,56 @@ const dcBarChartOrdinal = (chartname, dim, group, width, height, yaxis, xaxis) =
     .barPadding(0.1)
     .outerPadding(0.05)
     .dimension(dim)
-    .group(group)
+    .group(group);
 }
 
-const dcPieChart = (chartname, dim, group, width, height) => {
-    chartname
+function dcPieChart(chartname, dim, group, width, height) {
+    return chartname
     .width(width)
     .height(height)
     .radius(width)
     .dimension(dim)
     .group(group)
 }
+
+
+// const dcBarChart = (chartname, dim, group, width, height, cenbar, xinput, yaxis, xaxis) => {
+//     chartname
+//     .width(width)
+//     .height(height)
+//     .group(group)
+//     .dimension(dim)
+//     .centerBar(cenbar)
+//     .x(xinput)
+//     .margins({top: 10, right: 50, bottom: 30, left: 40})
+//     .elasticY(true)
+//     .elasticX(true)
+//     .yAxisLabel(yaxis)
+//     .xAxisLabel(xaxis)
+// }
+
+// const dcBarChartOrdinal = (chartname, dim, group, width, height, yaxis, xaxis) => {
+//     chartname
+//     .width(width)
+//     .height(height)
+//     .x(d3.scaleBand())
+//     .xUnits(dc.units.ordinal)
+//     .elasticY(true)
+//     .elasticX(true)
+//     .yAxisLabel(yaxis)
+//     .xAxisLabel(xaxis)
+//     .brushOn(false)
+//     .barPadding(0.1)
+//     .outerPadding(0.05)
+//     .dimension(dim)
+//     .group(group)
+// }
+
+// const dcPieChart = (chartname, dim, group, width, height) => {
+//     chartname
+//     .width(width)
+//     .height(height)
+//     .radius(width)
+//     .dimension(dim)
+//     .group(group)
+// }
