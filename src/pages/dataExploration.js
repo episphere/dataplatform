@@ -167,6 +167,7 @@ export const dataSummaryMissingTemplate = async () => {
     // /ethnicity/i.test(dt) === false
   );
   const status = headers.filter((dt) => /status_/i.test(dt) === true);
+  console.log({ headers });
   const initialSelection =
     variables.length > 5 ? variables.slice(0, 5) : variables;
   // const studies = data.map(dt => dt['study']).filter((item, i, ar) => ar.indexOf(item) === i);
@@ -187,6 +188,19 @@ export const dataSummaryMissingTemplate = async () => {
   const ancestory = headers.filter(
     (dt) => /ethnicityClass_/i.test(dt) === true
   );
+  const race = {};
+  data.forEach((dataOption) => {
+    if (race[dataOption.race]) return;
+    race[dataOption.race] = {};
+  });
+  console.log("race", Object.keys(race));
+
+  const ethnicity = {};
+  data.forEach((dataOption) => {
+    if (ethnicity[dataOption.ethnicity]) return;
+    ethnicity[dataOption.ethnicity] = {};
+  });
+  console.log("ethnicity", Object.keys(ethnicity));
 
   const div1 = document.createElement("div");
   div1.classList = ["col-xl-2 filter-column"];
@@ -229,7 +243,17 @@ export const dataSummaryMissingTemplate = async () => {
   document.getElementById("dataSummaryStatistics").appendChild(div1);
   document.getElementById("dataSummaryStatistics").appendChild(div2);
 
-  renderFilter(data, initialSelection, variables, status, studies, ancestory);
+  renderFilter(
+    data,
+    initialSelection,
+    Object.keys(cohorts),
+    variables,
+    status,
+    cohorts,
+    ancestory,
+    Object.keys(race),
+    Object.keys(ethnicity)
+  );
   midset(data, initialSelection);
   addEventMissingnessFilterBarToggle();
 };
@@ -237,11 +261,15 @@ export const dataSummaryMissingTemplate = async () => {
 const renderFilter = (
   data,
   acceptedVariables,
+  acceptedCohorts,
   headers,
   status,
-  studies,
-  ancestory
+  cohorts,
+  ancestory,
+  race,
+  ethnicity
 ) => {
+  console.log({ acceptedCohorts });
   let template = "";
   template += `
     <div class="card midset-card">
@@ -258,20 +286,26 @@ const renderFilter = (
   renderMidsetFilterData(
     data,
     acceptedVariables,
+    acceptedCohorts,
     headers,
     status,
-    studies,
-    ancestory
+    cohorts,
+    ancestory,
+    race,
+    ethnicity
   );
 };
 
 const renderMidsetFilterData = (
   data,
   acceptedVariables,
+  acceptedCohorts,
   headers,
   status,
-  studies,
-  ancestory
+  cohorts,
+  ancestory,
+  race,
+  ethnicity
 ) => {
   let template = "";
   ancestory.splice(ancestory.indexOf("ethnicityClass_Other"), 1);
@@ -280,76 +314,94 @@ const renderMidsetFilterData = (
   ancestory.push("All");
   template += `
         <div style="width:100%;">
-            <div class="form-group" id="statusList">
-                <label class="filter-label font-size-13" for="statusSelection">Status</label>
-                <select class="form-control font-size-15" id="statusSelection">
-                    <option selected value='All'>All</option>
-                    <option value='status_case'>case</option>
-                    <option value='status_control'>control</option>
-                </select>
-            </div>
-            <div class="form-group" id="ancestryList">
-                <label class="filter-label font-size-13" for="ancestrySelection">Ancestry</label>
-                <select class="form-control font-size-15" id="ancestrySelection">`;
-  ancestory.forEach((anc) => {
+            `;
+  // ancestory.forEach((anc) => {
+  //   template += `<option value="${anc}" ${
+  //     anc === "All" ? "selected" : ""
+  //   }>${anc.replace(new RegExp("ethnicityClass_", "i"), "")}</option>`;
+  // });
+  template += `
+            <div class="form-group" id="raceList">
+            <label class="filter-label font-size-13" for="raceSelection">Race</label>
+            <select class="form-control font-size-15" id="raceSelection">`;
+  race.forEach((anc) => {
     template += `<option value="${anc}" ${
       anc === "All" ? "selected" : ""
     }>${anc.replace(new RegExp("ethnicityClass_", "i"), "")}</option>`;
   });
-
   template += `</select>
-            </div>
+        </div>
             <div class="form-group">
-                <label class="filter-label font-size-13" for="studiesList">cohorts</label>
+                <label class="filter-label font-size-13" for="studiesList">cohort</label>
                 <div id="studiesList" class="font-size-15">`;
-  for (let consortium in studies) {
-    let innerTemplate = `
-            <ul class="remove-padding-left">
-                <li class="custom-borders filter-list-item consortia-study-list" data-consortia="${consortium}">
-                    <input type="checkbox" data-consortia="${consortium}" id="label${consortium}" class="select-consortium"/>
-                    <label for="label${consortium}" class="consortia-name">${consortium}</label>
-                    <div class="ml-auto">
-                        <button type="button" ${
-                          Object.keys(studies[consortium]).length !== 0
-                            ? ``
-                            : `disabled title="Doesn't have any study data."`
-                        } class="consortium-selection consortium-selection-btn" data-toggle="collapse" href="#toggle${consortium.replace(
-      / /g,
-      ""
-    )}">
-                            <i class="fas fa-caret-down"></i>
-                        </button>
-                    </div>
-                </li>
-        `;
-    if (Object.keys(studies[consortium]).length !== 0) {
-      innerTemplate += `<ul class="collapse no-list-style custom-padding allow-overflow max-height-study-list" id="toggle${consortium.replace(
-        / /g,
-        ""
-      )}">`;
 
-      for (let study in studies[consortium]) {
-        innerTemplate += `
-                    <li class="filter-list-item">
-                        <input type="checkbox" data-study="${study}" data-consortium="${consortium}" id="label${study}" class="select-study"/>
-                        <label for="label${study}" class="study-name" title="${study}">${
-          study.length > 10 ? `${study.substr(0, 10)}...` : study
-        }</label>
-                    </li>`;
-      }
-      innerTemplate += `</ul>`;
-    }
-    innerTemplate += "</ul>";
-    template += innerTemplate;
+  let cohortsTemplate =
+    "<div class='form-group select-cohorts' id='midsetCohorts'><ul>";
+  console.log({ cohortsTemplate });
+  for (let cohort of Object.keys(cohorts)) {
+    cohortsTemplate += `
+  <li class="filter-list-item">
+      <input
+        type="checkbox"
+        data-variable="${cohort}"
+        id="label${cohort}"
+        class="select-study"
+        ${acceptedCohorts.indexOf(cohort) !== -1 ? "checked" : ""}
+      />
+      <label for="label${cohort}" class="study-name" title="${cohort}">${
+      cohort.length > 10 ? `${cohort.substr(0, 10)}...` : cohort
+    }</label>
+  </li>`;
   }
-  template += `
+  cohortsTemplate += "</ul></div>";
+  // for (let consortium in studies) {
+  //   let innerTemplate = `
+  //           <ul class="remove-padding-left">
+  //               <li class="custom-borders filter-list-item consortia-study-list" data-consortia="${consortium}">
+  //                   <input type="checkbox" data-consortia="${consortium}" id="label${consortium}" class="select-consortium"/>
+  //                   <label for="label${consortium}" class="consortia-name">${consortium}</label>
+  //                   <div class="ml-auto">
+  //                       <button type="button" ${
+  //                         Object.keys(studies[consortium]).length !== 0
+  //                           ? ``
+  //                           : `disabled title="Doesn't have any study data."`
+  //                       } class="consortium-selection consortium-selection-btn" data-toggle="collapse" href="#toggle${consortium.replace(
+  //     / /g,
+  //     ""
+  //   )}">
+  //                           <i class="fas fa-caret-down"></i>
+  //                       </button>
+  //                   </div>
+  //               </li>
+  //       `;
+  //   if (Object.keys(studies[consortium]).length !== 0) {
+  //     innerTemplate += `<ul class="collapse no-list-style custom-padding allow-overflow max-height-study-list" id="toggle${consortium.replace(
+  //       / /g,
+  //       ""
+  //     )}">`;
+
+  // for (let study in studies[consortium]) {
+  //   innerTemplate += `
+  //               <li class="filter-list-item">
+  //                   <input type="checkbox" data-study="${study}" data-consortium="${consortium}" id="label${study}" class="select-study"/>
+  //                   <label for="label${study}" class="study-name" title="${study}">${
+  //     study.length > 10 ? `${study.substr(0, 10)}...` : study
+  //   }</label>
+  //               </li>`;
+  // }
+  //     innerTemplate += `</ul>`;
+  //   }
+  //   innerTemplate += "</ul>";
+  //   template += innerTemplate;
+  // }
+
+  template += `${cohortsTemplate}
                 </div>
             </div>
             <div class="form-group" id="midsetVariables">
                 <label class="filter-label font-size-13" for="variableSelectionList">Variable Selection</label>
                 <ul class="remove-padding-left font-size-15" id="variableSelectionList">
             `;
-  console.log({ headers });
   headers.forEach((variable) => {
     template += `<li class="filter-list-item">
                         <input type="checkbox" ${
@@ -382,7 +434,14 @@ const addEventMidsetFilterForm = (data) => {
   ancestry.addEventListener("change", () => {
     filterMidsetData(data);
   });
-
+  const race = document.getElementById("raceSelection");
+  race.addEventListener("change", () => {
+    filterMidsetData(data);
+  });
+  const ethnicity = document.getElementById("ethnicitySelection");
+  ethnicity.addEventListener("change", () => {
+    filterMidsetData(data);
+  });
   const variables = document.getElementsByClassName("select-variable");
   Array.from(variables).forEach((ele) => {
     ele.addEventListener("click", () => {
@@ -390,44 +449,57 @@ const addEventMidsetFilterForm = (data) => {
     });
   });
 
-  const consortias = document.getElementsByClassName("select-consortium");
-  Array.from(consortias).forEach((ele) => {
+  const cohorts = document.getElementsByClassName("select-study");
+  Array.from(cohorts).forEach((ele) => {
     ele.addEventListener("click", () => {
       filterMidsetData(data);
     });
   });
 
-  const studies = document.getElementsByClassName("select-study");
-  Array.from(studies).forEach((ele) => {
-    ele.addEventListener("click", () => {
-      filterMidsetData(data);
-    });
-  });
+  // const consortias = document.getElementsByClassName("select-consortium");
+  // Array.from(consortias).forEach((ele) => {
+  //   ele.addEventListener("click", () => {
+  //     filterMidsetData(data);
+  //   });
+  // });
+
+  // const studies = document.getElementsByClassName("select-study");
+  // console.log({ studies });
+  // Array.from(studies).forEach((ele) => {
+  //   ele.addEventListener("click", () => {
+  //     console.log({ data });
+  //     filterMidsetData(data);
+  //   });
+  // });
 };
 
 const filterMidsetData = (data) => {
-  //const status = document.getElementById('statusSelection').value;
+  const status = document.getElementById("statusSelection").value;
   const ancestry = document.getElementById("ancestrySelection").value;
+  const race = document.getElementById("raceSelection").value;
+  const ethnicity = document.getElementById("ethnicitySelection").value;
   const selectedVariables = getSelectedVariables("midsetVariables");
-  const studiesSelection = getSelectedStudies().map((dt) => dt.split("@#$")[1]);
-  const consortiaSelection = Array.from(
-    document.querySelectorAll(`input:checked.select-consortium`)
-  ).map((dt) => dt.dataset.consortia);
+  const selectedCohorts = getSelectedVariables("midsetCohorts");
 
   let newData = data;
-  if (studiesSelection.length > 0 || consortiaSelection.length > 0)
-    newData = newData.filter(
-      (dt) =>
-        studiesSelection.indexOf(dt["study"]) !== -1 ||
-        consortiaSelection.indexOf(dt["Consortia"]) !== -1
-    );
-
-  // if (status !== 'All') {
-  //     newData = newData.filter(dt => dt[status] === '1');
-  // }
+  if (selectedCohorts.length > 0) {
+    newData = newData.filter(({ Cohort }) => {
+      return selectedCohorts.indexOf(Cohort) > -1;
+    });
+  }
+  if (status !== "All") {
+    newData = newData.filter((dt) => dt[status] === "1");
+  }
 
   if (ancestry !== "All") {
     newData = newData.filter((dt) => dt[ancestry] === "1");
+  }
+
+  if (race !== "All") {
+    newData = newData.filter((dt) => dt[race] === "1");
+  }
+  if (ethnicity !== "All") {
+    newData = newData.filter((dt) => dt[ethnicity] === "1");
   }
   document.getElementById("listFilters").innerHTML = `
     <!---<span class="font-bold">Status: </span>${status.replace(
@@ -454,14 +526,14 @@ const filterMidsetData = (data) => {
         : ``
     }
     ${
-      studiesSelection.length > 0
+      selectedCohorts.length > 0
         ? `
-        <span class="vertical-line"></span><span class="font-bold">Study: </span>${
-          studiesSelection[0]
+        <span class="vertical-line"></span><span class="font-bold">Cohort: </span>${
+          selectedCohorts[0]
         } ${
-            studiesSelection.length > 1
+            selectedCohorts.length > 1
               ? `and <span class="other-variable-count">${
-                  studiesSelection.length - 1
+                  selectedCohorts.length - 1
                 } other</span>`
               : ``
           }
@@ -469,9 +541,9 @@ const filterMidsetData = (data) => {
         : ``
     }
     `;
+  console.log("MIAD INJA 2", newData);
   midset(newData, selectedVariables);
 };
-
 const getSelectedVariables = (parentId) => {
   const selections = [];
   let cardBody = document.getElementById(parentId);
@@ -492,6 +564,7 @@ const midset = (data, acceptedVariables) => {
     return;
   }
   if (data.length > 0) {
+    console.log("MIAD INJA");
     template +=
       '<table class="table table-hover table-borderless missingness-table table-striped"><thead class="midset-table-header">';
     const headerCount = computeHeader(data, acceptedVariables);
@@ -596,6 +669,7 @@ const midset = (data, acceptedVariables) => {
 
     template += "</tbody></table>";
   } else template += "Data not available.";
+
   hideAnimation();
   document.getElementById("missingnessTable").innerHTML = template;
   addEventVariableDefinitions();

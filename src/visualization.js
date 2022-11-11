@@ -71,11 +71,7 @@ const allFilters = (jsonData, headers, caseSelection) => {
   const studies = getStudies(jsonData);
   const races = getRace(jsonData);
   const ethnicities = getEthnicity(jsonData);
-  console.log({ races });
-  console.log({ ethnicities });
-  console.log(headers);
-  console.log(jsonData);
-  console.log({ studies });
+
   let studyOptions = " ";
   Object.keys(studies).forEach((element) => {
     studyOptions =
@@ -272,41 +268,47 @@ export const addEventConsortiumSelect = () => {
     });
   });
 
-  const consortiums = document.getElementsByClassName("select-consortium");
-  Array.from(consortiums).forEach((el) => {
-    el.addEventListener("click", () => {
-      if (el.checked) {
-        Array.from(
-          el.parentNode.parentNode.querySelectorAll(".select-study")
-        ).forEach((btns) => (btns.checked = true));
-      } else {
-        Array.from(
-          el.parentNode.parentNode.querySelectorAll(".select-study")
-        ).forEach((btns) => (btns.checked = false));
-      }
-    });
-  });
+  // this is for the old one when we had a group of chckboxes, this would toggle all of them
+  // don't neet it anymore
 
-  const studies = document.querySelectorAll(".select-study");
-  Array.from(studies).forEach((element) => {
+  // const consortiums = document.querySelectorAll(".select-consortium input");
+  // console.log({ consortiums });
+  // Array.from(consortiums).forEach((el) => {
+  //   el.addEventListener("click", (e) => {
+  //     console.log({ e: e.target });
+  // if (el.checked) {
+  //   Array.from(el.parentNode.querySelectorAll(".select-study")).forEach(
+  //     (btns) => (btns.checked = true)
+  //   );
+  // } else {
+  //   Array.from(el.parentNode.querySelectorAll(".select-study")).forEach(
+  //     (btns) => (btns.checked = false)
+  //   );
+  // }
+  //   });
+  // });
+
+  const cohorts = document.querySelectorAll(".select-cohorts .select-study");
+  console.log({ cohorts });
+  Array.from(cohorts).forEach((element) => {
     element.addEventListener("click", () => {
-      const allStudiesInConsortium =
-        element.parentElement.parentElement.querySelectorAll(
-          ".select-study"
-        ).length;
-      const selectedStudiesInConsortium =
-        element.parentElement.parentElement.querySelectorAll(
-          "input:checked.select-study"
-        ).length;
-      if (allStudiesInConsortium === selectedStudiesInConsortium) {
-        element.parentElement.parentElement.parentElement.querySelector(
-          ".select-consortium"
-        ).checked = true;
-      } else {
-        element.parentElement.parentElement.parentElement.querySelector(
-          ".select-consortium"
-        ).checked = false;
-      }
+      // const allStudiesInConsortium =
+      //   element.parentElement.querySelectorAll(".select-study").length;
+      // console.log({ allStudiesInConsortium });
+      // const selectedStudiesInConsortium =
+      //   element.parentElement.querySelectorAll(
+      //     "input:checked.select-study"
+      //   ).length;
+      // console.log({ selectedStudiesInConsortium });
+      // if (allStudiesInConsortium === selectedStudiesInConsortium) {
+      //   element.parentElement.parentElement.parentElement.querySelector(
+      //     ".select-consortium"
+      //   ).checked = true;
+      // } else {
+      //   element.parentElement.parentElement.parentElement.querySelector(
+      //     ".select-consortium"
+      //   ).checked = false;
+      // }
     });
   });
 };
@@ -439,7 +441,7 @@ export const updateCounts = (data) => {
     }
   }
 };
-
+// exactly
 export const getSelectedStudies = () => {
   const elements = document.querySelectorAll(`input:checked.select-study`);
   const array = [];
