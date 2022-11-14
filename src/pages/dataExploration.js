@@ -156,7 +156,7 @@ export const dataSummaryMissingTemplate = async () => {
   const { data, headers } = csv2Json(response);
   console.log({ data });
   const variables = headers.filter(
-    (dt) => !dt.match(/status_|ethnicity|race|cohort/i)
+    (dt) => !dt.match(/ethnicity|race|cohort/i)
     // /status_/i.test(dt) === false &&
     // /study/i.test(dt) === false &&
     // /consortia/i.test(dt) === false &&
@@ -166,28 +166,30 @@ export const dataSummaryMissingTemplate = async () => {
     // /race/i.test(dt) === false &&
     // /ethnicity/i.test(dt) === false
   );
-  const status = headers.filter((dt) => /status_/i.test(dt) === true);
+  //const status = headers.filter((dt) => /status_/i.test(dt) === true);
   console.log({ headers });
   const initialSelection =
     variables.length > 5 ? variables.slice(0, 5) : variables;
   // const studies = data.map(dt => dt['study']).filter((item, i, ar) => ar.indexOf(item) === i);
-  const studies = {};
-  data.forEach((dt) => {
-    // console.log({ dt: dt.Cohort });
-    if (studies[dt["Consortia"]] === undefined) studies[dt["Consortia"]] = {};
-    if (dt["Cohort"] && studies[dt["Consortia"]][dt["Cohort"]] === undefined)
-      studies[dt["Consortia"]][dt["Cohort"]] = {};
-  });
+  // const studies = {};
+  // data.forEach((dt) => {
+  //   // console.log({ dt: dt.Cohort });
+  //   if (studies[dt["Cohort"]] === undefined) studies[dt["Cohort"]] = {};
+  //   // if (dt["Cohort"] && studies[dt["Consortia"]][dt["Cohort"]] === undefined)
+  //   //   studies[dt["Consortia"]][dt["Cohort"]] = {};
+  // });
+
   const cohorts = {};
   data.forEach((dataOption) => {
     if (cohorts[dataOption.Cohort]) return;
     cohorts[dataOption.Cohort] = {};
   });
   console.log("keys", Object.keys(cohorts));
+  console.log(cohorts);
+  // const ancestory = headers.filter(
+  //   (dt) => /ethnicityClass_/i.test(dt) === true
+  // );
 
-  const ancestory = headers.filter(
-    (dt) => /ethnicityClass_/i.test(dt) === true
-  );
   const race = {};
   data.forEach((dataOption) => {
     if (race[dataOption.race]) return;
@@ -215,7 +217,7 @@ export const dataSummaryMissingTemplate = async () => {
         <div class="main-summary-row" style="min-height: 10px;margin-bottom: 1rem;margin-left: 1rem;">
             <div class="col white-bg div-border align-left font-size-17" style="padding: 0.5rem;" id="listFilters">
                 <!---<span class="font-bold">Status:</span> All<span class="vertical-line"></span>--->
-                <span class="font-bold">Ancestry:</span> All
+                <span class="font-bold">Cohort:</span> All
                 ${
                   initialSelection.length > 0
                     ? `
@@ -248,9 +250,9 @@ export const dataSummaryMissingTemplate = async () => {
     initialSelection,
     Object.keys(cohorts),
     variables,
-    status,
-    cohorts,
-    ancestory,
+    //status,
+    //cohorts,
+    //ancestory,
     Object.keys(race),
     Object.keys(ethnicity)
   );
@@ -263,9 +265,9 @@ const renderFilter = (
   acceptedVariables,
   acceptedCohorts,
   headers,
-  status,
-  cohorts,
-  ancestory,
+  //status,
+  //cohorts,
+  //ancestory,
   race,
   ethnicity
 ) => {
@@ -283,17 +285,7 @@ const renderFilter = (
     </div>
     `;
   document.getElementById("missingnessFilter").innerHTML = template;
-  renderMidsetFilterData(
-    data,
-    acceptedVariables,
-    acceptedCohorts,
-    headers,
-    status,
-    cohorts,
-    ancestory,
-    race,
-    ethnicity
-  );
+  renderMidsetFilterData(data, acceptedVariables, acceptedCohorts, headers, race, ethnicity);
 };
 
 const renderMidsetFilterData = (
@@ -301,17 +293,18 @@ const renderMidsetFilterData = (
   acceptedVariables,
   acceptedCohorts,
   headers,
-  status,
-  cohorts,
-  ancestory,
+ // status,
+ // cohorts,
+ // ancestory,
   race,
   ethnicity
 ) => {
   let template = "";
-  ancestory.splice(ancestory.indexOf("ethnicityClass_Other"), 1);
-  ancestory.sort();
-  ancestory.push("ethnicityClass_Other");
-  ancestory.push("All");
+  //ancestory.splice(ancestory.indexOf("ethnicityClass_Other"), 1);
+  //ancestory.sort();
+  //ancestory.push("ethnicityClass_Other");
+  race.push("All");
+  ethnicity.push("All");
   template += `
         <div style="width:100%;">
             `;
@@ -327,33 +320,43 @@ const renderMidsetFilterData = (
   race.forEach((anc) => {
     template += `<option value="${anc}" ${
       anc === "All" ? "selected" : ""
-    }>${anc.replace(new RegExp("ethnicityClass_", "i"), "")}</option>`;
+    }>${anc}</option>`;
   });
   template += `</select>
         </div>
-            <div class="form-group">
-                <label class="filter-label font-size-13" for="studiesList">cohort</label>
-                <div id="studiesList" class="font-size-15">`;
+          <div class="form-group" id="ethnicityList">
+              <label class="filter-label font-size-13" for="ethnicitySelection">Ethnicity</label>
+              <select class="form-control font-size-15" id="ethnicitySelection">`;
+              ethnicity.forEach((anc) => {
+                template += `<option value="${anc}" ${
+                  anc === "All" ? "selected" : ""
+                }>${anc}</option>`;
+              });
+          template += `</select>
+          </div>
+            <div class="form-group" id='midsetCohorts'>
+                <label class="filter-label font-size-13" for="studiesList">Cohort</label>`;
 
   let cohortsTemplate =
-    "<div class='form-group select-cohorts' id='midsetCohorts'><ul>";
-  console.log({ cohortsTemplate });
-  for (let cohort of Object.keys(cohorts)) {
+    "<ul class='remove-padding-left font-size-15'>";
+  console.log(acceptedCohorts);
+  for (let cohort of acceptedCohorts) {
+    //${acceptedCohorts.indexOf(cohort) !== -1 ? "checked" : ""}
     cohortsTemplate += `
   <li class="filter-list-item">
       <input
         type="checkbox"
         data-variable="${cohort}"
         id="label${cohort}"
-        class="select-study"
+        class="select-cohort"
         ${acceptedCohorts.indexOf(cohort) !== -1 ? "checked" : ""}
       />
-      <label for="label${cohort}" class="study-name" title="${cohort}">${
+      <label for="label${cohort}" class="cohort-name" title="${cohort}">${
       cohort.length > 10 ? `${cohort.substr(0, 10)}...` : cohort
     }</label>
   </li>`;
   }
-  cohortsTemplate += "</ul></div>";
+  cohortsTemplate += "</ul>";
   // for (let consortium in studies) {
   //   let innerTemplate = `
   //           <ul class="remove-padding-left">
@@ -396,7 +399,7 @@ const renderMidsetFilterData = (
   // }
 
   template += `${cohortsTemplate}
-                </div>
+
             </div>
             <div class="form-group" id="midsetVariables">
                 <label class="filter-label font-size-13" for="variableSelectionList">Variable Selection</label>
@@ -430,10 +433,10 @@ const addEventMidsetFilterForm = (data) => {
   //     filterMidsetData(data)
   // });
 
-  const ancestry = document.getElementById("ancestrySelection");
-  ancestry.addEventListener("change", () => {
-    filterMidsetData(data);
-  });
+  // const ancestry = document.getElementById("ancestrySelection");
+  // ancestry.addEventListener("change", () => {
+  //   filterMidsetData(data);
+  // });
   const race = document.getElementById("raceSelection");
   race.addEventListener("change", () => {
     filterMidsetData(data);
@@ -449,7 +452,7 @@ const addEventMidsetFilterForm = (data) => {
     });
   });
 
-  const cohorts = document.getElementsByClassName("select-study");
+  const cohorts = document.getElementsByClassName("select-cohort");
   Array.from(cohorts).forEach((ele) => {
     ele.addEventListener("click", () => {
       filterMidsetData(data);
@@ -474,73 +477,77 @@ const addEventMidsetFilterForm = (data) => {
 };
 
 const filterMidsetData = (data) => {
-  const status = document.getElementById("statusSelection").value;
-  const ancestry = document.getElementById("ancestrySelection").value;
+  //const status = document.getElementById("statusSelection").value;
+  //const ancestry = document.getElementById("ancestrySelection").value;
   const race = document.getElementById("raceSelection").value;
   const ethnicity = document.getElementById("ethnicitySelection").value;
   const selectedVariables = getSelectedVariables("midsetVariables");
   const selectedCohorts = getSelectedVariables("midsetCohorts");
 
   let newData = data;
+  console.log(newData);
   if (selectedCohorts.length > 0) {
     newData = newData.filter(({ Cohort }) => {
       return selectedCohorts.indexOf(Cohort) > -1;
     });
   }
-  if (status !== "All") {
-    newData = newData.filter((dt) => dt[status] === "1");
-  }
+  // if (status !== "All") {
+  //   newData = newData.filter((dt) => dt[status] === "1");
+  // }
 
-  if (ancestry !== "All") {
-    newData = newData.filter((dt) => dt[ancestry] === "1");
-  }
+  // if (ancestry !== "All") {
+  //   newData = newData.filter((dt) => dt[ancestry] === "1");
+  // }
 
   if (race !== "All") {
-    newData = newData.filter((dt) => dt[race] === "1");
+    console.log(race);
+    newData = newData.filter((dt) => dt['race'] === race);
+    console.log(newData);
   }
   if (ethnicity !== "All") {
-    newData = newData.filter((dt) => dt[ethnicity] === "1");
+    newData = newData.filter((dt) => dt['ethnicity'] === ethnicity);
   }
-  document.getElementById("listFilters").innerHTML = `
-    <!---<span class="font-bold">Status: </span>${status.replace(
-      "status_",
-      ""
-    )}<span class="vertical-line"></span>--->
-    <span class="font-bold">Ancestry: </span>${ancestry.replace(
-      "ethnicityClass_",
-      ""
-    )}
-    ${
-      selectedVariables.length > 0
-        ? `
-        <span class="vertical-line"></span><span class="font-bold">Variable: </span>${
-          selectedVariables[0]
-        } ${
-            selectedVariables.length > 1
-              ? `and <span class="other-variable-count">${
-                  selectedVariables.length - 1
-                } other</span>`
-              : ``
-          }
-    `
-        : ``
-    }
-    ${
-      selectedCohorts.length > 0
-        ? `
-        <span class="vertical-line"></span><span class="font-bold">Cohort: </span>${
-          selectedCohorts[0]
-        } ${
-            selectedCohorts.length > 1
-              ? `and <span class="other-variable-count">${
-                  selectedCohorts.length - 1
-                } other</span>`
-              : ``
-          }
-    `
-        : ``
-    }
-    `;
+  // document.getElementById("listFilters").innerHTML = 
+  // `
+  //   <!---<span class="font-bold">Status: </span>${status.replace(
+  //     "status_",
+  //     ""
+  //   )}<span class="vertical-line"></span>--->
+  //   <span class="font-bold">Ancestry: </span>${ancestry.replace(
+  //     "ethnicityClass_",
+  //     ""
+  //   )}
+  //   ${
+  //     selectedVariables.length > 0
+  //       ? `
+  //       <span class="vertical-line"></span><span class="font-bold">Variable: </span>${
+  //         selectedVariables[0]
+  //       } ${
+  //           selectedVariables.length > 1
+  //             ? `and <span class="other-variable-count">${
+  //                 selectedVariables.length - 1
+  //               } other</span>`
+  //             : ``
+  //         }
+  //   `
+  //       : ``
+  //   }
+  //   ${
+  //     selectedCohorts.length > 0
+  //       ? `
+  //       <span class="vertical-line"></span><span class="font-bold">Cohort: </span>${
+  //         selectedCohorts[0]
+  //       } ${
+  //           selectedCohorts.length > 1
+  //             ? `and <span class="other-variable-count">${
+  //                 selectedCohorts.length - 1
+  //               } other</span>`
+  //             : ``
+  //         }
+  //   `
+  //       : ``
+  //   }
+  //   `;
   console.log("MIAD INJA 2", newData);
   midset(newData, selectedVariables);
 };
