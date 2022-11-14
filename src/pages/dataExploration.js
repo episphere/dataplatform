@@ -18,6 +18,7 @@ import {
   addEventFilterBarToggle,
   addEventMissingnessFilterBarToggle,
 } from "../event.js";
+import { variables as CONSTANTS } from "../variables.js";
 
 import { pageNavBar } from "../components/navBarMenuItems.js";
 
@@ -193,16 +194,19 @@ export const dataSummaryMissingTemplate = async () => {
   const race = {};
   data.forEach((dataOption) => {
     if (race[dataOption.race]) return;
-    race[dataOption.race] = {};
+    race[dataOption.race] = CONSTANTS.BCRPP.raceM[dataOption.race];
   });
-  console.log("race", Object.keys(race));
+  // console.log("race", Object.keys(race));
+  console.log({ race });
 
   const ethnicity = {};
   data.forEach((dataOption) => {
     if (ethnicity[dataOption.ethnicity]) return;
-    ethnicity[dataOption.ethnicity] = {};
+    ethnicity[dataOption.ethnicity] =
+      CONSTANTS.BCRPP.ethnicityClass[dataOption.ethnicity];
   });
-  console.log("ethnicity", Object.keys(ethnicity));
+  // console.log("ethnicity", Object.keys(ethnicity));
+  console.log({ ethnicity });
 
   const div1 = document.createElement("div");
   div1.classList = ["col-xl-2 filter-column"];
@@ -253,8 +257,9 @@ export const dataSummaryMissingTemplate = async () => {
     //status,
     //cohorts,
     //ancestory,
-    Object.keys(race),
-    Object.keys(ethnicity)
+    race,
+    // Object.keys(ethnicity)
+    ethnicity
   );
   midset(data, initialSelection);
   addEventMissingnessFilterBarToggle();
@@ -285,7 +290,14 @@ const renderFilter = (
     </div>
     `;
   document.getElementById("missingnessFilter").innerHTML = template;
-  renderMidsetFilterData(data, acceptedVariables, acceptedCohorts, headers, race, ethnicity);
+  renderMidsetFilterData(
+    data,
+    acceptedVariables,
+    acceptedCohorts,
+    headers,
+    race,
+    ethnicity
+  );
 };
 
 const renderMidsetFilterData = (
@@ -293,9 +305,9 @@ const renderMidsetFilterData = (
   acceptedVariables,
   acceptedCohorts,
   headers,
- // status,
- // cohorts,
- // ancestory,
+  // status,
+  // cohorts,
+  // ancestory,
   race,
   ethnicity
 ) => {
@@ -303,8 +315,17 @@ const renderMidsetFilterData = (
   //ancestory.splice(ancestory.indexOf("ethnicityClass_Other"), 1);
   //ancestory.sort();
   //ancestory.push("ethnicityClass_Other");
-  race.push("All");
-  ethnicity.push("All");
+  // race.push("All");
+
+  const transformRace = Object.entries(race);
+  console.log({ transformRace });
+  transformRace.push(["all", "All"]);
+  const transformEthnicity = Object.entries(ethnicity);
+  console.log({ transformEthnicity });
+
+  // ethnicity.push("All"); ['all', 'All']
+  transformEthnicity.push(["all", "All"]);
+
   template += `
         <div style="width:100%;">
             `;
@@ -313,32 +334,43 @@ const renderMidsetFilterData = (
   //     anc === "All" ? "selected" : ""
   //   }>${anc.replace(new RegExp("ethnicityClass_", "i"), "")}</option>`;
   // });
+
+  // Data transformation
+  // Display
+  // Add All option
+
+  // <option value="10" selected>
+  //   Test
+  // </option>;
+
   template += `
             <div class="form-group" id="raceList">
             <label class="filter-label font-size-13" for="raceSelection">Race</label>
             <select class="form-control font-size-15" id="raceSelection">`;
-  race.forEach((anc) => {
-    template += `<option value="${anc}" ${
-      anc === "All" ? "selected" : ""
-    }>${anc}</option>`;
+  transformRace.forEach((anc) => {
+    if (anc[0] === "undefined") return;
+
+    template += `<option value="${anc[0]}" ${
+      anc[1] === "All" ? "selected" : ""
+    }>${anc[1]}</option>`;
   });
   template += `</select>
         </div>
           <div class="form-group" id="ethnicityList">
               <label class="filter-label font-size-13" for="ethnicitySelection">Ethnicity</label>
               <select class="form-control font-size-15" id="ethnicitySelection">`;
-              ethnicity.forEach((anc) => {
-                template += `<option value="${anc}" ${
-                  anc === "All" ? "selected" : ""
-                }>${anc}</option>`;
-              });
-          template += `</select>
+  transformEthnicity.forEach((anc) => {
+    if (anc[0] === "undefined") return;
+    template += `<option value="${anc[0]}" ${
+      anc[1] === "All" ? "selected" : ""
+    }>${anc[1]}</option>`;
+  });
+  template += `</select>
           </div>
             <div class="form-group" id='midsetCohorts'>
                 <label class="filter-label font-size-13" for="studiesList">Cohort</label>`;
 
-  let cohortsTemplate =
-    "<ul class='remove-padding-left font-size-15'>";
+  let cohortsTemplate = "<ul class='remove-padding-left font-size-15'>";
   console.log(acceptedCohorts);
   for (let cohort of acceptedCohorts) {
     //${acceptedCohorts.indexOf(cohort) !== -1 ? "checked" : ""}
@@ -499,15 +531,16 @@ const filterMidsetData = (data) => {
   //   newData = newData.filter((dt) => dt[ancestry] === "1");
   // }
 
-  if (race !== "All") {
-    console.log(race);
-    newData = newData.filter((dt) => dt['race'] === race);
-    console.log(newData);
-  }
-  if (ethnicity !== "All") {
-    newData = newData.filter((dt) => dt['ethnicity'] === ethnicity);
-  }
-  // document.getElementById("listFilters").innerHTML = 
+  newData = newData.filter(
+    (dt) =>
+      dt.ethnicity === (ethnicity.toLowerCase() !== "all" ? ethnicity : "0")
+  );
+
+  newData = newData.filter(
+    (dt) => dt.race === (race.toLowerCase() !== "all" ? race : "1")
+  );
+
+  // document.getElementById("listFilters").innerHTML =
   // `
   //   <!---<span class="font-bold">Status: </span>${status.replace(
   //     "status_",
@@ -548,7 +581,6 @@ const filterMidsetData = (data) => {
   //       : ``
   //   }
   //   `;
-  console.log("MIAD INJA 2", newData);
   midset(newData, selectedVariables);
 };
 const getSelectedVariables = (parentId) => {
