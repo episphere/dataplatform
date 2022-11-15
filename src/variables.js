@@ -118,7 +118,7 @@ export const variables = {
     ethnicityClass: {
       0: "Non-Hispanic/Non-Latino",
       1: "Hispanic/Latino",
-      888: "Don't Know",
+      888: "Missing",
       label: "Self-reported Race/ethnicity",
     },
     ethnicitySubClass: {
@@ -145,6 +145,16 @@ export const variables = {
       777: "Not Applicable",
       888: "Don't Know",
       label: "Details of specific ethnicity",
+    },
+    race: {
+      1: "White",
+      2: "Black/African American",
+      3: "Asian",
+      4: "Native Hawaiian/Pacific Islander",
+      5: "American Indian/Alaska Native",
+      6: "Other, including multiracial",
+      888: "Missing",
+      label: "Self-reported race/ethnicity",
     },
     raceM: {
       1: "White",

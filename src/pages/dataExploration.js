@@ -194,7 +194,7 @@ export const dataSummaryMissingTemplate = async () => {
   const race = {};
   data.forEach((dataOption) => {
     //if (race[dataOption.race]) return;
-    race[dataOption.race] = CONSTANTS.BCRPP.raceM[dataOption.race];
+    race[dataOption.race] = CONSTANTS.BCRPP.race[dataOption.race];
   });
   // console.log("race", Object.keys(race));
 
@@ -529,10 +529,12 @@ const filterMidsetData = (data) => {
       return selectedCohorts.indexOf(Cohort) > -1;
     });
   }
+  
   console.log(ethnicity);
   if(ethnicity !== 'all') {
     newData = newData.filter(dt => dt.ethnicity === ethnicity)
   };
+
   // newData = newData.filter(
   //   (dt) => dt.ethnicity === (ethnicity.toLowerCase() !== "all" ? ethnicity : "0")
   // );
