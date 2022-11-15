@@ -904,7 +904,7 @@ label {
     font-weight: bold;
 }
 
-.consortia-name, .study-name, .variable-name {
+.consortia-name, .study-name, .variable-name, .cohort-name {
     margin: 0.125rem 0;
 }
 
@@ -1662,7 +1662,7 @@ form {
     display: flex;
 }
 
-.select-consortium, .select-study, .select-variable, .select-country, .select-study-design, .select-variable-type {
+.select-consortium, .select-study, .select-variable, .select-country, .select-study-design, .select-variable-type, .select-cohort {
     margin-top: 4px;
     margin-right: 3px;
 }
