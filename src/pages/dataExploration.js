@@ -193,7 +193,7 @@ export const dataSummaryMissingTemplate = async () => {
 
   const race = {};
   data.forEach((dataOption) => {
-    if (race[dataOption.race]) return;
+    //if (race[dataOption.race]) return;
     race[dataOption.race] = CONSTANTS.BCRPP.raceM[dataOption.race];
   });
   // console.log("race", Object.keys(race));
@@ -214,32 +214,33 @@ export const dataSummaryMissingTemplate = async () => {
 
   const div2 = document.createElement("div");
   div2.classList = ["col-xl-10"];
-  div2.innerHTML = `
-        <button id="filterBarToggle">
-            <i class="fas fa-lg fa-caret-left"></i>
-        </button>
-        <div class="main-summary-row" style="min-height: 10px;margin-bottom: 1rem;margin-left: 1rem;">
-            <div class="col white-bg div-border align-left font-size-17" style="padding: 0.5rem;" id="listFilters">
-                <!---<span class="font-bold">Status:</span> All<span class="vertical-line"></span>--->
-                <span class="font-bold">Cohort:</span> All
-                ${
-                  initialSelection.length > 0
-                    ? `
-                    <span class="vertical-line"></span><span class="font-bold">Variable: </span>${
-                      initialSelection[0]
-                    } ${
-                        initialSelection.length > 1
-                          ? `and <span class="other-variable-count">${
-                              initialSelection.length - 1
-                            } other</span>`
-                          : ``
-                      }
-                `
-                    : ``
-                }
-            </div>
-        </div>
-        `;
+  //***Removed the below to remove the top bar until we have it working again.***
+  // div2.innerHTML = `
+  //       <button id="filterBarToggle">
+  //           <i class="fas fa-lg fa-caret-left"></i>
+  //       </button>
+  //       <div class="main-summary-row" style="min-height: 10px;margin-bottom: 1rem;margin-left: 1rem;">
+  //           <div class="col white-bg div-border align-left font-size-17" style="padding: 0.5rem;" id="listFilters">
+  //               <!---<span class="font-bold">Status:</span> All<span class="vertical-line"></span>--->
+  //               <span class="font-bold">Cohort:</span> All
+  //               ${
+  //                 initialSelection.length > 0
+  //                   ? `
+  //                   <span class="vertical-line"></span><span class="font-bold">Variable: </span>${
+  //                     initialSelection[0]
+  //                   } ${
+  //                       initialSelection.length > 1
+  //                         ? `and <span class="other-variable-count">${
+  //                             initialSelection.length - 1
+  //                           } other</span>`
+  //                         : ``
+  //                     }
+  //               `
+  //                   : ``
+  //               }
+  //           </div>
+  //       </div>
+  //       `;
 
   const row = document.createElement("div");
   row.classList = ["main-summary-row div-border overflow-x mb-2"];
