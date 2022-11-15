@@ -197,7 +197,6 @@ export const dataSummaryMissingTemplate = async () => {
     race[dataOption.race] = CONSTANTS.BCRPP.raceM[dataOption.race];
   });
   // console.log("race", Object.keys(race));
-  console.log({ race });
 
   const ethnicity = {};
   data.forEach((dataOption) => {
@@ -435,7 +434,7 @@ const renderMidsetFilterData = (
 
             </div>
             <div class="form-group" id="midsetVariables">
-                <label class="filter-label font-size-13" for="variableSelectionList">Variable Selection</label>
+                <label class="filter-label font-size-13" for="variableSelectionList">Variable Selection </label>
                 <ul class="remove-padding-left font-size-15" id="variableSelectionList">
             `;
   headers.forEach((variable) => {
@@ -449,7 +448,13 @@ const renderMidsetFilterData = (
       variable.replace("_Data available", "").length > 20
         ? `${variable.replace("_Data available", "").slice(0, 20)}...`
         : `${variable.replace("_Data available", "")}`
-    }</label>
+    }`
+    if(variable === 'Reproductive_History1' || variable === 'Reproductive_History2'){
+      template += `<button class="info-btn variable-definition" aria-label="More info" data-keyboard="false" data-backdrop="static" data-toggle="modal" 
+                    data-target="#confluenceMainModal"  data-variable='${variable}'>
+                    <i class="fas fa-question-circle cursor-pointer"></i></button>`
+    }
+    template += `</label>
                     </li>`;
   });
   template += `</ul></div></br>
@@ -524,22 +529,22 @@ const filterMidsetData = (data) => {
       return selectedCohorts.indexOf(Cohort) > -1;
     });
   }
-  // if (status !== "All") {
-  //   newData = newData.filter((dt) => dt[status] === "1");
-  // }
+  console.log(ethnicity);
+  if(ethnicity !== 'all') {
+    newData = newData.filter(dt => dt.ethnicity === ethnicity)
+  };
+  // newData = newData.filter(
+  //   (dt) => dt.ethnicity === (ethnicity.toLowerCase() !== "all" ? ethnicity : "0")
+  // );
 
-  // if (ancestry !== "All") {
-  //   newData = newData.filter((dt) => dt[ancestry] === "1");
-  // }
-
-  newData = newData.filter(
-    (dt) =>
-      dt.ethnicity === (ethnicity.toLowerCase() !== "all" ? ethnicity : "0")
-  );
-
-  newData = newData.filter(
-    (dt) => dt.race === (race.toLowerCase() !== "all" ? race : "1")
-  );
+  console.log(newData);
+  if(race !== 'all') {
+    newData = newData.filter(dt => dt.race === race)
+  };
+  // newData = newData.filter(
+  //   (dt) => dt.race === (race.toLowerCase() !== "all" ? race : "1")
+  // );
+  console.log(newData);
 
   // document.getElementById("listFilters").innerHTML =
   // `
@@ -610,9 +615,12 @@ const midset = (data, acceptedVariables) => {
     const headerCount = computeHeader(data, acceptedVariables);
     headerData = headerCount;
     const result = computeSets(data, acceptedVariables);
-    template += `<tr class="midset-header"><th class="missing-column"><p>Number of subjects with data based on the selection of variables</p><button class="info-btn variable-definition" aria-label="More info" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#confluenceMainModal" data-variable='midsetTopBars'><i class="fas fa-question-circle cursor-pointer"></i></button></th><th class='bar-chart-cell' colspan="${
-      Object.keys(headerCount).length
-    }"><div id="midsetHeader"></div></th><th class="missing-column"></th></tr>`;
+    template += `<tr class="midset-header"><th class="missing-column"><p>Number of subjects with data based on the selection of variables</p>
+                <button class="info-btn variable-definition" aria-label="More info" data-keyboard="false" data-backdrop="static" data-toggle="modal" 
+                  data-target="#confluenceMainModal" data-variable='midsetTopBars'>
+                <i class="fas fa-question-circle cursor-pointer"></i></button></th><th class='bar-chart-cell' 
+                colspan="${Object.keys(headerCount).length}">
+                <div id="midsetHeader"></div></th><th class="missing-column"></th></tr>`;
 
     template += `<tr><th class="missing-column"></th>`;
     for (let variable in headerCount) {
