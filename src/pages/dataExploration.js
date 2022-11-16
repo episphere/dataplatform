@@ -1,3 +1,4 @@
+//this is a test
 import {
   getFile,
   hideAnimation,
@@ -448,11 +449,14 @@ const renderMidsetFilterData = (
       variable.replace("_Data available", "").length > 20
         ? `${variable.replace("_Data available", "").slice(0, 20)}...`
         : `${variable.replace("_Data available", "")}`
-    }`
-    if(variable === 'Reproductive_History1' || variable === 'Reproductive_History2'){
+    }`;
+    if (
+      variable === "Reproductive_History1" ||
+      variable === "Reproductive_History2"
+    ) {
       template += `<button class="info-btn variable-definition" aria-label="More info" data-keyboard="false" data-backdrop="static" data-toggle="modal" 
                     data-target="#confluenceMainModal"  data-variable='${variable}'>
-                    <i class="fas fa-question-circle cursor-pointer"></i></button>`
+                    <i class="fas fa-question-circle cursor-pointer"></i></button>`;
     }
     template += `</label>
                     </li>`;
@@ -529,20 +533,20 @@ const filterMidsetData = (data) => {
       return selectedCohorts.indexOf(Cohort) > -1;
     });
   }
-  
+
   console.log(ethnicity);
-  if(ethnicity !== 'all') {
-    newData = newData.filter(dt => dt.ethnicity === ethnicity)
-  };
+  if (ethnicity !== "all") {
+    newData = newData.filter((dt) => dt.ethnicity === ethnicity);
+  }
 
   // newData = newData.filter(
   //   (dt) => dt.ethnicity === (ethnicity.toLowerCase() !== "all" ? ethnicity : "0")
   // );
 
   console.log(newData);
-  if(race !== 'all') {
-    newData = newData.filter(dt => dt.race === race)
-  };
+  if (race !== "all") {
+    newData = newData.filter((dt) => dt.race === race);
+  }
   // newData = newData.filter(
   //   (dt) => dt.race === (race.toLowerCase() !== "all" ? race : "1")
   // );
