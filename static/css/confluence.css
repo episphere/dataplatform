@@ -904,7 +904,7 @@ label {
     font-weight: bold;
 }
 
-.consortia-name, .study-name, .variable-name {
+.consortia-name, .study-name, .variable-name, .cohort-name {
     margin: 0.125rem 0;
 }
 
@@ -1662,7 +1662,7 @@ form {
     display: flex;
 }
 
-.select-consortium, .select-study, .select-variable, .select-country, .select-study-design, .select-variable-type {
+.select-consortium, .select-study, .select-variable, .select-country, .select-study-design, .select-variable-type, .select-cohort {
     margin-top: 4px;
     margin-right: 3px;
 }
@@ -2070,6 +2070,12 @@ ul.form {
     list-style: none;
 }
 
+ul.about-consortia {
+    column-count: 2;
+    column-gap: .2rem;
+    list-style: none;
+}
+
 .inline-field input,
 .inline-field label {
     display: inline-block;
@@ -2117,4 +2123,15 @@ ul.form {
 
 .decidedDropdown {
     width: 100%;
+}
+
+.tabledcplot {
+    border-collapse: collapse;
+    width: 25%
+}
+
+.tabledcplot td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
 }

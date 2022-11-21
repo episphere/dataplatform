@@ -1142,6 +1142,18 @@ export const addEventVariableDefinitions = () => {
                 variableName = 'Side bars';
                 definition = "Number of subjects with data on a combination 2 or more selected variables.";
             }
+            if (variable === 'varSelection') {
+                variableName = 'Variable Selection';
+                definition = 'Input here';
+            }
+            if (variable === 'Reproductive_History1') {
+                variableName = 'Reproductive History 1';
+                definition = 'Definition of Reproductive History 1';
+            }
+            if (variable === 'Reproductive_History2') {
+                variableName = 'Reproductive History 2';
+                definition = 'Definition of Reproductive History 2';
+            }
 
             const header = document.getElementById('confluenceModalHeader');
             const body = document.getElementById('confluenceModalBody');

@@ -70,10 +70,11 @@ const countPublicStatistics = (d, caseControl) => {
     </br>
         <div class="align-center">
             <div class="main-summary-row" style="margin: 0px 15px;margin-bottom:10px">
-                <div class="col-md-2" style="padding: 0px">
+                <div class="col-md-3" style="padding: 0px">
                     <div class="custom-border allow-overflow align-left" style="height:100%; padding-left: 5px !important; margin-right: 15px;">
-                    <span class="font-size-17 font-bold">Filter</span></br>
-                    <span class="font-size-15">Cohort:</span></br>
+                    <span class="font-size-17 font-bold">Cohort:</span></br>
+                    <!---<span class="font-size-15">Cohort:</span></br>--->
+                    <ul class="about-consortia" id='about-consortia-check'>
     `
     //if(caseControl) delete data['CIMBA'];
     for(let key in data) {
@@ -89,8 +90,8 @@ const countPublicStatistics = (d, caseControl) => {
             `:``}
             </div>`
     }         
-    summary += `</div></div>
-                <div class="col-md-10 align-center" style="padding: 0px">
+    summary += `</ul></div></div>
+                <div class="col-md-9 align-center" style="padding: 0px">
                     <div class="custom-border" style="margin-right: 15px; height: 100%;" id="renderDataSummaryCounts"></div>
                 </div></div>
                 <div class="col data-last-modified align-left">Data last modified at - ${new Date(data['dataModifiedAt']).toLocaleString()}</div></div>
