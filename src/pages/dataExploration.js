@@ -1,3 +1,4 @@
+//this is a test
 import {
   getFile,
   hideAnimation,
@@ -366,23 +367,35 @@ const renderMidsetFilterData = (
     }>${anc[1]}</option>`;
   });
   template += `</select>
-          </div>
-            <div class="form-group" id='midsetCohorts'>
-                <label class="filter-label font-size-13" for="studiesList">Cohort</label>`;
+        <div class="form-group" id='midsetCohorts'>
+          <label class="filter-label font-size-13" for="studiesList">Cohort</label>
+                `;
 
   let cohortsTemplate = "<ul class='remove-padding-left font-size-15'>";
-  console.log(acceptedCohorts);
+
+  cohortsTemplate += `
+    <li class="filter-list-item">
+      <input
+        type="checkbox"
+        id="cohortallcheckbox" checked
+      />
+      <label for="cohortallcheckbox" class="cohort-name" title="all">
+        Check All
+      </label>
+    </li>
+  `;
+
   for (let cohort of acceptedCohorts) {
     //${acceptedCohorts.indexOf(cohort) !== -1 ? "checked" : ""}
     cohortsTemplate += `
   <li class="filter-list-item">
       <input
-        type="checkbox"
+        type="checkbox"checked
         data-variable="${cohort}"
         id="label${cohort}"
         class="select-cohort"
-        ${acceptedCohorts.indexOf(cohort) !== -1 ? "checked" : ""}
       />
+  
       <label for="label${cohort}" class="cohort-name" title="${cohort}">${
       cohort.length > 10 ? `${cohort.substr(0, 10)}...` : cohort
     }</label>
@@ -448,11 +461,14 @@ const renderMidsetFilterData = (
       variable.replace("_Data available", "").length > 20
         ? `${variable.replace("_Data available", "").slice(0, 20)}...`
         : `${variable.replace("_Data available", "")}`
-    }`
-    if(variable === 'Reproductive_History1' || variable === 'Reproductive_History2'){
+    }`;
+    if (
+      variable === "Reproductive_History1" ||
+      variable === "Reproductive_History2"
+    ) {
       template += `<button class="info-btn variable-definition" aria-label="More info" data-keyboard="false" data-backdrop="static" data-toggle="modal" 
                     data-target="#confluenceMainModal"  data-variable='${variable}'>
-                    <i class="fas fa-question-circle cursor-pointer"></i></button>`
+                    <i class="fas fa-question-circle cursor-pointer"></i></button>`;
     }
     template += `</label>
                     </li>`;
@@ -483,16 +499,30 @@ const addEventMidsetFilterForm = (data) => {
   ethnicity.addEventListener("change", () => {
     filterMidsetData(data);
   });
+
   const variables = document.getElementsByClassName("select-variable");
   Array.from(variables).forEach((ele) => {
     ele.addEventListener("click", () => {
       filterMidsetData(data);
     });
   });
-
+  const cohortsAllCheckbox = document.getElementById("cohortallcheckbox");
   const cohorts = document.getElementsByClassName("select-cohort");
   Array.from(cohorts).forEach((ele) => {
-    ele.addEventListener("click", () => {
+    ele.addEventListener("change", () => {
+      const selectedCohorts = document.querySelectorAll(
+        ".select-cohort:checked"
+      );
+      if (selectedCohorts.length < cohorts.length) {
+        cohortsAllCheckbox.checked = false;
+      }
+      filterMidsetData(data);
+    });
+  });
+
+  cohortsAllCheckbox.addEventListener("change", (e) => {
+    Array.from(cohorts).forEach((input) => {
+      input.checked = e.target.checked;
       filterMidsetData(data);
     });
   });
@@ -523,26 +553,26 @@ const filterMidsetData = (data) => {
   const selectedCohorts = getSelectedVariables("midsetCohorts");
 
   let newData = data;
-  console.log(newData);
-  if (selectedCohorts.length > 0) {
-    newData = newData.filter(({ Cohort }) => {
-      return selectedCohorts.indexOf(Cohort) > -1;
-    });
+  // if (selectedCohorts.length > 0) {
+  newData = newData.filter((filterItem) => {
+    if (filterItem) {
+      return selectedCohorts.indexOf(filterItem.Cohort) > -1;
+    }
+  });
+  // }
+
+  if (ethnicity !== "all") {
+    newData = newData.filter((dt) => dt.ethnicity === ethnicity);
   }
-  
-  console.log(ethnicity);
-  if(ethnicity !== 'all') {
-    newData = newData.filter(dt => dt.ethnicity === ethnicity)
-  };
 
   // newData = newData.filter(
   //   (dt) => dt.ethnicity === (ethnicity.toLowerCase() !== "all" ? ethnicity : "0")
   // );
 
   console.log(newData);
-  if(race !== 'all') {
-    newData = newData.filter(dt => dt.race === race)
-  };
+  if (race !== "all") {
+    newData = newData.filter((dt) => dt.race === race);
+  }
   // newData = newData.filter(
   //   (dt) => dt.race === (race.toLowerCase() !== "all" ? race : "1")
   // );
@@ -718,7 +748,7 @@ const midset = (data, acceptedVariables) => {
     }
 
     template += "</tbody></table>";
-  } else template += "Data not available.";
+  } else template += "Data not found";
 
   hideAnimation();
   document.getElementById("missingnessTable").innerHTML = template;
