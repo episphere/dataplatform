@@ -366,25 +366,28 @@ const renderMidsetFilterData = (
       anc[1] === "All" ? "selected" : ""
     }>${anc[1]}</option>`;
   });
-  template += `</select>
+  template += `</select></div>
         <div class="form-group" id='midsetCohorts'>
-          <label class="filter-label font-size-13" for="studiesList">Cohort</label>
+        <li class="filter-list-item">
+          <label class="filter-label font-size-13" for="studiesList">Cohort<span class='required-label'>*&nbsp;</span></label>
+          <label>
+          <input id="cohortallcheckbox"checked type="checkbox" class="cohort-name" title="all">
+                Check All
+          </label>
+        </li>
                 `;
-
+  // cohortsTemplate += `
+  //   <li class="filter-list-item">
+  //     <input
+  //       type="checkbox"
+  //       id="cohortallcheckbox" checked
+  //     />
+  //     <label for="cohortallcheckbox" class="cohort-name" title="all">
+  //       Check All
+  //     </label>
+  //   </li>
+  // `;
   let cohortsTemplate = "<ul class='remove-padding-left font-size-15'>";
-
-  cohortsTemplate += `
-    <li class="filter-list-item">
-      <input
-        type="checkbox"
-        id="cohortallcheckbox" checked
-      />
-      <label for="cohortallcheckbox" class="cohort-name" title="all">
-        Check All
-      </label>
-    </li>
-  `;
-
   for (let cohort of acceptedCohorts) {
     //${acceptedCohorts.indexOf(cohort) !== -1 ? "checked" : ""}
     cohortsTemplate += `
