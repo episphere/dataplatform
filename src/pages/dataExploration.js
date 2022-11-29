@@ -366,12 +366,11 @@ const renderMidsetFilterData = (
       anc[1] === "All" ? "selected" : ""
     }>${anc[1]}</option>`;
   });
-  template += `</select>
+  template += `</select></div>
         <div class="form-group" id='midsetCohorts'>
         <li class="filter-list-item">
-          <label class="filter-label font-size-13" for="studiesList">Cohort<span class='required-label'>*</span>
-          </label>
-          </label>
+          <label class="filter-label font-size-13" for="studiesList">Cohort<span class='required-label'>*&nbsp;</span></label>
+          <label>
           <input id="cohortallcheckbox"checked type="checkbox" class="cohort-name" title="all">
                 Check All
           </label>
