@@ -372,7 +372,7 @@ const renderMidsetFilterData = (
           <label class="filter-label font-size-13" for="studiesList">Cohort<span class='required-label'>*</span>
           </label>
           </label>
-          <input id="cohortallcheckbox" type="checkbox" class="cohort-name" title="all">
+          <input id="cohortallcheckbox"checked type="checkbox" class="cohort-name" title="all">
                 Check All
           </label>
         </li>
