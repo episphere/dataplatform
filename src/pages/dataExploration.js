@@ -129,6 +129,31 @@ export const dataSummaryStatisticsTemplate = () => {
   addEventFilterBarToggle();
 };
 
+/**
+ * 1. title must be string
+ * 2. value => array[string]
+ *
+ * @param {string} title
+ * @param {string[]} value
+ * @returns html template
+ */
+const filterItemTemplate = (title, values) => {
+  if (values.length > 6) {
+    return `
+<span class="font-bold">${title}:</span>
+<span>
+${values.slice(0, 5).join(", ")} 
+</span>
+`;
+  } else
+    return `
+    <span class="font-bold">${title}:</span>
+    <span>
+    ${values.join(", ")}
+    </span>
+  `;
+};
+
 export const dataSummaryMissingTemplate = async () => {
   //   const div1 = document.createElement("div");
   //   // div1.classList = ['row'];
@@ -171,7 +196,7 @@ export const dataSummaryMissingTemplate = async () => {
   //const status = headers.filter((dt) => /status_/i.test(dt) === true);
   console.log({ headers });
   const initialSelection =
-    variables.length > 5 ? variables.slice(0, 5) : variables;
+    variables.length > 6 ? variables.slice(0, 6) : variables;
   // const studies = data.map(dt => dt['study']).filter((item, i, ar) => ar.indexOf(item) === i);
   // const studies = {};
   // data.forEach((dt) => {
@@ -213,35 +238,30 @@ export const dataSummaryMissingTemplate = async () => {
   div1.id = "missingnessFilter";
 
   const div2 = document.createElement("div");
-  div2.classList = ["col-xl-10"];
-  //***Removed the below to remove the top bar until we have it working again.***
-  // div2.innerHTML = `
-  //       <button id="filterBarToggle">
-  //           <i class="fas fa-lg fa-caret-left"></i>
-  //       </button>
-  //       <div class="main-summary-row" style="min-height: 10px;margin-bottom: 1rem;margin-left: 1rem;">
-  //           <div class="col white-bg div-border align-left font-size-17" style="padding: 0.5rem;" id="listFilters">
-  //               <!---<span class="font-bold">Status:</span> All<span class="vertical-line"></span>--->
-  //               <span class="font-bold">Cohort:</span> All
-  //               ${
-  //                 initialSelection.length > 0
-  //                   ? `
-  //                   <span class="vertical-line"></span><span class="font-bold">Variable: </span>${
-  //                     initialSelection[0]
-  //                   } ${
-  //                       initialSelection.length > 1
-  //                         ? `and <span class="other-variable-count">${
-  //                             initialSelection.length - 1
-  //                           } other</span>`
-  //                         : ``
-  //                     }
-  //               `
-  //                   : ``
-  //               }
-  //           </div>
-  //       </div>
-  //       `;
 
+  /**
+   
+   * 2. Create a function to make one filter item
+   */
+
+  div2.classList = ["col-xl-10"];
+  div2.innerHTML = `
+        <button id="filterBarToggle">
+            <i class="fas fa-lg fa-caret-left"></i>
+        </button>
+        <div class="main-summary-row" style="min-height: 10px;margin-bottom: 1rem;margin-left: 1rem;">
+            <div class="col white-bg div-border align-left font-size-17" style="padding: 0.5rem;" id="listFilters">
+                <!---<span class="font-bold">Status:</span> All<span class="vertical-line"></span>--->
+                ${filterItemTemplate("Cohort", ["All"])}
+                <span style="padding-left: 5px; padding-right: 5px">|</span>
+                ${filterItemTemplate("Race", ["All"])}
+                <span style="padding-left: 5px; padding-right: 5px">|</span>
+                ${filterItemTemplate("Ethnicity", ["All"])}
+                <span style="padding-left: 5px; padding-right: 5px">|</span>
+                ${filterItemTemplate("Variable", ["All"])}
+            </div>
+        </div>
+        `;
   const row = document.createElement("div");
   row.classList = ["main-summary-row div-border overflow-x mb-2"];
   row.id = "missingnessTable";
@@ -484,6 +504,46 @@ const renderMidsetFilterData = (
   addEventMidsetFilterForm(data);
 };
 
+const generateFilterSummery = () => {
+  // id => listFilters
+  const raceEl = document.getElementById("raceSelection");
+  const raceValue = raceEl.value;
+  const raceText = Array.from(raceEl.options).find(
+    (el) => el.value.toString() === raceValue.toString()
+  ).text;
+  const ethnicityEl = document.getElementById("ethnicitySelection");
+  const ethnicityValue = ethnicityEl.value;
+  const ethnicityText = Array.from(ethnicityEl.options).find(
+    (el) => el.value.toString() === ethnicityValue.toString()
+  ).text;
+
+  const selectedVariables = getSelectedVariables("midsetVariables");
+  const selectedCohorts = getSelectedVariables("midsetCohorts");
+  console.log({ selectedCohorts });
+
+  const container = document.getElementById("listFilters");
+
+  container.innerHTML = `
+  ${filterItemTemplate(
+    "Cohort",
+    selectedCohorts.filter((cohort) => {
+      return cohort !== undefined;
+    })
+  )}
+                <span style="padding-left: 5px; padding-right: 5px">|</span>
+                ${filterItemTemplate("Race", [raceText])}
+                <span style="padding-left: 5px; padding-right: 5px">|</span>
+                ${filterItemTemplate("Ethnicity", [ethnicityText])}
+                <span style="padding-left: 5px; padding-right: 5px">|</span>
+                ${filterItemTemplate("Variable", selectedVariables)}
+  `;
+
+  /**
+   * 1. getElementByID(listFilters)
+   * 2. set innerHtml
+   * 3.
+   */
+};
 const addEventMidsetFilterForm = (data) => {
   // const status = document.getElementById('statusSelection');
   // status.addEventListener('change', () => {
@@ -497,15 +557,18 @@ const addEventMidsetFilterForm = (data) => {
   const race = document.getElementById("raceSelection");
   race.addEventListener("change", () => {
     filterMidsetData(data);
+    generateFilterSummery();
   });
   const ethnicity = document.getElementById("ethnicitySelection");
   ethnicity.addEventListener("change", () => {
+    generateFilterSummery();
     filterMidsetData(data);
   });
 
   const variables = document.getElementsByClassName("select-variable");
   Array.from(variables).forEach((ele) => {
     ele.addEventListener("click", () => {
+      generateFilterSummery();
       filterMidsetData(data);
     });
   });
@@ -519,6 +582,7 @@ const addEventMidsetFilterForm = (data) => {
       if (selectedCohorts.length < cohorts.length) {
         cohortsAllCheckbox.checked = false;
       }
+      generateFilterSummery();
       filterMidsetData(data);
     });
   });
@@ -526,6 +590,7 @@ const addEventMidsetFilterForm = (data) => {
   cohortsAllCheckbox.addEventListener("change", (e) => {
     Array.from(cohorts).forEach((input) => {
       input.checked = e.target.checked;
+      generateFilterSummery();
       filterMidsetData(data);
     });
   });
@@ -556,13 +621,13 @@ const filterMidsetData = (data) => {
   const selectedCohorts = getSelectedVariables("midsetCohorts");
 
   let newData = data;
-  // if (selectedCohorts.length > 0) {
-  newData = newData.filter((filterItem) => {
-    if (filterItem) {
-      return selectedCohorts.indexOf(filterItem.Cohort) > -1;
-    }
-  });
-  // }
+  if (selectedCohorts.length > 0) {
+    newData = newData.filter((filterItem) => {
+      if (filterItem) {
+        return selectedCohorts.indexOf(filterItem.Cohort) > -1;
+      }
+    });
+  }
 
   if (ethnicity !== "all") {
     newData = newData.filter((dt) => dt.ethnicity === ethnicity);
@@ -632,6 +697,17 @@ const getSelectedVariables = (parentId) => {
   return selections;
 };
 
+// const getSelectedValues = (parentId) => {
+//   const selections = [];
+//   let cardBody = document.getElementById(parentId);
+//   const variables = cardBody.querySelectorAll("input:checked");
+//   Array.from(variables).forEach((el) => {
+//     console.log({ el });
+//     selections.push(el.dataset.variable);
+//   });
+//   return selections;
+// };
+
 const midset = (data, acceptedVariables) => {
   let template = "";
   let plotData = [];
@@ -644,7 +720,6 @@ const midset = (data, acceptedVariables) => {
     return;
   }
   if (data.length > 0) {
-    console.log("MIAD INJA");
     template +=
       '<table class="table table-hover table-borderless missingness-table table-striped"><thead class="midset-table-header">';
     const headerCount = computeHeader(data, acceptedVariables);
@@ -756,12 +831,14 @@ const midset = (data, acceptedVariables) => {
   hideAnimation();
   document.getElementById("missingnessTable").innerHTML = template;
   addEventVariableDefinitions();
+  //if (data.length > 0){
   renderMidsetPlot(plotData.reverse(), "midsetChart");
   renderMidsetHeader(
     acceptedVariables,
     Object.values(headerData),
     "midsetHeader"
   );
+  //};
   reSizePlots();
 };
 
