@@ -12,10 +12,6 @@ import {
 import { variables } from "./variables.js";
 import { addEventSummaryStatsFilterForm } from "./event.js";
 
-// dc = require('dc');
-// d3 = require('d3');
-// crossfilter = require('crossfilter2');
-
 const plotTextSize = 10.5;
 
 const chartLabels = {
@@ -267,49 +263,10 @@ export const addEventConsortiumSelect = () => {
       }
     });
   });
-
-  // this is for the old one when we had a group of chckboxes, this would toggle all of them
-  // don't neet it anymore
-
-  // const consortiums = document.querySelectorAll(".select-consortium input");
-  // console.log({ consortiums });
-  // Array.from(consortiums).forEach((el) => {
-  //   el.addEventListener("click", (e) => {
-  //     console.log({ e: e.target });
-  // if (el.checked) {
-  //   Array.from(el.parentNode.querySelectorAll(".select-study")).forEach(
-  //     (btns) => (btns.checked = true)
-  //   );
-  // } else {
-  //   Array.from(el.parentNode.querySelectorAll(".select-study")).forEach(
-  //     (btns) => (btns.checked = false)
-  //   );
-  // }
-  //   });
-  // });
-
   const cohorts = document.querySelectorAll(".select-cohorts .select-study");
   console.log({ cohorts });
   Array.from(cohorts).forEach((element) => {
-    element.addEventListener("click", () => {
-      // const allStudiesInConsortium =
-      //   element.parentElement.querySelectorAll(".select-study").length;
-      // console.log({ allStudiesInConsortium });
-      // const selectedStudiesInConsortium =
-      //   element.parentElement.querySelectorAll(
-      //     "input:checked.select-study"
-      //   ).length;
-      // console.log({ selectedStudiesInConsortium });
-      // if (allStudiesInConsortium === selectedStudiesInConsortium) {
-      //   element.parentElement.parentElement.parentElement.querySelector(
-      //     ".select-consortium"
-      //   ).checked = true;
-      // } else {
-      //   element.parentElement.parentElement.parentElement.querySelector(
-      //     ".select-consortium"
-      //   ).checked = false;
-      // }
-    });
+    element.addEventListener("click", () => {});
   });
 };
 
@@ -505,19 +462,6 @@ const generateAgeBarChart = (parameter, id, labelID, jsonData, chartRow) => {
       type: "bar",
     },
   ];
-  // let total = 0;
-  // total += mapReduce(jsonData, '<20');
-  // total += mapReduce(jsonData, '20 to 29');
-  // total += mapReduce(jsonData, '30 to 39');
-  // total += mapReduce(jsonData, '40 to 49');
-  // total += mapReduce(jsonData, '50 to 59');
-  // total += mapReduce(jsonData, '60 to 69');
-  // total += mapReduce(jsonData, '70 to 79');
-  // total += mapReduce(jsonData, '80 to 89');
-  // total += mapReduce(jsonData, '90 to 99');
-  // total += mapReduce(jsonData, '>99');
-  // total += mapReduce(jsonData, 'age_DK');
-
   const layout = {
     xaxis: {
       fixedrange: true,
@@ -533,7 +477,6 @@ const generateAgeBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "rgba(0,0,0,0)",
-    // title : total,
   };
   Plotly.newPlot(`${id}`, data, layout, {
     responsive: true,
@@ -717,13 +660,6 @@ const generateTumorGradeBarChart = (
     cardBodyId: id,
   });
   document.getElementById(chartRow).appendChild(div);
-  // jsonData.forEach((element) => {
-  //     for(const key in element) {
-  //         if (key.startsWith('grade_primary1'))
-  //             if(isNaN(parseInt(element[key])) === false)
-  //             total += parseInt(element[key]);
-  //     }
-  // } )
   const data = [
     {
       x: [
@@ -853,12 +789,6 @@ const generateBirthBarChart = (parameter, id, labelID, jsonData, chartRow) => {
   document.getElementById(
     labelID
   ).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
-
-  // const div1 = document.createElement('div');
-  // div1.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
-  // div1.innerHTML = dataVisulizationCards({cardHeaderId: 'test', cardBodyId: 'testChart'});
-  // document.getElementById('chartRow2').appendChild(div1);
-  //renderDCSummaryStats();
 };
 
 const generateMenarcheBarChart = (
