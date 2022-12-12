@@ -872,15 +872,6 @@ const generateParityBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     .map((dt) => parseInt(dt["parous_0"]))
     .filter((dt) => isNaN(dt) === false);
   let total = 0;
-
-  // jsonData.forEach((element) => {
-  //     for(const key in element) {
-  //         if (key.startsWith('parous'))
-  //             if(isNaN(parseInt(element[key])) === false)
-  //             total += parseInt(element[key]);
-  //     }
-  // } )
-
   const data = [
     {
       x: ["Nullparous", "Parous", "Unknown"],
@@ -911,12 +902,6 @@ const generateParityBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "rgba(0,0,0,0)",
-    // annotations : [
-    //     {
-    //         text: total
-    //     }
-    // ]
-    // title : total,
   };
   Plotly.newPlot(`${id}`, data, layout, {
     responsive: true,
@@ -1010,13 +995,6 @@ const generatePregnaciesBarChart = (
     },
   ];
   let total = 0;
-  // jsonData.forEach((element) => {
-  //     for(const key in element) {
-  //         if (key.startsWith('parity')) //&& !(key.endsWith('14') || key.endsWith('15') || key.endsWith('16') ))
-  //             if(isNaN(parseInt(element[key])) === false)
-  //             total += parseInt(element[key]);
-  //     }
-  // } )
   const layout = {
     xaxis: {
       type: "category",
@@ -1087,14 +1065,6 @@ const generateBMIBarChart = (parameter, id, labelID, jsonData, chartRow) => {
       type: "bar",
     },
   ];
-  // let total = 0;
-  // jsonData.forEach((element) => {
-  //     for(const key in element) {
-  //         if (key.startsWith('bmi_'))
-  //             if(isNaN(parseInt(element[key])) === false)
-  //             total += parseInt(element[key]);
-  //     }
-  // } )
   const layout = {
     xaxis: {
       type: "category",
@@ -1111,8 +1081,6 @@ const generateBMIBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "rgba(0,0,0,0)",
-
-    // title : total,
   };
   Plotly.newPlot(`${id}`, data, layout, {
     responsive: true,
@@ -1122,7 +1090,6 @@ const generateBMIBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     labelID
   ).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
 };
-
 const generateYearsDiagBarChart = (
   parameter,
   id,
@@ -1504,16 +1471,3 @@ const dataVisulizationCards = (obj) => `
             </div>
         </div>
     `;
-// export const renderDCSummaryStats = async () => {
-//     //create chart objects
-//     const volumeChart = new dc.BarChart('#testChart');
-//     //load the data
-//     // const {jsonData, headers} = csvJSON(await getFile(summaryStatsFileId)); // Get summary level data
-//     let summaryFile = await getFile(summaryStatsFileId); // Get summary level data
-//     console.log('Summary File:', summaryFile);
-//     d3.csv(summaryFile).then(data => {
-//         console.log('Summary file data',data);
-//     });
-
-//create crossfilters
-//}
