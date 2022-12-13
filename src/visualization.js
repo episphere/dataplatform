@@ -216,7 +216,7 @@ const getStudies = (jsonData) => {
   jsonData.forEach((value) => {
     // console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
     // console.log('Total subjects', totalSubjects);
-    console.log({ value });
+    //console.log({ value });
     if (obj[value.study] === undefined) obj[value.study] = {};
     if (obj[value.study]) {
       if (obj[value.study]["consortiumTotal"] === undefined)
@@ -1571,6 +1571,7 @@ const dataVisulizationCards = (obj) => `
             </div>
             <div class="card-body viz-card-body">
                 <div class="dataSummary-chart" id="${obj.cardBodyId}"></div>
+                <div><p>Download Data</p></div>
             </div>
         </div>
     `;
