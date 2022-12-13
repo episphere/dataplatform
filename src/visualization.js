@@ -294,27 +294,27 @@ export const renderAllCharts = (data) => {
   dataVisulizationCards2({
     cardHeaderId: "testHead0",
     cardBodyId: "testBod0",
-  },"chartRow1", finalData)
+  },"chartRow1", finalData, 0)
   dataVisulizationCards2({
     cardHeaderId: "testHead1",
     cardBodyId: "testBod1",
-  },"chartRow1", finalData)
+  },"chartRow1", finalData, 1)
   dataVisulizationCards2({
     cardHeaderId: "testHead2",
     cardBodyId: "testBod2",
-  },"chartRow1", finalData)
+  },"chartRow1", finalData, 2)
   dataVisulizationCards2({
     cardHeaderId: "testHead3",
     cardBodyId: "testBod3",
-  },"chartRow2", finalData)
+  },"chartRow2", finalData, 3)
   dataVisulizationCards2({
     cardHeaderId: "testHead4",
     cardBodyId: "testBod4",
-  },"chartRow2", finalData)
+  },"chartRow2", finalData, 4)
   dataVisulizationCards2({
     cardHeaderId: "testHead5",
     cardBodyId: "testBod5",
-  },"chartRow2", finalData)
+  },"chartRow2", finalData, 5)
 
   // generateBirthBarChart("bYear", "dataSummaryVizChart1", "dataSummaryVizLabel1", finalData,"chartRow1");
   // generateAgeBarChart("ageInt","dataSummaryVizChart2","dataSummaryVizLabel2",finalData,"chartRow1");
@@ -407,14 +407,14 @@ export const getSelectedStudies = () => {
   return array;
 };
 
-const generateAgeBarChart = (parameter, id, labelID, jsonData, chartRow) => {
-  const div = document.createElement("div");
-  div.classList = ["col-xl-4 pl-2 padding-right-zero mb-3"];
-  div.innerHTML = dataVisulizationCards({
-    cardHeaderId: labelID,
-    cardBodyId: id,
-  });
-  document.getElementById(chartRow).appendChild(div);
+const generateAgeBarChart = (id, jsonData) => {
+  // const div = document.createElement("div");
+  // div.classList = ["col-xl-4 pl-2 padding-right-zero mb-3"];
+  // div.innerHTML = dataVisulizationCards({
+  //   cardHeaderId: labelID,
+  //   cardBodyId: id,
+  // });
+  // document.getElementById(chartRow).appendChild(div);
   const data = [
     {
       x: [
@@ -804,20 +804,14 @@ const generateBirthBarChart = (id, jsonData) => {
   //document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
 };
 
-const generateMenarcheBarChart = (
-  parameter,
-  id,
-  labelID,
-  jsonData,
-  chartRow
-) => {
-  const div = document.createElement("div");
-  div.classList = ["col-xl-4 pl-2 padding-right-zero mb-3"];
-  div.innerHTML = dataVisulizationCards({
-    cardHeaderId: labelID,
-    cardBodyId: id,
-  });
-  document.getElementById(chartRow).appendChild(div);
+const generateMenarcheBarChart = (id, jsonData) => {
+  // const div = document.createElement("div");
+  // div.classList = ["col-xl-4 pl-2 padding-right-zero mb-3"];
+  // div.innerHTML = dataVisulizationCards({
+  //   cardHeaderId: labelID,
+  //   cardBodyId: id,
+  // });
+  // document.getElementById(chartRow).appendChild(div);
 
   const data = [
     {
@@ -870,14 +864,14 @@ const generateMenarcheBarChart = (
   //document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
 };
 
-const generateParityBarChart = (parameter, id, labelID, jsonData, chartRow) => {
-  const div = document.createElement("div");
-  div.classList = ["col-xl-4 pl-2 padding-right-zero mb-3"];
-  div.innerHTML = dataVisulizationCards({
-    cardHeaderId: labelID,
-    cardBodyId: id,
-  });
-  document.getElementById(chartRow).appendChild(div);
+const generateParityBarChart = (id, jsonData) => {
+  // const div = document.createElement("div");
+  // div.classList = ["col-xl-4 pl-2 padding-right-zero mb-3"];
+  // div.innerHTML = dataVisulizationCards({
+  //   cardHeaderId: labelID,
+  //   cardBodyId: id,
+  // });
+  // document.getElementById(chartRow).appendChild(div);
 
   const filteredData = jsonData
     .map((dt) => parseInt(dt["parous_0"]))
@@ -936,20 +930,14 @@ const generateParityBarChart = (parameter, id, labelID, jsonData, chartRow) => {
   //document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
 };
 
-const generatePregnaciesBarChart = (
-  parameter,
-  id,
-  labelID,
-  jsonData,
-  chartRow
-) => {
-  const div = document.createElement("div");
-  div.classList = ["col-xl-4 pl-2 padding-right-zero mb-3"];
-  div.innerHTML = dataVisulizationCards({
-    cardHeaderId: labelID,
-    cardBodyId: id,
-  });
-  document.getElementById(chartRow).appendChild(div);
+const generatePregnaciesBarChart = (id,jsonData) => {
+  // const div = document.createElement("div");
+  // div.classList = ["col-xl-4 pl-2 padding-right-zero mb-3"];
+  // div.innerHTML = dataVisulizationCards({
+  //   cardHeaderId: labelID,
+  //   cardBodyId: id,
+  // });
+  // document.getElementById(chartRow).appendChild(div);
   const data = [
     {
       x: [
@@ -1052,14 +1040,14 @@ const generatePregnaciesBarChart = (
   //document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
 };
 
-const generateBMIBarChart = (parameter, id, labelID, jsonData, chartRow) => {
-  const div = document.createElement("div");
-  div.classList = ["col-xl-4 pl-2 padding-right-zero mb-3"];
-  div.innerHTML = dataVisulizationCards({
-    cardHeaderId: labelID,
-    cardBodyId: id,
-  });
-  document.getElementById(chartRow).appendChild(div);
+const generateBMIBarChart = (id, jsonData) => {
+  // const div = document.createElement("div");
+  // div.classList = ["col-xl-4 pl-2 padding-right-zero mb-3"];
+  // div.innerHTML = dataVisulizationCards({
+  //   cardHeaderId: labelID,
+  //   cardBodyId: id,
+  // });
+  // document.getElementById(chartRow).appendChild(div);
   const data = [
     {
       x: [
@@ -1510,7 +1498,7 @@ const dataVisulizationCards = (obj) => `
         </div>
     `;
 
-const dataVisulizationCards2 = (obj, chartRow, finalData) => {
+const dataVisulizationCards2 = (obj, chartRow, finalData, pos) => {
   const div = document.createElement("div");
   div.classList = ["col-xl-4 pl-2 padding-right-zero mb-3"];
   div.innerHTML = `
@@ -1531,12 +1519,35 @@ const dataVisulizationCards2 = (obj, chartRow, finalData) => {
     var item = new Option(test_var[i], test_var[i]);
     console.log(item);
     selectID.options.add(item);
+    if (i==pos) {
+      selectID.options[i].selected = true;
+      ChangeVis();
+    };
   };
-  selectID.addEventListener("change", ChangeVis);
 
+
+  selectID.addEventListener("change", ChangeVis);
   function ChangeVis() {
-    console.log(document.getElementById(obj.cardHeaderId).value);
-    generateBirthBarChart(obj.cardBodyId,finalData);
+    var selval = document.getElementById(obj.cardHeaderId).value;
+    console.log(selval);
+    if (selval === 'bYear') {
+      generateBirthBarChart(obj.cardBodyId,finalData)
+    };
+    if (selval === 'ageInt') {
+      generateAgeBarChart(obj.cardBodyId,finalData)
+    };
+    if (selval === 'ageMenarche') {
+      generateMenarcheBarChart(obj.cardBodyId,finalData)
+    };
+    if (selval === 'parous') {
+      generateParityBarChart(obj.cardBodyId,finalData)
+    };
+    if (selval === 'parity') {
+      generatePregnaciesBarChart(obj.cardBodyId,finalData)
+    };
+    if (selval === 'BMI') {
+      generateBMIBarChart(obj.cardBodyId,finalData)
+    };
   };
 };
 
