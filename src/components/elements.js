@@ -103,53 +103,49 @@ export function renderFilePreviewDropdown(files, tab){
     console.log('Not an array');
     return
     }
-//if(files.length != 0){
-//   
-//    template += `<div class='card-body'>
-//            <div class='card-title'>
-//            <label for='${tab}selectedDoc'>Choose the file you'd like to preview</label><br>
-//            <select id='${tab}selectedDoc'>
-//            
-//            `;
-//    
-//    for (const file of files) { 
-//      //console.log('File', file);
-//      template += `
-//              <option value='${file.id}'>
-//              ${file.name}</option>`;
-//    }
-//=======
     if(files.length != 0){
-        //console.log('Param is array length: ' + files.length);
-        template += `<div class='card-body'>
+        console.log(tab);
+        if(tab !== 'daccReview' && tab !== 'dacctoBeCompleted' && tab !== 'completed' && tab !== 'decided'){
+        template += `<div class='card-body p-0'>
                 <div class='card-title'>
-                <label for='${tab}selectedDoc'><b>Select Document:</b></label>
+                <label for='${tab}selectedDoc'>
+                    <b>Select Concept Form:</b>
+                    <div class='text-muted small'>Hold Ctrl to select multiple concept forms </div>
+                </label>
                 <br>
-                <select id='${tab}selectedDoc'>
+                <select id='${tab}selectedDoc' multiple size='3'>
             `;
+        } else {
+            template += `<div class='card-body p-0'>
+                <div class='card-title'>
+                <label for='${tab}selectedDoc'>
+                    <b>Select Concept Form:</b>
+                </label>
+                <br>
+                <select id='${tab}selectedDoc'>`;
+        }
 
         for (const file of files) { 
-        //console.log('File', file);
         template += `
                 <option value='${file.id}'>
                 ${file.name}</option>`;
         }
-//>>>>>>> master
 
         template += `
                 </select>
                 </div>
                 </div>  
             </div>`
+    
     } else {
     template += `
-              No files to show.            
+    <br>
+              No files to show.    
     </div>
     
     `
     }
 
-//   console.log(tab, template);
   
   return template;
   

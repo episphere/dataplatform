@@ -51,13 +51,20 @@ import {
     getSelectedStudies,
     renderAllCasesCharts,
     renderAllCharts,
-    updateCounts
+    updateCounts,
+    getFileContent,
+    getFileContentCases
 } from './visualization.js';
 
 import {
     showPreview
 } from './components/boxPreview.js';
+
+import {
+    viewFinalDecisionFiles
+} from './pages/dataRequest.js';
 let top = 0;
+let previousValue = '';
 
 export const addEventStudyRadioBtn = () => {
     const createStudyRadio = document.getElementsByName('createStudyRadio');
@@ -1135,6 +1142,18 @@ export const addEventVariableDefinitions = () => {
                 variableName = 'Side bars';
                 definition = "Number of subjects with data on a combination 2 or more selected variables.";
             }
+            if (variable === 'varSelection') {
+                variableName = 'Variable Selection';
+                definition = 'Input here';
+            }
+            if (variable === 'Reproductive_History1') {
+                variableName = 'Reproductive History 1';
+                definition = 'Definition of Reproductive History 1';
+            }
+            if (variable === 'Reproductive_History2') {
+                variableName = 'Reproductive History 2';
+                definition = 'Definition of Reproductive History 2';
+            }
 
             const header = document.getElementById('confluenceModalHeader');
             const body = document.getElementById('confluenceModalBody');
@@ -1367,9 +1386,15 @@ export const addEventSummaryStatsFilterForm = (jsonData, headers) => {
         filterData(jsonData, headers);
     });
 
+    // const subcasesSelection = document.getElementById('subcasesSelection');
+    // subcasesSelection.addEventListener('change', () => {
+    //     filterData(jsonData, headers);
+    // });
+
     const subcasesSelection = document.getElementById('subcasesSelection');
-    subcasesSelection.addEventListener('change', () => {
-        filterData(jsonData, headers);
+    subcasesSelection.addEventListener('change', function (event) {
+        if (event.target.value == 'all') getFileContent()
+        if (event.target.value == 'cases') getFileContentCases()
     });
 
     const elements = document.getElementsByClassName('select-consortium');
@@ -1464,6 +1489,11 @@ const filterData = (jsonData, headers) => {
     //     <span class="font-bold">Genotyping chip: </span>${chipFilter}${selectedStudies.length > 0 ? `
     //     <span class="vertical-line"></span><span class="font-bold">Study: </span>${selectedStudies[0]} ${selectedStudies.length > 1 ? `and <span class="other-variable-count">${selectedStudies.length-1} other</span>`:``}
     // `:``}`
+    let totalSubjects = 0;
+    finalData.forEach(value => {
+        //console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
+        totalSubjects += value.TotalSubjects;
+    })
     if (subCases == 'all') {
         renderAllCharts(finalData);
     } else renderAllCasesCharts(finalData);
@@ -1521,9 +1551,29 @@ export function switchTabs(show, hide, files) {
         } else if (!Array.isArray(files)) {
             console.log('files not in an array');
             return;
+        } else if (show === 'decided') {
+            document.getElementById(show + 'Tab').addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log(show, 'Tab clicked');
+
+                const boxPreview = document.getElementById('filePreview');
+                boxPreview.classList.remove('d-block');
+                boxPreview.classList.add('d-none');
+
+                for (const tab of hide) {
+
+                    document.getElementById(tab + 'Tab').classList.remove('active');
+                    document.getElementById(tab).classList.remove('show', 'active');
+                }
+                document.getElementById(show + 'Tab').classList.add('active');
+                document.getElementById(show).classList.add('show', 'active');
+
+                localStorage.setItem('currentTab', show + 'Tab');
+                return;
+            });
         } else {
             const boxPreview = document.getElementById('filePreview');
-            
+
             document.getElementById(show + 'Tab').addEventListener('click', (e) => {
                 e.preventDefault();
                 console.log(show, 'Tab clicked');
@@ -1536,54 +1586,70 @@ export function switchTabs(show, hide, files) {
                         switchFiles(show);
                         document.getElementById(show + 'selectedDoc').value = files[0].id;
                         showPreview(files[0].id);
-                        if(show !== 'toBeCompleted'){
+                        if (show !== 'toBeCompleted') {
                             document.getElementById('boxFilePreview').classList.add('col-8');
                             showComments(files[0].id);
-                        }
-                        else {
-                            document.getElementById('fileComments').innerHTML = '';
+                        } else {
+                            //document.getElementById('fileComments').innerHTML = '';
                             document.getElementById('boxFilePreview').classList.remove('col-8');
                         }
                         // let response = async () => { let test = await listComments('945509107663');//files[0].id);
                         //     console.log(test);
                         //     }
-                        if (show == 'toBeCompleted'){
-                            document.getElementById('sendtodaccButton').style.display="block";
-                            document.getElementById('finalChairDecision').style.display="none";
-                            
+                        if (show === 'toBeCompleted') {
+                            document.getElementById('sendtodaccButton').style.display = "block";
+                            document.getElementById('finalChairDecision').style.display = "none";
+                            document.getElementById('daccOverride').style.display = 'none';
+                            document.getElementById('fileComments').style.display = 'none';
                             // document.getElementById('fileComments').innerHTML = listComments(files[0].id);
-                        }  
-                        if (show == 'inProgress'){
-                            document.getElementById('sendtodaccButton').style.display="none";
-                            document.getElementById('finalChairDecision').style.display="none";
-                            }
-                        if (show == 'daccCompleted'){
-                            document.getElementById('sendtodaccButton').style.display="none";
-                            document.getElementById('finalChairDecision').style.display="block";
-                            }
-                        if (show == 'accepted'){
-                            document.getElementById('sendtodaccButton').style.display="none";
-                            document.getElementById('finalChairDecision').style.display="none";
-                            }
-                        if (show == 'dacctoBeCompleted'){
-                            document.getElementById('daccComment').style.display="block";
                         }
-                        if (show == 'completed'){
-                            document.getElementById('daccComment').style.display="none";
+                        if (show === 'inProgress') {
+                            document.getElementById('sendtodaccButton').style.display = "none";
+                            document.getElementById('fileComments').style.display = 'block';
+                            document.getElementById('finalChairDecision').style.display = "none";
+                            document.getElementById('daccOverride').style.display = 'block';
+                            document.getElementById('fileComments').style.display = 'block';
+
+                        }
+                        if (show === 'daccCompleted') {
+                            document.getElementById('sendtodaccButton').style.display = "none";
+                            document.getElementById('daccOverride').style.display = 'none';
+                            document.getElementById('fileComments').style.display = 'block';
+                            document.getElementById('finalChairDecision').style.display = "block";
+                            document.getElementById('fileComments').style.display = 'block';
+                        }
+                        if (show === 'dacctoBeCompleted') {
+                            document.getElementById('daccComment').style.display = "block";
+                        }
+                        if (show === 'completed') {
+                            console.log('did this work?');
+                            document.getElementById('daccComment').style.display = "none";
+                        }
+                        if (show === 'daccReview') {
+                            document.getElementById('boxFilePreview').classList.add('col-8');
+                            document.getElementById('daccComment').style.display = "block";
+                            showComments(files[0].id);
                         }
                     } else {
                         boxPreview.classList.remove('d-block');
                         boxPreview.classList.add('d-none');
+                        if (show === 'completed') {
+                            if (document.getElementById('daccComment')) {
+                                document.getElementById('daccComment').style.display = "none";
+                            }
+                        }
                     }
                 }
 
                 for (const tab of hide) {
-                   
+
                     document.getElementById(tab + 'Tab').classList.remove('active');
                     document.getElementById(tab).classList.remove('show', 'active');
                 }
                 document.getElementById(show + 'Tab').classList.add('active');
                 document.getElementById(show).classList.add('show', 'active');
+
+                localStorage.setItem('currentTab', show + 'Tab');
                 return;
             })
         }
@@ -1598,5 +1664,193 @@ export function switchFiles(tab) {
         const file_id = e.target.value
         showPreview(file_id);
         showComments(file_id);
-      });
+    });
+}
+
+export function filterCheckBox(table, data) {
+    //Get all the elements
+    // const tBody = table.tBodies[0];
+
+    // const rows = Array.from(tBody.querySelectorAll('tr'));
+
+    const rows = Array.from(document.getElementsByClassName('filedata'));
+
+    //Get all selected filter variables
+    const selectedFilters = Array.from(document.getElementsByClassName('filter-var')).filter(dt => dt.checked);
+
+    const selectedDecisions = selectedFilters.filter(dt => dt.dataset.variableColumn === 'Decision').map(dt => dt.dataset.variableType)
+    const selectedSubmitters = selectedFilters.filter(dt => dt.dataset.variableColumn === 'Submitter').map(dt => dt.dataset.variableType)
+    console.log('Current filters', selectedFilters);
+    console.log('Current Decision', selectedDecisions);
+    console.log('Current Submitter(s)', selectedSubmitters);
+    console.log(data);
+
+    //Set filter values
+    let filteredData = data;
+    const filter = {};
+    if (selectedDecisions.length > 0) filter['Decision'] = selectedDecisions;
+    if (selectedSubmitters.length > 0) filter['Submitter'] = selectedSubmitters;
+
+    if (selectedFilters.length === 0) filteredData = data;
+    else {
+        // filteredDecisions = data.filter(dt => selectedDecisions.indexOf(dt.parent.name) !== -1);
+        console.log('Filter', filter);
+        filteredData = filteredData.filter(dt => {
+            for (const key in filter) {
+                if (key === 'Decision') {
+                    if (!filter[key].includes(dt.parent.name)) {
+                        return false
+                    }
+                }
+                if (key === 'Submitter') {
+                    if (!filter[key].includes(dt.created_by.name))
+                        return false;
+                }
+            }
+
+            return true;
+        })
+
+
+    }
+
+
+
+    // Filter on search
+    let searchedData;
+    const input = document.getElementById('searchDataDictionary');
+    const currentValue = input.value.trim().toLowerCase();
+    console.log(currentValue);
+    if (currentValue.length <= 2 && (previousValue.length > 2 || previousValue.length === 0)) {
+        console.log('Search too short');
+        searchedData = filteredData;
+    } else {
+        previousValue = currentValue;
+
+        searchedData = JSON.parse(JSON.stringify(filteredData)).filter(dt => {
+            let found = false;
+            if (dt.name.toLowerCase().includes(currentValue)) {
+                found = true;
+            }
+            if (dt.created_by.name.toLowerCase().includes(currentValue)) {
+                found = true;
+            }
+            if (dt.parent.name.toLowerCase().includes(currentValue)) {
+                found = true;
+            }
+            if (found) return dt;
+
+        });
+
+    }
+
+
+    console.log('Searched Data', searchedData);
+    //If file not in the showRows then add it
+    let showRows = [];
+    searchedData.forEach(file => {
+        const row_id = 'file' + file.id;
+        console.log(row_id);
+        if (showRows.indexOf(row_id) === -1) {
+            showRows.push(row_id);
+        }
+    })
+    console.log('Show rows', showRows);
+    rows.forEach(row => {
+        console.log(row);
+        if (showRows.includes(row.id))
+            row.parentElement.style.display = 'block';
+        else
+            row.parentElement.style.display = 'none';
+    })
+
+}
+export function sortTableByColumn(table, column, asc = true) {
+    const direction = asc ? 1 : -1;
+    const rows = Array.from(document.getElementsByClassName('filedata'));
+    // const tBody = table.tBodies[0];
+
+    // const rows = Array.from(tBody.querySelectorAll('tr'));
+
+    //Get only visible rows
+    let filteredRows = rows;
+    filteredRows = filteredRows.filter(row => row.parentElement.style.display !== 'none');
+    //Sort each row
+    // if (column === 2 || column === 4) {
+    //     let dateCols = Array.from(document.getElementsByClassName('fileDate'));
+    //     let dates = dateCols.map(date => {
+
+    //         console.log(new Date(date.innerText));
+    //         return new Date(date.innerText)
+    //     })
+
+    // } else {
+    const sortedRows = filteredRows.sort((a, b) => {
+        let aContent = '';
+        let bContent = '';
+        if (column === 0) {
+            aContent = a.firstElementChild.firstElementChild.textContent.trim().toLowerCase();
+            bContent = b.firstElementChild.firstElementChild.textContent.trim().toLowerCase();
+        }    
+        else {
+            bContent = b.querySelector(`div:nth-child(${ column + 1})`).textContent.trim().toLowerCase();
+            aContent = a.querySelector(`div:nth-child(${ column + 1})`).textContent.trim().toLowerCase();
+
+        }
+        // bContent = b.querySelector(`td:nth-child(${ column + 1})`).textContent.trim().toLowerCase();
+        // aContent = a.querySelector(`td:nth-child(${ column + 1})`).textContent.trim().toLowerCase();
+        if(!isNaN(Date.parse(aContent)) && !isNaN(Date.parse(bContent))){
+            console.log(Date.parse(aContent) - Date.parse(bContent));
+                return Date.parse(aContent) - Date.parse(bContent) > 0 ? 1 * direction : -1 * direction;
+        }
+
+        return aContent > bContent ? (1 * direction) : (-1 * direction);
+    })
+// console.log(dates);
+console.log(sortedRows);
+//Remove all filedata
+// while(document.getElementById('files').firstChild){
+//     document.getElementById('files').removeChilddocument.getElementById('files').firstChild;
+// }
+sortedRows.forEach(row => {
+    row.parentElement.remove();
+})
+
+// while(tBody.firstChild){
+//     tBody.removeChild(tBody.firstChild);
+// }
+
+//Add Data Back
+sortedRows.forEach(row => {
+    const divEl = document.createElement('div')
+    divEl.classList.add('card', 'mt-1', 'mb-1', 'align-left');
+    divEl.appendChild(row);
+    document.getElementById('files').appendChild(divEl);
+})
+// tBody.append(...sortedRows);
+
+//Remember how colmmn is sorted
+// table.querySelectorAll("th").forEach(th => th.classList.remove("th-sort-asc", "th-sort-desc"));
+//     table.querySelector(`th:nth-child(${ column + 1})`).classList.toggle("th-sort-asc", asc);
+//     table.querySelector(`th:nth-child(${ column + 1})`).classList.toggle("th-sort-desc", !asc);
+// }
+Array.from(table.querySelectorAll('.header-sortable')).forEach(header => {
+    header.classList.remove('header-sort-asc', 'header-sort-desc');
+
+})
+// const columnIcons = document.getElementsByClassName('sort-column');
+// let i = 0;
+// while(columnIcons.length != 0){
+//     columnIcons[i].remove();
+//     i++;
+// }
+console.log(direction);
+if (direction === 1) {
+    console.log('Ascending');
+    table.querySelector(`.div-sticky`).children[column].classList.toggle('header-sort-asc', direction);
+} else {
+    console.log('Descending');
+    table.querySelector(`.div-sticky`).children[column].classList.toggle('header-sort-desc', -direction);
+}
+
 }

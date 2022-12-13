@@ -1,17 +1,10 @@
-function createBoxPreview(id) {
-    const node = document.createElement('div');
-    node.classList.add('preview-container');
-    node.id = `file${id}Preview`; 
-    return node;
-}
-
-export function showPreview(id) {
+export function showPreview(file_id, div_id='boxFilePreview' ) {
   const access_token = JSON.parse(localStorage.parms).access_token;
   try{ 
-    console.log("SHOWING PREVIEW", id);
-    let previewContainer = document.getElementById('boxFilePreview');
+    console.log("SHOWING PREVIEW", file_id);
+    let previewContainer = document.getElementById(div_id);
     var preview = new Box.Preview();
-    preview.show(id, access_token, {
+    preview.show(file_id, access_token, {
       container: previewContainer,
       showDownload: true,
       header: 'light'
