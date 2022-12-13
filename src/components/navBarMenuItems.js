@@ -141,10 +141,10 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
       link.href = `#${page}/overview`;
       if (activeTab === "overview") link.classList.add("active");
     }
-    if (header === "Project Concept Form") {
-      link.href = `#${page}/form`;
-      if (activeTab === "form") link.classList.add("active");
-    }
+    // if (header === "Project Concept Form") {
+    //   link.href = `#${page}/form`;
+    //   if (activeTab === "form") link.classList.add("active");
+    // }
     if (header === "View Submissions") {
       link.href = `#userSubmissions`;
       console.log(
