@@ -1,6 +1,6 @@
 import { applicationURLs, emailforChair, emailforDACC } from "./../shared.js";
-const showProjectConceptForm = false;
-const viewSubmissionsShow = false;
+const showProjectConceptForm = true;
+const viewSubmissionsShow = true;
 export const navBarMenutemplate = () => {
   return `
         <div class="grid-elements">
