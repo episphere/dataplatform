@@ -97,8 +97,8 @@ export const dataAccess = (activeTab, showDescripton) => {
       "data_access",
       activeTab,
       "Overview",
-      //"Project Concept Form",
-      //"View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "Chair Menu",
       "DACC Menu"
     );
