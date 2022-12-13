@@ -139,39 +139,7 @@ const allFilters = (jsonData, headers, caseSelection) => {
                 </select>
             </div>
     `;
-  // template += `
-  // <div class="form-group" style="display: none">
-  //     <label class="filter-label font-size-13" for="consortiumTypeSelection">Consortium</label>
-  //     <select class="form-control font-size-15" id="consortiumTypeSelection">
-  //         <option value='allOther'>Non-CIMBA</option>
-  //     </select>
-  // </div>
-  // `
-  //console.log(obj)
-  // for(let consortium in obj){
-  //     let innerTemplate = `
-  //                 <ul class="remove-padding-left font-size-15 consortium-ul" data-consortium="${consortium}">
-  //                     <li class="custom-borders filter-list-item">
-  //                         <button type="button" class="consortium-selection consortium-selection-btn" data-toggle="collapse" href="#toggle${consortium.replace(/ /g, '')}">
-  //                             <i class="fas fa-caret-down"></i>
-  //                         </button>
-  //                         <input type="checkbox" data-consortia="${consortium}" id="label${consortium}" class="select-consortium"/>
-  //                         <label for="label${consortium}" class="consortia-name">${consortium}</label>
-  //                     </li>
-  //                     <ul class="collapse no-list-style custom-padding allow-overflow max-height-study-list" id="toggle${consortium.replace(/ /g, '')}">`;
-  //     for(let study in obj[consortium]){
-  //         if(study !== 'consortiumTotal') {
-  //             const total = obj[consortium][study].total;
-  //             innerTemplate += `<li class="filter-list-item">
-  //                             <input type="checkbox" data-study="${study}" data-consortium="${consortium}" id="label${study}" class="select-study"/>
-  //                             <label for="label${study}" class="study-name" title="${study}">${study.length > 10 ? `${study.substr(0,10)}...`:study}</label>
-  //                         </li>`;
-  //         }
-  //     }
-  //     innerTemplate += `</ul></ul>`
-  //     template += innerTemplate;d
 
-  // }
   template += `</br>
     </div>`;
   div1.innerHTML = template;
@@ -216,7 +184,7 @@ const getStudies = (jsonData) => {
   jsonData.forEach((value) => {
     // console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
     // console.log('Total subjects', totalSubjects);
-    console.log({ value });
+    //console.log({ value });
     if (obj[value.study] === undefined) obj[value.study] = {};
     if (obj[value.study]) {
       if (obj[value.study]["consortiumTotal"] === undefined)
@@ -321,54 +289,39 @@ export const renderAllCharts = (data) => {
 
   let totalSubjects = 0;
   data.forEach((value) => (totalSubjects += parseInt(value.TotalSubjects)));
-  document.getElementById(
-    "participantCount"
-  ).innerHTML = `<b>No. of Participants:</b> ${totalSubjects.toLocaleString(
-    "en-US"
-  )}`;
+  document.getElementById("participantCount").innerHTML = `<b>No. of Participants:</b> ${totalSubjects.toLocaleString("en-US")}`;
 
-  generateBirthBarChart(
-    "bYear",
-    "dataSummaryVizChart1",
-    "dataSummaryVizLabel1",
-    finalData,
-    "chartRow1"
-  );
-  generateAgeBarChart(
-    "ageInt",
-    "dataSummaryVizChart2",
-    "dataSummaryVizLabel2",
-    finalData,
-    "chartRow1"
-  );
-  generateMenarcheBarChart(
-    "ageMenarche",
-    "dataSummaryVizChart3",
-    "dataSummaryVizLabel3",
-    finalData,
-    "chartRow1"
-  );
-  generateParityBarChart(
-    "parous",
-    "dataSummaryVizChart4",
-    "dataSummaryVizLabel4",
-    finalData,
-    "chartRow2"
-  );
-  generatePregnaciesBarChart(
-    "parity",
-    "dataSummaryVizChart5",
-    "dataSummaryVizLabel5",
-    finalData,
-    "chartRow2"
-  );
-  generateBMIBarChart(
-    "BMI",
-    "dataSummaryVizChart6",
-    "dataSummaryVizLabel6",
-    finalData,
-    "chartRow2"
-  );
+  dataVisulizationCards2({
+    cardHeaderId: "testHead0",
+    cardBodyId: "testBod0",
+  },"chartRow1", finalData)
+  dataVisulizationCards2({
+    cardHeaderId: "testHead1",
+    cardBodyId: "testBod1",
+  },"chartRow1", finalData)
+  dataVisulizationCards2({
+    cardHeaderId: "testHead2",
+    cardBodyId: "testBod2",
+  },"chartRow1", finalData)
+  dataVisulizationCards2({
+    cardHeaderId: "testHead3",
+    cardBodyId: "testBod3",
+  },"chartRow2", finalData)
+  dataVisulizationCards2({
+    cardHeaderId: "testHead4",
+    cardBodyId: "testBod4",
+  },"chartRow2", finalData)
+  dataVisulizationCards2({
+    cardHeaderId: "testHead5",
+    cardBodyId: "testBod5",
+  },"chartRow2", finalData)
+
+  // generateBirthBarChart("bYear", "dataSummaryVizChart1", "dataSummaryVizLabel1", finalData,"chartRow1");
+  // generateAgeBarChart("ageInt","dataSummaryVizChart2","dataSummaryVizLabel2",finalData,"chartRow1");
+  // generateMenarcheBarChart("ageMenarche","dataSummaryVizChart3","dataSummaryVizLabel3",finalData,"chartRow1");
+  // generateParityBarChart("parous","dataSummaryVizChart4","dataSummaryVizLabel4",finalData,"chartRow2");
+  // generatePregnaciesBarChart("parity","dataSummaryVizChart5","dataSummaryVizLabel5",finalData,"chartRow2");
+  // generateBMIBarChart("BMI","dataSummaryVizChart6","dataSummaryVizLabel6",finalData,"chartRow2");
 };
 
 export const renderAllCasesCharts = (data) => {
@@ -539,9 +492,7 @@ const generateAgeBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     responsive: true,
     displayModeBar: false,
   });
-  document.getElementById(
-    labelID
-  ).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
+  //document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
 };
 
 const generateDetectionPrimBarChart = (
@@ -770,14 +721,14 @@ const generateTumorGradeBarChart = (
   ).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
 };
 
-const generateBirthBarChart = (parameter, id, labelID, jsonData, chartRow) => {
-  const div = document.createElement("div");
-  div.classList = ["col-xl-4 pl-2 padding-right-zero mb-3"];
-  div.innerHTML = dataVisulizationCards({
-    cardHeaderId: labelID,
-    cardBodyId: id,
-  });
-  document.getElementById(chartRow).appendChild(div);
+const generateBirthBarChart = (id, jsonData) => {
+  // const div = document.createElement("div");
+  // div.classList = ["col-xl-4 pl-2 padding-right-zero mb-3"];
+  // div.innerHTML = dataVisulizationCards({
+  //   cardHeaderId: labelID,
+  //   cardBodyId: id,
+  // });
+  // document.getElementById(chartRow).appendChild(div);
   const data = [
     {
       x: [
@@ -850,15 +801,7 @@ const generateBirthBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     responsive: true,
     displayModeBar: false,
   });
-  document.getElementById(
-    labelID
-  ).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
-
-  // const div1 = document.createElement('div');
-  // div1.classList = ['col-xl-4 pl-2 padding-right-zero mb-3'];
-  // div1.innerHTML = dataVisulizationCards({cardHeaderId: 'test', cardBodyId: 'testChart'});
-  // document.getElementById('chartRow2').appendChild(div1);
-  //renderDCSummaryStats();
+  //document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
 };
 
 const generateMenarcheBarChart = (
@@ -924,9 +867,7 @@ const generateMenarcheBarChart = (
     responsive: true,
     displayModeBar: false,
   });
-  document.getElementById(
-    labelID
-  ).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
+  //document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
 };
 
 const generateParityBarChart = (parameter, id, labelID, jsonData, chartRow) => {
@@ -992,9 +933,7 @@ const generateParityBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     responsive: true,
     displayModeBar: false,
   });
-  document.getElementById(
-    labelID
-  ).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
+  //document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
 };
 
 const generatePregnaciesBarChart = (
@@ -1110,9 +1049,7 @@ const generatePregnaciesBarChart = (
     responsive: true,
     displayModeBar: false,
   });
-  document.getElementById(
-    labelID
-  ).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
+  //document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
 };
 
 const generateBMIBarChart = (parameter, id, labelID, jsonData, chartRow) => {
@@ -1188,9 +1125,7 @@ const generateBMIBarChart = (parameter, id, labelID, jsonData, chartRow) => {
     responsive: true,
     displayModeBar: false,
   });
-  document.getElementById(
-    labelID
-  ).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
+  //document.getElementById(labelID).innerHTML = `${variables.BCRPP[parameter]["label"]}`;
 };
 
 const generateYearsDiagBarChart = (
@@ -1574,6 +1509,42 @@ const dataVisulizationCards = (obj) => `
             </div>
         </div>
     `;
+
+const dataVisulizationCards2 = (obj, chartRow, finalData) => {
+  const div = document.createElement("div");
+  div.classList = ["col-xl-4 pl-2 padding-right-zero mb-3"];
+  div.innerHTML = `
+      <div style="height:100%" class="card div-border background-white">
+          <div class="card-header">
+              <span class="data-summary-label-wrap"><select id="${obj.cardHeaderId}"></select></span>
+          </div>
+          <div class="card-body viz-card-body">
+              <div class="dataSummary-chart" id="${obj.cardBodyId}"></div>
+          </div>
+      </div>
+    </div>
+  `;
+  document.getElementById(chartRow).appendChild(div);
+  var selectID = document.getElementById(obj.cardHeaderId);
+  var i;
+  for (i=0; i<test_var.length; i++) {
+    var item = new Option(test_var[i], test_var[i]);
+    console.log(item);
+    selectID.options.add(item);
+  };
+  selectID.addEventListener("change", ChangeVis);
+
+  function ChangeVis() {
+    console.log(document.getElementById(obj.cardHeaderId).value);
+    generateBirthBarChart(obj.cardBodyId,finalData);
+  };
+};
+
+// export function ChangeVis(selid) {
+//   console.log(selid);
+// }
+
+const test_var = ["bYear", "ageInt", "ageMenarche", "parous", "parity", "BMI"];
 // export const renderDCSummaryStats = async () => {
 //     //create chart objects
 //     const volumeChart = new dc.BarChart('#testChart');
