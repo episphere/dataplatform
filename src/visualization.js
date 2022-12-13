@@ -1504,7 +1504,7 @@ const dataVisulizationCards2 = (obj, chartRow, finalData, pos) => {
   div.innerHTML = `
       <div style="height:100%" class="card div-border background-white">
           <div class="card-header">
-              <span class="data-summary-label-wrap"><select id="${obj.cardHeaderId}"></select></span>
+          <span class="select-wrapper"><select id="${obj.cardHeaderId}"></select></span>
           </div>
           <div class="card-body viz-card-body">
               <div class="dataSummary-chart" id="${obj.cardBodyId}"></div>
@@ -1516,8 +1516,9 @@ const dataVisulizationCards2 = (obj, chartRow, finalData, pos) => {
   var selectID = document.getElementById(obj.cardHeaderId);
   var i;
   for (i=0; i<test_var.length; i++) {
-    var item = new Option(test_var[i], test_var[i]);
-    console.log(item);
+    var item = new Option(variables.BCRPP[test_var[i]]["label"], test_var[i]);
+    //`${variables.BCAC[parameter]["label"]}`
+    //console.log(item);
     selectID.options.add(item);
     if (i==pos) {
       selectID.options[i].selected = true;
