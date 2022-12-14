@@ -27,11 +27,6 @@ export const aboutConfluence = (activeTab, showDescripton) => {
 // Changes needed here for definitions
 export const renderOverView = async () => {
   let template = `
-        <div class="main-summary-row">
-            <div class="align-left">
-                <h1 class="page-header">Learn about BCRPP</h1>
-            </div>
-        </div>
         <div class="home-page-stats font-size-18">
             <div class="main-summary-row">
                 <div class="col align-left">
@@ -58,11 +53,6 @@ export const renderOverView = async () => {
         </div>
     `;
   document.getElementById("overview").innerHTML = template;
-  // getPublicFile('27jmuhandgz9qnc3tz81cx4v3rb87rrc', publicDataFileId).then(response => {
-  //     const data = response.data;
-  //     if(!data) return;
-  //     countPublicStatistics(data, true);
-  // });
   const response = await fetch("./publicDataSet.json");
   countPublicStatistics(await response.json(), true);
 };
@@ -83,7 +73,6 @@ const countPublicStatistics = (d, caseControl) => {
                     <!---<span class="font-size-15">Cohort:</span></br>--->
                     <ul class="about-consortia" id='about-consortia-check'>
     `;
-  //if(caseControl) delete data['CIMBA'];
   for (let key in data) {
     if (!caseControl && key !== "CIMBA") continue;
     if (key === "dataModifiedAt") continue;
@@ -128,12 +117,9 @@ const addEventOverviewConsortiumSelection = (data) => {
   if (!select) return;
   select.addEventListener("change", () => {
     const selectedValue = select.value;
-    //if(selectedValue === 'cimba') countPublicStatistics(data, false);
-    //else countPublicStatistics(data, true);
     countPublicStatistics(data, true);
   });
 };
-
 export const renderDataSummary = (obj, caseControl) => {
   document.getElementById("renderDataSummaryCounts").innerHTML = `
         <div class="row">

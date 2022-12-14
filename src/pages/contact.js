@@ -1,4 +1,3 @@
-// Requires email return (replace confluence)
 export const confluenceContactPage = () => {
   return `
         <div class="general-bg padding-bottom-1rem">

@@ -13,10 +13,9 @@ export const navBarMenutemplate = () => {
                 About BCRPP
             </button>
             <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-                <h6 class="dropdown-header dropdown-header-bg font-bold">Learn About BCRPP</h6>
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#about/overview" id="aboutBCRPP">Overview</a>
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#about/description" id="resourcesBCRPP">Description of Studies</a>
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#contact" id="contactBCRPP">Scientific Committee</a>
+                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#contact" id="contactBCRPP">Scientific Committee</a>
             </div>
         </div>
         <div class="grid-elements dropdown">
@@ -111,7 +110,6 @@ export const navBarMenutemplate = () => {
         </div>
     `;
 };
-
 export function pageNavBar(page, activeTab, ...pageHeaders) {
   const containerEl = document.createElement("div");
   containerEl.classList.add("container");
@@ -141,18 +139,19 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
       link.href = `#${page}/overview`;
       if (activeTab === "overview") link.classList.add("active");
     }
-    if (header === "Project Concept Form") {
-      link.href = `#${page}/form`;
-      if (activeTab === "form") link.classList.add("active");
-    }
-    if (header === "View Submissions") {
-      link.href = `#userSubmissions`;
-      console.log(
-        "Active Tab in View Submissions",
-        activeTab === "User Submissions"
-      );
-      if (activeTab === "User Submissions") link.classList.add("active");
-    }
+    // keeping this part for future use to get "Project Concept Form" and "View Submissions" back.
+    // if (header === "Project Concept Form") {
+    //   link.href = `#${page}/form`;
+    //   if (activeTab === "form") link.classList.add("active");
+    // }
+    // if (header === "View Submissions") {
+    //   link.href = `#userSubmissions`;
+    //   console.log(
+    //     "Active Tab in View Submissions",
+    //     activeTab === "User Submissions"
+    //   );
+    //   if (activeTab === "User Submissions") link.classList.add("active");
+    // }
     if (header === "Chair Menu") {
       link.href = `#${page}/chairView`;
       if (activeTab === "chairView") link.classList.add("active");

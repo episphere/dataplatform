@@ -135,39 +135,7 @@ const allFilters = (jsonData, headers, caseSelection) => {
                 </select>
             </div>
     `;
-  // template += `
-  // <div class="form-group" style="display: none">
-  //     <label class="filter-label font-size-13" for="consortiumTypeSelection">Consortium</label>
-  //     <select class="form-control font-size-15" id="consortiumTypeSelection">
-  //         <option value='allOther'>Non-CIMBA</option>
-  //     </select>
-  // </div>
-  // `
-  //console.log(obj)
-  // for(let consortium in obj){
-  //     let innerTemplate = `
-  //                 <ul class="remove-padding-left font-size-15 consortium-ul" data-consortium="${consortium}">
-  //                     <li class="custom-borders filter-list-item">
-  //                         <button type="button" class="consortium-selection consortium-selection-btn" data-toggle="collapse" href="#toggle${consortium.replace(/ /g, '')}">
-  //                             <i class="fas fa-caret-down"></i>
-  //                         </button>
-  //                         <input type="checkbox" data-consortia="${consortium}" id="label${consortium}" class="select-consortium"/>
-  //                         <label for="label${consortium}" class="consortia-name">${consortium}</label>
-  //                     </li>
-  //                     <ul class="collapse no-list-style custom-padding allow-overflow max-height-study-list" id="toggle${consortium.replace(/ /g, '')}">`;
-  //     for(let study in obj[consortium]){
-  //         if(study !== 'consortiumTotal') {
-  //             const total = obj[consortium][study].total;
-  //             innerTemplate += `<li class="filter-list-item">
-  //                             <input type="checkbox" data-study="${study}" data-consortium="${consortium}" id="label${study}" class="select-study"/>
-  //                             <label for="label${study}" class="study-name" title="${study}">${study.length > 10 ? `${study.substr(0,10)}...`:study}</label>
-  //                         </li>`;
-  //         }
-  //     }
-  //     innerTemplate += `</ul></ul>`
-  //     template += innerTemplate;d
 
-  // }
   template += `</br>
     </div>`;
   div1.innerHTML = template;
@@ -180,16 +148,6 @@ const aggegrateData = (jsonData) => {
   let obj = {};
   // obj['totalSubjects'] = 0;
   jsonData.forEach((value) => {
-    // console.log(
-    //   "Total subjects in",
-    //   value.race,
-    //   value.study,
-    //   value.ethnicity,
-    //   "is",
-    //   value.TotalSubjects
-    // );
-
-    // console.log('Total subjects', totalSubjects);
     if (obj[value.consortium] === undefined) obj[value.consortium] = {};
     if (obj[value.consortium]) {
       if (obj[value.consortium]["consortiumTotal"] === undefined)
@@ -201,18 +159,12 @@ const aggegrateData = (jsonData) => {
       }
       obj[value.consortium][value.study].total += parseInt(value.total);
     }
-    // obj['totalSubjects'] += parseInt(value.TotalSubjects);
   });
-  // document.getElementById('participantCount').innerHTML = `# of participants: ${obj.totalSubjects}`;
   return obj;
 };
 const getStudies = (jsonData) => {
   let obj = {};
-  // obj['totalSubjects'] = 0;
   jsonData.forEach((value) => {
-    // console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
-    // console.log('Total subjects', totalSubjects);
-    console.log({ value });
     if (obj[value.study] === undefined) obj[value.study] = {};
     if (obj[value.study]) {
       if (obj[value.study]["consortiumTotal"] === undefined)
@@ -220,34 +172,23 @@ const getStudies = (jsonData) => {
       obj[value.study]["consortiumTotal"] += parseInt(value.total);
       obj[value.study].total += parseInt(value.total);
     }
-    // obj['totalSubjects'] += parseInt(value.TotalSubjects);
   });
-  // document.getElementById('participantCount').innerHTML = `# of participants: ${obj.totalSubjects}`;
   return obj;
 };
 const getRace = (jsonData) => {
   let obj = {};
   // obj['totalSubjects'] = 0;
   jsonData.forEach((value) => {
-    // console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
     obj[value.race] = value.race;
-
-    // console.log('Total subjects', totalSubjects);
-    // obj['totalSubjects'] += parseInt(value.TotalSubjects);
   });
-  // document.getElementById('participantCount').innerHTML = `# of participants: ${obj.totalSubjects}`;
   return obj;
 };
 const getEthnicity = (jsonData) => {
   let obj = {};
   // obj['totalSubjects'] = 0;
   jsonData.forEach((value) => {
-    // console.log('Total subjects in', value.race, value.study, value.ethnicity, 'is', value.TotalSubjects);
     obj[value.ethnicity] = value.ethnicity;
-    // console.log('Total subjects', totalSubjects);
-    // obj['totalSubjects'] += parseInt(value.TotalSubjects);
   });
-  // document.getElementById('participantCount').innerHTML = `# of participants: ${obj.totalSubjects}`;
   return obj;
 };
 export const addEventConsortiumSelect = () => {
@@ -264,18 +205,15 @@ export const addEventConsortiumSelect = () => {
     });
   });
   const cohorts = document.querySelectorAll(".select-cohorts .select-study");
-  console.log({ cohorts });
   Array.from(cohorts).forEach((element) => {
     element.addEventListener("click", () => {});
   });
 };
-
 export const renderAllCharts = (data) => {
   document.getElementById("chartRow1").innerHTML = "";
   document.getElementById("chartRow2").innerHTML = "";
   let finalData = {};
   finalData = data;
-
   let totalSubjects = 0;
   data.forEach((value) => (totalSubjects += parseInt(value.TotalSubjects)));
   document.getElementById(
@@ -398,7 +336,6 @@ export const updateCounts = (data) => {
     }
   }
 };
-// exactly
 export const getSelectedStudies = () => {
   const elements = document.querySelectorAll(`input:checked.select-study`);
   const array = [];
@@ -1104,7 +1041,6 @@ const generateYearsDiagBarChart = (
     cardBodyId: id,
   });
   document.getElementById(chartRow).appendChild(div);
-  console.log(jsonData);
   const data = [
     {
       x: [
