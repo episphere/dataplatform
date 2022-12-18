@@ -76,6 +76,12 @@ import { renderDescription } from "./src/pages/description.js";
 import { dataDictionaryTemplate } from "./src/pages/dictionary.js";
 import { showPreview } from "./src/components/boxPreview.js";
 
+/**
+ * 1. add Scientifix comitte to menu
+ * 2. add corresponsing page
+ * 3.
+ */
+
 export const confluence = async () => {
   if ("serviceWorker" in navigator) {
     try {
@@ -416,14 +422,16 @@ const manageRouter = async () => {
     document.title = "BCRPP - Resources";
     assignNavbarActive(element, 1);
     confluenceResources();
-  } else if (hash === "#contact") {
-    const element = document.getElementById("contactBCRPP");
-    if (!element) return;
-    if (element.classList.contains("navbar-active")) return;
-    document.title = "BCRPP - Contact";
-    assignNavbarActive(element, 1);
-    confluenceDiv.innerHTML = confluenceContactPage();
-  } else if (hash === "#data_access/overview") {
+  }
+  // else if (hash === "#contact") {
+  //   const element = document.getElementById("contactBCRPP");
+  //   if (!element) return;
+  //   if (element.classList.contains("navbar-active")) return;
+  //   document.title = "BCRPP - Contact";
+  //   assignNavbarActive(element, 1);
+  //   confluenceDiv.innerHTML = confluenceContactPage();
+  // }
+  else if (hash === "#data_access/overview") {
     const element = document.getElementById("dataRequest");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
@@ -588,6 +596,17 @@ const manageHash = async () => {
     aboutConfluence("overview", fileInfo ? true : false);
     renderOverView();
     hideAnimation();
+  } else if (hash === "#about/contact") {
+    const element = document.getElementById("aboutBCRPP");
+    console.log({ element });
+    if (!element) return;
+    assignNavbarActive(element, 1);
+    document.title = "BCRP - Scientific Committe";
+    const fileInfo = await getFileInfo(904897189551);
+    console.log({ fileInfo });
+    aboutConfluence("contact", fileInfo ? true : false);
+    confluenceContactPage();
+    hideAnimation();
   } else if (hash === "#about/description") {
     const element = document.getElementById("aboutBCRPP");
     if (!element) return;
@@ -606,15 +625,17 @@ const manageHash = async () => {
     document.title = "BCRP - Resources";
     confluenceResources();
     hideAnimation();
-  } else if (hash === "#contact") {
-    const element = document.getElementById("contactBCRPP");
-    if (!element) return;
-    if (element.classList.contains("navbar-active")) return;
-    assignNavbarActive(element, 1);
-    document.title = "BCRP - Committee";
-    confluenceDiv.innerHTML = confluenceContactPage();
-    hideAnimation();
-  } else window.location.hash = "#home";
+  }
+  // else if (hash === "#contact") {
+  //   const element = document.getElementById("contactBCRPP");
+  //   if (!element) return;
+  //   if (element.classList.contains("navbar-active")) return;
+  //   assignNavbarActive(element, 1);
+  //   document.title = "BCRP - Committee";
+  //   confluenceDiv.innerHTML = confluenceContactPage();
+  //   hideAnimation();
+  // }
+  else window.location.hash = "#home";
 };
 
 window.onload = async () => {

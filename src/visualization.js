@@ -128,7 +128,12 @@ const allFilters = (jsonData, headers, caseSelection) => {
             </div>
             
             <div class="form-group">
-                <label class="filter-label font-size-13" for="studySelection">Cohort</label>
+                <label class="filter-label font-size-13" for="studySelection">
+                  Cohort
+                  <a href="/#about/description">
+                    <img src="./static/images/icons/link-out.png" width="18" height="18" />
+                  </a>
+                </label>
                 <select class="form-control font-size-15" id="studySelection" data-variable='study'>
                     <option selected value='all'>All</option>
                     ${studyOptions}

@@ -170,7 +170,10 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
       link.href = `#${page}/description`;
       if (activeTab === "description") link.classList.add("active");
     }
-
+    if (header === "Scientific Committee") {
+      link.href = `#${page}/contact`;
+      if (activeTab === "contact") link.classList.add("active");
+    }
     if (header === "Summary Statistics") {
       link.href = `#${page}/summary`;
       if (activeTab === "summary") link.classList.add("active");

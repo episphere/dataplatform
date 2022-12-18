@@ -8,8 +8,19 @@ import { pageNavBar } from "../components/navBarMenuItems.js";
 
 export const aboutConfluence = (activeTab, showDescripton) => {
   let navBarItems = showDescripton
-    ? pageNavBar("about", activeTab, "Overview", "Description of Studies")
+    ? pageNavBar(
+        "about",
+
+        activeTab,
+
+        "Overview",
+
+        "Description of Studies",
+
+        "Scientific Committee"
+      )
     : `<div id='overview'></div>`;
+  console.log({ navBarItems });
   let template = `
         <div class="general-bg body-min-height padding-bottom-1rem">
             <div class="container">
