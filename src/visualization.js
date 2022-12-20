@@ -1409,6 +1409,7 @@ const dataVisulizationCards = (obj) => `
             </div>
             <div class="card-body viz-card-body">
                 <div class="dataSummary-chart" id="${obj.cardBodyId}"></div>
+                <!---<div><p>Download Data</p></div>--->
             </div>
         </div>
     `;

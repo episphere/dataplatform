@@ -1,6 +1,6 @@
 import { applicationURLs, emailforChair, emailforDACC } from "./../shared.js";
-const showProjectConceptForm = false;
-const viewSubmissionsShow = false;
+const showProjectConceptForm = true;
+const viewSubmissionsShow = true;
 export const navBarMenutemplate = () => {
   return `
         <div class="grid-elements">
@@ -139,6 +139,7 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
       link.href = `#${page}/overview`;
       if (activeTab === "overview") link.classList.add("active");
     }
+    
     // keeping this part for future use to get "Project Concept Form" and "View Submissions" back.
     // if (header === "Project Concept Form") {
     //   link.href = `#${page}/form`;

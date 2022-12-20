@@ -89,6 +89,8 @@ export const dataAccess = (activeTab, showDescripton) => {
   let authDacc =
     emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = "";
+  console.log(authChair);
+  console.log(authDacc);
   if (authDacc && authChair) {
     navBarItems = pageNavBar(
       "data_access",
