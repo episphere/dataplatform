@@ -131,7 +131,7 @@ const allFilters = (jsonData, headers, caseSelection) => {
                 <label class="filter-label font-size-13" for="studySelection">
                   Cohort
                   <a href="#about/description">
-                    <img src="./static/images/icons/link-out.png" width="18" height="18" />
+                    <img src="./static/images/icons/arrow_out.png" width="18" height="18" />
                   </a>
                 </label>
                 <select class="form-control font-size-15" id="studySelection" data-variable='study'>
