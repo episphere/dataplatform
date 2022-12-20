@@ -141,18 +141,18 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
     }
     
     // keeping this part for future use to get "Project Concept Form" and "View Submissions" back.
-    // if (header === "Project Concept Form") {
-    //   link.href = `#${page}/form`;
-    //   if (activeTab === "form") link.classList.add("active");
-    // }
-    // if (header === "View Submissions") {
-    //   link.href = `#userSubmissions`;
-    //   console.log(
-    //     "Active Tab in View Submissions",
-    //     activeTab === "User Submissions"
-    //   );
-    //   if (activeTab === "User Submissions") link.classList.add("active");
-    // }
+    if (header === "Project Concept Form") {
+      link.href = `#${page}/form`;
+      if (activeTab === "form") link.classList.add("active");
+    }
+    if (header === "View Submissions") {
+      link.href = `#userSubmissions`;
+      console.log(
+        "Active Tab in View Submissions",
+        activeTab === "User Submissions"
+      );
+      if (activeTab === "User Submissions") link.classList.add("active");
+    }
     if (header === "Chair Menu") {
       link.href = `#${page}/chairView`;
       if (activeTab === "chairView") link.classList.add("active");

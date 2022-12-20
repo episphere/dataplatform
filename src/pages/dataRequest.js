@@ -96,8 +96,8 @@ export const dataAccess = (activeTab, showDescripton) => {
       "data_access",
       activeTab,
       "Overview",
-      // "Project Concept Form",
-      // "View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "Chair Menu",
       "DACC Menu"
     );
@@ -106,8 +106,8 @@ export const dataAccess = (activeTab, showDescripton) => {
       "data_access",
       activeTab,
       "Overview",
-      // "Project Concept Form",
-      //"View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "Chair Menu"
     );
   } else if (authDacc) {
@@ -115,17 +115,17 @@ export const dataAccess = (activeTab, showDescripton) => {
       "data_access",
       activeTab,
       "Overview",
-      // "Project Concept Form",
-      //"View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "DACC Menu"
     );
   } else {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview"
-      // "Project Concept Form",
-      //"View Submissions"
+      "Overview",
+      "Project Concept Form",
+      "View Submissions"
     );
   }
   let template = `
@@ -181,8 +181,8 @@ export const formSectionOther = async (activeTab, showDescripton) => {
       "data_access",
       activeTab,
       "Overview",
-      //"Project Concept Form",
-      //"View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "Chair Menu",
       "DACC Menu"
     );
@@ -191,8 +191,8 @@ export const formSectionOther = async (activeTab, showDescripton) => {
       "data_access",
       activeTab,
       "Overview",
-      // "Project Concept Form",
-      // "View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "Chair Menu"
     );
   } else if (authDacc) {
@@ -200,17 +200,17 @@ export const formSectionOther = async (activeTab, showDescripton) => {
       "data_access",
       activeTab,
       "Overview",
-      // "Project Concept Form",
-      // "View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "DACC Menu"
     );
   } else {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview"
-      // "Project Concept Form",
-      //"View Submissions"
+      "Overview",
+      "Project Concept Form",
+      "View Submissions"
     );
   }
 
@@ -254,8 +254,8 @@ export const formSection = async (activeTab, showDescripton) => {
       "data_access",
       activeTab,
       "Overview",
-      // "Project Concept Form",
-      // "View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "Chair Menu",
       "DACC Menu"
     );
@@ -264,8 +264,8 @@ export const formSection = async (activeTab, showDescripton) => {
       "data_access",
       activeTab,
       "Overview",
-      // "Project Concept Form",
-      //"View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "Chair Menu"
     );
   } else if (authDacc) {
@@ -273,17 +273,17 @@ export const formSection = async (activeTab, showDescripton) => {
       "data_access",
       activeTab,
       "Overview",
-      //"Project Concept Form",
-      //  "View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "DACC Menu"
     );
   } else {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview"
-      // "Project Concept Form",
-      //"View Submissions"
+      "Overview",
+      "Project Concept Form",
+      "View Submissions"
     );
   }
   let template = `
@@ -805,8 +805,8 @@ export const acceptedStudiesSection = (activeTab) => {
       "data_access",
       activeTab,
       "Overview",
-      // "Project Concept Form",
-      // "View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "Chair Menu",
       "DACC Menu"
     );
@@ -815,8 +815,8 @@ export const acceptedStudiesSection = (activeTab) => {
       "data_access",
       activeTab,
       "Overview",
-      //"Project Concept Form",
-      // "View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "Chair Menu"
     );
   } else if (authDacc) {
@@ -824,17 +824,17 @@ export const acceptedStudiesSection = (activeTab) => {
       "data_access",
       activeTab,
       "Overview",
-      // "Project Concept Form",
-      //"View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "DACC Menu"
     );
   } else {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview"
-      // "Project Concept Form",
-      // "View Submissions"
+      "Overview",
+      "Project Concept Form",
+      "View Submissions"
     );
   }
   let template = `
@@ -915,8 +915,8 @@ export const chairSection = (activeTab) => {
       "data_access",
       activeTab,
       "Overview",
-      // "Project Concept Form",
-      // "View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "Chair Menu",
       "DACC Menu"
     );
@@ -925,8 +925,8 @@ export const chairSection = (activeTab) => {
       "data_access",
       activeTab,
       "Overview",
-      // "Project Concept Form",
-      // "View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "Chair Menu"
     );
   } else if (authDacc) {
@@ -934,17 +934,17 @@ export const chairSection = (activeTab) => {
       "data_access",
       activeTab,
       "Overview",
-      // "Project Concept Form",
-      // "View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "DACC Menu"
     );
   } else {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview"
-      // "Project Concept Form",
-      //  "View Submissions"
+      "Overview",
+      "Project Concept Form",
+      "View Submissions"
     );
   }
   let template = `
@@ -1434,8 +1434,8 @@ export const daccSection = (activeTab) => {
       "data_access",
       activeTab,
       "Overview",
-      //"Project Concept Form",
-      // "View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "Chair Menu",
       "DACC Menu"
     );
@@ -1444,8 +1444,8 @@ export const daccSection = (activeTab) => {
       "data_access",
       activeTab,
       "Overview",
-      //"Project Concept Form",
-      // "View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "Chair Menu"
     );
   } else if (authDacc) {
@@ -1453,17 +1453,17 @@ export const daccSection = (activeTab) => {
       "data_access",
       activeTab,
       "Overview",
-      //"Project Concept Form",
-      // "View Submissions",
+      "Project Concept Form",
+      "View Submissions",
       "DACC Menu"
     );
   } else {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview"
-      //"Project Concept Form",
-      //  "View Submissions"
+      "Overview",
+      "Project Concept Form",
+      "View Submissions"
     );
   }
   let template = `
