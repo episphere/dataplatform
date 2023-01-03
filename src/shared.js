@@ -6,7 +6,7 @@ export const emailsAllowedToUpdateData = [
   "ahearntu@nih.gov", "kopchickbp@nih.gov"
 ];
 
-export const emailforChair = ['Roger.Milne@cancervic.org.au','ahearntu@nih.gov', 'garciacm@nih.gov', 'sbehpour@deloitte.com','kopchickbp@nih.gov'];
+export const emailforChair = ['kopchickbp@nih.gov', 'Roger.Milne@cancervic.org.au','ahearntu@nih.gov', 'garciacm@nih.gov', 'sbehpour@deloitte.com','kopchickbp@nih.gov'];
 //  [
 // "Roger.Milne@cancervic.org.au",
 // "ahearntu@nih.gov",
