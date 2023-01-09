@@ -1832,7 +1832,7 @@ form {
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 350px;
-  background-image: url("../images/nci-vol-10623-150.jpg");
+  background-image: url("../images/hero-banner.jpg");
 }
 
 @media only screen and (max-device-width: 1366px) {
@@ -1843,8 +1843,8 @@ form {
 
 .active-page {
   color: #ffffff !important;
-  background-color: #343a40 !important;
-  border-color: #343a40 !important;
+  background-color: #252b32 !important;
+  border-color: #303841 !important;
 }
 
 .ws-nowrap {

@@ -9,9 +9,11 @@ export const infoDeck = () => {
                 <div class="banner-logo">
                     <div class="banner-overlay-text row justify-content-center text-center">
                         <div class="col-xl-12">
-                            <h1 class="banner-overlay-h1">The Breast Cancer Risk Prediction Project (BCRPP)</h1>
+                            <h1 class="banner-overlay-h1">DCEG Epidemiology Data Platforms
+                            </h1>
                             <div class="banner-overlay-line"></div>
-                            <h2 class="banner-overlay-h3" style="font-size:1.7vw;"> Building an integrated, multi-ethnic breast cancer risk prediction model</h2>
+                            <h2 class="banner-overlay-h3" style="font-size:1.7vw;"> FAIR principles in Support of Epidemiological Research
+                            </h2>
                         </div>
                     </div>
                 </div>
@@ -19,6 +21,7 @@ export const infoDeck = () => {
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`;
   template += cardContents({
+    header: "Learn about BCRPP",
     button: "Learn about BCRPP",
     href: "#about/overview",
     icon: "fa-download",
@@ -79,9 +82,11 @@ export const infoDeckAfterLoggedIn = async () => {
                 <div class="banner-logo">
                     <div class="banner-overlay-text row justify-content-center text-center">
                         <div class="col-md-12">
-                            <h1 class="banner-overlay-h1">The Breast Cancer Risk Prediction Project (BCRPP)</h1>
+                            <h1 class="banner-overlay-h1">DCEG Epidemiology Data Platforms
+                            </h1>
                             <div class="banner-overlay-line"></div>
-                            <h2 class="banner-overlay-h3" style="font-size:1.7vw;"> Building an integrated, multi-ethnic breast cancer risk prediction model</h2>
+                            <h2 class="banner-overlay-h3" style="font-size:1.7vw;"> FAIR principles in Support of Epidemiological Research
+                            </h2>
                         </div>
                     </div>
                 </div>

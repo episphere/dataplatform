@@ -1,4 +1,5 @@
 import { navBarMenutemplate } from "./src/components/navBarMenuItems.js";
+import { testPage2 } from "./src/pages/testpage.js";
 import { infoDeck, infoDeckAfterLoggedIn } from "./src/pages/homePage.js";
 import {
   dataSubmissionTemplate,
@@ -131,15 +132,13 @@ export const confluence = async () => {
     }
     navBarOptions.innerHTML = navBarMenutemplate();
     document.getElementById("logOutBtn").addEventListener("click", logOut);
-    const viewUserSubmissionElement =
-      document.getElementById("userSubmissions");
-
+    const viewUserSubmissionElement = document.getElementById("userSubmissions");
     const dataSubmissionElement = document.getElementById("dataSubmission");
     const dataSummaryElement = document.getElementById("dataSummary");
-    const dataSummarySubsetElement =
-      document.getElementById("dataSummarySubset");
+    const dataSummarySubsetElement = document.getElementById("dataSummarySubset");
     const dataDictionaryElement = document.getElementById("dataDictionary");
     const dataRequestElement = document.getElementById("dataRequest");
+    const ConsortiaPageElement = document.getElementById("data2");
     const dataFormElement = document.getElementById("dataForm");
     const studyAcceptedElement = document.getElementById("studyAccepted");
     const chairViewElement = document.getElementById("chairView");
@@ -334,6 +333,17 @@ export const confluence = async () => {
       confluenceDiv.innerHTML = dataRequestTemplate("overview");
       hideAnimation();
     });
+
+    ConsortiaPageElement.addEventListener("click", () => {
+      if (ConsortiaPageElement.classList.contains("navbar-active")) return;
+      const element = document.getElementById("data2");
+      if (!element) return;
+      if (element.classList.contains("navbar-active")) return;
+      document.title = "Testing";
+      assignNavbarActive(element, 1);
+      confluenceDiv.innerHTML = testPage2();
+      hideAnimation();
+    });
     const folders = await getFolderItems(0);
     const array = filterConsortiums(folders.entries);
     const projectArray = filterProjects(folders.entries);
@@ -422,22 +432,27 @@ const manageRouter = async () => {
     document.title = "BCRPP - Resources";
     assignNavbarActive(element, 1);
     confluenceResources();
-  }
-  // else if (hash === "#contact") {
-  //   const element = document.getElementById("contactBCRPP");
-  //   if (!element) return;
-  //   if (element.classList.contains("navbar-active")) return;
-  //   document.title = "BCRPP - Contact";
-  //   assignNavbarActive(element, 1);
-  //   confluenceDiv.innerHTML = confluenceContactPage();
-  // }
-  else if (hash === "#data_access/overview") {
+  } else if (hash === "#contact") {
+    const element = document.getElementById("contactBCRPP");
+    if (!element) return;
+    if (element.classList.contains("navbar-active")) return;
+    document.title = "BCRPP - Contact";
+    assignNavbarActive(element, 1);
+    confluenceDiv.innerHTML = confluenceContactPage();
+  } else if (hash === "#data_access/overview") {
     const element = document.getElementById("dataRequest");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
     document.title = "BCRPP - Data Access";
     assignNavbarActive(element, 1);
     confluenceDiv.innerHTML = dataAccessNotSignedIn();
+  } else if (hash === "#testpage") {
+    const element = document.getElementById("data2");
+    if (!element) return;
+    if (element.classList.contains("navbar-active")) return;
+    document.title = "BCRPP - Data Access";
+    assignNavbarActive(element, 1);
+    confluenceDiv.innerHTML = testPage2();
   } else if (hash === "#data_access/form") {
     const dataFormElement = document.getElementById("dataForm");
     if (!dataFormElement) return;
@@ -545,6 +560,9 @@ const manageHash = async () => {
     element.click();
   } else if (hash === "#data_access/overview") {
     const element = document.getElementById("dataRequest");
+    element.click();
+  } else if (hash === "#testpage") {
+    const element = document.getElementById("data2");
     element.click();
   } else if (hash === "#data_access/form") {
     const element = document.getElementById("dataForm");

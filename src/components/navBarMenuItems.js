@@ -10,7 +10,7 @@ export const navBarMenutemplate = () => {
         </div>
         <div class="grid-elements dropdown">
             <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                About BCRPP
+                About
             </button>
             <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#about/overview" id="aboutBCRPP">Overview</a>
@@ -43,8 +43,8 @@ export const navBarMenutemplate = () => {
                 </a>
                 <div id="governanceNav" class="grid-elements"></div>
                 <div id="myProjectsNav" class="grid-elements"></div>
-                </div>
             </div>
+          </div>
                 <div class='grid-elements dropdown'>
                     <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Data Access
@@ -78,13 +78,25 @@ export const navBarMenutemplate = () => {
                         : ``
                     }
             </div>
-        </div>
+            </div>
+            <div class='grid-elements dropdown'>
+                <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Consortia
+                </button>
+              <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#testpage" title="Consortia" id="data2"> consortia </a>
+              </div>
+            </div>
         <div class="grid-elements">
             <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/bcrpDataPlatform/issues" title="BCRPP github issues">
                 Report issue
             </a>
         </div>
-
+        <div class="grid-elements">
+            <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/bcrpDataPlatform/issues" title="Publications">
+                Publication
+            </a>
+        </div>
         <div class="navbar-nav ml-auto">
             ${
               localStorage.parms && JSON.parse(localStorage.parms).name
@@ -106,10 +118,10 @@ export const navBarMenutemplate = () => {
                 </div>
             `
             }
-            
-        </div>
+
     `;
 };
+
 export function pageNavBar(page, activeTab, ...pageHeaders) {
   const containerEl = document.createElement("div");
   containerEl.classList.add("container");
@@ -139,7 +151,7 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
       link.href = `#${page}/overview`;
       if (activeTab === "overview") link.classList.add("active");
     }
-    
+
     // keeping this part for future use to get "Project Concept Form" and "View Submissions" back.
     if (header === "Project Concept Form") {
       link.href = `#${page}/form`;
