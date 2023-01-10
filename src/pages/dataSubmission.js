@@ -307,42 +307,42 @@ export async function userSubmissionTemplate(pageHeader, activeTab) {
   let navBarItems = "";
   if (authDacc && authChair) {
     navBarItems = pageNavBar(
-      "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
-      "Chair Menu",
-      "DACC Menu"
+      "data_access"
+      // activeTab
+      // "Overview",
+      // "Project Concept Form",
+      // "View Submissions",
+      // "Chair Menu",
+      // "DACC Menu"
     );
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu', 'DACC Menu');
   } else if (authChair) {
     navBarItems = pageNavBar(
       "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
-      "Chair Menu"
+      activeTab
+      // "Overview",
+      // "Project Concept Form",
+      // "View Submissions",
+      // "Chair Menu"
     );
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'Chair Menu');
   } else if (authDacc) {
     navBarItems = pageNavBar(
       "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
-      "DACC Menu"
+      activeTab
+      // "Overview",
+      // "Project Concept Form",
+      // "View Submissions",
+      // "DACC Menu"
     );
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted', 'DACC Menu');
   } else {
     navBarItems = pageNavBar(
       "data_access",
-      activeTab,
-      "Overview",
-       "Project Concept Form",
-      "View Submissions"
+      activeTab
+      // "Overview",
+      // "Project Concept Form",
+      // "View Submissions"
     );
     // navBarItems = pageNavBar('data_access', activeTab, 'Overview', 'Project Concept Form', 'Accepted');
   }

@@ -57,22 +57,25 @@ export const dataAccessNotSignedIn = () => {
           <div class="container body-min-height">
               <div class="main-summary-row">
                   <div class="align-left">
-                      <h1 class="page-header">Data Access</h1>
+                      <h1 class="page-header">Data Platforms for Consortia Projects
+                      </h1>
                   </div>
               </div>
               <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
                   <div class="row m-0">
-                      The Breast Cancer Risk Prediction Project is currently generating genotyping data and harmonizing risk factor and clinical data. Data is expected to be available for request in mid 2023. Data access will be facilitated through this platform, in accordance to the data transfer agreements signed between participating studies (originator) and the BCRPP Data Coordinating Center (DCC) at the Division of Cancer Epidemiology and Genetics at the National Cancer Institute.
+                  The following are data platform for collaborative consortium projects that are coordinated by DCEG:
                   </div></br>
                   <div class="row m-0">
                       The following data access procedures are planned:
                   </div>
                   <div class="row m-0">
                       <ul>
-                          <li>Researcher submits a study concept describing the project, including variables of interest, via the BCRPP Data Platform. This request will be sent via the platform to the relevant BCRPP data access coordinating committee (DACC) which governs the requested data.</li>
-                          <li>After approval by the DACC, individual studies contributing data are notified and given a time period to opt-out their study from the approved project.</li>
-                          <li>After the opt-out period has elapsed, the researcher's institution signs a data transfer agreement (DTA) for the study concept with the BCRPP DCC.</li>
-                          <li>Upon DTA signatures, the DCC will provide access of the approved data to researchers. </li>
+                          <li>The Confluence Project:
+                          The Confluence Project is a large international project to study breast cancer genetic susceptibility in women and men of multiple ancestries, by integrating existing and new genome-wide genetic data, across several breast cancer consortia.
+                           </li>
+                           <li>The Breast Cancer Risk Prediction Project (BCRPP):
+                           The BCRPP is a collaboration in the NCI Cohort Consortium Study that is developing risk prediction models for female breast across racial and ethnic groups.                           
+                           </li>
                       </ul>
                   </div>
                 </div>
@@ -94,38 +97,38 @@ export const dataAccess = (activeTab, showDescripton) => {
   if (authDacc && authChair) {
     navBarItems = pageNavBar(
       "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
-      "Chair Menu",
-      "DACC Menu"
+      activeTab
+      // "Overview",
+      // "Project Concept Form",
+      // "View Submissions",
+      // "Chair Menu",
+      // "DACC Menu"
     );
   } else if (authChair) {
     navBarItems = pageNavBar(
       "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
-      "Chair Menu"
+      activeTab
+      // "Overview",
+      // "Project Concept Form",
+      // "View Submissions",
+      // "Chair Menu"
     );
   } else if (authDacc) {
     navBarItems = pageNavBar(
       "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
-      "DACC Menu"
+      activeTab
+      // "Overview",
+      // "Project Concept Form",
+      // "View Submissions",
+      // "DACC Menu"
     );
   } else {
     navBarItems = pageNavBar(
       "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions"
+      activeTab
+      // "Overview",
+      // "Project Concept Form",
+      // "View Submissions"
     );
   }
   let template = `
@@ -142,13 +145,14 @@ export const dataAccess = (activeTab, showDescripton) => {
             <div class="container body-min-height">
                 <div class="main-summary-row">
                     <div class="align-left">
-                        <h1 class="page-header">Data Access-Overview</h1>
+                        <h1 class="page-header">Data Platforms for Consortia Projects
+                        </h1>
                     </div>
                 </div>
                 <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
                     <div class="row m-0">
 
-                        The Breast Cancer Risk Prediction Project is currently harmonizing risk factor and clinical data from participating cohorts. Data is expected to be available for request in mid 2023. Data access will be facilitated through this platform, in accordance to the data transfer agreements signed between participating studies (originator) and the BCRPP Data Coordinating Center (DCC) at the Division of Cancer Epidemiology and Genetics at the National Cancer Institute.
+                        TThe following are data platform for collaborative consortium projects that are coordinated by DCEG:
 
                     </div></br>
                     <div class="row m-0">
@@ -156,10 +160,13 @@ export const dataAccess = (activeTab, showDescripton) => {
                     </div>
                     <div class="row m-0">
                         <ul>
-                            <li>Researcher submits a study concept describing the project, including variables of interest, via the BCRPP Data Platform. This request will be sent via the platform to the BCRPP data access coordinating committee (DACC), which governs the requested data.</li>
-                            <li>After approval by the DACC, individual studies contributing data are notified and given a time period to opt-out their study from the approved project.</li>
-                            <li>After the opt-out period has elapsed, the researcher's institution signs a data transfer agreement (DTA) for the study concept with the BCRPP DCC.</li>
-                            <li>Upon DTA signatures, the DCC will provide access of the approved data to researchers.</li>
+                            
+                            <li>The Confluence Project:
+                            The Confluence Project is a large international project to study breast cancer genetic susceptibility in women and men of multiple ancestries, by integrating existing and new genome-wide genetic data, across several breast cancer consortia.
+                            </li>
+                            <li>The Breast Cancer Risk Prediction Project (BCRPP):
+                            The BCRPP is a collaboration in the NCI Cohort Consortium Study that is developing risk prediction models for female breast across racial and ethnic groups.
+                            </li>
                         </ul>
                     </div> `;
   template += `</div>
@@ -179,38 +186,38 @@ export const formSectionOther = async (activeTab, showDescripton) => {
   if (authDacc && authChair) {
     navBarItems = pageNavBar(
       "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
-      "Chair Menu",
-      "DACC Menu"
+      activeTab
+      // "Overview"
+      // "Project Concept Form",
+      // "View Submissions",
+      // "Chair Menu",
+      // "DACC Menu"
     );
   } else if (authChair) {
     navBarItems = pageNavBar(
       "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
-      "Chair Menu"
+      activeTab
+      // "Overview",
+      // "Project Concept Form",
+      // "View Submissions",
+      // "Chair Menu"
     );
   } else if (authDacc) {
     navBarItems = pageNavBar(
       "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
-      "DACC Menu"
+      activeTab
+      // "Overview",
+      // "Project Concept Form",
+      // "View Submissions",
+      // "DACC Menu"
     );
   } else {
     navBarItems = pageNavBar(
       "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions"
+      activeTab
+      // "Overview",
+      // "Project Concept Form",
+      // "View Submissions"
     );
   }
 

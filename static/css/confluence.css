@@ -1832,7 +1832,7 @@ form {
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 350px;
-  background-image: url("../images/nci-vol-10623-150.jpg");
+  background-image: url("../images/hero-banner.jpg");
 }
 
 @media only screen and (max-device-width: 1366px) {

@@ -11,13 +11,13 @@ export const aboutConfluence = (activeTab, showDescripton) => {
     ? pageNavBar(
         "about",
 
-        activeTab,
+        activeTab
 
-        "Overview",
+        // "Overview"
 
-        "Description of Studies",
+        // "Description of Studies",
 
-        "Scientific Committee"
+        // "Scientific Committee"
       )
     : `<div id='overview'></div>`;
   console.log({ navBarItems });
@@ -38,36 +38,56 @@ export const aboutConfluence = (activeTab, showDescripton) => {
 // Changes needed here for definitions
 export const renderOverView = async () => {
   let template = `
-      <div class="main-summary-row">
-      <div class="align-left">
-           <h1 class="page-header">BCRPP Overview</h1>
-      </div>
-   </div>
-        <div class="home-page-stats font-size-18">
-            <div class="main-summary-row">
-                <div class="col align-left">
-                    </br>
-                    <span>
-                    The BCRPP will develop a comprehensive tool that will predict breast cancer risk, overall and by sub-types, across racial/ethnic groups.
-                    </span>
-                    </br></br>
-                    <span>
-                    The BCRPP includes individual level data on over 1.5 million  women from the NCI Cohort Consortium Study and other large cohort studies 
-                    and is harmonizing information on family-history, polygenic risk-scores, anthropometric, life-style and reproductive factors, 
-                    hormonal biomarkers and mammographic density. The aims of the BCRP are:
-                    </span>
-                    </br></br>
-                    <div style="margin-left: 40px"> <b>Aim 1:</b> <i>Develop a comprehensive and multi-ethnic model for estimating absolute risk of breast cancer by incorporating information on known breast cancer risk factors </i> </div>
-                    </br>
-                    <div style="margin-left: 40px"> <b>Aim 2:</b> <i>Extend the multi-ethnic risk model for the risk prediction of estrogen receptor definced breast cancer </i> </div>
-                    </br>
-                    <div style="margin-left: 40px"> <b>Aim 3:</b> <i>Evaluate the validity of the risk models developed in Aim 1 and Aim 2 in integrated health care systems, mammography, registries, and an ongoing risk-based mammographic screening trail in the US </i> </div>
-                    </br>
-                </div>
+  <div class="main-summary-row">
+  <div class="align-left">
+       <h1 class="page-header">About DCEG Epidemiology Data Platforms
+       </h1>
+  </div>
+</div>
+    <div class="home-page-stats font-size-18">
+        <div class="main-summary-row">
+            <div class="col align-left">
+                </br>
+                <span>
+                DCEG is committed to sharing research data according to the NIH Data Sharing Policy following FAIR principles to further advance science, improve public health, while maximizing contributions from research participants. This site provides a suite of epidemiology data platforms to facilitate collaborations and share data from consortia, individual studies and publications led by DCEG investigators.
+                </span>
+                </br></br>
+                <span>
+                <b>DCEG Epidemiology Data Platforms support data sharing from:</b>
+                </span>
+                </br></br>
+                <div style="margin-left: 40px">
+                <ul> 
+                <li> Consortia of Studies</li> 
+                </ul>
+                </i></div>
+                </br>
+                <div style="margin-left: 40px">
+                <ul> 
+                <li> Research Studies
+                </li> 
+                </ul>
+                </i></div>
+                </ul>
+                </br>
+                <div style="margin-left: 40px">
+                <ul> 
+                <li> Publications</li> 
+                </ul>
+                </i></div>
+                </ul>
+                </br>
+               <b> How to request and access data:</b>
+               </span>
+                </br></br>
+                DCEG epidemiology data platforms provide information about the data and controlled data access to individual-level data from study participants. Procedures of data access are described under each of the data platforms according to applicable data sharing policies. 
+               </i> </div>
+                </br>
             </div>
-            <div class="align-left" id="confluenceDataSummary"></div>
         </div>
-    `;
+        <div class="align-left" id="confluenceDataSummary"></div>
+    </div>
+`;
   document.getElementById("overview").innerHTML = template;
   const response = await fetch("./publicDataSet.json");
   countPublicStatistics(await response.json(), true);
@@ -79,16 +99,16 @@ const countPublicStatistics = (d, caseControl) => {
   let totalConsortia = 0;
   let totalPatients = 0;
   let totalWomen = 0;
-  let summary = `
-    </br>
-        <div class="align-center">
-            <div class="main-summary-row" style="margin: 0px 15px;margin-bottom:10px">
-                <div class="col-md-3" style="padding: 0px">
-                    <div class="custom-border allow-overflow align-left" style="height:100%; padding-left: 5px !important; margin-right: 15px;">
-                    <span class="font-size-17 font-bold">Cohort:</span></br>
-                    <!---<span class="font-size-15">Cohort:</span></br>--->
-                    <ul class="about-consortia" id='about-consortia-check'>
-    `;
+  // let summary = `
+  //   </br>
+  //       <div class="align-center">
+  //           <div class="main-summary-row" style="margin: 0px 15px;margin-bottom:10px">
+  //               <div class="col-md-3" style="padding: 0px">
+  //                   <div class="custom-border allow-overflow align-left" style="height:100%; padding-left: 5px !important; margin-right: 15px;">
+  //                   <span class="font-size-17 font-bold">Cohort:</span></br>
+  //                   <!---<span class="font-size-15">Cohort:</span></br>--->
+  //                   <ul class="about-consortia" id='about-consortia-check'>
+  //   `;
   for (let key in data) {
     if (!caseControl && key !== "CIMBA") continue;
     if (key === "dataModifiedAt") continue;

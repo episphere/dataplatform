@@ -1,5 +1,5 @@
 export const confluenceResources = () => {
-   let template = `
+  let template = `
         <div class="general-bg padding-bottom-1rem">
             <div class="container body-min-height">
                 <div class="main-summary-row">
@@ -54,5 +54,5 @@ export const confluenceResources = () => {
             <div>
         <div>
     `;
-    document.getElementById('confluenceDiv').innerHTML = template;
-}
+  document.getElementById("confluenceDiv").innerHTML = template;
+};

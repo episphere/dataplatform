@@ -8,15 +8,10 @@ export const navBarMenutemplate = () => {
                 Home
             </a>
         </div>
-        <div class="grid-elements dropdown">
-            <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                About BCRPP
-            </button>
-            <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#about/overview" id="aboutBCRPP">Overview</a>
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#about/description" id="resourcesBCRPP">Description of Studies</a>
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#contact" id="contactBCRPP">Scientific Committee</a>
-            </div>
+        <div class="grid-elements">
+            <a class="nav-link nav-menu-links white-font" href="#about/overview" id="aboutBCRPP">
+            About
+            </a>            
         </div>
         <div class="grid-elements dropdown">
             <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -47,19 +42,19 @@ export const navBarMenutemplate = () => {
             </div>
                 <div class='grid-elements dropdown'>
                     <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Data Access
+                        Consortia
                     </button>
                     <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/overview" title="Data Access" id="dataRequest"> Overview </a>
+                    <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/overview" title="Consortia" id="dataRequest"> Consortia </a>
                     ${
                       showProjectConceptForm
-                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/form" title="Data Form" id="dataForm"> Project Concept Forms </a>
+                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/form" title="Data Form" id="dataForm"> </a>
                     `
                         : ""
                     }
                     ${
                       viewSubmissionsShow
-                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#userSubmissions" title='View Your Submissions' id="userSubmissions">View Submissions</a>`
+                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#userSubmissions" title='View Your Submissions' id="userSubmissions"> </a>`
                         : ""
                     }
                     <!--a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/accepted" title="Accepted Studies" id="dataAccepted"> Accepted </a-->
@@ -67,7 +62,7 @@ export const navBarMenutemplate = () => {
                       emailforChair.indexOf(
                         JSON.parse(localStorage.parms).login
                       ) !== -1
-                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/chairView" title="Chair File View" id="chairView"> Chair Menu </a>`
+                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/chairView" title="Chair File View" id="chairView">  </a>`
                         : ``
                     }
                     ${
@@ -135,24 +130,24 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
     );
 
     //Active Tab Function
-    if (header === "Overview") {
-      link.href = `#${page}/overview`;
-      if (activeTab === "overview") link.classList.add("active");
-    }
-    
+    // if (header === "Overview") {
+    //   link.href = `#${page}/overview`;
+    //   if (activeTab === "overview") link.classList.add("active");
+    // }
+
     // keeping this part for future use to get "Project Concept Form" and "View Submissions" back.
-    if (header === "Project Concept Form") {
-      link.href = `#${page}/form`;
-      if (activeTab === "form") link.classList.add("active");
-    }
-    if (header === "View Submissions") {
-      link.href = `#userSubmissions`;
-      console.log(
-        "Active Tab in View Submissions",
-        activeTab === "User Submissions"
-      );
-      if (activeTab === "User Submissions") link.classList.add("active");
-    }
+    // if (header === "Project Concept Form") {
+    //   link.href = `#${page}/form`;
+    //   if (activeTab === "form") link.classList.add("active");
+    // }
+    // if (header === "View Submissions") {
+    //   link.href = `#userSubmissions`;
+    //   console.log(
+    //     "Active Tab in View Submissions",
+    //     activeTab === "User Submissions"
+    //   );
+    //   if (activeTab === "User Submissions") link.classList.add("active");
+    // }
     if (header === "Chair Menu") {
       link.href = `#${page}/chairView`;
       if (activeTab === "chairView") link.classList.add("active");

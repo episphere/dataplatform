@@ -329,7 +329,7 @@ export const confluence = async () => {
       const element = document.getElementById("dataRequest");
       if (!element) return;
       if (element.classList.contains("navbar-active")) return;
-      document.title = "BCRPP - Data Access";
+      document.title = "BCRPP - Consortia";
       assignNavbarActive(element, 1);
       confluenceDiv.innerHTML = dataRequestTemplate("overview");
       hideAnimation();
@@ -412,7 +412,7 @@ const manageRouter = async () => {
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
     document.title = "BCRPP - Overview";
-    assignNavbarActive(element, 1);
+    assignNavbarActive(element);
     aboutConfluence("overview");
     renderOverView();
   } else if (hash === "#join") {
@@ -435,7 +435,7 @@ const manageRouter = async () => {
     const element = document.getElementById("dataRequest");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
-    document.title = "BCRPP - Data Access";
+    document.title = "BCRPP - Consortia";
     assignNavbarActive(element, 1);
     confluenceDiv.innerHTML = dataAccessNotSignedIn();
   } else if (hash === "#data_access/form") {
@@ -589,7 +589,7 @@ const manageHash = async () => {
   } else if (hash === "#about/overview") {
     const element = document.getElementById("aboutBCRPP");
     if (!element) return;
-    assignNavbarActive(element, 1);
+    assignNavbarActive(element);
     document.title = "BCRP - Overview";
 
     const fileInfo = await getFileInfo(904897189551);
