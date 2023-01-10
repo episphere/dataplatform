@@ -14,8 +14,8 @@ export const navBarMenutemplate = () => {
             </button>
             <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#about/overview" id="aboutBCRPP">Overview</a>
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#about/description" id="resourcesBCRPP">Description of Studies</a>
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#contact" id="contactBCRPP">Scientific Committee</a>
+                <!---<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#about/description" id="resourcesBCRPP">Description of Studies</a>
+                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#contact" id="contactBCRPP">Scientific Committee</a>--->
             </div>
         </div>
         <div class="grid-elements dropdown">
@@ -79,14 +79,15 @@ export const navBarMenutemplate = () => {
                     }
             </div>
             </div>
-            <div class='grid-elements dropdown'>
-                <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Consortia
-                </button>
-              <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
+            <div class="grid-elements">
+            <a class="nav-link nav-menu-links white-font" href="#testpage" title="Research Studies" id="data2">
+                Research Studies
+            </a>
+            </div>
+              <!---<div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#testpage" title="Consortia" id="data2"> consortia </a>
               </div>
-            </div>
+            </div>-->
         <div class="grid-elements">
             <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/bcrpDataPlatform/issues" title="BCRPP github issues">
                 Report issue
@@ -118,7 +119,6 @@ export const navBarMenutemplate = () => {
                 </div>
             `
             }
-
     `;
 };
 

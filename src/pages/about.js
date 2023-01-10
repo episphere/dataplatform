@@ -11,13 +11,13 @@ export const aboutConfluence = (activeTab, showDescripton) => {
     ? pageNavBar(
         "about",
 
-        activeTab,
+        activeTab
 
-        "Overview",
+        // "Overview"
 
-        "Description of Studies",
+        // "Description of Studies",
 
-        "Scientific Committee"
+        // "Scientific Committee"
       )
     : `<div id='overview'></div>`;
   console.log({ navBarItems });
