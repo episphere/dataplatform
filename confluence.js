@@ -253,7 +253,7 @@ export const confluence = async () => {
         if (!element) return;
         if (element.classList.contains("navbar-active")) return;
         document.title = "BCRPP - Data Form";
-        assignNavbarActive(element, 1);
+        assignNavbarActive(element);
         //dataForm();
         const getCollaborators = await getCollaboration(
           uploadFormFolder,
@@ -291,7 +291,7 @@ export const confluence = async () => {
         if (!element) return;
         if (element.classList.contains("navbar-active")) return;
         document.title = "BCRPP - Accepted Studies";
-        assignNavbarActive(element, 1);
+        assignNavbarActive(element);
         confluenceDiv.innerHTML = acceptedStudiesSection("acceptedStudies");
         acceptedStudiesView();
         hideAnimation();
@@ -305,7 +305,7 @@ export const confluence = async () => {
         if (!element) return;
         if (element.classList.contains("navbar-active")) return;
         document.title = "BCRPP - Chair View";
-        assignNavbarActive(element, 1);
+        assignNavbarActive(element);
         confluenceDiv.innerHTML = chairSection("chairView");
         chairFileView();
       });
@@ -318,7 +318,7 @@ export const confluence = async () => {
         if (!element) return;
         if (element.classList.contains("navbar-active")) return;
         document.title = "BCRPP - DACC View";
-        assignNavbarActive(element, 1);
+        assignNavbarActive(element);
         confluenceDiv.innerHTML = daccSection("daccView");
         daccFileView();
       });
@@ -330,7 +330,7 @@ export const confluence = async () => {
       if (!element) return;
       if (element.classList.contains("navbar-active")) return;
       document.title = "BCRPP - Consortia";
-      assignNavbarActive(element, 1);
+      assignNavbarActive(element);
       confluenceDiv.innerHTML = dataRequestTemplate("overview");
       hideAnimation();
     });
@@ -420,7 +420,7 @@ const manageRouter = async () => {
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
     document.title = "BCRPP - Resources";
-    assignNavbarActive(element, 1);
+    assignNavbarActive(element);
     confluenceResources();
   }
   // else if (hash === "#contact") {
@@ -436,7 +436,7 @@ const manageRouter = async () => {
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
     document.title = "BCRPP - Consortia";
-    assignNavbarActive(element, 1);
+    assignNavbarActive(element);
     confluenceDiv.innerHTML = dataAccessNotSignedIn();
   } else if (hash === "#data_access/form") {
     const dataFormElement = document.getElementById("dataForm");
@@ -600,7 +600,7 @@ const manageHash = async () => {
     const element = document.getElementById("aboutBCRPP");
     console.log({ element });
     if (!element) return;
-    assignNavbarActive(element, 1);
+    assignNavbarActive(element);
     document.title = "BCRP - Scientific Committe";
     const fileInfo = await getFileInfo(904897189551);
     console.log({ fileInfo });
@@ -610,7 +610,7 @@ const manageHash = async () => {
   } else if (hash === "#about/description") {
     const element = document.getElementById("aboutBCRPP");
     if (!element) return;
-    assignNavbarActive(element, 1);
+    assignNavbarActive(element);
     document.title = "BCRP - Study Description";
     showAnimation();
     const fileInfo = await getFileInfo(904897189551); //new: 904897189551; original: 881144462693
@@ -621,7 +621,7 @@ const manageHash = async () => {
     const element = document.getElementById("resourcesBCRPP");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
-    assignNavbarActive(element, 1);
+    assignNavbarActive(element);
     document.title = "BCRP - Resources";
     confluenceResources();
     hideAnimation();

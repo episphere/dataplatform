@@ -13,24 +13,34 @@ export const navBarMenutemplate = () => {
             About
             </a>            
         </div>
-        <div class="grid-elements dropdown">
+        <div class="grid-elements">
+            <a class="nav-link nav-menu-links white-font" href="#data_access/overview" title="Consortia" id="dataRequest">
+                Consortia
+            </a>
+        </div>
+        <div class="grid-elements">
+            <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/bcrpDataPlatform/issues" title="BCRPP github issues">
+                Report issue
+            </a>
+        </div>
+        <!--<div class="grid-elements dropdown">
             <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Explore Data
+            <!---Explore Data-->
             </button>
             <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
                 <!--h6 class="dropdown-header dropdown-header-bg font-bold">Explore Data</h6-->
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_exploration/dictionary" title="Data Dictionary" id="dataDictionary">
-                Dictionary
+                <!---Dictionary-->
                 </a>
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_exploration/summary" title="Summary Statistics" id="dataSummary">
-                    Summary Statistics
-                </a>
+                    <!---Summary Statistics-->
+                </a>-->
                 ${
                   location.origin.match(applicationURLs.dev)
                     ? ``
                     : `
                         <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_exploration/subset" title="Subset Statistics" id="dataSummarySubset">
-                            Subset Statistics
+                            <!---Subset Statistics-->
                         </a>
                     `
                 }
@@ -40,12 +50,12 @@ export const navBarMenutemplate = () => {
                 <div id="myProjectsNav" class="grid-elements"></div>
                 </div>
             </div>
-                <div class='grid-elements dropdown'>
+                <!---<div class='grid-elements dropdown'>
                     <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Consortia
                     </button>
                     <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/overview" title="Consortia" id="dataRequest"> Consortia </a>
+                    <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/overview" title="Consortia" id="dataRequest"> Consortia </a>-->
                     ${
                       showProjectConceptForm
                         ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/form" title="Data Form" id="dataForm"> </a>
@@ -73,12 +83,7 @@ export const navBarMenutemplate = () => {
                         : ``
                     }
             </div>
-        </div>
-        <div class="grid-elements">
-            <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/bcrpDataPlatform/issues" title="BCRPP github issues">
-                Report issue
-            </a>
-        </div>
+
 
         <div class="navbar-nav ml-auto">
             ${

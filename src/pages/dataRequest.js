@@ -70,10 +70,11 @@ export const dataAccessNotSignedIn = () => {
                   </div>
                   <div class="row m-0">
                       <ul>
-                          <li>The Confluence Project:
+                          <li>
+                          <a href= "https://episphere.github.io/bcrpDataPlatform">The Confluence Project:</a>
                           The Confluence Project is a large international project to study breast cancer genetic susceptibility in women and men of multiple ancestries, by integrating existing and new genome-wide genetic data, across several breast cancer consortia.
                            </li>
-                           <li>The Breast Cancer Risk Prediction Project (BCRPP):
+                           <li><a href= "https://episphere.github.io/confluence">The Breast Cancer Risk Prediction Project (BCRPP):</a>
                            The BCRPP is a collaboration in the NCI Cohort Consortium Study that is developing risk prediction models for female breast across racial and ethnic groups.                           
                            </li>
                       </ul>
@@ -159,12 +160,13 @@ export const dataAccess = (activeTab, showDescripton) => {
                         The following data access procedures are planned:
                     </div>
                     <div class="row m-0">
-                        <ul>
-                            
-                            <li>The Confluence Project:
+                        <ul> 
+                            <li>
+                            <a href= "https://episphere.github.io/bcrpDataPlatform">The Confluence Project:</a>
                             The Confluence Project is a large international project to study breast cancer genetic susceptibility in women and men of multiple ancestries, by integrating existing and new genome-wide genetic data, across several breast cancer consortia.
                             </li>
-                            <li>The Breast Cancer Risk Prediction Project (BCRPP):
+                            <li> 
+                            <a href= "https://episphere.github.io/confluence">The Breast Cancer Risk Prediction Project (BCRPP):</a>
                             The BCRPP is a collaboration in the NCI Cohort Consortium Study that is developing risk prediction models for female breast across racial and ethnic groups.
                             </li>
                         </ul>
