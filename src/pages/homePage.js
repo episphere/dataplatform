@@ -21,22 +21,22 @@ export const infoDeck = () => {
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`;
   template += cardContents({
-    button: "Learn about BCRPP",
+    button: "Information on Accessing DCEG Data",
     href: "#about/overview",
     icon: "fa-download",
     explanation: "View main goals and collaborating institutions.",
   });
   template += cardContents({
-    header: "Data Access",
-    button: "Data Access",
+    header: "Data Platforms for DCEG Studies",
+    button: "Data Platforms for DCEG Studies",
     href: "#data_access/overview",
     icon: "fa-handshake",
     explanation: "View procedures for accessing data.",
   });
   template += cardContents({
-    header: "Data Dictionary",
-    button: "Data Dictionary",
-    href: "#data_exploration/dictionary",
+    header: "Research Studies",
+    button: "Research Studies",
+    href: "#testpage",
     icon: "fa-database",
     explanation: "View data types collected from participating cohort studies.",
   });
@@ -45,10 +45,10 @@ export const infoDeck = () => {
         </div>
         <div class="secondary-bg inverse-triangle"></div>
         <div class="container align-center">
-            <div class="font-size-28 font-bold font-family-montserrat our-goals mt-3 mb-2">OUR GOALS</div>
-            <div class="row">
+           <!---<div class="font-size-28 font-bold font-family-montserrat our-goals mt-3 mb-2">OUR GOALS</div>
+            <div class="row">-->
                 <div class="col-lg-3"></div>
-                <div class="col-lg-6 font-size-18 align-left">To build a large-scale collaborative research resource with data from over 1.5 million women of different race/ethnic backgrounds participating in prospective cohort studies or trials to:</div>
+                <!---<div class="col-lg-6 font-size-18 align-left">To build a large-scale collaborative research resource with data from over 1.5 million women of different race/ethnic backgrounds participating in prospective cohort studies or trials to:</div>-->
                 <div class="col-lg-3"></div>
             </div>
             <br>
@@ -56,8 +56,8 @@ export const infoDeck = () => {
                 <div class="col-lg-3"></div>
                 <div class="col-lg-6 font-size-18 align-left mb-3">
                     <ul>
-                        <li>Develop comprehensive breast cancer risk prediction models for precision prevention in diverse populations</li>
-                        <li>Validate newly developed models in integrated health care systems or breast cancer screening trials</li>
+                        <!---<li>Develop comprehensive breast cancer risk prediction models for precision prevention in diverse populations</li>
+                        <li>Validate newly developed models in integrated health care systems or breast cancer screening trials</li>-->
                     </ul>
                 </div>
                 <div class="col-lg-3"></div>
@@ -101,9 +101,9 @@ export const infoDeckAfterLoggedIn = async () => {
       explanation: "View descriptions of participating studies.",
     });
   template += cardContents({
-    header: "Data Dictionary",
-    button: "Data Dictionary",
-    href: "#data_exploration/dictionary",
+    header: "Research Studies",
+    button: "Research Studies",
+    href: "#testpage",
     icon: "fa-database",
     explanation: "View variables from participating studies.",
   });
@@ -115,8 +115,8 @@ export const infoDeckAfterLoggedIn = async () => {
     explanation: "Explore summary-level data to plan analyses.",
   });
   template += cardContents({
-    header: "Data Access",
-    button: "Data Access",
+    header: "Data Platforms for DCEG Studies",
+    button: "Data Platforms for DCEG Studies",
     href: "#data_access/overview",
     icon: "fa-handshake",
     explanation: "View procedures for accessing data.",
@@ -126,10 +126,10 @@ export const infoDeckAfterLoggedIn = async () => {
         </div>
         <div class="secondary-bg inverse-triangle"></div>
         <div class="container align-center">
-            <div class="font-size-28 font-bold font-family-montserrat our-goals mt-3 mb-2">OUR GOALS</div>
-            <div class="row">
+            <!---<div class="font-size-28 font-bold font-family-montserrat our-goals mt-3 mb-2">OUR GOALS</div>
+            <div class="row">-->
                 <div class="col-lg-3"></div>
-                <div class="col-lg-6 font-size-18 align-left">To build a large-scale collaborative research resource with data from over 1.5 million women of different race/ethnic backgrounds participating in prospective cohort studies or trials to:</div>
+                <!---<div class="col-lg-6 font-size-18 align-left">To build a large-scale collaborative research resource with data from over 1.5 million women of different race/ethnic backgrounds participating in prospective cohort studies or trials to:</div>
                 <div class="col-lg-3"></div>
             </div>
             <br>
@@ -148,7 +148,7 @@ export const infoDeckAfterLoggedIn = async () => {
             <div class="container align-left confluence-info font-family-montserrat">
             <div>The BCRPP is funded by the US National Cancer Institute (NCI) grant number <a href="https://maps.cancer.gov/overview/DCCPSGrants/abstract.jsp?applId=10263893&term=CA249866">1U01CA249866-01</a> and the NCI Intramural Research Funds. BCRPP is coordinated by the Harvard T.H. Chan School of Public Health and the Division of Cancer Epidemiology and Genetics (DCEG) of NCI, in collaboration with the NCI Cohort Consortium.</div>
             </div>
-        </div>
+        </div>-->
     `;
   document.getElementById("confluenceDiv").innerHTML = template;
 };

@@ -1,5 +1,6 @@
 import { navBarMenutemplate } from "./src/components/navBarMenuItems.js";
 import { infoDeck, infoDeckAfterLoggedIn } from "./src/pages/homePage.js";
+import { testPage2 } from "./src/pages/testpage.js";
 import {
   dataSubmissionTemplate,
   lazyload,
@@ -144,6 +145,7 @@ export const confluence = async () => {
     const studyAcceptedElement = document.getElementById("studyAccepted");
     const chairViewElement = document.getElementById("chairView");
     const daccViewElement = document.getElementById("daccView");
+    const ConsortiaPageElement = document.getElementById("data2");
     // const platformTutorialElement = document.getElementById('platformTutorial');
     // const dataAnalysisElement = document.getElementById('dataAnalysis');
 
@@ -207,7 +209,7 @@ export const confluence = async () => {
         addEventUpdateSummaryStatsData();
         removeActiveClass("nav-link", "active");
         document
-          .querySelectorAll('[href="#data_exploration/subset"]')[1]
+          .querySelectorAll('[href="#data_exploration/subset"]')
           .classList.add("active");
         dataSummaryMissingTemplate();
         hideAnimation();
@@ -218,7 +220,7 @@ export const confluence = async () => {
         if (viewUserSubmissionElement.classList.contains("navbar-active"))
           return;
         showAnimation();
-        assignNavbarActive(viewUserSubmissionElement, 1);
+        assignNavbarActive(viewUserSubmissionElement);
         document.title = "BCRPP - Your Submissions";
         await userSubmissionTemplate("Your Submissions", "User Submissions");
         hideAnimation();
@@ -229,10 +231,10 @@ export const confluence = async () => {
         if (dataDictionaryElement.classList.contains("navbar-active")) return;
         const confluenceDiv = document.getElementById("confluenceDiv");
         showAnimation();
-        assignNavbarActive(dataDictionaryElement, 1);
-        document.title = "BCRPP - Data Dictionary";
+        assignNavbarActive(dataDictionaryElement);
+        document.title = "BCRPP - Research Studies";
         confluenceDiv.innerHTML = dataSummary(
-          "Data Dictionary",
+          "Research Studies",
           true,
           false,
           false
@@ -240,7 +242,7 @@ export const confluence = async () => {
         addEventUpdateSummaryStatsData();
         removeActiveClass("nav-link", "active");
         document
-          .querySelectorAll('[href="#data_exploration/dictionary"]')[1]
+          .querySelectorAll('[href="#data_exploration/dictionary"]')
           .classList.add("active");
         dataDictionaryTemplate();
       });
@@ -332,6 +334,16 @@ export const confluence = async () => {
       document.title = "BCRPP - Consortia";
       assignNavbarActive(element);
       confluenceDiv.innerHTML = dataRequestTemplate("overview");
+      hideAnimation();
+    });
+    ConsortiaPageElement.addEventListener("click", () => {
+      if (ConsortiaPageElement.classList.contains("navbar-active")) return;
+      const element = document.getElementById("data2");
+      if (!element) return;
+      if (element.classList.contains("navbar-active")) return;
+      document.title = "Testing";
+      assignNavbarActive(element);
+      confluenceDiv.innerHTML = testPage2();
       hideAnimation();
     });
     const folders = await getFolderItems(0);
@@ -438,12 +450,19 @@ const manageRouter = async () => {
     document.title = "BCRPP - Consortia";
     assignNavbarActive(element);
     confluenceDiv.innerHTML = dataAccessNotSignedIn();
+  } else if (hash === "#testpage") {
+    const element = document.getElementById("data2");
+    if (!element) return;
+    if (element.classList.contains("navbar-active")) return;
+    document.title = "BCRPP - Consortia";
+    assignNavbarActive(element);
+    confluenceDiv.innerHTML = testPage2();
   } else if (hash === "#data_access/form") {
     const dataFormElement = document.getElementById("dataForm");
     if (!dataFormElement) return;
     if (dataFormElement.classList.contains("navbar-active")) return;
     showAnimation();
-    assignNavbarActive(dataFormElement, 1);
+    assignNavbarActive(dataFormElement);
     document.title = "BCRPP - Data Form";
     confluenceDiv.innerHTML = await formSection();
     removeActiveClass("nav-link", "active");
@@ -455,7 +474,7 @@ const manageRouter = async () => {
     if (!acceptedStudiesElement) return;
     if (acceptedStudiesElement.classList.contains("navbar-active")) return;
     showAnimation();
-    assignNavbarActive(acceptedStudiesElement, 1);
+    assignNavbarActive(acceptedStudiesElement);
     document.title = "BCRPP - Accepted Studies";
     confluenceDiv.innerHTML = acceptedStudiesSection();
     removeActiveClass("nav-link", "active");
@@ -464,7 +483,7 @@ const manageRouter = async () => {
     if (!chairViewElement) return;
     if (chairViewElement.classList.contains("navbar-active")) return;
     showAnimation();
-    assignNavbarActive(chairViewElement, 1);
+    assignNavbarActive(chairViewElement);
     document.title = "BCRPP - Chair View";
     confluenceDiv.innerHTML = chairSection();
     removeActiveClass("nav-link", "active");
@@ -473,7 +492,7 @@ const manageRouter = async () => {
     showAnimation();
     if (!daccViewElement) return;
     if (daccViewElement.classList.contains("navbar-active")) return;
-    assignNavbarActive(daccViewElement, 1);
+    assignNavbarActive(daccViewElement);
     document.title = "BCRPP - DACC View";
     confluenceDiv.innerHTML = daccSection();
     removeActiveClass("nav-link", "active");
@@ -485,10 +504,10 @@ const manageRouter = async () => {
     )
       return;
     showAnimation();
-    assignNavbarActive(dataDictionaryElement, 1);
-    document.title = "BCRPP - Data Dictionary";
+    assignNavbarActive(dataDictionaryElement);
+    document.title = "BCRPP - Research Studies";
     confluenceDiv.innerHTML = dataSummary(
-      "Data Dictionary",
+      "Research Studies",
       true,
       false,
       false,
@@ -508,7 +527,7 @@ const manageRouter = async () => {
     )
       return;
     showAnimation();
-    assignNavbarActive(viewUserSubmissionElement, 1);
+    assignNavbarActive(viewUserSubmissionElement);
     document.title = "BCRPP - Your Submissions";
     userSubmissionTemplate("Your Submissions", "User Submissions");
     hideAnimation();
@@ -545,6 +564,9 @@ const manageHash = async () => {
     element.click();
   } else if (hash === "#data_access/overview") {
     const element = document.getElementById("dataRequest");
+    element.click();
+  } else if (hash === "#testpage") {
+    const element = document.getElementById("data2");
     element.click();
   } else if (hash === "#data_access/form") {
     const element = document.getElementById("dataForm");
