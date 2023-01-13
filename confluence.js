@@ -1,6 +1,7 @@
 import { navBarMenutemplate } from "./src/components/navBarMenuItems.js";
 import { infoDeck, infoDeckAfterLoggedIn } from "./src/pages/homePage.js";
 import { testPage2 } from "./src/pages/researchStudies.js";
+import { publication } from "./src/pages/publicationpage.js";
 import {
   dataSubmissionTemplate,
   lazyload,
@@ -146,6 +147,7 @@ export const confluence = async () => {
     const chairViewElement = document.getElementById("chairView");
     const daccViewElement = document.getElementById("daccView");
     const ConsortiaPageElement = document.getElementById("data2");
+    const PublicationPageElement = document.getElementById("publicationID");
     // const platformTutorialElement = document.getElementById('platformTutorial');
     // const dataAnalysisElement = document.getElementById('dataAnalysis');
 
@@ -346,6 +348,16 @@ export const confluence = async () => {
       confluenceDiv.innerHTML = testPage2();
       hideAnimation();
     });
+    PublicationPageElement.addEventListener("click", () => {
+      if (PublicationPageElement.classList.contains("navbar-active")) return;
+      const element = document.getElementById("publicationID");
+      if (!element) return;
+      if (element.classList.contains("navbar-active")) return;
+      document.title = "Testing";
+      assignNavbarActive(element);
+      confluenceDiv.innerHTML = publication();
+      hideAnimation();
+    });
     const folders = await getFolderItems(0);
     const array = filterConsortiums(folders.entries);
     const projectArray = filterProjects(folders.entries);
@@ -457,6 +469,13 @@ const manageRouter = async () => {
     document.title = "BCRPP - Consortia";
     assignNavbarActive(element);
     confluenceDiv.innerHTML = testPage2();
+  } else if (hash === "#publicationpage") {
+    const element = document.getElementById("publicationID");
+    if (!element) return;
+    if (element.classList.contains("navbar-active")) return;
+    document.title = "BCRPP - Publication";
+    assignNavbarActive(element);
+    confluenceDiv.innerHTML = publication();
   } else if (hash === "#data_access/form") {
     const dataFormElement = document.getElementById("dataForm");
     if (!dataFormElement) return;
@@ -567,6 +586,9 @@ const manageHash = async () => {
     element.click();
   } else if (hash === "#researchStudies") {
     const element = document.getElementById("data2");
+    element.click();
+  } else if (hash === "#publication") {
+    const element = document.getElementById("publicationID");
     element.click();
   } else if (hash === "#data_access/form") {
     const element = document.getElementById("dataForm");

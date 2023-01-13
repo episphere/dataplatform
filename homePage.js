@@ -48,6 +48,13 @@ export const infoDeck = () => {
     icon: "fa-database",
     explanation: "View data types collected from participating cohort studies.",
   });
+  template += cardContents({
+    header: "Publication",
+    button: "Publication",
+    href: "#publicationpage",
+    icon: "fa-database",
+    explanation: "View data types collected from participating cohort studies.",
+  });
   template += `</div>
             </div>
         </div>
@@ -113,6 +120,13 @@ export const infoDeckAfterLoggedIn = async () => {
     header: "Research Studies",
     button: "Research Studies",
     href: "#researchStudies",
+    icon: "fa-database",
+    explanation: "View variables from participating studies.",
+  });
+  template += cardContents({
+    header: "Publication",
+    button: "Publication",
+    href: "#publicationpage",
     icon: "fa-database",
     explanation: "View variables from participating studies.",
   });
