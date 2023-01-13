@@ -1,6 +1,6 @@
 import { navBarMenutemplate } from "./src/components/navBarMenuItems.js";
 import { infoDeck, infoDeckAfterLoggedIn } from "./src/pages/homePage.js";
-import { testPage2 } from "./src/pages/testpage.js";
+import { testPage2 } from "./src/pages/researchStudies.js";
 import {
   dataSubmissionTemplate,
   lazyload,
@@ -450,7 +450,7 @@ const manageRouter = async () => {
     document.title = "BCRPP - Consortia";
     assignNavbarActive(element);
     confluenceDiv.innerHTML = dataAccessNotSignedIn();
-  } else if (hash === "#testpage") {
+  } else if (hash === "#researchStudies") {
     const element = document.getElementById("data2");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
@@ -565,7 +565,7 @@ const manageHash = async () => {
   } else if (hash === "#data_access/overview") {
     const element = document.getElementById("dataRequest");
     element.click();
-  } else if (hash === "#testpage") {
+  } else if (hash === "#researchStudies") {
     const element = document.getElementById("data2");
     element.click();
   } else if (hash === "#data_access/form") {

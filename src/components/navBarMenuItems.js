@@ -19,7 +19,7 @@ export const navBarMenutemplate = () => {
             </a>
         </div>
         <div class="grid-elements">
-        <a class="nav-link nav-menu-links white-font" href="#testpage" title="Research Studies" id="data2">
+        <a class="nav-link nav-menu-links white-font" href="#researchStudies" title="Research Studies" id="data2">
             Research Studies
         </a>
         </div>
@@ -34,7 +34,7 @@ export const navBarMenutemplate = () => {
             </button>
             <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
                 <!--h6 class="dropdown-header dropdown-header-bg font-bold">Explore Data</h6-->
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#testpage" title="Research Studies" id="dataDictionary">
+                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#researchStudies" title="Research Studies" id="dataDictionary">
                 <!---Dictionary-->
                 </a>
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_exploration/summary" title="Summary Statistics" id="dataSummary">

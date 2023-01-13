@@ -44,7 +44,7 @@ export const infoDeck = () => {
   template += cardContents({
     header: "Research Studies",
     button: "Research Studies",
-    href: "#testpage",
+    href: "#researchStudies",
     icon: "fa-database",
     explanation: "View data types collected from participating cohort studies.",
   });
@@ -112,7 +112,7 @@ export const infoDeckAfterLoggedIn = async () => {
   template += cardContents({
     header: "Research Studies",
     button: "Research Studies",
-    href: "#testpage",
+    href: "#researchStudies",
     icon: "fa-database",
     explanation: "View variables from participating studies.",
   });
