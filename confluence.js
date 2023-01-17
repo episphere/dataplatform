@@ -587,7 +587,7 @@ const manageHash = async () => {
   } else if (hash === "#researchStudies") {
     const element = document.getElementById("data2");
     element.click();
-  } else if (hash === "#publication") {
+  } else if (hash === "#publicationpage") {
     const element = document.getElementById("publicationID");
     element.click();
   } else if (hash === "#data_access/form") {

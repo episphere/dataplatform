@@ -125,17 +125,17 @@ export const infoDeckAfterLoggedIn = async () => {
   template += cardContents({
     header: "Publications",
     button: "My manuscript Dataset from DCEG publications",
-    href: "##publicationpage",
+    href: "#publicationpage",
     icon: "fa-database",
     explanation: "",
   });
-  //   template += cardContents({
-  //     header: "Explore Data",
-  //     button: "Explore Data",
-  //     href: "#data_exploration/summary",
-  //     icon: "fa-database",
-  //     explanation: "",
-  //   });
+  template += cardContents({
+    header: "My DCEG Publication Data",
+    button: "My DCEG Publication Data",
+    href: "#publicationpage",
+    icon: "fa-database",
+    explanation: "",
+  });
   template += `</div>
             </div>
         </div>
