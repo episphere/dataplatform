@@ -353,7 +353,7 @@ export const confluence = async () => {
       const element = document.getElementById("publicationID");
       if (!element) return;
       if (element.classList.contains("navbar-active")) return;
-      document.title = "Testing";
+      document.title = "BCRPP - Publication";
       assignNavbarActive(element);
       confluenceDiv.innerHTML = publication();
       hideAnimation();
@@ -466,14 +466,14 @@ const manageRouter = async () => {
     const element = document.getElementById("data2");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
-    document.title = "BCRPP - Consortia";
+    document.title = "BCRPP - researchStudies";
     assignNavbarActive(element);
     confluenceDiv.innerHTML = testPage2();
   } else if (hash === "#publicationpage") {
     const element = document.getElementById("publicationID");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
-    document.title = "BCRPP - Publication";
+    document.title = "BCRPP - publicationpage";
     assignNavbarActive(element);
     confluenceDiv.innerHTML = publication();
   } else if (hash === "#data_access/form") {

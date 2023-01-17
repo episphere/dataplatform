@@ -40,7 +40,7 @@ export const renderOverView = async () => {
   let template = `
   <div class="main-summary-row">
   <div class="align-left">
-       <h1 class="page-header">About DCEG Epidemiology Data Platforms
+       <h1 class="page-header">Information on Accessing DCEG Epidemiology Data Platforms
        </h1>
   </div>
 </div>

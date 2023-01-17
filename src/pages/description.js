@@ -171,7 +171,7 @@ const renderStudyDescription = (descriptions, pageSize, headers) => {
             <div class="col-md-3 font-bold ws-nowrap pl-2">Cohort <button class="transparent-btn sort-column" data-column-name="Cohort name"><i class="fas fa-sort"></i></button></div>
             <div class="col-md-2 font-bold ws-nowrap">Acronym <button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button></div>
             <div class="col-md-2 font-bold ws-nowrap">Region <button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button></div>
-            <div class="col-md-3 font-bold ws-nowrap">Population Type <button class="transparent-btn sort-column" data-column-name="Population type"><i class="fas fa-sort"></i></button></div>
+            <div class="col-md-3 font-bold ws-nowrap">Population Type <button class="transparent-btn sort-column" data-column-name="Population type"<i class=>"fas fa-sort"></i></button></div>
             <div class="col-md-1"></div>
         </div>`;
     descriptions.forEach((desc, index) => {

@@ -1138,7 +1138,7 @@ export const addEventFileStats = (element) => {
             <div class="row file-stats-row">
                 <div class="col" title="File download count">
                     <span class="file-stats-heading">Download count</span></br>
-                    <i class="fas fa-4x fa-download file-stats-icon"></i> <span class="fa-3x"> ${response.download_count}</span>
+                    <i class="fas fa-4x fa-database file-stats-icon"></i> <span class="fa-3x"> ${response.download_count}</span>
                 </div>
                 <div class="col" title="File edit count">
                     <span class="file-stats-heading">Edit count</span></br>
