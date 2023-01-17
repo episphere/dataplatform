@@ -21,7 +21,7 @@ export const infoDeck = () => {
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`;
   template += cardContents({
-    header: "About DCEG data",
+    header: "About DCEG Data",
     button: "Information on Accessing DCEG Data",
     href: "#about/overview",
     icon: "fa-database",
