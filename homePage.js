@@ -28,29 +28,29 @@ export const infoDeck = () => {
     explanation: "",
   });
   template += cardContents({
-    header: "Information on Accessing DCEG Data",
+    header: "About DCEG Data",
     button: "Information on Accessing DCEG Data",
     href: "#join",
     icon: "fa-chart-bar",
     explanation: "",
   });
   template += cardContents({
-    header: "",
-    button: "Consortia Projects",
+    header: "Consortia Projects",
+    button: "Data Platform for Consortia Projects",
     href: "#data_access/overview",
     icon: "fa-database",
     explanation: "",
   });
   template += cardContents({
     header: "Research Studies",
-    button: "Data Platforms for DCEG Studies",
+    button: "Data Platforms for DCEG Research Studies",
     href: "#researchStudies",
     icon: "fa-database",
     explanation: "",
   });
   template += cardContents({
     header: "Publications",
-    button: "Datasets from DCEG publications",
+    button: "My Manuscript Datasets from DCEG publications",
     href: "#publicationpage",
     icon: "fa-database",
     explanation: "",
@@ -108,49 +108,49 @@ export const infoDeckAfterLoggedIn = async () => {
             </div>
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`;
-  if (studyDescription)
-    template += cardContents({
-      header: "Study Description",
-      button: "Study Description",
-      href: "#about/description",
-      icon: "fa-file-alt",
-      explanation: "View descriptions of participating studies.",
-    });
+  // if (studyDescription)
+  //   template += cardContents({
+  //     header: "Study Description",
+  //     button: "Study Description",
+  //     href: "#about/description",
+  //     icon: "fa-file-alt",
+  //     explanation: "View descriptions of participating studies.",
+  //   });
   template += cardContents({
-    header: "Data Platforms for Consortia Projects",
+    header: "Consortia Projects",
     button: "Data Platforms for Consortia Projects",
     href: "#data_access/overview",
     icon: "fa-handshake",
     explanation: "",
   });
-  template += cardContents({
-    header: "Data Platforms for Consortia Projects",
-    button: "Data Platforms for Consortia Projects",
-    href: "#data_access/overview",
-    icon: "fa-handshake",
-    explanation: "",
-  });
+  // template += cardContents({
+  //   header: "Data Platforms for Consortia Projects",
+  //   button: "Data Platforms for Consortia Projects",
+  //   href: "#data_access/overview",
+  //   icon: "fa-handshake",
+  //   explanation: "",
+  // });
   template += cardContents({
     header: "Research Studies",
-    button: "Data Platforms for DCEG Studies",
+    button: "Data Platforms for Datasets from DCEG Studies",
     href: "#researchStudies",
     icon: "fa-database",
     explanation: "",
   });
   template += cardContents({
     header: "Publication",
-    button: "Datasets from DCEG publications",
+    button: "My Manuscript Datasets from DCEG publications",
     href: "#publicationpage",
     icon: "fa-database",
     explanation: "",
   });
-  template += cardContents({
-    header: "Explore Data",
-    button: "Explore Data",
-    href: "#data_exploration/summary",
-    icon: "fa-chart-bar",
-    explanation: "Explore summary-level data to plan analyses.",
-  });
+  // template += cardContents({
+  //   header: "Explore Data",
+  //   button: "Explore Data",
+  //   href: "#data_exploration/summary",
+  //   icon: "fa-chart-bar",
+  //   explanation: "Explore summary-level data to plan analyses.",
+  // });
   template += `</div>
             </div>
         </div>

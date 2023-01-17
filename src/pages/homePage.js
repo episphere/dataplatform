@@ -36,14 +36,14 @@ export const infoDeck = () => {
   });
   template += cardContents({
     header: "Research Studies",
-    button: "Data Platforms for DCEG Studies",
+    button: "Data Platforms for Datasets from DCEG Studies",
     href: "#researchStudies",
     icon: "fa-database",
     explanation: "",
   });
   template += cardContents({
     header: "Publications",
-    button: "Datasets from DCEG publications",
+    button: "My Manuscript Datasets from DCEG publications",
     href: "#publicationpage",
     icon: "fa-database",
     explanation: "",
@@ -100,35 +100,14 @@ export const infoDeckAfterLoggedIn = async () => {
             </div>
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`;
-  if (studyDescription)
-    template += cardContents({
-      header: "Study Description",
-      button: "Study Description",
-      href: "#about/description",
-      icon: "fa-database",
-      explanation: "",
-    });
-  template += cardContents({
-    header: "Research Studies",
-    button: "Data Platforms for DCEG Studies",
-    href: "#researchStudies",
-    icon: "fa-database",
-    explanation: "",
-  });
-  template += cardContents({
-    header: "Publications",
-    button: "Datasets from DCEG publications",
-    href: "##publicationpage",
-    icon: "fa-database",
-    explanation: "",
-  });
-  template += cardContents({
-    header: "Explore Data",
-    button: "Explore Data",
-    href: "#data_exploration/summary",
-    icon: "fa-database",
-    explanation: "",
-  });
+  //   if (studyDescription)
+  //     template += cardContents({
+  //       header: "Study Description",
+  //       button: "Study Description",
+  //       href: "#about/description",
+  //       icon: "fa-database",
+  //       explanation: "",
+  //     });
   template += cardContents({
     header: "Consortia Projects",
     button: "Data Platforms for Consortia Projects",
@@ -136,6 +115,27 @@ export const infoDeckAfterLoggedIn = async () => {
     icon: "fa-database",
     explanation: "",
   });
+  template += cardContents({
+    header: "Research Studies",
+    button: "Data Platforms for Datasets from DCEG Studies",
+    href: "#researchStudies",
+    icon: "fa-database",
+    explanation: "",
+  });
+  template += cardContents({
+    header: "Publications",
+    button: "My manuscript Dataset from DCEG publications",
+    href: "##publicationpage",
+    icon: "fa-database",
+    explanation: "",
+  });
+  //   template += cardContents({
+  //     header: "Explore Data",
+  //     button: "Explore Data",
+  //     href: "#data_exploration/summary",
+  //     icon: "fa-database",
+  //     explanation: "",
+  //   });
   template += `</div>
             </div>
         </div>
