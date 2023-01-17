@@ -2,6 +2,7 @@ import { navBarMenutemplate } from "./src/components/navBarMenuItems.js";
 import { infoDeck, infoDeckAfterLoggedIn } from "./src/pages/homePage.js";
 import { testPage2 } from "./src/pages/researchStudies.js";
 import { publication } from "./src/pages/publicationpage.js";
+import { myDCEGpublication } from "./src/pages/myDCEG.js";
 import {
   dataSubmissionTemplate,
   lazyload,
@@ -148,6 +149,7 @@ export const confluence = async () => {
     const daccViewElement = document.getElementById("daccView");
     const ConsortiaPageElement = document.getElementById("data2");
     const PublicationPageElement = document.getElementById("publicationID");
+    const MyDCEDPageElement = document.getElementById("myDCEGID");
     // const platformTutorialElement = document.getElementById('platformTutorial');
     // const dataAnalysisElement = document.getElementById('dataAnalysis');
 
@@ -358,6 +360,16 @@ export const confluence = async () => {
       confluenceDiv.innerHTML = publication();
       hideAnimation();
     });
+    MyDCEDPageElement.addEventListener("click", () => {
+      if (MyDCEDPageElement.classList.contains("navbar-active")) return;
+      const element = document.getElementById("myDCEGID");
+      if (!element) return;
+      if (element.classList.contains("navbar-active")) return;
+      document.title = "BCRPP - My DCEG Publication Data";
+      assignNavbarActive(element);
+      confluenceDiv.innerHTML = myDCEGpublication();
+      hideAnimation();
+    });
     const folders = await getFolderItems(0);
     const array = filterConsortiums(folders.entries);
     const projectArray = filterProjects(folders.entries);
@@ -476,6 +488,13 @@ const manageRouter = async () => {
     document.title = "BCRPP - publicationpage";
     assignNavbarActive(element);
     confluenceDiv.innerHTML = publication();
+  } else if (hash === "#myDCEG") {
+    const element = document.getElementById("myDCEGID");
+    if (!element) return;
+    if (element.classList.contains("navbar-active")) return;
+    document.title = "BCRPP - My DCEG Publication Data";
+    assignNavbarActive(element);
+    confluenceDiv.innerHTML = myDCEGpublication();
   } else if (hash === "#data_access/form") {
     const dataFormElement = document.getElementById("dataForm");
     if (!dataFormElement) return;
@@ -589,6 +608,9 @@ const manageHash = async () => {
     element.click();
   } else if (hash === "#publicationpage") {
     const element = document.getElementById("publicationID");
+    element.click();
+  } else if (hash === "#myDCEG") {
+    const element = document.getElementById("myDCEGID");
     element.click();
   } else if (hash === "#data_access/form") {
     const element = document.getElementById("dataForm");

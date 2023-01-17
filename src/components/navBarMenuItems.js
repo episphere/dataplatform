@@ -28,6 +28,12 @@ export const navBarMenutemplate = () => {
             Publication
         </a>
         </div>
+        </div>
+        <div class="grid-elements">
+        <a class="nav-link nav-menu-links white-font" href="#myDCEG" title="My DCEG Publication Data" id="myDCEGID">
+           My DCEG Publication Data
+        </a>
+        </div>
         <div class="grid-elements">
             <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/bcrpDataPlatform/issues" title="BCRPP github issues">
                 Report issue
