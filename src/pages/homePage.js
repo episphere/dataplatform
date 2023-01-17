@@ -132,7 +132,7 @@ export const infoDeckAfterLoggedIn = async () => {
   template += cardContents({
     header: "My DCEG Publication Data",
     button: "My DCEG Publication Data",
-    href: "#publicationpage",
+    href: "#myDCEG",
     icon: "fa-database",
     explanation: "",
   });
