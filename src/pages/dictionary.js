@@ -20,6 +20,7 @@ export const dataDictionaryTemplate = async () => {
   const tsvData = tsv2Json(data);
   const dictionary = tsvData.data;
   const headers = tsvData.headers;
+
   let template = `
     <div class="col-xl-2 filter-column" id="summaryFilterSiderBar">
         <div class="div-border white-bg align-left p-2">

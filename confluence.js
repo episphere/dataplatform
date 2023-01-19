@@ -78,6 +78,7 @@ import { footerTemplate } from "./src/components/footer.js";
 import { renderDescription } from "./src/pages/description.js";
 import { dataDictionaryTemplate } from "./src/pages/dictionary.js";
 import { showPreview } from "./src/components/boxPreview.js";
+import { publicationPageTemplate } from "./src/pages/publicationpage.js";
 
 /**
  * 1. add Scientifix comitte to menu
