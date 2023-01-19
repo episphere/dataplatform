@@ -315,11 +315,7 @@ export const formSection = async (activeTab, showDescripton) => {
         </div>
         <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">             
           <section class="contact-form">
-            <p>Please fill out the form below. This will be reviewed by the BCRPP Data Access Coordination Committee (DACC) 
-            to ensure that proposal is consistent with BCRPP goals and individual cohorts’ consents. The DACC consists of 
-            representatives from the BCRPP Steering Committee and representatives of individual cohorts. Proposals will be reviewed 
-            once every four months. Data for approved concepts will be sent only to the Investigators listed below, 
-            each of whose Institutions will need to sign the BCRPP DTA.</p>
+            <p>Please fill out the form below. This will be reviewed by the DCEG and the necessary DAC(s)</p>
             <form>
             <!---<div class='col-3 mb-3 input-group'>
               <input type='file' class='' id='uploadJSON' />
@@ -330,22 +326,102 @@ export const formSection = async (activeTab, showDescripton) => {
               </div>
 
               <div class="input-group">
+                <label for="datasets"><b>Select datasets to request access to:</b><span class='required-label'>*</span> </label>
+              </div>
+              <div class="input-group">
+                  <table id="datasetsformtable">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Dataset</th>
+                        <th>Description</th>
+                        <th>Participants</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><input id="study1" name="datasets" type="checkbox" value="study1"/></td>
+                        <td>Study 1</td>
+                        <td>Description of Study 1</td>
+                        <td>1111</td>
+                      </tr>
+                      <tr>
+                        <td><input id="study2" name="datasets" type="checkbox" value="study2"/></td>
+                        <td>Study 2</td>
+                        <td>Description of Study 2</td>
+                        <td>2222</td>
+                      </tr>
+                      <tr>
+                        <td><input id="study3" name="datasets" type="checkbox" value="study3"/></td>
+                        <td>Study 3</td>
+                        <td>Description of Study 3</td>
+                        <td>3333</td>
+                      </tr>
+                      <tr>
+                        <td><input id="study4" name="datasets" type="checkbox" value="study4"/></td>
+                        <td>Study 4</td>
+                        <td>Description of Study 4</td>
+                        <td>4444</td>
+                      </tr>
+                      <tr>
+                        <td><input id="study5" name="datasets" type="checkbox" value="study5"/></td>
+                        <td>Study 5</td>
+                        <td>Description of Study 5</td>
+                        <td>5555</td>
+                      </tr>
+                    </tbody>
+                  </table>
+              </div>
+
+              <div class="input-group">
                 <label for="projname"><b>Title of Proposed Project</b><span class='required-label'>*</span></label>
                 <input id="projname" name="projname" type="text" required/>
               </div>
 
-              <div class="input-group">
+              <!---<div class="input-group">
                 <label for="amendment"> <b>Is this an amendment?</b><span class='required-label'>*</span> </label>      
                   <input id="amendmentyes" name="amendment" type="radio" value="Yes" required/>
                     <label class="inline" for="amendmentyes"> Yes </label>
                   <input id="amendmentno" name="amendment" type="radio" value="No" required/>
-                    <label class="inline" for="amendmentno"> No </label>
+                    <label class="inline" for="amendmentno"> No </label>--->
                   <!--label for="ifamendmentyes"> If yes, provide Concept Number of original form </label>
                     <input type="text" id="conNum" name="conNum"/-->
+              <!---</div>--->
+
+              <!---<div class='input-group d-none' >
+                <select class='form-select' id='amendmentSelect'></select>
+              </div>--->
+
+              <div class="input-group">
+                <label for="typeofres"><b>Type of Research</b><span class='required-label'>*</span></label>
               </div>
 
-              <div class='input-group d-none' >
-                <select class='form-select' id='amendmentSelect'></select>
+              <div class="input-group">
+                  <div class="inline-field">
+                    <input id="disres" name="typeofres" type="checkbox" value="Disease-related studies"/>
+                    <label class="container-ul" for="disres"><b>Disease-related studies:</b> The primary purpose of the research is to learn more about a particular disease or disorder.</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="devres" name="typeofres" type="checkbox" value="Methods development and validation studies"/>
+                    <label class="container-ul" for="devres"><b>Methods development and validation studies:</b> The primary purpose fo the research is to develop and/or validate new methods for analyzing or interpreting data...</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="conres" name="typeofres" type="checkbox" value="Controls"/>
+                    <label class="container-ul" for="conres"><b>Controls:</b> The reason for this request is to increase the number of controls available for a comparison group.</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="popres" name="typeofres" type="checkbox" value="Population structure or normal variation studies"/>
+                    <label class="container-ul" for="popres"><b>Population structure or normal variation studies:</b> The primary purpose of the research is to understand variation in the general population</label>
+                  </div>
+
+                  <div class="inline-field">
+                    <input id="otherres" name="typeofres" type="checkbox" value="Other"/>
+                    <label class="container-ul" for="otherres"><b>Other</b> (please specify below):</label>
+                    <textarea id="otherresinput" name="typeofres" rows="2" cols="65" required></textarea>
+                  </div>
               </div>
 
               <div class="input-group">
@@ -363,18 +439,18 @@ export const formSection = async (activeTab, showDescripton) => {
                 <input id="email" name="email" type="email" required/>
               </div>
 
-              <div class="input-group">
-                <label for="member"> <b>Are you a member of BCRPP?</b> <span class='required-label'>*</span></label>
+              <!---<div class="input-group">
+                <label for="member"> <b>Are you a member of DCEG?</b> <span class='required-label'>*</span></label>
                   <input id="memberyes" name="member" type="radio" value="Yes" required/>
                     <label class="inline" for="memberyes"> Yes </label>
                   <input id="memberno" name="member" type="radio" value="No" required/>
                     <label class="inline" for="memberno"> No </label>
-              </div>
+              </div>--->
 
-              <div class="input-group">
+              <!---<div class="input-group">
                 <label for="acro"><b>BCRPP Study Acronym(s) for the Contact Investigator</b></span></label>
                 <textarea id="acro" name="acro" rows="2" cols="65"></textarea>
-              </div>
+              </div>--->
 
               <div class="input-group">
                 <label for="allinvest"><b>ALL Investigators (and their institutions) who will require access to the data requested</b><span class='required-label'>*</span></label>
@@ -768,13 +844,13 @@ export const importDictVars = () => {
     if (dictionaryVars.includes(v.value.toLowerCase())) v.checked = true;
   });
 };
+// Removing amendFormSelect for now
+// export const amendFormSelect = async () => {
+//   const yesEl = document.getElementById("amendmentyes");
+//   const amendmentEl = document.getElementById("amendmentSelect");
 
-export const amendFormSelect = async () => {
-  const yesEl = document.getElementById("amendmentyes");
-  const amendmentEl = document.getElementById("amendmentSelect");
-
-  amendmentEl.parentElement.classList.toggle("d-none", !yesEl.checked);
-};
+//   amendmentEl.parentElement.classList.toggle("d-none", !yesEl.checked);
+// };
 
 export const populateAmendSelect = async () => {
   const items = await getFolderItems("162222418449");
@@ -787,12 +863,12 @@ export const populateAmendSelect = async () => {
       options = [...userFiles];
     }
   }
-  const amendmentEl = document.getElementById("amendmentSelect");
-  options.forEach((option) => {
-    const optionEl = document.createElement("option");
-    optionEl.text = option.name;
-    amendmentEl.appendChild(optionEl);
-  });
+  // const amendmentEl = document.getElementById("amendmentSelect");
+  // options.forEach((option) => {
+  //   const optionEl = document.createElement("option");
+  //   optionEl.text = option.name;
+  //   amendmentEl.appendChild(optionEl);
+  // });
 };
 export const acceptedStudiesSection = (activeTab) => {
   let authChair =

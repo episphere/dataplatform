@@ -2215,3 +2215,20 @@ th {
   text-align: left;
   padding: 8px;
 }
+
+#datasetsformtable {
+  border: solid thin;
+  border-collapse: collapse;
+}
+
+#datasetsformtable th, 
+#datasetsformtable td { 
+  border: solid thin;
+  padding: 0.5rem 2rem;
+}
+
+#datasetsformtable th { 
+  padding: 0.2em; 
+  vertical-align: middle; 
+  text-align: center; 
+}

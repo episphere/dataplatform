@@ -1,5 +1,5 @@
 import { navBarMenutemplate } from "./src/components/navBarMenuItems.js";
-import { testPage2 } from "./src/pages/testpage.js";
+import { formSectiontest } from "./src/pages/testpage.js";
 import { infoDeck, infoDeckAfterLoggedIn } from "./src/pages/homePage.js";
 import {
   dataSubmissionTemplate,
@@ -26,7 +26,7 @@ import {
   formSectionOther,
   formFunctions,
   importDictVars,
-  amendFormSelect,
+  //amendFormSelect,
   populateAmendSelect,
 } from "./src/pages/dataRequest.js";
 import {
@@ -267,12 +267,13 @@ export const confluence = async () => {
         if (getMyPermissionLevel) {
           confluenceDiv.innerHTML = await formSection("form");
           populateAmendSelect();
-          document
-            .getElementById("amendmentyes")
-            .addEventListener("click", amendFormSelect);
-          document
-            .getElementById("amendmentno")
-            .addEventListener("click", amendFormSelect);
+          //Removing amendFormSelect for now
+          // document
+          //   .getElementById("amendmentyes")
+          //   .addEventListener("click", amendFormSelect);
+          // document
+          //   .getElementById("amendmentno")
+          //   .addEventListener("click", amendFormSelect);
           await dataForm();
         } else {
           confluenceDiv.innerHTML = await formSectionOther("form");
@@ -341,7 +342,7 @@ export const confluence = async () => {
       if (element.classList.contains("navbar-active")) return;
       document.title = "Testing";
       assignNavbarActive(element, 1);
-      confluenceDiv.innerHTML = testPage2();
+      confluenceDiv.innerHTML = formSectiontest();
       hideAnimation();
     });
     const folders = await getFolderItems(0);
@@ -452,7 +453,7 @@ const manageRouter = async () => {
     if (element.classList.contains("navbar-active")) return;
     document.title = "BCRPP - Data Access";
     assignNavbarActive(element, 1);
-    confluenceDiv.innerHTML = testPage2();
+    confluenceDiv.innerHTML = formSectiontest();
   } else if (hash === "#data_access/form") {
     const dataFormElement = document.getElementById("dataForm");
     if (!dataFormElement) return;
