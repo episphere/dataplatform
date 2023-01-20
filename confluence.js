@@ -440,7 +440,7 @@ const manageRouter = async () => {
     const element = document.getElementById("homePage");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
-    document.title = "BCRP Data Platform";
+    document.title = "DCEG Data Platform";
     assignNavbarActive(element);
     infoDeck();
     hideAnimation();
@@ -650,7 +650,7 @@ const manageHash = async () => {
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
     assignNavbarActive(element);
-    document.title = "BCRP Data Platform";
+    document.title = "DCEG Data Platform";
     infoDeckAfterLoggedIn();
     hideAnimation();
   } else if (hash === "#about/overview") {
