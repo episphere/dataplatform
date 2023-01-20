@@ -359,6 +359,7 @@ export const confluence = async () => {
       document.title = "BCRPP - Publication";
       assignNavbarActive(element);
       confluenceDiv.innerHTML = publication();
+      publicationPageTemplate();
       hideAnimation();
     });
     MyDCEDPageElement.addEventListener("click", () => {

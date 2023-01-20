@@ -13,12 +13,17 @@ import {
   shortenText,
   tsv2Json,
   json2other,
+  csv2Json,
 } from "./../shared.js";
 export const publicationPageTemplate = async () => {
-  const publicationdata1 = await (await fetch("./publicationdata.txt")).text();
-  const tsvData = tsv2Json(data);
-  const pubdata = tsvData.data;
-  const headers = tsvData.headers;
+  const publicationdata1 = await (
+    await fetch("./imports/DCEG_Publications.csv")
+  ).text();
+  console.log(publicationdata1);
+  const csvData = csv2Json(publicationdata1);
+  const pubdata = csvData.data;
+  const headers = csvData.headers;
+  console.log(pubdata);
 };
 export const publication = () => {
   console.log("testing");
