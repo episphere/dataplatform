@@ -28,17 +28,23 @@ export const publicationPageTemplate = async () => {
 export const publication = () => {
   console.log("testing");
   return `
-      <div class="publication">
-      <div class="align-left">
-           <h1 
-           class="page-header">Datasets from DCEG publications
-           </h1>
-      </div> 
+  <div class="general-bg padding-bottom-1rem">
+  <div class="container body-min-height">
+     <div class="main-summary-row">
+           <div class="align-left">
+                <div class="align-left">
+                     <h1 class="page-header">Datasets from DCEG publications
+                    </h1>
+                </div> 
+                </div>
       </div>
+      <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">            
         </span>
         <div class="align-left">
         Data from the following publications can be requested. Click the request data bottom for the publication of interest to goto the data request form. This will require logging in through a Box.com account for authentication and authorization. If you do not have a Box.com account, you can use <a href= "https://www.box.com/personal/">this link </a><br> to create a free account. After approval of the data request,datasets and data dictionaries can be accessed through their permanent identifiers (or uniform resource locators, URL)provided by Box.com.
         </div> 
+  
       <div>
+  </div>
       `;
 };
