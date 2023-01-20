@@ -251,7 +251,7 @@ export const confluence = async () => {
         showAnimation();
         if (!element) return;
         if (element.classList.contains("navbar-active")) return;
-        document.title = "BCRPP - Data Form";
+        document.title = "DCEG - Data Form";
         assignNavbarActive(element, 1);
         //dataForm();
         const getCollaborators = await getCollaboration(
@@ -279,7 +279,7 @@ export const confluence = async () => {
           confluenceDiv.innerHTML = await formSectionOther("form");
           hideAnimation();
         }
-        formFunctions();
+        //formFunctions();
         hideAnimation();
       });
     }
@@ -460,10 +460,10 @@ const manageRouter = async () => {
     if (dataFormElement.classList.contains("navbar-active")) return;
     showAnimation();
     assignNavbarActive(dataFormElement, 1);
-    document.title = "BCRPP - Data Form";
+    document.title = "DCEG - Data Form";
     confluenceDiv.innerHTML = await formSection();
     removeActiveClass("nav-link", "active");
-    formFunctions();
+    //formFunctions();
   } else if (hash === "#data_access/acceptedStudies") {
     const acceptedStudiesElement = document.getElementById(
       "acceptedStudiesView"

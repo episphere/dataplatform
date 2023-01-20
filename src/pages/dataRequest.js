@@ -228,7 +228,7 @@ export const formSectionOther = async (activeTab, showDescripton) => {
 
                               <div class="main-summary-row">
                                   <div class="align-left">
-                                      <h1 class="page-header">Analysis Proposal Form</h1>
+                                      <h1 class="page-header">Data Access Proposal Form</h1>
                                   </div>
                               </div>
 
@@ -289,7 +289,7 @@ export const formSection = async (activeTab, showDescripton) => {
   let template = `
       <div class="general-bg body-min-height padding-bottom-1rem">
           <div class="container">
-            ${navBarItems}
+            <!---${navBarItems}--->
           
       </div>
       `;
@@ -308,7 +308,7 @@ export const formSection = async (activeTab, showDescripton) => {
         <div class="main-summary-row">
             <div class="align-left">
 
-                <h1 class="page-header">Analysis Proposal Form</h1>
+                <h1 class="page-header">Data Access Proposal Form</h1>
                 <button id='autofillJson' class='d-none'>AutoFill JSON</button>
 
             </div>
@@ -489,7 +489,7 @@ export const formSection = async (activeTab, showDescripton) => {
               <!---<p><u><b>Core Covariate, Mammography and Incident Breast Cancer Data Requested</b></u></p>
                 <button class='btn btn-primary btn-sm' type='button' id='importDictvars'>Import Variables</button>--->
 
-              <div class="input-group">
+              <!---<div class="input-group">
                 <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables shared by cohorts participating in the BCRPP. 
                 Data availability and descriptive statistics can be explored via the <a href="#data_exploration/summary">Explore Data</a> tool. If data from a particular category is requested,
                 all variables from that category will be provided.</p>
@@ -724,13 +724,13 @@ export const formSection = async (activeTab, showDescripton) => {
                     <label class="container-ul" for="WLH">WLH</label>
                   </div>
                 </ul>
-              </div>
+              </div>--->
 
               <br>
               <p><u><b>Timeline</b></u><span class='required-label'>*</span></p>
                 <div class="input-group">
                   <label for="timeline">Please indicate estimated time from receipt of data to completion of analysesand submission of paper; 
-                  the expectation (per the BCRPP Recipient DTA) is that results will be published within one year after completion</label>
+                  the expectation is that results will be published within one year after completion</label>
                   <textarea id="timeline" name="timeline" rows="4" cols="65" required></textarea>
                 </div>
 
@@ -739,7 +739,7 @@ export const formSection = async (activeTab, showDescripton) => {
                 <div class="input-group">
                   <label for="authconf"><input id="authconf" name="authconf" type="checkbox" value="Yes" required/> Please confirm that you acknowledge the intention to include representatives of the 
                   contributing cohorts as co-authors and that you will provide contributing cohorts 30 days to review the draft manuscript 
-                  before submission (per section 3.4 of the BCRPP Recipient DTA). </label>
+                  before submission. </label>
                   
                   <label for="Authorship"><i>Please include any special considerations you would like to bring to the DACC’s attention.</i></label>
 
