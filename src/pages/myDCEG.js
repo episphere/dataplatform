@@ -1,5 +1,8 @@
 export const myDCEGpublication = () => {
   return `
+  
+  <div class="main-summary-row">
+      <div class="col align-left">
         <div class="publication">
         <div class="align-left">
              <h1 
@@ -17,5 +20,6 @@ export const myDCEGpublication = () => {
         </div>
           <br><div class="home-page-stats font-size-18"><br>
           <div>
+  <div>
         `;
 };

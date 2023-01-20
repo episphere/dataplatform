@@ -154,7 +154,7 @@ export const dataAccess = (activeTab, showDescripton) => {
                 <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
                     <div class="row m-0">
 
-                        TThe following are data platform for collaborative consortium projects that are coordinated by DCEG:
+                        The following are data platform for collaborative consortium projects that are coordinated by DCEG:
 
                     </div></br>
                     <div class="row m-0">
