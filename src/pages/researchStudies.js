@@ -11,9 +11,8 @@ export const testPage2 = () => {
             </div>
             <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
             <div class="row m-0">  
+            <br>The following are data platforms from individual research studies led or co-led by DCEG to provideresearchers with information about the studies and a mechanism for controlled access to study data:
             <span>
-            The following are data platforms from individual research studies led or co-led by DCEG to provideresearchers with information about the studies and a mechanism for controlled access to study data:
-  
             <br><a href= "https://aghealth.nih.gov/">Agricultural Health Study</a><br>
             <br><a href= "http://atbcstudy.cancer.gov/">Alpha-Tocopherol, Beta-Carotene Study</a><br> 
             <br><a href= "http://dietandhealth.cancer.gov/">NIH-AARP Diet and Health Study</a><br>
@@ -21,8 +20,8 @@ export const testPage2 = () => {
             <br><a href= "https://biometry.nci.nih.gov/cdas/plco/">Cancer Screening Trial  Study</a><br>
             
             <br><a href= "http://radtechstudy.nci.nih.gov/">CRadiologic Technologists Study</a><br> 
-            </span> 
-        <div>
+            
+            <div>
       <div>
       `;
 

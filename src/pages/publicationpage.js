@@ -40,7 +40,7 @@ export const publication = () => {
       </div>
       <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">            
         </span>
-        <div class="align-left">
+        <br><div class="align-left">
         Data from the following publications can be requested. Click the request data bottom for the publication of interest to goto the data request form. This will require logging in through a Box.com account for authentication and authorization. If you do not have a Box.com account, you can use <a href= "https://www.box.com/personal/">this link </a><br> to create a free account. After approval of the data request,datasets and data dictionaries can be accessed through their permanent identifiers (or uniform resource locators, URL)provided by Box.com.
         </div> 
   
