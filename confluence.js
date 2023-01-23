@@ -79,6 +79,7 @@ import { renderDescription } from "./src/pages/description.js";
 import { dataDictionaryTemplate } from "./src/pages/dictionary.js";
 import { showPreview } from "./src/components/boxPreview.js";
 import { publicationPageTemplate } from "./src/pages/publicationpage.js";
+import { uploadData } from "./src/pages/uploaddata.js";
 
 /**
  * 1. add Scientifix comitte to menu
@@ -150,7 +151,8 @@ export const confluence = async () => {
     const daccViewElement = document.getElementById("daccView");
     const ConsortiaPageElement = document.getElementById("data2");
     const PublicationPageElement = document.getElementById("publicationID");
-    const MyDCEDPageElement = document.getElementById("myDCEGID");
+    const MyDCEGPageElement = document.getElementById("myDCEGID");
+    const MyDCEGPageElement_upload = document.getElementById("myDCEGID_upload");
     // const platformTutorialElement = document.getElementById('platformTutorial');
     // const dataAnalysisElement = document.getElementById('dataAnalysis');
 
@@ -356,22 +358,32 @@ export const confluence = async () => {
       const element = document.getElementById("publicationID");
       if (!element) return;
       if (element.classList.contains("navbar-active")) return;
-      document.title = "BCRPP - Publication";
+      document.title = "DCEG - Publication";
       assignNavbarActive(element);
       confluenceDiv.innerHTML = publication();
       publicationPageTemplate();
       hideAnimation();
     });
-    MyDCEDPageElement.addEventListener("click", () => {
-      if (MyDCEDPageElement.classList.contains("navbar-active")) return;
+    MyDCEGPageElement.addEventListener("click", () => {
+      if (MyDCEGPageElement.classList.contains("navbar-active")) return;
       const element = document.getElementById("myDCEGID");
       if (!element) return;
       if (element.classList.contains("navbar-active")) return;
-      document.title = "BCRPP - My DCEG Publication Data";
+      document.title = "DCEG - My DCEG Publication Data";
       assignNavbarActive(element);
       confluenceDiv.innerHTML = myDCEGpublication();
       hideAnimation();
     });
+    // MyDCEGPageElement_upload.addEventListener("click", () => {
+    //   if (MyDCEGPageElement_upload.classList.contains("navbar-active")) return;
+    //   const element = document.getElementById("myDCEGID_upload");
+    //   if (!element) return;
+    //   if (element.classList.contains("navbar-active")) return;
+    //   document.title = "DCEG - Publication Data Upload";
+    //   assignNavbarActive(element);
+    //   confluenceDiv.innerHTML = uploadData();
+    //   hideAnimation();
+    // });
     const folders = await getFolderItems(0);
     const array = filterConsortiums(folders.entries);
     const projectArray = filterProjects(folders.entries);
@@ -497,6 +509,13 @@ const manageRouter = async () => {
     document.title = "BCRPP - My DCEG Publication Data";
     assignNavbarActive(element);
     confluenceDiv.innerHTML = myDCEGpublication();
+  } else if (hash === "#myDCEG/upload") {
+    const element = document.getElementById("myDCEGID_upload");
+    if (!element) return;
+    if (element.classList.contains("navbar-active")) return;
+    document.title = "DCEG - Publication Data Upload";
+    assignNavbarActive(element);
+    confluenceDiv.innerHTML = uploadData();
   } else if (hash === "#data_access/form") {
     const dataFormElement = document.getElementById("dataForm");
     if (!dataFormElement) return;
@@ -613,6 +632,9 @@ const manageHash = async () => {
     element.click();
   } else if (hash === "#myDCEG") {
     const element = document.getElementById("myDCEGID");
+    element.click();
+  } else if (hash === "#myDCEG/upload") {
+    const element = document.getElementById("myDCEGID_upload");
     element.click();
   } else if (hash === "#data_access/form") {
     const element = document.getElementById("dataForm");
