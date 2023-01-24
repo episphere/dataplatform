@@ -565,6 +565,14 @@ label {
   border-radius: 0rem;
 }
 
+.data-upload {
+  text-align: left;
+  background-color: #fff;
+  margin-bottom: 1rem;
+  padding: 0rem 0;
+  border-radius: 0rem;
+}
+
 .my-projects-div {
   text-align: left;
   padding: 0.5rem 0;
@@ -1884,10 +1892,16 @@ body {
 
 /* Headings use a different font because they’re hipsters. */
 h1,
-h2 {
+h2,
+h3 {
   color: var(--color-darkest);
   font-size: 110%;
   line-height: 1.1;
+}
+
+h3 {
+  font-size: 100%;
+  text-align: center;
 }
 
 h1 {
@@ -2214,4 +2228,36 @@ th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
+}
+
+.dsmpno {
+  text-align: center;
+  color: darkred;
+}
+
+.step {
+  Display: None;
+}
+.step.active {
+  Display: Block;
+}
+
+button.next-btn,
+button.previous-btn,
+button.submit-btn {
+    Float: Right;
+    Margin-Top: 20px;
+    Padding: 10px 30px;
+    Border: None;
+    Outline: None;
+    /*Font-Family: "Montserrat";*/
+    Font-Size: 18px;
+    Cursor: Pointer; /* Text-Align: Right; */
+}
+button.previous-btn {
+    Float: Left;
+}
+
+.tab {
+  display: block;
 }

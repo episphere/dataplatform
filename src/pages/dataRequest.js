@@ -89,42 +89,42 @@ export const dataAccessNotSignedIn = () => {
 };
 //All the "Project Concept Form" and "View Submissions" that are commented out in this code can be used if we want to add them to the top bar in the data access page
 export const dataAccess = (activeTab, showDescripton) => {
-  let authChair =
-    emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
-  let authDacc =
-    emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+  // let authChair =
+  //   emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
+  // let authDacc =
+  //   emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = "";
-  console.log(authChair);
-  console.log(authDacc);
-  if (authDacc && authChair) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab
-      // "Overview",
-      // "Project Concept Form",
-      // "View Submissions",
-      // "Chair Menu",
-      // "DACC Menu"
-    );
-  } else if (authChair) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab
-      // "Overview",
-      // "Project Concept Form",
-      // "View Submissions",
-      // "Chair Menu"
-    );
-  } else if (authDacc) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab
-      // "Overview",
-      // "Project Concept Form",
-      // "View Submissions",
-      // "DACC Menu"
-    );
-  } else {
+  // console.log(authChair);
+  // console.log(authDacc);
+  // if (authDacc && authChair) {
+  //   navBarItems = pageNavBar(
+  //     "data_access",
+  //     activeTab
+  //     // "Overview",
+  //     // "Project Concept Form",
+  //     // "View Submissions",
+  //     // "Chair Menu",
+  //     // "DACC Menu"
+  //   );
+  // } else if (authChair) {
+  //   navBarItems = pageNavBar(
+  //     "data_access",
+  //     activeTab
+  //     // "Overview",
+  //     // "Project Concept Form",
+  //     // "View Submissions",
+  //     // "Chair Menu"
+  //   );
+  // } else if (authDacc) {
+  //   navBarItems = pageNavBar(
+  //     "data_access",
+  //     activeTab
+  //     // "Overview",
+  //     // "Project Concept Form",
+  //     // "View Submissions",
+  //     // "DACC Menu"
+  //   );
+  // } else {
     navBarItems = pageNavBar(
       "data_access",
       activeTab
@@ -132,7 +132,7 @@ export const dataAccess = (activeTab, showDescripton) => {
       // "Project Concept Form",
       // "View Submissions"
     );
-  }
+  //}
   let template = `
 
         <div class="general-bg body-min-height padding-bottom-1rem">

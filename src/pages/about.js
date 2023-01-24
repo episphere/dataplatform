@@ -89,8 +89,8 @@ export const renderOverView = async () => {
     </div>
 `;
   document.getElementById("overview").innerHTML = template;
-  const response = await fetch("./publicDataSet.json");
-  countPublicStatistics(await response.json(), true);
+  // const response = await fetch("./publicDataSet.json");
+  // countPublicStatistics(await response.json(), true);
 };
 
 const countPublicStatistics = (d, caseControl) => {
