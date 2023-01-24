@@ -1,7 +1,7 @@
 import { navBarMenutemplate } from "./src/components/navBarMenuItems.js";
 import { infoDeck, infoDeckAfterLoggedIn } from "./src/pages/homePage.js";
 import { testPage2 } from "./src/pages/researchStudies.js";
-import { publication } from "./src/pages/publicationpage.js";
+import { publication, publicationModule } from "./src/pages/publicationpage.js";
 import { myDCEGpublication } from "./src/pages/myDCEG.js";
 import {
   dataSubmissionTemplate,
@@ -78,7 +78,6 @@ import { footerTemplate } from "./src/components/footer.js";
 import { renderDescription } from "./src/pages/description.js";
 import { dataDictionaryTemplate } from "./src/pages/dictionary.js";
 import { showPreview } from "./src/components/boxPreview.js";
-import { publicationPageTemplate } from "./src/pages/publicationpage.js";
 
 /**
  * 1. add Scientifix comitte to menu
@@ -359,7 +358,6 @@ export const confluence = async () => {
       document.title = "BCRPP - Publication";
       assignNavbarActive(element);
       confluenceDiv.innerHTML = publication();
-      publicationPageTemplate();
       hideAnimation();
     });
     MyDCEDPageElement.addEventListener("click", () => {
