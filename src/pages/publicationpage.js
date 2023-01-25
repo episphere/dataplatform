@@ -41,7 +41,7 @@ export const publicationModule = {
     }));
     
     return `
-      <div class="p-2 flex flex-col">
+      <div class="flex, flex-col" style="border: solid lightgray 1px; " >
         ${publicationModule.renderSearchInput()}
   
         ${publicationModule.renderSelectBox("Author", authors)}
@@ -52,15 +52,21 @@ export const publicationModule = {
   },
   renderSearchInput: () => {
     return `
-      <div class="w-100">
-        <label for="table-search-input" class="d-block mb-1">
+      <div class=" filter-column white-bg p-2 ">
+      <label for="table-search-input font-size-12 " class="d-block mb-1 font-bold"> 
           Filter
         </label>
-        <input
-          placeholder="Search"
-          class="p-2 border mb-2 w-100"
-          id="table-search-input"
+        <!-- <input type="search" class="form-control rounded" autocomplete="off" placeholder="Search min. 3 characters" aria-label="Search"
+          id="table-search-input"aria-describedby="search-addon" 
         />
+        <i class="fas fa-search"></i>
+           -->
+           <div class="input-group">
+            <input type="search" class="form-control" style="font-size: 12px;" autocomplete="off" placeholder="Search min. 3 characters" aria-label="Search" id="table-search-input" aria-describedby="search-addon" />
+            <span class="input-group-text border-0 search-input">
+                <i class="fas fa-search"></i>
+            </span>
+           </div>
       </div>
     `;
   },
@@ -106,7 +112,7 @@ export const publicationModule = {
   
     const renderHeadings = (titles) => {
       return titles
-        .map((title) => `<th class="text-center">${title}</th>`.trim())
+        .map((title) => `<th class="text-center font-bold" style="font-size: 14px;border: none;">${title}</th>`.trim())
         .join("")
     };
   
@@ -125,6 +131,9 @@ export const publicationModule = {
     };
   
     return `
+    
+        <div class="col-xl-12 pb-2 pr-0 pl-0 white-bg allow-overflow">
+            <!-- <div class="allow-overflow" style="height: calc(100vh - 190px) !important;min-height: 500px;" -->
       <div class="w-100">
         <table class="border">
           <tr>
@@ -147,11 +156,12 @@ export const publicationModule = {
   renderContent: () => {
     const data = publicationModule.data;
     const template = `
-      <div class="d-flex flex-row">
-        <div class="w-25 d-flex flex-column">
+
+      <div class="d-flex flex-row align-left">
+        <div class="w-25 d-flex flex-column" style="padding-right: 1rem">
           ${publicationModule.renderSidebar(data)}
         </div>
-        <div class="w-75 flex-grow table-content-template">
+        <div class="w-75 flex-grow table-content-template" >
           ${publicationModule.renderTable()}
         </div>
       </div>
@@ -162,10 +172,11 @@ export const publicationModule = {
   },
   renderSelectBox: (label, options) => {
     return `
-      <div class="flex flex-col">
+
+      <div class="flex flex-col align-left p-2 white-bg">
         <label
           for="select-${label}"
-          class="mb-1 text-base block font-bold"
+          class="mb-1 text-base block font-bold font-size-12"
         >
           ${label}
         </label>
@@ -198,7 +209,7 @@ export const publicationModule = {
         <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;"><div>           
         <br>
         <div class="align-left">
-          Data from the following publications can be requested. Click the request data bottom for the publication of interest to goto the data request form. publicationModule will require logging in through a Box.com account for authentication and authorization. If you do not have a Box.com account, you can use <a href= "https://www.box.com/personal/">publicationModule link </a><br> to create a free account. After approval of the data request,datasets and data dictionaries can be accessed through their permanent identifiers (or uniform resource locators, URL)provided by Box.com.
+          Data from the following publications can be requested. Click the request data bottom for the publication of interest to goto the data request form. publicationModule will require logging in through a Box.com account for authentication and authorization. If you do not have a Box.com account, you can use <a href= "https://www.box.com/personal/">publicationModule link </a> to create a free account. After approval of the data request,datasets and data dictionaries can be accessed through their permanent identifiers (or uniform resource locators, URL)provided by Box.com.<br><br>
         </div> 
       </div>
     `
