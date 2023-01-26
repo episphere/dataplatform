@@ -30,10 +30,10 @@ export const dataUploadForm = async () => {
         </div>
       </div>
       <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
-        <h3><b>Data Sharing Plan and Institutional Certifications</b></h3>
 
         <form class="contact-form" id="regForm">
           <div class="tab">
+            <h3><b>Data Sharing Plan and Institutional Certifications</b></h3>
             <div class="input-group">
               <label for="approved"> <b>Has a data sharing management plan(s) been approved for data in this manuscript? </b><span class='required-label'>*</span> </label>      
                 <input id="approvedyes" name="approved" type="radio" value="Yes" required/>
@@ -44,7 +44,8 @@ export const dataUploadForm = async () => {
 
             <div class='input-group d-none' >
               <label for="dsmp_name"> <b>Please select from a DSMP:</b><span class='required-label'>*</span> </label>
-                <select class='form-select' id='approvedDSMP' name='dsmp_name'></select>
+                <select class='form-select' id='approvedDSMP' name='dsmp_name' multiple></select>
+                <p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>                
             </div>
 
             <div class='d-none' id="dsmp_no">
@@ -53,25 +54,88 @@ export const dataUploadForm = async () => {
 
             <div class='input-group'>
               <label for="study_name"> <b>Select study(ies) that generated the data associated with this manuscript.</b><span class='required-label'>*</span> </label>
-                <select name="study_name" id="study_name" multiple>
+                <select class="form-select" name="study_name" id="study_name" multiple>
                   <option value="study0">Study 0</option>
                   <option value="study1">Study 1</option>
                   <option value="study2">Study 2</option>
                 </select>
               <p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
             </div>
+
+            <div class='input-group'>
+              <label for="add_studies_yn"> <b>Do additonal studies neet to be entered?</b><span class='required-label'>*</span> </label>      
+              <input id="add_studies_y" name="add_studies_yn" type="radio" value="Yes" required/>
+                <label class="inline" for="add_studies_y"> Yes </label>
+              <input id="add_studies_n" name="add_studies_yn" type="radio" value="No" required/>
+                <label class="inline" for="add_studies_n"> No </label>
+            </div>
+
+            <div class='input-group d-none' >
+              <label for="add_studies"> <b>Enter name of Study(ies)</b> </label>
+              <input id="add_studies" name="add_studies" type="text"/>              
+            </div>
+
+            <div class='input-group' >
+              <label for="cert_upload"> <b>Please upload Institutional Certification for Study(ies)</b> </label>
+              <input id="add_studies" name="add_studies" type="file" multiple/>              
+            </div>
+
           </div>
+
           <div class="tab">
+            <h3><b>Journal Information</b></h3>
+            <div class='input-group'>
+              <label for="journal_info"> <b>Please provide the Journal Name and Acronym</b> <span class='required-label'>*</span></label>
+              <input id="journal_name" name="journal_info" type="text" placeholder="Journal Name" style="width: 75%"/>
+              <input id="journal_acro" name="journal_info" type="text" placeholder="Journal Acronym" style="width: 25%"/>
+            </div>
 
+            <div class='input-group'>
+              <label for="manu_info"> <b>Title of Manuscript</b> <span class='required-label'>*</span></label>
+              <input id="manu_title" name="manu_info" type="text" placeholder="Manuscript Title"/>
+            </div>
+
+            <div class='input-group'>
+              <label for="author_info"> <b>First author listed on manuscript</b><span class='required-label'>*</span></label>
+            </div>
+            <div class='input-group'>
+              <input id="author_first" name="author_info" type="text" placeholder="First Name" style="width: 45%"/>
+              <input id="author_middle" name="author_info" type="text" placeholder="Middle Initial" style="width: 10%"/>
+              <input id="author_last" name="author_info" type="text" placeholder="Last Name" style="width: 45%"/>
+            </div>
+
+            <div class='input-group'>
+              <label for="cancer_sites"> <b>Select cancer site(s) investigated</b><span class='required-label'>*</span> </label>
+                <select class="form-select" name="cancer_sites" id="cancer_sites" multiple>
+                  <option value="cancer0">Cancer 0</option>
+                  <option value="cancer1">Cancer 1</option>
+                  <option value="cancer2">Cancer 2</option>
+                </select>
+              <p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
+            </div>
+
+            <div class='input-group'>
+              <label for="pmid"> <b>Provide manuscript PMID, when available</b></label>
+              <input id="pmid" name="pmid" type="text" placeholder="PMID"/>
+            </div>
+
+            <h3><b>Upload Manuscript Data and Data Dictionary</b></h3>
+            <div class='input-group' >
+              <label for="data_upload"> <b>Upload data</b> </label>
+              <input id="data_files" name="data_upload" type="file" multiple/>
+              <input id="data_description" name="data_upload" type="text" placeholder="Provide description of uploaded data file. Note, this will be viewable by users of the data"/>
+              <input id="data_dictionary" name="data_upload" type="file" multiple/> 
+              <input id="data_dictionary_description" name="data_upload" type="text" placeholder="Provide description of uploaded data dictionary. Note, this will be viewable by users of the data"/>            
+            </div>
           </div>
 
 
-          <!---<div style="overflow:auto;">
+          <div style="overflow:auto;">
             <div style="float:right;">
               <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
               <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
             </div>
-          </div>--->
+          </div>
         </form>
       </div>
     </div>          
@@ -92,6 +156,18 @@ export const approvedFormSelect = async () => { //Is there a DSMP function
   } else if (noEl.checked) {
     approvedEl.parentElement.classList.toggle("d-none", !yesEl.checked);
     dsmp_noEl.classList.toggle("d-none", !noEl.checked);
+  }
+};
+
+export const addStudiesInput = async () => { //Is there a DSMP function
+  const yesEl = document.getElementById("add_studies_y");
+  const approvedEl = document.getElementById("add_studies");
+  const noEl = document.getElementById("add_studies_n");
+
+  if (yesEl.checked) {
+    approvedEl.parentElement.classList.toggle("d-none", !yesEl.checked);
+  } else if (noEl.checked) {
+    approvedEl.parentElement.classList.toggle("d-none", !yesEl.checked);
   }
 };
 

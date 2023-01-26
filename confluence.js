@@ -79,7 +79,7 @@ import { renderDescription } from "./src/pages/description.js";
 import { dataDictionaryTemplate } from "./src/pages/dictionary.js";
 import { showPreview } from "./src/components/boxPreview.js";
 import { publicationPageTemplate } from "./src/pages/publicationpage.js";
-import { uploadData, dataUploadForm, approvedFormSelect, populateApprovedSelect, showTab } from "./src/pages/uploadData.js";
+import { uploadData, dataUploadForm, approvedFormSelect, populateApprovedSelect, showTab, addStudiesInput } from "./src/pages/uploadData.js";
 
 /**
  * 1. add Scientifix comitte to menu
@@ -383,13 +383,19 @@ export const confluence = async () => {
       assignNavbarActive(element);
       confluenceDiv.innerHTML = await dataUploadForm();
       //await dataUploadForm();
-      //populateApprovedSelect();
+      populateApprovedSelect();
       document
         .getElementById("approvedyes")
         .addEventListener("click", approvedFormSelect);
       document
         .getElementById("approvedno")
         .addEventListener("click", approvedFormSelect);
+      document
+        .getElementById("add_studies_y")
+        .addEventListener("click", addStudiesInput);
+      document
+        .getElementById("add_studies_n")
+        .addEventListener("click", addStudiesInput);
       // var currentTab = 0;
       // await showTab(currentTab);
       //nextPrev();
