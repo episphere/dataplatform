@@ -42,11 +42,11 @@ export const renderDescription = (modified_at) => {
             </div>
             <div class="col-xl-10 padding-right-zero font-size-16" id="summaryStatsCharts">
                 <button id="filterBarToggle"><i class="fas fa-lg fa-caret-left"></i></button>
-                <div class="main-summary-row pl-2" style="min-height: 10px;margin-bottom: 1rem;">
+                <!---<div class="main-summary-row pl-2" style="min-height: 10px;margin-bottom: 1rem;">
                     <div class="col white-bg div-border align-left font-size-17" style="padding: 0.5rem;" id="listFilters">
                         <span class="font-bold">Region:</span> All
                     </div>
-                </div>
+                </div>--->
                 <div class="main-summary-row pl-2">
                     <div class="col-xl-12 pb-2 pl-0 pr-0 white-bg div-border">
                         <div class="pt-0 pl-2 pb-2 pr-2 allow-overflow" style="height: calc(100vh - 190px) !important;min-height: 500px;" id="descriptionBody"></div>
@@ -86,7 +86,6 @@ const getDescription = async () => {
   //   } else {
   //   }
   // });
-  console.log(json);
 
   // const allCountries = [];
   // Object.values(newJsons).forEach((dt) => {
@@ -172,14 +171,14 @@ const renderStudyDescription = (descriptions, pageSize, headers) => {
     template = `
         <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
             <div class="col-md-3 font-bold ws-nowrap pl-2">Title of Publication <button class="transparent-btn sort-column" data-column-name="Title_of_Publication"><i class="fas fa-sort"></i></button></div>
-            <div class="col-md-2 font-bold ws-nowrap">PMID <button class="transparent-btn sort-column" data-column-name="First_Author"><i class="fas fa-sort"></i></button></div>
+            <div class="col-md-2 font-bold ws-nowrap">First Author <button class="transparent-btn sort-column" data-column-name="First_Author"><i class="fas fa-sort"></i></button></div>
             <div class="col-md-2 font-bold ws-nowrap">Year <button class="transparent-btn sort-column" data-column-name="Year"><i class="fas fa-sort"></i></button></div>
             <div class="col-md-3 font-bold ws-nowrap">Data Set PID <button class="transparent-btn sort-column" data-column-name="Dataset_ID"<i class="fas fa-sort"></i></button></div>
             <div class="col-md-1"></div>
         </div>`;
     descriptions.forEach((desc, index) => {
       if (index > pageSize) return;
-      console.log(desc);
+      //console.log(desc);
       template += `
             <div class="card mt-1 mb-1 align-left">
                 <div style="padding: 10px" aria-expanded="false" id="heading${desc["PMID"].replace(/(<b>)|(<\/b>)/g, "")}">
@@ -198,9 +197,7 @@ const renderStudyDescription = (descriptions, pageSize, headers) => {
                 <div id="study${desc["PMID"].replace(
                   /(<b>)|(<\/b>)/g,
                   ""
-                )}" class="collapse" aria-labelledby="heading${
-        desc["PMID"]
-      }">
+                )}" class="collapse" aria-labelledby="heading${desc["PMID"]}">
                     <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
                     ${
                       desc["Study"]
