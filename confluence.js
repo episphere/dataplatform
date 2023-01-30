@@ -1,7 +1,7 @@
 import { navBarMenutemplate } from "./src/components/navBarMenuItems.js";
 import { infoDeck, infoDeckAfterLoggedIn } from "./src/pages/homePage.js";
 import { testPage2 } from "./src/pages/researchStudies.js";
-import { publication, publicationModule } from "./src/pages/publicationpage.js";
+import { publication } from "./src/pages/publicationpage.js";
 import { myDCEGpublication } from "./src/pages/myDCEG.js";
 import {
   dataSubmissionTemplate,
@@ -350,17 +350,27 @@ export const confluence = async () => {
       confluenceDiv.innerHTML = testPage2();
       hideAnimation();
     });
-    PublicationPageElement.addEventListener("click", () => {
+    PublicationPageElement.addEventListener("click", async () => {
       if (PublicationPageElement.classList.contains("navbar-active")) return;
       const element = document.getElementById("publicationID");
       if (!element) return;
-      if (element.classList.contains("navbar-active")) return;
-      document.title = "BCRPP - Publication";
       assignNavbarActive(element);
-      confluenceDiv.innerHTML = publication();
+      document.title = "DCEG - Publications";
+      showAnimation();
+      const fileInfo = await getFileInfo(904897189551); //new: 904897189551; original: 881144462693
+      aboutConfluence("description", fileInfo ? true : false);
+      publication(fileInfo["content_modified_at"]);
       hideAnimation();
+      // const element = document.getElementById("publicationID");
+      // if (!element) return;
+      // if (element.classList.contains("navbar-active")) return;
+      // document.title = "BCRPP - Publication";
+      // assignNavbarActive(element);
+      // confluenceDiv.innerHTML = publication();
+      // hideAnimation();
     });
     MyDCEDPageElement.addEventListener("click", () => {
+      if (MyDCEDPageElement.classList.contains("navbar-active")) return;
       if (MyDCEDPageElement.classList.contains("navbar-active")) return;
       const element = document.getElementById("myDCEGID");
       if (!element) return;
@@ -484,10 +494,19 @@ const manageRouter = async () => {
   } else if (hash === "#publicationpage") {
     const element = document.getElementById("publicationID");
     if (!element) return;
-    if (element.classList.contains("navbar-active")) return;
-    document.title = "BCRPP - publicationpage";
     assignNavbarActive(element);
-    confluenceDiv.innerHTML = publication();
+    document.title = "BCRP - Study Description";
+    showAnimation();
+    const fileInfo = await getFileInfo(904897189551); //new: 904897189551; original: 881144462693
+    aboutConfluence("description", fileInfo ? true : false);
+    publication(fileInfo["content_modified_at"]);
+    hideAnimation();
+    // const element = document.getElementById("publicationID");
+    // if (!element) return;
+    // if (element.classList.contains("navbar-active")) return;
+    // document.title = "BCRPP - publicationpage";
+    // assignNavbarActive(element);
+    // confluenceDiv.innerHTML = publication();
   } else if (hash === "#myDCEG") {
     const element = document.getElementById("myDCEGID");
     if (!element) return;
