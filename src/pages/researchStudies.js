@@ -9,7 +9,7 @@ export const testPage2 = () => {
                    </h1>
                 </div>
             </div>
-            <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
+            <div class="data-submission div-border font-size-18px" style="padding-left: 1rem; padding-right: 1rem;">
             <div class="row m-0">  
             <br>The following are data platforms from individual research studies led or co-led by DCEG to provideresearchers with information about the studies and a mechanism for controlled access to study data:
             <span>

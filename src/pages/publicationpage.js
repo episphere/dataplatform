@@ -53,7 +53,7 @@ export const publicationModule = {
   renderSearchInput: () => {
     return `
       <div class=" filter-column white-bg p-2 ">
-      <label for="table-search-input font-size-12 " class="d-block mb-1 font-bold"> 
+      <label for="table-search-input font-size-12px " class="d-block mb-1 font-bold"> 
           Filter
         </label>
         <!-- <input type="search" class="form-control rounded" autocomplete="off" placeholder="Search min. 3 characters" aria-label="Search"
@@ -112,7 +112,7 @@ export const publicationModule = {
   
     const renderHeadings = (titles) => {
       return titles
-        .map((title) => `<th class="text-center font-bold" style="font-size: 14px;border: none;">${title}</th>`.trim())
+        .map((title) => `<th class="text-center font-bold" style="font-size: 12px;border: none;">${title}</th>`.trim())
         .join("")
     };
   
@@ -176,7 +176,7 @@ export const publicationModule = {
       <div class="flex flex-col align-left p-2 white-bg">
         <label
           for="select-${label}"
-          class="mb-1 text-base block font-bold font-size-12"
+          class="mb-1 text-base block font-bold font-size-12px"
         >
           ${label}
         </label>
@@ -206,7 +206,7 @@ export const publicationModule = {
             </div>
           </div>
         </div>
-        <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;"><div>           
+        <div class="data-submission div-border font-size-12px" style="padding-left: 1rem; padding-right: 1rem;"><div>           
         <br>
         <div class="align-left">
           Data from the following publications can be requested. Click the request data bottom for the publication of interest to goto the data request form. publicationModule will require logging in through a Box.com account for authentication and authorization. If you do not have a Box.com account, you can use <a href= "https://www.box.com/personal/">publicationModule link </a> to create a free account. After approval of the data request,datasets and data dictionaries can be accessed through their permanent identifiers (or uniform resource locators, URL)provided by Box.com.<br><br>
