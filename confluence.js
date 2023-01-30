@@ -657,7 +657,6 @@ const manageHash = async () => {
     if (!element) return;
     assignNavbarActive(element);
     document.title = "BCRP - Overview";
-
     const fileInfo = await getFileInfo(904897189551);
     aboutConfluence("overview", fileInfo ? true : false);
     renderOverView();
