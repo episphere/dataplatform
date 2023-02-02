@@ -374,31 +374,16 @@ export const confluence = async () => {
       confluenceDiv.innerHTML = myDCEGpublication();
       hideAnimation();
     });
-    MyDCEGPageElement_upload.addEventListener("click", async () => {
+    MyDCEGPageElement_upload.addEventListener("click", () => {
       if (MyDCEGPageElement_upload.classList.contains("navbar-active")) return;
       const element = document.getElementById("myDCEGID_upload");
       if (!element) return;
       if (element.classList.contains("navbar-active")) return;
       document.title = "Upload - My DCEG Publication Data";
       assignNavbarActive(element);
-      confluenceDiv.innerHTML = await dataUploadForm();
-      //await dataUploadForm();
-      populateApprovedSelect();
-      document
-        .getElementById("approvedyes")
-        .addEventListener("click", approvedFormSelect);
-      document
-        .getElementById("approvedno")
-        .addEventListener("click", approvedFormSelect);
-      document
-        .getElementById("add_studies_y")
-        .addEventListener("click", addStudiesInput);
-      document
-        .getElementById("add_studies_n")
-        .addEventListener("click", addStudiesInput);
-      // var currentTab = 0;
-      // await showTab(currentTab);
-      //nextPrev();
+      confluenceDiv.innerHTML = uploadData();
+      dataUploadForm();
+      //populateApprovedSelect();
       hideAnimation();
     });
     const folders = await getFolderItems(0);
@@ -532,8 +517,8 @@ const manageRouter = async () => {
     if (element.classList.contains("navbar-active")) return;
     document.title = "DCEG - Publication Data Upload";
     assignNavbarActive(element);
-    confluenceDiv.innerHTML = await dataUploadForm();
-    //dataUploadForm();
+    confluenceDiv.innerHTML = await uploadData();
+    dataUploadForm();
   } else if (hash === "#data_access/form") {
     const dataFormElement = document.getElementById("dataForm");
     if (!dataFormElement) return;

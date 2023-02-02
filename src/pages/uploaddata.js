@@ -1,26 +1,6 @@
 import {csv2Json} from "../shared.js";
 
 export const uploadData = () => {
-  return `
-          
-          <div class="align-left">
-               <h1 
-               class="page-header">How to upload data from your published manuscript
-               </h1>
-          </div> 
-          </div>
-            </span>
-            <div class="align-left">
-            This page will describe the uploading process.Need to include description of the prerequisites. It should be clear that before data can be uploaded aDSMP must be approved, and all ICs should be on file (in a machine-readable format). We will provide instructions here how to complete these steps.Screen shots will be shown on this page of the upload process.
-            <div class="align-left"><br>
-            </div>
-          </div>
-            <br><div class="home-page-stats font-size-18"><br>
-            <div>
-          `;
-};
-
-export const dataUploadForm = async () => {
   let template = `
   <div class="general-bg padding-bottom-1rem">
     <div class="container body-min-height">
@@ -29,8 +9,16 @@ export const dataUploadForm = async () => {
           <h1 class="page-header">Upload New Data to the DCEG Data Sharing Platform</h1>
         </div>
       </div>
-      <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
+      <div id="uploadFormView" class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
+      </div>
+    </div>
+  </div>
+  `;
+  return template;
+};
 
+export const dataUploadForm = async () => {
+  let template = `
         <form class="contact-form" id="regForm">
           <div class="tab">
             <h3><b>Data Sharing Plan and Institutional Certifications</b></h3>
@@ -51,6 +39,8 @@ export const dataUploadForm = async () => {
             <div class='d-none' id="dsmp_no">
               <p class="dsmpno"><b>A DSMP must first be created before uploading.</b></p>
             </div>
+          </div>
+          <div class="tab">
 
             <div class='input-group'>
               <label for="study_name"> <b>Select study(ies) that generated the data associated with this manuscript.</b><span class='required-label'>*</span> </label>
@@ -118,30 +108,52 @@ export const dataUploadForm = async () => {
               <label for="pmid"> <b>Provide manuscript PMID, when available</b></label>
               <input id="pmid" name="pmid" type="text" placeholder="PMID"/>
             </div>
+          </div>
 
+          <div class='tab'>
             <h3><b>Upload Manuscript Data and Data Dictionary</b></h3>
             <div class='input-group' >
               <label for="data_upload"> <b>Upload data</b> </label>
               <input id="data_files" name="data_upload" type="file" multiple/>
               <input id="data_description" name="data_upload" type="text" placeholder="Provide description of uploaded data file. Note, this will be viewable by users of the data"/>
-              <input id="data_dictionary" name="data_upload" type="file" multiple/> 
-              <input id="data_dictionary_description" name="data_upload" type="text" placeholder="Provide description of uploaded data dictionary. Note, this will be viewable by users of the data"/>            
+            </div>
+            <div class='input-group'>
+              <label for="dict_upload"> <b>Upload data dictionary</b> </label>
+              <input id="data_dictionary" name="dict_upload" type="file" multiple/> 
+              <input id="data_dictionary_description" name="dict_upload" type="text" placeholder="Provide description of uploaded data dictionary. Note, this will be viewable by users of the data"/>            
             </div>
           </div>
 
 
           <div style="overflow:auto;">
+            <div style="float:left;">
+              <button type="button" id="prevBtn" class="buttonsubmit">Previous</button>
+            </div>
             <div style="float:right;">
-              <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-              <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+              <button type="button" id="nextBtn" class="buttonsubmit">Next</button>
             </div>
           </div>
         </form>
-      </div>
-    </div>          
-  </div>
   `
-  return template;
+  document.getElementById("uploadFormView").innerHTML = template;
+  var currentTab = 0;
+  showTab(currentTab);
+  console.log(currentTab);
+  await populateApprovedSelect();
+  document.getElementById("approvedyes").addEventListener("click", approvedFormSelect);
+  document.getElementById("approvedno").addEventListener("click", approvedFormSelect);
+  document.getElementById("add_studies_y").addEventListener("click", addStudiesInput);
+  document.getElementById("add_studies_n").addEventListener("click", addStudiesInput);
+  const prevpress = document.getElementById("prevBtn");
+  prevpress.addEventListener("click", function() {
+    nextPrev(-1, currentTab);
+    currentTab -=1;
+  });
+  const nextpress = document.getElementById("nextBtn");
+  nextpress.addEventListener("click", function() {
+    nextPrev(1, currentTab);
+    currentTab += 1;
+  });
 }
 
 export const approvedFormSelect = async () => { //Is there a DSMP function
@@ -159,7 +171,7 @@ export const approvedFormSelect = async () => { //Is there a DSMP function
   }
 };
 
-export const addStudiesInput = async () => { //Is there a DSMP function
+export const addStudiesInput = () => { //Is there a DSMP function
   const yesEl = document.getElementById("add_studies_y");
   const approvedEl = document.getElementById("add_studies");
   const noEl = document.getElementById("add_studies_n");
@@ -215,7 +227,7 @@ export function showTab(n) {
   //fixStepIndicator(n)
 };
 
-function nextPrev(n) {
+export function nextPrev(n, currentTab) {
   // This function will figure out which tab to display
   var x = document.getElementsByClassName("tab");
   // Exit the function if any field in the current tab is invalid:
