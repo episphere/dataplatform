@@ -79,7 +79,7 @@ import { renderDescription } from "./src/pages/description.js";
 import { dataDictionaryTemplate } from "./src/pages/dictionary.js";
 import { showPreview } from "./src/components/boxPreview.js";
 import { publicationPageTemplate } from "./src/pages/publicationpage.js";
-import { uploadData, dataUploadForm, approvedFormSelect, populateApprovedSelect, showTab, addStudiesInput } from "./src/pages/uploadData.js";
+import { uploadData, dataUploadForm, approvedFormSelect, populateApprovedSelect, showTab, addStudiesInput } from "./src/pages/uploaddata.js";
 
 /**
  * 1. add Scientifix comitte to menu
