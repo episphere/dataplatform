@@ -1,4 +1,4 @@
-import {csv2Json} from "../shared.js";
+import {csv2Json} from "./../shared.js";
 
 export const uploadData = () => {
   let template = `
