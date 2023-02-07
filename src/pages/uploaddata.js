@@ -41,6 +41,10 @@ export const dataUploadForm = async () => {
             </div>
           </div>
           <div class="tab">
+            <div id="dsmpConfirm" class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
+          </div>
+          </div>
+          <div class="tab">
 
             <div class='input-group'>
               <label for="study_name"> <b>Select study(ies) that generated the data associated with this manuscript.</b><span class='required-label'>*</span> </label>
@@ -227,7 +231,7 @@ export function showTab(n) {
   //fixStepIndicator(n)
 };
 
-export function nextPrev(n, currentTab) {
+export async function nextPrev(n, currentTab) {
   // This function will figure out which tab to display
   var x = document.getElementsByClassName("tab");
   // Exit the function if any field in the current tab is invalid:
@@ -241,6 +245,54 @@ export function nextPrev(n, currentTab) {
     // ... the form gets submitted:
     document.getElementById("regForm").submit();
     return false;
+  }
+  if (currentTab === 1) {
+    const dceg_duo = await (await fetch("./imports/DCEG_DUO.csv")).text();  
+    const csvData = csv2Json(dceg_duo);
+    const dceg_duodata = csvData.data;
+    const dceg_duoheaders = csvData.headers;
+    let options = [];
+    console.log(dceg_duodata);
+    // console.log(JSON.parse(localStorage.parms).login);
+    // for (const value of dsmpdata) {
+    //   console.log(value.contact_email);
+    //   if (value.contact_email === JSON.parse(localStorage.parms).login) {
+    //     options = [...options,value.planID];
+    //   }
+    // }
+    let template = ``
+    console.log(currentTab);
+    var ele = document.getElementById("approvedDSMP");
+    var values = Array.from(ele.selectedOptions).map(v=>v.value);
+    for (let i=0; i <values.length; i++){
+      for (let j=0; j<dceg_duodata.length; j++){
+        console.log(values[i]);
+        console.log(dceg_duodata[j].DSMP_ID)
+        if (values[i] === dceg_duodata[j].DSMP_ID){
+          console.log(values[i]);
+          console.log(dceg_duodata[j]);
+          template += `
+          <div id='${values[i]}'>
+            <dl>
+            `
+          for (let k=0; k<dceg_duoheaders; k++){
+            console.log(dceg_duoheaders[k]);
+            if (dceg_duodata[j][dceg_duoheaders[k]]){
+          template += `
+              <dt><b>${dceg_duoheaders[k]}:</b> ${dceg_duodata[j][dceg_duoheaders[k]]}</dt>
+            `
+            }
+          }
+          template += `
+            </dl>
+          </div>
+          `
+        }
+      }
+    }
+    document.getElementById("dsmpConfirm").innerHTML = template;
+    //var dsmpvalue = e.value;
+    //console.log(dsmpvalue); 
   }
   // Otherwise, display the correct tab:
   showTab(currentTab);
