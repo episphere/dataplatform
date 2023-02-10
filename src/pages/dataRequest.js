@@ -697,26 +697,26 @@ export const formSection = async (activeTab, showDescripton) => {
 
             </section>
             <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body" id='modalBody'>
-                  
-                </div>
-                <div class="modal-footer">
-              
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body" id='modalBody'>
+                    
+                  </div>
+                  <div class="modal-footer">
+                
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
             <div class="results">
-            <h2>Form Data</h2>
-            <pre></pre>
+              <h2>Form Data</h2>
+              <pre></pre>
             </div>
           </div>
         </div>
@@ -2652,7 +2652,8 @@ export const dataForm = async () => {
           }
           i++;
         }
-        let response = await uploadWordFile(blob, filename, uploadFormFolder);
+        console.log(blob);
+        let response = await uploadWordFile(blob, filename, 189185316803);
         await assigntasktochair();
         let fileid = response.entries[0].id;
         //Modal code here
@@ -2662,7 +2663,8 @@ export const dataForm = async () => {
         $("#popUpModal").modal("show");
       } else {
         // Adding keywords
-        let response = await uploadWordFile(blob, filename, uploadFormFolder);
+        console.log(blob);
+        let response = await uploadWordFile(blob, filename, 189185316803);
         if (response.status === 201) {
           await assigntasktochair();
           let fileid = response.entries[0].id;

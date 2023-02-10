@@ -1,4 +1,4 @@
-import {csv2Json} from "./../shared.js";
+import {csv2Json, csv2JsonTest, uploadFile, uploadFileAny, uploadWordFile} from "./../shared.js";
 
 export const uploadData = () => {
   let template = `
@@ -10,6 +10,22 @@ export const uploadData = () => {
         </div>
       </div>
       <div id="uploadFormView" class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
+      </div>
+      <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id='modalBody'>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -39,13 +55,14 @@ export const dataUploadForm = async () => {
             <div class='d-none' id="dsmp_no">
               <p class="dsmpno"><b>A DSMP must first be created before uploading.</b></p>
             </div>
-          </div>
-          <div class="tab">
-            <div id="dsmpConfirm" class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
-          </div>
-          </div>
-          <div class="tab">
 
+            <div class='input-group d-none' id="duoSel">
+              <label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with 
+              the data based on the study's Institutional Certification</b><span class='required-label'>*</span> </label> 
+            </div>
+          </div>
+
+          <!---<div class="tab">
             <div class='input-group'>
               <label for="study_name"> <b>Select study(ies) that generated the data associated with this manuscript.</b><span class='required-label'>*</span> </label>
                 <select class="form-select" name="study_name" id="study_name" multiple>
@@ -74,14 +91,14 @@ export const dataUploadForm = async () => {
               <input id="add_studies" name="add_studies" type="file" multiple/>              
             </div>
 
-          </div>
+          </div>--->
 
           <div class="tab">
             <h3><b>Journal Information</b></h3>
             <div class='input-group'>
-              <label for="journal_info"> <b>Please provide the Journal Name and Acronym</b> <span class='required-label'>*</span></label>
-              <input id="journal_name" name="journal_info" type="text" placeholder="Journal Name" style="width: 75%"/>
-              <input id="journal_acro" name="journal_info" type="text" placeholder="Journal Acronym" style="width: 25%"/>
+              <label for="journal_info" style="display:block"> <b>Please provide the Journal Name and Acronym</b> <span class='required-label'>*</span></label>
+              <input id="journal_name" name="journal_info" type="text" placeholder="Journal Name" style="width: 80%"/>
+              <input id="journal_acro" name="journal_info" type="text" placeholder="Journal Acronym" style="width: 20%"/>
             </div>
 
             <div class='input-group'>
@@ -98,7 +115,7 @@ export const dataUploadForm = async () => {
               <input id="author_last" name="author_info" type="text" placeholder="Last Name" style="width: 45%"/>
             </div>
 
-            <div class='input-group'>
+            <!---<div class='input-group'>
               <label for="cancer_sites"> <b>Select cancer site(s) investigated</b><span class='required-label'>*</span> </label>
                 <select class="form-select" name="cancer_sites" id="cancer_sites" multiple>
                   <option value="cancer0">Cancer 0</option>
@@ -106,27 +123,23 @@ export const dataUploadForm = async () => {
                   <option value="cancer2">Cancer 2</option>
                 </select>
               <p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
-            </div>
+            </div>--->
 
             <div class='input-group'>
               <label for="pmid"> <b>Provide manuscript PMID, when available</b></label>
               <input id="pmid" name="pmid" type="text" placeholder="PMID"/>
             </div>
+
+            <div id='uploadData'>
+              <h3><b>Upload Manuscript Data and Data Dictionary</b></h3>
+            </div>
           </div>
 
-          <div class='tab'>
-            <h3><b>Upload Manuscript Data and Data Dictionary</b></h3>
-            <div class='input-group' >
-              <label for="data_upload"> <b>Upload data</b> </label>
-              <input id="data_files" name="data_upload" type="file" multiple/>
-              <input id="data_description" name="data_upload" type="text" placeholder="Provide description of uploaded data file. Note, this will be viewable by users of the data"/>
+          <!---<div class='tab'>
+            <h3><b>Data Ready To Upload</b></h3>
+            <div id='dataSummary'>
             </div>
-            <div class='input-group'>
-              <label for="dict_upload"> <b>Upload data dictionary</b> </label>
-              <input id="data_dictionary" name="dict_upload" type="file" multiple/> 
-              <input id="data_dictionary_description" name="dict_upload" type="text" placeholder="Provide description of uploaded data dictionary. Note, this will be viewable by users of the data"/>            
-            </div>
-          </div>
+          </div>--->
 
 
           <div style="overflow:auto;">
@@ -135,6 +148,9 @@ export const dataUploadForm = async () => {
             </div>
             <div style="float:right;">
               <button type="button" id="nextBtn" class="buttonsubmit">Next</button>
+            </div>
+            <div style="float:right;">
+              <button type="button" id="subBtn" class="buttonsubmit">Submit</button>
             </div>
           </div>
         </form>
@@ -146,17 +162,22 @@ export const dataUploadForm = async () => {
   await populateApprovedSelect();
   document.getElementById("approvedyes").addEventListener("click", approvedFormSelect);
   document.getElementById("approvedno").addEventListener("click", approvedFormSelect);
-  document.getElementById("add_studies_y").addEventListener("click", addStudiesInput);
-  document.getElementById("add_studies_n").addEventListener("click", addStudiesInput);
-  const prevpress = document.getElementById("prevBtn");
-  prevpress.addEventListener("click", function() {
+  // document.getElementById("add_studies_y").addEventListener("click", addStudiesInput);
+  // document.getElementById("add_studies_n").addEventListener("click", addStudiesInput);
+  document.getElementById("approvedDSMP").addEventListener("click", dsmpSelected);
+  const prevPress = document.getElementById("prevBtn");
+  prevPress.addEventListener("click", function() {
     nextPrev(-1, currentTab);
     currentTab -=1;
   });
-  const nextpress = document.getElementById("nextBtn");
-  nextpress.addEventListener("click", function() {
+  const nextPress = document.getElementById("nextBtn");
+  nextPress.addEventListener("click", function() {
     nextPrev(1, currentTab);
     currentTab += 1;
+  });
+  const subPress = document.getElementById("subBtn");
+  subPress.addEventListener("click", function() {
+    subForm();
   });
 }
 
@@ -169,11 +190,61 @@ export const approvedFormSelect = async () => { //Is there a DSMP function
   if (yesEl.checked) {
     approvedEl.parentElement.classList.toggle("d-none", !yesEl.checked);
     dsmp_noEl.classList.toggle("d-none", !noEl.checked);
+    document.getElementById("nextBtn").style.display = "inline";
   } else if (noEl.checked) {
     approvedEl.parentElement.classList.toggle("d-none", !yesEl.checked);
     dsmp_noEl.classList.toggle("d-none", !noEl.checked);
+    document.getElementById("nextBtn").style.display = "none";
   }
 };
+
+export const dsmpSelected = async () => {
+  var ele = document.getElementById("approvedDSMP");
+  var values = Array.from(ele.selectedOptions).map(v=>v.value);
+  const duoEl = document.getElementById("duoSel");
+  duoEl.classList.toggle("d-none", !values);
+  let template =`<label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with the data based on the study's Institutional Certification</b><span class='required-label'>*</span> </label>`;
+  for (let i=0; i <values.length; i++){
+    console.log(values[i]);
+    template += `
+          <div class='input-group'>
+            <b>${values[i]}</b>
+            <ul class="form" id='${values[i]}duo'>
+              <div class="inline-field">
+                <input id="${values[i]}nores" name="duoSel" type="checkbox" value="NR"/>
+                <label class="container-ul" for="${values[i]}nores">No Restrictions</label>
+              </div>
+              <div class="inline-field">
+                <input id="${values[i]}gru" name="duoSel" type="checkbox" value="GRU"/>
+                <label class="container-ul" for="${values[i]}gru">General Research Use</label>
+              </div>
+              <div class="inline-field">
+                <input id="${values[i]}hmb" name="duoSel" type="checkbox" value="HMB"/>
+                <label class="container-ul" for="${values[i]}hmb">Health/Medical/Biomedical</label>
+              </div>
+              <div class="inline-field">
+                <input id="${values[i]}dsr" name="duoSel" type="checkbox" value="DSR"/>
+                <label class="container-ul" for="${values[i]}dsr">Disease-specific Research</label>
+              </div>
+              <div class="inline-field">
+                <input id="${values[i]}ngm" name="duoSel" type="checkbox" value="NGM"/>
+                <label class="container-ul" for="${values[i]}ngm">No General Methods</label>
+              </div>
+              <div class="inline-field">
+                <input id="${values[i]}nfp" name="duoSel" type="checkbox" value="NFP"/>
+                <label class="container-ul" for="${values[i]}nfp">Not for Profit Use Only</label>
+              </div>
+            </ul>
+          </div>
+          <div class='input-group'>
+            <label for="${values[i]}cert_upload"> <b>Upload Institutional Certifications</b> </label>
+            <input id="${values[i]}cert_upload" name="${values[i]}cert_upload" type="file" multiple/>              
+          </div>
+          `
+  }
+  //console.log(template);
+  document.getElementById("duoSel").innerHTML = template;
+}
 
 export const addStudiesInput = () => { //Is there a DSMP function
   const yesEl = document.getElementById("add_studies_y");
@@ -189,25 +260,27 @@ export const addStudiesInput = () => { //Is there a DSMP function
 
 export const populateApprovedSelect = async () => { //Pulling data from dsmp_output
   const dsmp = await (await fetch("./imports/dsmp_output.csv")).text();
-  console.log(dsmp);
-  const csvData = csv2Json(dsmp);
+  //console.log(dsmp);
+  const csvData = csv2JsonTest(dsmp);
   const dsmpdata = csvData.data;
   const dsmpheaders = csvData.headers;
-  console.log(dsmpdata);
-  console.log(dsmpheaders);
+  // console.log(dsmpdata);
+  // console.log(dsmpheaders);
   let options = [];
-  console.log(JSON.parse(localStorage.parms).login);
+
+  //console.log(JSON.parse(localStorage.parms).login);
   for (const value of dsmpdata) {
-    console.log(value.contact_email);
+    //console.log(value.contact_email);
     if (value.contact_email === JSON.parse(localStorage.parms).login) {
-      options = [...options,value.planID];
+      options = [...options,[value.planTitle, value.planID]];
     }
   }
-  console.log(options);
+  //console.log(options);
   const approvedEl = document.getElementById("approvedDSMP");
   options.forEach((option) => {
     const optionEl = document.createElement("option");
-    optionEl.text = option;
+    optionEl.value = option[1];
+    optionEl.text = `${option[1]}: ${option[0]}`;
     approvedEl.appendChild(optionEl);
   });
 };
@@ -219,17 +292,56 @@ export function showTab(n) {
   //... and fix the Previous/Next buttons:
   if (n == 0) {
     document.getElementById("prevBtn").style.display = "none";
+    document.getElementById("subBtn").style.display = "none";
+    if (document.getElementById("approvedyes").checked) {
+      document.getElementById("nextBtn").style.display = "inline";
+    } else {
+      document.getElementById("nextBtn").style.display = "none"
+    }
   } else {
     document.getElementById("prevBtn").style.display = "inline";
+    document.getElementById("nextBtn").style.display = "inline";
   }
   if (n == (x.length - 1)) {
-    document.getElementById("nextBtn").innerHTML = "Submit";
+    document.getElementById("nextBtn").style.display = "none";
+    document.getElementById("subBtn").style.display = "inline";
   } else {
     document.getElementById("nextBtn").innerHTML = "Next";
   }
   //... and run a function that will display the correct step indicator:
   //fixStepIndicator(n)
 };
+
+export async function subForm() {
+  var ele = document.getElementById("approvedDSMP");
+  var values = Array.from(ele.selectedOptions).map(v=>v.value);
+  for (let i=0; i <values.length; i++){
+    let file = document.getElementById(`${values[i]}data_files`).files[0];
+    let filename = file.name;
+    console.log(file);
+    var url = URL.createObjectURL(file);
+    console.log(url);
+    let blob = new Blob([file]);
+    console.log(blob);
+    await uploadWordFile(blob, filename, 189185316803);
+    // var reader = new FileReader();
+    // reader.readAsDataURL(file);
+    // console.log(reader);
+    // var path = (window.URL || window.webkitURL).createObjectURL(file);
+    // console.log(path);
+    //await uploadFile(url, filename, 189185316803, true);
+  }
+  document.getElementById("modalBody").innerHTML = `
+          <p>File was successfully uploaded.</p>
+          <p><b>Folder Name:</b> 12345</p>
+          <p><b>Folder ID:</b> 12345</p>
+          <br>
+          <p><b><u>Uploaded Files</u></b></p>
+          <p><b></b></p>
+          `
+          ;
+        $("#popUpModal").modal("show");
+}
 
 export async function nextPrev(n, currentTab) {
   // This function will figure out which tab to display
@@ -243,57 +355,89 @@ export async function nextPrev(n, currentTab) {
   // if you have reached the end of the form...
   if (currentTab >= x.length) {
     // ... the form gets submitted:
-    document.getElementById("regForm").submit();
-    return false;
+    //document.getElementById("regForm").submit();
+    document.getElementById("modalBody").innerHTML = `
+          <p>File was successfully uploaded.</p>
+          <p>Document ID: 12345</p>`;
+        $("#popUpModal").modal("show");
+    //return false;
   }
   if (currentTab === 1) {
-    const dceg_duo = await (await fetch("./imports/DCEG_DUO.csv")).text();  
-    const csvData = csv2Json(dceg_duo);
-    const dceg_duodata = csvData.data;
-    const dceg_duoheaders = csvData.headers;
-    let options = [];
-    console.log(dceg_duodata);
-    // console.log(JSON.parse(localStorage.parms).login);
-    // for (const value of dsmpdata) {
-    //   console.log(value.contact_email);
-    //   if (value.contact_email === JSON.parse(localStorage.parms).login) {
-    //     options = [...options,value.planID];
-    //   }
-    // }
-    let template = ``
-    console.log(currentTab);
     var ele = document.getElementById("approvedDSMP");
     var values = Array.from(ele.selectedOptions).map(v=>v.value);
+    let template =`<h3><b>Upload Manuscript Data and Data Dictionary</b></h3>`
     for (let i=0; i <values.length; i++){
-      for (let j=0; j<dceg_duodata.length; j++){
-        console.log(values[i]);
-        console.log(dceg_duodata[j].DSMP_ID)
-        if (values[i] === dceg_duodata[j].DSMP_ID){
-          console.log(values[i]);
-          console.log(dceg_duodata[j]);
-          template += `
-          <div id='${values[i]}'>
-            <dl>
-            `
-          for (let k=0; k<dceg_duoheaders; k++){
-            console.log(dceg_duoheaders[k]);
-            if (dceg_duodata[j][dceg_duoheaders[k]]){
-          template += `
-              <dt><b>${dceg_duoheaders[k]}:</b> ${dceg_duodata[j][dceg_duoheaders[k]]}</dt>
-            `
-            }
-          }
-          template += `
-            </dl>
+      template +=
+        ` <b>${values[i]}</b>
+          <div class='input-group' >
+            <label for="${values[i]}data_upload"> <b>Upload data</b> </label>
+            <input id="${values[i]}data_files" name="${values[i]}data_upload" type="file" multiple/>
+            <input id="${values[i]}data_description" name="${values[i]}data_upload" type="text" placeholder="Provide description of uploaded data files. Note, this will be viewable by users of the data"/>
           </div>
-          `
-        }
-      }
+          <div class='input-group'>
+            <label for="${values[i]}dict_upload"> <b>Upload data dictionary</b> </label>
+            <input id="${values[i]}data_dictionary" name="${values[i]}dict_upload" type="file" multiple/> 
+            <input id="${values[i]}data_dictionary_description" name="${values[i]}dict_upload" type="text" placeholder="Provide description of uploaded data dictionary. Note, this will be viewable by users of the data"/>            
+          </div>`
     }
-    document.getElementById("dsmpConfirm").innerHTML = template;
-    //var dsmpvalue = e.value;
-    //console.log(dsmpvalue); 
+    document.getElementById("uploadData").innerHTML = template;
   }
+  // if (currentTab === 2) {
+  //   let template = `
+  //     <ul class="list-unstyled">
+  //       <li><b>Test:</b> How does this look?</li>
+  //     </ul>
+  //   `
+  //   document.getElementById("dataSummary").innerHTML = template;
+  // }
+  // if (currentTab === 1) {
+  //   const dceg_duo = await (await fetch("./imports/DCEG_DUO.csv")).text();  
+  //   const csvData = csv2Json(dceg_duo);
+  //   const dceg_duodata = csvData.data;
+  //   const dceg_duoheaders = csvData.headers;
+  //   let options = [];
+  //   console.log(dceg_duodata);
+  //   // console.log(JSON.parse(localStorage.parms).login);
+  //   // for (const value of dsmpdata) {
+  //   //   console.log(value.contact_email);
+  //   //   if (value.contact_email === JSON.parse(localStorage.parms).login) {
+  //   //     options = [...options,value.planID];
+  //   //   }
+  //   // }
+  //   let template = ``
+  //   console.log(currentTab);
+  //   var ele = document.getElementById("approvedDSMP");
+  //   var values = Array.from(ele.selectedOptions).map(v=>v.value);
+  //   for (let i=0; i <values.length; i++){
+  //     for (let j=0; j<dceg_duodata.length; j++){
+  //       console.log(values[i]);
+  //       console.log(dceg_duodata[j].DSMP_ID)
+  //       if (values[i] === dceg_duodata[j].DSMP_ID){
+  //         console.log(values[i]);
+  //         console.log(dceg_duodata[j]);
+  //         template += `
+  //         <div id='${values[i]}'>
+  //           <dl>
+  //           `
+  //         for (let k=0; k<dceg_duoheaders; k++){
+  //           console.log(dceg_duoheaders[k]);
+  //           if (dceg_duodata[j][dceg_duoheaders[k]]){
+  //         template += `
+  //             <dt><b>${dceg_duoheaders[k]}:</b> ${dceg_duodata[j][dceg_duoheaders[k]]}</dt>
+  //           `
+  //           }
+  //         }
+  //         template += `
+  //           </dl>
+  //         </div>
+  //         `
+  //       }
+  //     }
+  //   }
+  //   document.getElementById("dsmpConfirm").innerHTML = template;
+  //   //var dsmpvalue = e.value;
+  //   //console.log(dsmpvalue); 
+  // }
   // Otherwise, display the correct tab:
   showTab(currentTab);
 };

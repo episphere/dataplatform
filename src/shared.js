@@ -396,14 +396,16 @@ export const uploadFile = async (data, fileName, folderId, html) => {
     const access_token = JSON.parse(localStorage.parms).access_token;
     const form = new FormData();
     let blobData = "";
-    if (html)
+    if (html){
+      console.log('Using HTML');
       blobData = new Blob([data], {
         type: "text/html",
       });
-    else
+    } else{
       blobData = new Blob([JSON.stringify(data)], {
         type: "application/json",
       });
+    }
     form.append("file", blobData);
     form.append(
       "attributes",
@@ -437,6 +439,46 @@ export const uploadFile = async (data, fileName, folderId, html) => {
   } catch (err) {
     if ((await refreshToken()) === true)
       return await uploadFile(data, fileName, folderId, html);
+  }
+};
+
+export const uploadFileAny = async (data, fileName, folderId) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    const form = new FormData();
+    form.append("file", data);
+    form.append(
+      "attributes",
+      `{"name": "${fileName}", "parent": {"id": "${folderId}"}}`
+    );
+
+    let response = await fetch("https://upload.box.com/api/2.0/files/content", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      body: form,
+      contentType: false,
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await uploadFileAny(data, fileName, folderId);
+    } else if (response.status === 201) {
+      return response.json();
+    } else if (response.status === 409) {
+      return {
+        status: response.status,
+        json: await response.json(),
+      };
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await uploadFileAny(data, fileName, folderId);
   }
 };
 
@@ -1674,6 +1716,51 @@ export const csv2Json = (csv) => {
     }
     if (Object.keys(obj).length > 0) result.push(obj);
   }
+  return {
+    data: result,
+    headers,
+  };
+};
+
+function CSVtoArray(text) {
+  var re_valid = /^\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*(?:,\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*)*$/;
+  var re_value = /(?!\s*$)\s*(?:'([^'\\]*(?:\\[\S\s][^'\\]*)*)'|"([^"\\]*(?:\\[\S\s][^"\\]*)*)"|([^,'"\s\\]*(?:\s+[^,'"\s\\]+)*))\s*(?:,|$)/g;
+  // Return NULL if input string is not well formed CSV string.
+  if (!re_valid.test(text)) return null;
+  var a = [];                     // Initialize array to receive values.
+  text.replace(re_value, // "Walk" the string using replace with callback.
+      function(m0, m1, m2, m3) {
+          // Remove backslash from \' in single quoted values.
+          if      (m1 !== undefined) a.push(m1.replace(/\\'/g, "'"));
+          // Remove backslash from \" in double quoted values.
+          else if (m2 !== undefined) a.push(m2.replace(/\\"/g, '"'));
+          else if (m3 !== undefined) a.push(m3);
+          return ''; // Return empty string.
+      });
+  // Handle special case of empty last value.
+  if (/,\s*$/.test(text)) a.push('');
+  return a;
+};
+
+export const csv2JsonTest = (csv) => {
+  const lines = csv.replace(/""/g,"'").split(/[\r\n]+/g);
+  //console.log(lines);
+  const result = [];
+  const headers = lines[0].replace(/"/g, "").split(/[,\t]/g);
+  for (let i = 1; i < lines.length; i++) {
+    const obj = {};
+    const currentline = CSVtoArray(lines[i]);
+    //console.log(currentline);
+    for (let j = 0; j < headers.length; j++) {
+      if (currentline[j]) {
+        let value = headers[j];
+        obj[value] = currentline[j];
+      }
+    }
+    if (Object.keys(obj).length > 0) result.push(obj);
+  }
+  // console.log(result)
+  // console.log(headers)
   return {
     data: result,
     headers,
