@@ -1946,9 +1946,19 @@ p {
   overflow: hidden;
 }
 
-.input-group {
+/* .input-group {
   margin-top: 0.25rem;
   padding: 0.5rem 1rem;
+} */
+
+.input-addedFiles {
+  margin-top: 0.25rem;
+  padding: 0.5rem 0rem;
+}
+
+.input-group2 {
+  margin-top: 0.25rem;
+  padding: 0.5rem 1.0rem;
 }
 
 .contact-form label {
@@ -2161,6 +2171,17 @@ ul.form {
   column-width: 200px;
   column-gap: 1rem;
   list-style: none;
+}
+
+ul.upload {
+  column-count: 3;
+  column-width: 200px;
+  column-gap: 1rem;
+  list-style: none;
+  display: block;
+  margin-top: 0.25rem;
+  padding: 0.5rem 1rem;
+  /*padding: 0.5rem 0.5rem;*/
 }
 
 ul.about-consortia {

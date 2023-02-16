@@ -73,7 +73,7 @@ export const infoDeck = () => {
         </div>
         <div class="ternary-bg">
             <div class="container align-left confluence-info font-family-montserrat">
-            <div>The BCRPP is funded by the US National Cancer Institute (NCI) grant number <a href="https://maps.cancer.gov/overview/DCCPSGrants/abstract.jsp?applId=10263893&term=CA249866">1U01CA249866-01</a> and the NCI Intramural Research Funds. BCRPP is coordinated by the Harvard T.H. Chan School of Public Health and the Division of Cancer Epidemiology and Genetics (DCEG) of NCI, in collaboration with the NCI Cohort Consortium.</div>
+                <div><a href="https://dceg.cancer.gov" target="__blank">The Division of Cancer Epidemiology and Genetics</a> (DCEG) is a research program of the National Cancer Institure (NCI), one of the National Institutes of Health (NIH).  The Division is the world’s most comprehensive cancer epidemiology research group. Its renowned epidemiologists, geneticists, and biostatisticians conduct population and multidisciplinary research to discover the genetic and environmental determinants of cancer and new approaches to cancer prevention.</a></div>
             </div>
         </div>
     `;
@@ -161,7 +161,7 @@ export const infoDeckAfterLoggedIn = async () => {
         </div>
         <div class="ternary-bg">
             <div class="container align-left confluence-info font-family-montserrat">
-            <div>The BCRPP is funded by the US National Cancer Institute (NCI) grant number <a href="https://maps.cancer.gov/overview/DCCPSGrants/abstract.jsp?applId=10263893&term=CA249866">1U01CA249866-01</a> and the NCI Intramural Research Funds. BCRPP is coordinated by the Harvard T.H. Chan School of Public Health and the Division of Cancer Epidemiology and Genetics (DCEG) of NCI, in collaboration with the NCI Cohort Consortium.</div>
+            <div><a href="https://dceg.cancer.gov" target="__blank">The Division of Cancer Epidemiology and Genetics</a> (DCEG) is a research program of the National Cancer Institure (NCI), one of the National Institutes of Health (NIH).  The Division is the world’s most comprehensive cancer epidemiology research group. Its renowned epidemiologists, geneticists, and biostatisticians conduct population and multidisciplinary research to discover the genetic and environmental determinants of cancer and new approaches to cancer prevention.</a></div>
             </div>
         </div>-->
     `;
