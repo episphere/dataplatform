@@ -55,7 +55,7 @@ export const dataUploadForm = async () => {
             </div>
 
             <div class='d-none' id="dsmp_no">
-              <p class="dsmpno"><b>A DSMP must first be created before uploading.</b></p>
+              <p class="dsmpno"><b>A DSMP must first be created before uploading. <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Click here to create a DSMP.</a></b></p>
             </div>
 
             <div class='input-group input-group2 d-none' id="duoSel">
