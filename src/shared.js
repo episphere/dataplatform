@@ -442,6 +442,51 @@ export const uploadFile = async (data, fileName, folderId, html) => {
   }
 };
 
+export const uploadTSV = async (data, fileName, folderId, html) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    const form = new FormData();
+    let blobData = "";
+    console.log('Using HTML');
+    blobData = new Blob([data], {
+      type: "text/html",
+    });
+    form.append("file", blobData);
+    form.append(
+      "attributes",
+      `{"name": "${fileName}", "parent": {"id": "${folderId}"}}`
+    );
+
+    let response = await fetch("https://upload.box.com/api/2.0/files/content", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      body: form,
+      contentType: false,
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await uploadFile(data, fileName, folderId, html);
+    } else if (response.status === 201) {
+      return response.json();
+    } else if (response.status === 409) {
+      return {
+        status: response.status,
+        json: await response.json(),
+      };
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await uploadFile(data, fileName, folderId, html);
+  }
+};
+
 export const uploadFileAny = async (data, fileName, folderId) => {
   try {
     const access_token = JSON.parse(localStorage.parms).access_token;
