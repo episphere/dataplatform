@@ -1,4 +1,4 @@
-import {csv2Json, csv2JsonTest, uploadFile, uploadFileAny, uploadWordFile, json2other} from "./../shared.js";
+import {csv2Json, csv2JsonTest, uploadFile, uploadFileAny, uploadWordFile, json2other, uploadTSV, createFolder, getFolderItems} from "./../shared.js";
 
 export const uploadData = () => {
   let template = `
@@ -106,8 +106,8 @@ export const dataUploadForm = async () => {
             <h3><b>Journal Information</b></h3>
 
             <div class='input-group input-group2'>
-              <label for="date" style="width: 100%"><b>Date of Manuscript Acceptance: </b></label>
-              <input type="text" id="date" name="date" style="width: 20%"/>
+              <label for="date" style="width: 100%"><b>Year of Manuscript Acceptance: </b></label>
+              <input type="month" id="date" name="date" style="width: 20%"/>
             </div>
 
             <div class='input-group input-group2'>
@@ -318,6 +318,7 @@ export const addStudiesInput = () => { //Is there a DSMP function
 
 export const populateApprovedSelect = async (csvData) => { //Pulling data from dsmp_output
   const dsmpdata = csvData.data;
+  console.log(dsmpdata);
   const dsmpheaders = csvData.headers;
   const pubpresEl = document.getElementById("dsmp_pubpres");
   const studyEl = document.getElementById("dsmp_study")
@@ -431,18 +432,57 @@ export async function subForm() {
       author_first: author_first, author_middle: author_middle, author_last: author_last, 
       nores: nores, hmb: hmb, ngm: ngm, gru: gru, dsr: dsr, dsr_value: dsrinput, nfp: nfp};
     obj.push(userval);
+
+    const folderName = JSON.parse(localStorage.parms).login.split('@')[0];
+    const folderId = await folderStructure(156698557621, folderName); //create users parent folder
+    const folderName2 = journal_acro + '_' + date
+    const folderId2 = await folderStructure(folderId, folderName+'_'+folderName2) //create per journal/year folder
+    const studyName = study;
+    const folderId3 = await folderStructure(folderId2, studyName);
+    let fileIC = document.getElementById(`${dsmp}cert_upload${ver}`).files[0];
+    let fileDF = document.getElementById(`${id}data_files`).files[0];
+    let fileDD = docuement.getElementById(`${id}data_dictionary`).files[0];
+    let fileICname = fileIC.name;
+    let fileDFname = fileDF.name;
+    let fileDDname = fileDD.name;
+    let fileICblob = new Blob([fileIC]);
+    let fileDFblob = new Blob([fileDF]);
+    let fileDDblob = new Blob([fileDDname]);
+    await uploadFileAny(fileICblob, fileICname, folderId3);
+    await uploadFileAny(fileDFblob, fileDFname, folderId3);
+    await uploadFileAny(fileDDblob, fileDDname, folderId3);
+
+
+    // let file = document.getElementById(`dsmp0034.v1cert_upload0`).files[0];
+    // let filename = file.name;
+    // let blob = new Blob([file]);
+    // console.log(blob);
+    // await uploadWordFile(blob, filename, 156698557621);
+
   }
   console.log(obj);
   const headers = Object.keys(obj[0]);
+  const tsvValue = json2other(obj, headers, true).replace(/(<b>)|(<\/b>)/g, "");
   let tsvContent =
       "data:text/tsv;charset=utf-8," +
-      json2other(obj, headers, true).replace(/(<b>)|(<\/b>)/g, "");
+      tsvValue;
   const encodedUri = encodeURI(tsvContent);
   const link = document.createElement("a");
   link.setAttribute("href", encodedUri);
   link.setAttribute("download", `test.tsv`);
   document.body.appendChild(link);
-  link.click();
+  // const folderName = JSON.parse(localStorage.parms).login.split('@')[0];
+  // //link.click();
+  // const folderId = await folderStructure(156698557621, folderName); //create users parent folder
+  // const folderName2 = obj[0].journal_acro + '_' + obj[0].date
+  // const folderId2 = await folderStructure(folderId, folderName+'_'+folderName2) //create per journal/year folder
+  // for (let item of obj){
+  //   const studyName = item.study
+  //   const folderId3 = await folderStructure(folderId2, studyName)
+
+  // };
+
+  //uploadTSV(tsvValue, "test.tsv", 156698557621);
   // var form = document.getElementById('regForm');
   // for (const element of form.elements) {
   //   console.log(element);
@@ -451,11 +491,11 @@ export async function subForm() {
   // console.log(elements);
   // console.log(values);
   // for (let i=0; i <values.length; i++){
-  //   let file = document.getElementById(`${values[i]}data_files`).files[0];
-  //   let filename = file.name;
-  //   let blob = new Blob([file]);
-  //   console.log(blob);
-  //   await uploadWordFile(blob, filename, 189185316803);
+    // let file = document.getElementById(`dsmp0034.v1cert_upload0`).files[0];
+    // let filename = file.name;
+    // let blob = new Blob([file]);
+    // console.log(blob);
+    // await uploadWordFile(blob, filename, 156698557621);
   //   // var reader = new FileReader();
   //   // reader.readAsDataURL(file);
   //   // console.log(reader);
@@ -473,6 +513,25 @@ export async function subForm() {
           `
           ;
         $("#popUpModal").modal("show");
+}
+
+export async function folderStructure(folderID, folderName) {
+  let folderItems = await getFolderItems(folderID);
+  console.log(folderItems);
+  //const folderName = JSON.parse(localStorage.parms).login.split('@')[0];
+  console.log(folderName);
+  const folderNames = [];
+  for (const folder of folderItems.entries){
+    folderNames.push(folder.name);
+  };
+  console.log(folderNames);
+  if (folderNames.includes(folderName)) {
+    const testing = folderItems.entries.filter(dt => dt.name === folderName);
+    return testing[0].id
+  } else {
+    const testing2 = await createFolder(folderID, folderName);
+    return testing2.id;
+  };
 }
 
 export async function nextPrev(n, currentTab) {
