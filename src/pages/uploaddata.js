@@ -71,7 +71,7 @@ export const dataUploadForm = async () => {
             </div>
 
             <div class='input-group input-group2 d-none' id="duoSel">
-              <label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with the data based on the study's Institutional Certification</b><span class='required-label'>*</span> </label> 
+              <label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with the data based on the study's Institutional Certification (IC). If you have questions about your study's IC, please contact your <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Data Sharing Administrator (DSA)</a>.</b><span class='required-label'>*</span> </label> 
             </div>
           </div>
 
@@ -203,7 +203,7 @@ export const approvedFormSelect = async (csvData) => { //Is there a DSMP functio
 export const dsmpSelected = async (csvData) => {
   document.getElementById("nextBtn").style.display = "inline";
   let template =`
-  <label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with the data based on the study's Institutional Certification</b><span class='required-label'>*</span> </label>
+  <label for="duoSel"> <b><b>Please select the required data use restrictions and requirements associated with the data based on the study's Institutional Certification (IC). If you have questions about your study's IC, please contact your <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Data Sharing Administrator (DSA)</a>.</b><span class='required-label'>*</span> </label>
     <div class='input-group input-group2 font-size-22'>`;
   var ele = document.getElementById("approvedDSMP");
   var values = Array.from(ele.selectedOptions).map(({ value }) => value);//Array.from(ele.selectedOptions).map(v=>v.value);
