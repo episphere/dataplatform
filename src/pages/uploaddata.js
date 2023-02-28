@@ -79,18 +79,18 @@ export const dataUploadForm = async () => {
             <h3><b>Journal Information</b></h3>
 
             <div class='input-group input-group2'>
-              <label for="date" style="width: 100%"><b>Year of Manuscript Acceptance: </b></label>
+              <label for="date" style="width: 100%"><b>Month and year of manuscript acceptance: </b></label>
               <input type="month" id="date" name="date" max=${today} style="width: 20%"/>
             </div>
 
             <div class='input-group input-group2'>
-              <label for="journal_info" style="display:block"> <b>Please provide the Journal Name and Acronym</b> <span class='required-label'>*</span></label>
+              <label for="journal_info" style="display:block"> <b>Please provide the journal name and acronym. The journal acronym can be located using the <a href="https://www.ncbi.nlm.nih.gov/nlmcatalog/journals/" target="__blank"> National Library of Medicine Catalog Database</a>.</b> <span class='required-label'>*</span></label>
               <input id="journal_name" name="journal_info" type="text" placeholder="Journal Name" style="width: 80%"/>
               <input id="journal_acro" name="journal_info" type="text" placeholder="Journal Acronym" style="width: 20%"/>
             </div>
 
             <div class='input-group input-group2'>
-              <label for="manu_info"> <b>Title of Manuscript</b> <span class='required-label'>*</span></label>
+              <label for="manu_info"> <b>Title of manuscript</b> <span class='required-label'>*</span></label>
               <input id="manu_title" name="manu_info" type="text" placeholder="Manuscript Title"/>
             </div>
 
@@ -107,7 +107,7 @@ export const dataUploadForm = async () => {
             </div>--->
 
             <div id='uploadData'>
-              <h3><b>Upload Manuscript Data and Data Dictionary</b></h3>
+              <h3><b>Upload Manuscript Data, Data Dictionary, and Other Associated Metadata</b></h3>
             </div>
           </div>
 
@@ -203,7 +203,7 @@ export const approvedFormSelect = async (csvData) => { //Is there a DSMP functio
 export const dsmpSelected = async (csvData) => {
   document.getElementById("nextBtn").style.display = "inline";
   let template =`
-  <label for="duoSel"> <b><b>Please select the required data use restrictions and requirements associated with the data based on the study's Institutional Certification (IC). If you have questions about your study's IC, please contact your <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Data Sharing Administrator (DSA)</a>.</b><span class='required-label'>*</span> </label>
+  <label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with the data based on the study's Institutional Certification (IC). If you have questions about your study's IC, please contact your <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Data Sharing Administrator (DSA)</a>.</b><span class='required-label'>*</span> </label>
     <div class='input-group input-group2 font-size-22'>`;
   var ele = document.getElementById("approvedDSMP");
   var values = Array.from(ele.selectedOptions).map(({ value }) => value);//Array.from(ele.selectedOptions).map(v=>v.value);
@@ -535,7 +535,7 @@ export async function nextPrev(n, currentTab) {
   if (currentTab === 1) {
     // var ele = document.getElementById("approvedDSMP");
     // var values = Array.from(ele.selectedOptions).map(v=>v.value);
-    let template =`<h3><b>Upload Manuscript Data and Data Dictionary</b></h3>`
+    let template =`<h3><b>Upload Manuscript Data, Data Dictionary, and Other Associated Metadata</b></h3>`
     const ele = document.getElementById("duoSel");
     const eleAll = ele.getElementsByClassName('form2');
     //const testallval = testall.length;
