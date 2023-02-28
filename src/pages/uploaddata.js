@@ -34,10 +34,15 @@ export const uploadData = () => {
 };
 
 export const dataUploadForm = async () => {
+  const dateToday = new Date();
+  const today =
+    dateToday.getFullYear() +
+    "-" +
+    ("0" + (dateToday.getMonth() + 1)).slice(-2);
   let template = `
         <form class="contact-form" id="regForm">
           <div class="tab">
-            <h3><b>Data Sharing Plan and Institutional Certifications</b></h3>
+            <h3><b>Data Sharing Plan</b></h3>
             <div class="input-group input-group2">
               <label for="approved"> <b>Has a data sharing management plan(s) been approved for data in this manuscript? </b><span class='required-label'>*</span> </label>      
                 <input id="approvedyes" name="approved" type="radio" value="Yes" required/>
@@ -66,48 +71,16 @@ export const dataUploadForm = async () => {
             </div>
 
             <div class='input-group input-group2 d-none' id="duoSel">
-              <label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with 
-              the data based on the study's Institutional Certification</b><span class='required-label'>*</span> </label> 
+              <label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with the data based on the study's Institutional Certification</b><span class='required-label'>*</span> </label> 
             </div>
           </div>
-
-          <!---<div class="tab">
-            <div class='input-group input-group2'>
-              <label for="study_name"> <b>Select study(ies) that generated the data associated with this manuscript.</b><span class='required-label'>*</span> </label>
-                <select class="form-select" name="study_name" id="study_name" multiple>
-                  <option value="study0">Study 0</option>
-                  <option value="study1">Study 1</option>
-                  <option value="study2">Study 2</option>
-                </select>
-              <p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
-            </div>
-
-            <div class='input-group input-group2'>
-              <label for="add_studies_yn"> <b>Do additonal studies neet to be entered?</b><span class='required-label'>*</span> </label>      
-              <input id="add_studies_y" name="add_studies_yn" type="radio" value="Yes" required/>
-                <label class="inline" for="add_studies_y"> Yes </label>
-              <input id="add_studies_n" name="add_studies_yn" type="radio" value="No" required/>
-                <label class="inline" for="add_studies_n"> No </label>
-            </div>
-
-            <div class='input-group input-group2 d-none' >
-              <label for="add_studies"> <b>Enter name of Study(ies)</b> </label>
-              <input id="add_studies" name="add_studies" type="text"/>              
-            </div>
-
-            <div class='input-group input-group2' >
-              <label for="cert_upload"> <b>Please upload Institutional Certification for Study(ies)</b> </label>
-              <input id="add_studies" name="add_studies" type="file" multiple/>              
-            </div>
-
-          </div>--->
 
           <div class="tab">
             <h3><b>Journal Information</b></h3>
 
             <div class='input-group input-group2'>
               <label for="date" style="width: 100%"><b>Year of Manuscript Acceptance: </b></label>
-              <input type="month" id="date" name="date" style="width: 20%"/>
+              <input type="month" id="date" name="date" max=${today} style="width: 20%"/>
             </div>
 
             <div class='input-group input-group2'>
@@ -282,10 +255,10 @@ export const dsmpSelected = async (csvData) => {
                   </div>
                 </ul>
                 </div>
-                <div class='input-group input-group2'>
+                <!---<div class='input-group input-group2'>
                   <label for="${value}cert_upload${i}"> <b>Upload Institutional Certifications</b> </label>
                   <input id="${value}cert_upload${i}" name="${value}cert_upload${i}" type="file" multiple/>              
-                </div>
+                </div>--->
               </div>
             `
               // console.log(document.getElementById(`${value}dsr${i}`));
@@ -434,23 +407,23 @@ export async function subForm() {
     obj.push(userval);
 
     const folderName = JSON.parse(localStorage.parms).login.split('@')[0];
-    const folderId = await folderStructure(156698557621, folderName); //create users parent folder
+    const folderId = await folderStructure(196554876811, folderName); //create users parent folder //make Variable
     const folderName2 = journal_acro + '_' + date
     const folderId2 = await folderStructure(folderId, folderName+'_'+folderName2) //create per journal/year folder
     const studyName = study;
     const folderId3 = await folderStructure(folderId2, studyName);
-    let fileIC = document.getElementById(`${dsmp}cert_upload${ver}`).files[0];
-    let fileDF = document.getElementById(`${id}data_files`).files[0];
-    let fileDD = docuement.getElementById(`${id}data_dictionary`).files[0];
-    let fileICname = fileIC.name;
-    let fileDFname = fileDF.name;
-    let fileDDname = fileDD.name;
-    let fileICblob = new Blob([fileIC]);
-    let fileDFblob = new Blob([fileDF]);
-    let fileDDblob = new Blob([fileDDname]);
-    await uploadFileAny(fileICblob, fileICname, folderId3);
-    await uploadFileAny(fileDFblob, fileDFname, folderId3);
-    await uploadFileAny(fileDDblob, fileDDname, folderId3);
+    
+    await uploadStructure(document.getElementById(`${id}data_files`).files[0], folderId3);
+    await uploadStructure(document.getElementById(`${id}data_dictionary`).files[0], folderId3);
+    const dataAdded = document.querySelectorAll(`[id*="${id}data_upload"]`);
+    console.log(dataAdded);
+    for (var val of dataAdded){
+      console.log(val);
+      if (!val.id.includes('data_upload_description')){
+        uploadStructure(val.files[0], folderId3);
+      }
+    };
+
 
 
     // let file = document.getElementById(`dsmp0034.v1cert_upload0`).files[0];
@@ -513,6 +486,12 @@ export async function subForm() {
           `
           ;
         $("#popUpModal").modal("show");
+}
+
+export async function uploadStructure(file, folder) {
+  let fileName = file.name;
+  let fileBlob = new Blob([file]);
+  await uploadFileAny(fileBlob, fileName, folder);
 }
 
 export async function folderStructure(folderID, folderName) {
