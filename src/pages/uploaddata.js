@@ -1,4 +1,4 @@
-import {csv2Json, csv2JsonTest, uploadFile, uploadFileAny, uploadWordFile, json2other, uploadTSV, createFolder, getFolderItems, descFolder, dataPlatformFolder, publicDataFolder} from "./../shared.js";
+import {csv2Json, csv2JsonTest, uploadFile, uploadFileAny, uploadWordFile, json2other, uploadTSV, createFolder, getFolderItems, descFolder, dataPlatformFolder, publicDataFolder, descFile, showAnimation, hideAnimation} from "./../shared.js";
 
 export const uploadData = () => {
   let template = `
@@ -390,9 +390,9 @@ export function showTab(n) {
 
 export async function subForm(eventtest) {
   const btn = document.activeElement;
-  btn.classList.toggle("buttonsubmit--loading");
   btn.disabled = true;
   eventtest.preventDefault();
+  showAnimation();
   const ele = document.getElementById("duoSel");
   const eleAll = ele.getElementsByClassName('form2');
   var obj = [];
@@ -406,7 +406,7 @@ export async function subForm(eventtest) {
   const author_last = document.getElementById(`author_last`).value;
 
   const folderName = JSON.parse(localStorage.parms).login.split('@')[0];
-  const folderId = await folderStructure(publicDataFolder, folderName); //create users parent folder //make Variable
+  const folderId = await folderStructure(dataPlatformFolder, folderName); //create users parent folder //make Variable
   const folderName2 = journal_acro + '_' + date
   const folderId2 = await folderStructure(folderId, folderName+'_'+folderName2) //create per journal/year folder
   var studies = []
@@ -433,16 +433,16 @@ export async function subForm(eventtest) {
     const studyName = study;
     const folderId3 = await folderStructure(folderId2, studyName);
     
-    await uploadStructure(document.getElementById(`${id}data_files`).files[0], folderId3);
-    await uploadStructure(document.getElementById(`${id}data_dictionary`).files[0], folderId3);
+    await uploadStructure(document.getElementById(`${id}data_files`).files[0], folderId3, document.getElementById(`${id}data_description`).value);
+    await uploadStructure(document.getElementById(`${id}data_dictionary`).files[0], folderId3, document.getElementById(`${id}data_dictionary_description`).value);
     const dataAdded = document.querySelectorAll(`[id*="${id}data_upload"]`);
     console.log(dataAdded);
     for (var val of dataAdded){
       console.log(val);
       if (!val.id.includes('data_upload_description')){
-        uploadStructure(val.files[0], folderId3);
+        uploadStructure(val.files[0], folderId3, document.getElementById(val.id.replace('data_upload', 'data_upload_description')).value);
       }
-    };
+    }
   }
   await descFolder(folderId2, manu_title + ', ' + studies);
   console.log(obj);
@@ -455,55 +455,28 @@ export async function subForm(eventtest) {
   const link = document.createElement("a");
   link.setAttribute("href", encodedUri);
   link.setAttribute("download", `test.tsv`);
-  document.body.appendChild(link);
-  // const folderName = JSON.parse(localStorage.parms).login.split('@')[0];
+  await uploadTSV(tsvValue, folderName+folderName2+".tsv", publicDataFolder);
   // //link.click();
-  // const folderId = await folderStructure(156698557621, folderName); //create users parent folder
-  // const folderName2 = obj[0].journal_acro + '_' + obj[0].date
-  // const folderId2 = await folderStructure(folderId, folderName+'_'+folderName2) //create per journal/year folder
-  // for (let item of obj){
-  //   const studyName = item.study
-  //   const folderId3 = await folderStructure(folderId2, studyName)
-
-  // };
-
-  //uploadTSV(tsvValue, "test.tsv", 156698557621);
-  // var form = document.getElementById('regForm');
-  // for (const element of form.elements) {
-  //   console.log(element);
-  // }
-  // var elements = form.elements;
-  // console.log(elements);
-  // console.log(values);
-  // for (let i=0; i <values.length; i++){
-    // let file = document.getElementById(`dsmp0034.v1cert_upload0`).files[0];
-    // let filename = file.name;
-    // let blob = new Blob([file]);
-    // console.log(blob);
-    // await uploadWordFile(blob, filename, 156698557621);
-  //   // var reader = new FileReader();
-  //   // reader.readAsDataURL(file);
-  //   // console.log(reader);
-  //   // var path = (window.URL || window.webkitURL).createObjectURL(file);
-  //   // console.log(path);
-  //   //await uploadFile(url, filename, 189185316803, true);
-  // }
+  document.body.appendChild(link);
   document.getElementById("modalBody").innerHTML = `
-          <p>File was successfully uploaded.</p>
-          <p><b>Folder Name:</b> 12345</p>
-          <p><b>Folder ID:</b> 12345</p>
-          <br>
-          <p><b><u>Uploaded Files</u></b></p>
-          <p><b></b></p>
+          <p><b>Files successfully uploaded.</b></p>
+          <p><b>Please visit the below folders to check all files were properly uploaded.</b></p>
+          <p><b>Author Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId}" target="__blank">${folderName}</a></p>
+          <p><b>Author Folder ID:</b> ${folderId}</p>
+          <p><b>Publication Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId2}" target="__blank">${folderName2}</a></p>
+          <p><b>Author Folder ID:</b> ${folderId2}</p>
           `
           ;
         $("#popUpModal").modal("show");
+  hideAnimation();
+  btn.disabled = false;
 }
 
-export async function uploadStructure(file, folder) {
+export async function uploadStructure(file, folder, description) {
   let fileName = file.name;
   let fileBlob = new Blob([file]);
-  await uploadFileAny(fileBlob, fileName, folder);
+  let uploadFile = await uploadFileAny(fileBlob, fileName, folder);
+  await descFile(uploadFile.entries[0].id, description);
 }
 
 export async function folderStructure(folderID, folderName) {

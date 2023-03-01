@@ -364,6 +364,35 @@ export const descFolder = async (folderId, description) => {
   }
 };
 
+export const descFile = async (fileId, description) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    let response = await fetch(`https://api.box.com/2.0/files/${fileId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      body: JSON.stringify({
+        description: description,
+      }),//JSON.stringify(obj),
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await descFile(fileId, description);
+    } else if (response.status === 201) {
+      return response;
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await descFile(fileId, description);
+  }
+};
+
 export const copyFile = async (fileId, parentId) => {
   try {
     const access_token = JSON.parse(localStorage.parms).access_token;
