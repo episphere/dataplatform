@@ -59,13 +59,13 @@ export const renderOverView = async () => {
                 </br></br>
                 <div style="margin-left: 40px">
                 <ul> 
-                <li> Consortia of Studies <strong> that are coordinated by DCEG</strong> </li> 
+                <li> Consortia of Studies that are coordinated by DCEG </li> 
                 </ul>
                 </i></div>
                 </br>
                 <div style="margin-left: 40px">
                 <ul> 
-                <li> <strong>DCEG</strong> Research Studies
+                <li> DCEG Research Studies
                 </li> 
                 </ul>
                 </i></div>
@@ -73,7 +73,7 @@ export const renderOverView = async () => {
                 </br>
                 <div style="margin-left: 40px">
                 <ul> 
-                <li> <strong>DCEG</strong> Publications</li> 
+                <li> DCEG Publications</li> 
                 </ul>
                 </i></div>
                 </ul>
