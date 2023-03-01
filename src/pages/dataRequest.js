@@ -66,7 +66,7 @@ export const dataAccessNotSignedIn = () => {
                   The following are data platforms for collaborative consortium projects that are coordinated by DCEG:
                   </div></br>
                   <div class="row m-0">
-                      The following data access procedures are planned:
+                     
                   </div>
                   <div class="row m-0">
                       <ul>
@@ -158,7 +158,7 @@ export const dataAccess = (activeTab, showDescripton) => {
 
                     </div></br>
                     <div class="row m-0">
-                        The following data access procedures are planned:
+                     
                     </div>
                     <div class="row m-0">
                         <ul> 

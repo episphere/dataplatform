@@ -20,7 +20,7 @@ export const navBarMenutemplate = () => {
         </div>
         <div class="grid-elements">
         <a class="nav-link nav-menu-links white-font" href="#researchStudies" title="Research Studies" id="data2">
-            Research Studies
+            Data Platforms for DCEG Studies
         </a>
         </div>
         <div class="grid-elements">
@@ -31,7 +31,7 @@ export const navBarMenutemplate = () => {
         </div>
         <div class="grid-elements">
           <a class="nav-link nav-menu-links white-font" href="#myDCEG" title="My DCEG Publication Data" id="myDCEGID">
-            My DCEG Publication Data
+          Dataset from my DCEG publications
           </a>
         </div>
         <div class="grid-elements">
