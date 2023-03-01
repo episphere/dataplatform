@@ -50,7 +50,7 @@ export const navBarMenutemplate = () => {
                         Consortia
                     </button>
                     <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/overview" title="Consortia" id="dataRequest"> Consortia </a>-->
+                    <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/overview" title="Consortia" id="dataRequest"> Consortia </a>
                     ${
                       showProjectConceptForm
                         ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/form" title="Data Form" id="dataForm"> </a>
@@ -61,7 +61,7 @@ export const navBarMenutemplate = () => {
                       viewSubmissionsShow
                         ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#userSubmissions" title='View Your Submissions' id="userSubmissions"> </a>`
                         : ""
-                    }
+                    }-->
                     <!--a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/accepted" title="Accepted Studies" id="dataAccepted"> Accepted </a-->
                     ${
                       emailforChair.indexOf(
