@@ -1,4 +1,4 @@
-import {csv2Json, csv2JsonTest, uploadFile, uploadFileAny, uploadWordFile, json2other, uploadTSV, createFolder, getFolderItems} from "./../shared.js";
+import {csv2Json, csv2JsonTest, uploadFile, uploadFileAny, uploadWordFile, json2other, uploadTSV, createFolder, getFolderItems, descFolder, dataPlatformFolder, publicDataFolder, descFile, showAnimation, hideAnimation} from "./../shared.js";
 
 export const uploadData = () => {
   let template = `
@@ -34,10 +34,15 @@ export const uploadData = () => {
 };
 
 export const dataUploadForm = async () => {
+  const dateToday = new Date();
+  const today =
+    dateToday.getFullYear() +
+    "-" +
+    ("0" + (dateToday.getMonth() + 1)).slice(-2);
   let template = `
         <form class="contact-form" id="regForm">
           <div class="tab">
-            <h3><b>Data Sharing Plan and Institutional Certifications</b></h3>
+            <h3><b>Data Sharing Plan</b></h3>
             <div class="input-group input-group2">
               <label for="approved"> <b>Has a data sharing management plan(s) been approved for data in this manuscript? </b><span class='required-label'>*</span> </label>      
                 <input id="approvedyes" name="approved" type="radio" value="Yes" required/>
@@ -66,66 +71,34 @@ export const dataUploadForm = async () => {
             </div>
 
             <div class='input-group input-group2 d-none' id="duoSel">
-              <label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with 
-              the data based on the study's Institutional Certification</b><span class='required-label'>*</span> </label> 
+              <label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with the data based on the study's Institutional Certification (IC). If you have questions about your study's IC, please contact your <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Data Sharing Administrator (DSA)</a>.</b><span class='required-label'>*</span> </label> 
             </div>
           </div>
-
-          <!---<div class="tab">
-            <div class='input-group input-group2'>
-              <label for="study_name"> <b>Select study(ies) that generated the data associated with this manuscript.</b><span class='required-label'>*</span> </label>
-                <select class="form-select" name="study_name" id="study_name" multiple>
-                  <option value="study0">Study 0</option>
-                  <option value="study1">Study 1</option>
-                  <option value="study2">Study 2</option>
-                </select>
-              <p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
-            </div>
-
-            <div class='input-group input-group2'>
-              <label for="add_studies_yn"> <b>Do additonal studies neet to be entered?</b><span class='required-label'>*</span> </label>      
-              <input id="add_studies_y" name="add_studies_yn" type="radio" value="Yes" required/>
-                <label class="inline" for="add_studies_y"> Yes </label>
-              <input id="add_studies_n" name="add_studies_yn" type="radio" value="No" required/>
-                <label class="inline" for="add_studies_n"> No </label>
-            </div>
-
-            <div class='input-group input-group2 d-none' >
-              <label for="add_studies"> <b>Enter name of Study(ies)</b> </label>
-              <input id="add_studies" name="add_studies" type="text"/>              
-            </div>
-
-            <div class='input-group input-group2' >
-              <label for="cert_upload"> <b>Please upload Institutional Certification for Study(ies)</b> </label>
-              <input id="add_studies" name="add_studies" type="file" multiple/>              
-            </div>
-
-          </div>--->
 
           <div class="tab">
             <h3><b>Journal Information</b></h3>
 
             <div class='input-group input-group2'>
-              <label for="date" style="width: 100%"><b>Year of Manuscript Acceptance: </b></label>
-              <input type="month" id="date" name="date" style="width: 20%"/>
+              <label for="date" style="width: 100%"><b>Month and year of manuscript acceptance</b><span class='required-label'>*</span></label>
+              <input type="month" id="date" name="date" max=${today} style="width: 20%" required/>
             </div>
 
             <div class='input-group input-group2'>
-              <label for="journal_info" style="display:block"> <b>Please provide the Journal Name and Acronym</b> <span class='required-label'>*</span></label>
-              <input id="journal_name" name="journal_info" type="text" placeholder="Journal Name" style="width: 80%"/>
-              <input id="journal_acro" name="journal_info" type="text" placeholder="Journal Acronym" style="width: 20%"/>
+              <label for="journal_info" style="display:block"> <b>Please provide the journal name and acronym. The journal acronym can be located using the <a href="https://www.ncbi.nlm.nih.gov/nlmcatalog/journals/" target="__blank"> National Library of Medicine Catalog Database</a>.</b> <span class='required-label'>*</span></label>
+              <input id="journal_name" name="journal_info" type="text" placeholder="Journal Name" style="width: 80%" required/>
+              <input id="journal_acro" name="journal_info" type="text" placeholder="Journal Acronym" style="width: 20%" required/>
             </div>
 
             <div class='input-group input-group2'>
-              <label for="manu_info"> <b>Title of Manuscript</b> <span class='required-label'>*</span></label>
-              <input id="manu_title" name="manu_info" type="text" placeholder="Manuscript Title"/>
+              <label for="manu_info"> <b>Title of manuscript</b> <span class='required-label'>*</span></label>
+              <input id="manu_title" name="manu_info" type="text" placeholder="Manuscript Title" required/>
             </div>
 
             <div class='input-group input-group2'>
               <label for="author_info" style="width: 100%"> <b>First author listed on manuscript</b><span class='required-label'>*</span></label>
-              <input id="author_first" name="author_info" type="text" placeholder="First Name" style="width: 45%"/>
-              <input id="author_middle" name="author_info" type="text" placeholder="Middle Initial" style="width: 10%"/>
-              <input id="author_last" name="author_info" type="text" placeholder="Last Name" style="width: 45%"/>
+              <input id="author_first" name="author_info" type="text" placeholder="First Name" style="width: 45%" required/>
+              <input id="author_middle" name="author_info" type="text" placeholder="Middle Initial" style="width: 10%" required/>
+              <input id="author_last" name="author_info" type="text" placeholder="Last Name" style="width: 45%" required/>
             </div>
 
             <!---<div class='input-group input-group2'>
@@ -134,7 +107,7 @@ export const dataUploadForm = async () => {
             </div>--->
 
             <div id='uploadData'>
-              <h3><b>Upload Manuscript Data and Data Dictionary</b></h3>
+              <h3><b>Upload Manuscript Data, Data Dictionary, and Other Associated Metadata</b></h3>
             </div>
           </div>
 
@@ -153,7 +126,7 @@ export const dataUploadForm = async () => {
               <button type="button" id="nextBtn" class="buttonsubmit">Next</button>
             </div>
             <div style="float:right;">
-              <button type="button" id="subBtn" class="buttonsubmit">Submit</button>
+              <button type="submit" form="regForm" id="subBtn" class="buttonsubmit">Submit</button>
             </div>
           </div>
         </form>
@@ -174,19 +147,33 @@ export const dataUploadForm = async () => {
   // document.getElementById("add_studies_n").addEventListener("click", addStudiesInput);
   document.getElementById("approvedDSMP").addEventListener("change", () => {dsmpSelected(csvData)});
   const prevPress = document.getElementById("prevBtn");
-  prevPress.addEventListener("click", function() {
-      nextPrev(-1, currentTab);
-      currentTab -=1;
+  prevPress.addEventListener("click", async function() {
+      await nextPrev(-1, currentTab);
+      //if (tabmove) {
+        currentTab -=1;
+      //}
     });
   const nextPress = document.getElementById("nextBtn");
-  nextPress.addEventListener("click", function() {
-      nextPrev(1, currentTab);
-      currentTab += 1;
+  nextPress.addEventListener("click", async function() {
+      for (var ele of document.getElementsByClassName('form2')) {
+        var eleCheck = ele.querySelectorAll('input[type="checkbox"]');
+        if (!Array.prototype.slice.call(eleCheck).some(x => x.checked)) return alert("Please select at least one checkbox per study.")
+
+        // for (eleInput of ele.getElementsByTagName("input")) {
+        //   if eleInput.checked
+        // }
+      }
+      await nextPrev(1, currentTab);
+      //if (tabmove) {
+        currentTab += 1;
+      //}
     });
-  const subPress = document.getElementById("subBtn");
-  subPress.addEventListener("click", function() {
-      subForm();
-    });
+  // const subPress = document.getElementById("subBtn");
+  // subPress.addEventListener("submit", function() {
+  //     subForm();
+  //   });
+  const form = await document.querySelector(".contact-form");
+  form.addEventListener("submit", subForm);
 }
 
 export const approvedFormSelect = async (csvData) => { //Is there a DSMP function
@@ -230,7 +217,7 @@ export const approvedFormSelect = async (csvData) => { //Is there a DSMP functio
 export const dsmpSelected = async (csvData) => {
   document.getElementById("nextBtn").style.display = "inline";
   let template =`
-  <label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with the data based on the study's Institutional Certification</b><span class='required-label'>*</span> </label>
+  <label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with the data based on the study's Institutional Certification (IC). If you have questions about your study's IC, please contact your <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Data Sharing Administrator (DSA)</a>.</b><span class='required-label'>*</span> </label>
     <div class='input-group input-group2 font-size-22'>`;
   var ele = document.getElementById("approvedDSMP");
   var values = Array.from(ele.selectedOptions).map(({ value }) => value);//Array.from(ele.selectedOptions).map(v=>v.value);
@@ -282,10 +269,10 @@ export const dsmpSelected = async (csvData) => {
                   </div>
                 </ul>
                 </div>
-                <div class='input-group input-group2'>
+                <!---<div class='input-group input-group2'>
                   <label for="${value}cert_upload${i}"> <b>Upload Institutional Certifications</b> </label>
                   <input id="${value}cert_upload${i}" name="${value}cert_upload${i}" type="file" multiple/>              
-                </div>
+                </div>--->
               </div>
             `
               // console.log(document.getElementById(`${value}dsr${i}`));
@@ -401,17 +388,35 @@ export function showTab(n) {
   //fixStepIndicator(n)
 };
 
-export async function subForm() {
+export async function subForm(eventtest) {
+  const btn = document.activeElement;
+  btn.disabled = true;
+  eventtest.preventDefault();
+  showAnimation();
   const ele = document.getElementById("duoSel");
   const eleAll = ele.getElementsByClassName('form2');
   var obj = [];
+
+  const date = document.getElementById(`date`).value;
+  const journal_name = document.getElementById(`journal_name`).value;
+  const journal_acro = document.getElementById(`journal_acro`).value;
+  const manu_title = document.getElementById(`manu_title`).value;
+  const author_first = document.getElementById(`author_first`).value;
+  const author_middle = document.getElementById(`author_middle`).value;
+  const author_last = document.getElementById(`author_last`).value;
+
+  const folderName = JSON.parse(localStorage.parms).login.split('@')[0];
+  const folderId = await folderStructure(dataPlatformFolder, folderName); //create users parent folder //make Variable
+  const folderName2 = journal_acro + '_' + date
+  const folderId2 = await folderStructure(folderId, folderName+'_'+folderName2) //create per journal/year folder
+  var studies = []
   for (const form of eleAll) {
-    //var obj = new Object();
     const id = form.getAttribute('id');
     const dsmp = id.split('duo')[0];
     const ver = id.split('duo')[1];
     const cas = form.getAttribute('cas');
     const study = form.getAttribute('study');
+    studies.push(study);
     const nores = document.getElementById(`${dsmp}nores${ver}`).checked;
     const hmb = document.getElementById(`${dsmp}hmb${ver}`).checked;
     const ngm = document.getElementById(`${dsmp}ngm${ver}`).checked;
@@ -419,47 +424,27 @@ export async function subForm() {
     const dsr = document.getElementById(`${dsmp}dsr${ver}`).checked;
     const dsrinput = document.getElementById(`${dsmp}dsr${ver}input`).value;
     const nfp = document.getElementById(`${dsmp}nfp${ver}`).checked;
-    const date = document.getElementById(`date`).value;
-    const journal_name = document.getElementById(`journal_name`).value;
-    const journal_acro = document.getElementById(`journal_acro`).value;
-    const manu_title = document.getElementById(`manu_title`).value;
-    const author_first = document.getElementById(`author_first`).value;
-    const author_middle = document.getElementById(`author_middle`).value;
-    const author_last = document.getElementById(`author_last`).value;
 
     const userval = {dsmp: dsmp, cas: cas, study: study, date: date, 
       journal_name: journal_name, journal_acro: journal_acro, title: manu_title, 
       author_first: author_first, author_middle: author_middle, author_last: author_last, 
       nores: nores, hmb: hmb, ngm: ngm, gru: gru, dsr: dsr, dsr_value: dsrinput, nfp: nfp};
     obj.push(userval);
-
-    const folderName = JSON.parse(localStorage.parms).login.split('@')[0];
-    const folderId = await folderStructure(156698557621, folderName); //create users parent folder
-    const folderName2 = journal_acro + '_' + date
-    const folderId2 = await folderStructure(folderId, folderName+'_'+folderName2) //create per journal/year folder
     const studyName = study;
     const folderId3 = await folderStructure(folderId2, studyName);
-    let fileIC = document.getElementById(`${dsmp}cert_upload${ver}`).files[0];
-    let fileDF = document.getElementById(`${id}data_files`).files[0];
-    let fileDD = docuement.getElementById(`${id}data_dictionary`).files[0];
-    let fileICname = fileIC.name;
-    let fileDFname = fileDF.name;
-    let fileDDname = fileDD.name;
-    let fileICblob = new Blob([fileIC]);
-    let fileDFblob = new Blob([fileDF]);
-    let fileDDblob = new Blob([fileDDname]);
-    await uploadFileAny(fileICblob, fileICname, folderId3);
-    await uploadFileAny(fileDFblob, fileDFname, folderId3);
-    await uploadFileAny(fileDDblob, fileDDname, folderId3);
-
-
-    // let file = document.getElementById(`dsmp0034.v1cert_upload0`).files[0];
-    // let filename = file.name;
-    // let blob = new Blob([file]);
-    // console.log(blob);
-    // await uploadWordFile(blob, filename, 156698557621);
-
+    
+    await uploadStructure(document.getElementById(`${id}data_files`).files[0], folderId3, document.getElementById(`${id}data_description`).value);
+    await uploadStructure(document.getElementById(`${id}data_dictionary`).files[0], folderId3, document.getElementById(`${id}data_dictionary_description`).value);
+    const dataAdded = document.querySelectorAll(`[id*="${id}data_upload"]`);
+    console.log(dataAdded);
+    for (var val of dataAdded){
+      console.log(val);
+      if (!val.id.includes('data_upload_description')){
+        uploadStructure(val.files[0], folderId3, document.getElementById(val.id.replace('data_upload', 'data_upload_description')).value);
+      }
+    }
   }
+  await descFolder(folderId2, manu_title + ', ' + studies);
   console.log(obj);
   const headers = Object.keys(obj[0]);
   const tsvValue = json2other(obj, headers, true).replace(/(<b>)|(<\/b>)/g, "");
@@ -470,49 +455,28 @@ export async function subForm() {
   const link = document.createElement("a");
   link.setAttribute("href", encodedUri);
   link.setAttribute("download", `test.tsv`);
-  document.body.appendChild(link);
-  // const folderName = JSON.parse(localStorage.parms).login.split('@')[0];
+  await uploadTSV(tsvValue, folderName+folderName2+".tsv", publicDataFolder);
   // //link.click();
-  // const folderId = await folderStructure(156698557621, folderName); //create users parent folder
-  // const folderName2 = obj[0].journal_acro + '_' + obj[0].date
-  // const folderId2 = await folderStructure(folderId, folderName+'_'+folderName2) //create per journal/year folder
-  // for (let item of obj){
-  //   const studyName = item.study
-  //   const folderId3 = await folderStructure(folderId2, studyName)
-
-  // };
-
-  //uploadTSV(tsvValue, "test.tsv", 156698557621);
-  // var form = document.getElementById('regForm');
-  // for (const element of form.elements) {
-  //   console.log(element);
-  // }
-  // var elements = form.elements;
-  // console.log(elements);
-  // console.log(values);
-  // for (let i=0; i <values.length; i++){
-    // let file = document.getElementById(`dsmp0034.v1cert_upload0`).files[0];
-    // let filename = file.name;
-    // let blob = new Blob([file]);
-    // console.log(blob);
-    // await uploadWordFile(blob, filename, 156698557621);
-  //   // var reader = new FileReader();
-  //   // reader.readAsDataURL(file);
-  //   // console.log(reader);
-  //   // var path = (window.URL || window.webkitURL).createObjectURL(file);
-  //   // console.log(path);
-  //   //await uploadFile(url, filename, 189185316803, true);
-  // }
+  document.body.appendChild(link);
   document.getElementById("modalBody").innerHTML = `
-          <p>File was successfully uploaded.</p>
-          <p><b>Folder Name:</b> 12345</p>
-          <p><b>Folder ID:</b> 12345</p>
-          <br>
-          <p><b><u>Uploaded Files</u></b></p>
-          <p><b></b></p>
+          <p><b>Files successfully uploaded.</b></p>
+          <p><b>Please visit the below folders to check all files were properly uploaded.</b></p>
+          <p><b>Author Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId}" target="__blank">${folderName}</a></p>
+          <p><b>Author Folder ID:</b> ${folderId}</p>
+          <p><b>Publication Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId2}" target="__blank">${folderName2}</a></p>
+          <p><b>Author Folder ID:</b> ${folderId2}</p>
           `
           ;
         $("#popUpModal").modal("show");
+  hideAnimation();
+  btn.disabled = false;
+}
+
+export async function uploadStructure(file, folder, description) {
+  let fileName = file.name;
+  let fileBlob = new Blob([file]);
+  let uploadFile = await uploadFileAny(fileBlob, fileName, folder);
+  await descFile(uploadFile.entries[0].id, description);
 }
 
 export async function folderStructure(folderID, folderName) {
@@ -538,11 +502,12 @@ export async function nextPrev(n, currentTab) {
   // This function will figure out which tab to display
   var x = document.getElementsByClassName("tab");
   // Exit the function if any field in the current tab is invalid:
-  //if (n == 1 && !validateForm()) return false;
+  //if (n == 1 && !validateForm(currentTab)) return false;
   // Hide the current tab:
   x[currentTab].style.display = "none";
   // Increase or decrease the current tab by 1:
   currentTab = currentTab + n;
+  //console.log(currentTab);
   // if you have reached the end of the form...
   if (currentTab >= x.length) {
     // ... the form gets submitted:
@@ -556,7 +521,7 @@ export async function nextPrev(n, currentTab) {
   if (currentTab === 1) {
     // var ele = document.getElementById("approvedDSMP");
     // var values = Array.from(ele.selectedOptions).map(v=>v.value);
-    let template =`<h3><b>Upload Manuscript Data and Data Dictionary</b></h3>`
+    let template =`<h3><b>Upload Manuscript Data, Data Dictionary, and Other Associated Metadata</b></h3>`
     const ele = document.getElementById("duoSel");
     const eleAll = ele.getElementsByClassName('form2');
     //const testallval = testall.length;
@@ -576,18 +541,18 @@ export async function nextPrev(n, currentTab) {
           <h4><b>cas: ${cas}</b>, ${study}</h4>
             <div class='input-group input-group2' >
               <label for="${id}data_upload"> <b>Upload data</b> </label>
-              <input id="${id}data_files" name="${id}data_upload" type="file" single/>
-              <input id="${id}data_description" name="${id}data_upload" type="text" placeholder="Provide description of uploaded data files. Note, this will be viewable by users of the data"/>
+              <input id="${id}data_files" name="${id}data_upload" type="file" single required/>
+              <input id="${id}data_description" name="${id}data_upload" type="text" placeholder="Provide description of uploaded data files. Note, this will be viewable by users of the data" required/>
             </div>
             <div class='input-group input-group2'>
               <label for="${id}dict_upload"> <b>Upload data dictionary</b> </label>
-              <input id="${id}data_dictionary" name="${id}dict_upload" type="file" single/> 
-              <input id="${id}data_dictionary_description" name="${id}dict_upload" type="text" placeholder="Provide description of uploaded data dictionary. Note, this will be viewable by users of the data"/>            
+              <input id="${id}data_dictionary" name="${id}dict_upload" type="file" single required/> 
+              <input id="${id}data_dictionary_description" name="${id}dict_upload" type="text" placeholder="Provide description of uploaded data dictionary. Note, this will be viewable by users of the data" required/>            
             </div>
             <div class='input-group input-group2 d-none' id='${id}addAttachment'>
             </div>
             <div class='input-group input-group2'>
-              <button type="button" id="addDataBtn" class="buttonsubmit">+Data</button>
+              <button type="button" id="addDataBtn" class="buttonsubmit">+Data or Metadata</button>
             </div>
           </div>
         </div>
@@ -603,16 +568,17 @@ export async function nextPrev(n, currentTab) {
       let id = parent.id.slice(0,-4); //Remove 'Form' from id
       console.log(id);
       let num = eleAll.length
-      let idaddAttachement = document.getElementById(`${id}addAttachment`)
-      let template = `
-      <div class='input-addedFiles input-group'>
+      let idaddAttachment = document.getElementById(`${id}addAttachment`)
+      var newInput = document.createElement('div');
+      newInput.className = 'input-addedFiles input-group'
+
+      newInput.innerHTML = `
         <label for="${id}data${num}"> <b>Upload additional data</b> </label>
-        <input id="${id}data_upload${num}" name="${id}data${num}" type="file" single/>
-        <input id="${id}data_upload_description${num}" name="${id}data${num}" type="text" placeholder="Provide description of uploaded data. Note, this will be viewable by users of the data"/>
-      </div>
+        <input id="${id}data_upload${num}" name="${id}data${num}" type="file" single required/>
+        <input id="${id}data_upload_description${num}" name="${id}data${num}" type="text" placeholder="Provide description of uploaded data. Note, this will be viewable by users of the data" required/>
       `
-      idaddAttachement.innerHTML += template;
-      idaddAttachement.classList.toggle("d-none", false);
+      idaddAttachment.appendChild(newInput);
+      idaddAttachment.classList.toggle("d-none", false);
     }
     addDataBtns.forEach((item) => {
       item.addEventListener('click', clickEvent);
@@ -621,11 +587,13 @@ export async function nextPrev(n, currentTab) {
   showTab(currentTab);
 };
 
-export function validateForm() {
+export function validateForm(currentTab) {
   // This function deals with validation of the form fields
   var x, y, i, valid = true;
   x = document.getElementsByClassName("tab");
   y = x[currentTab].getElementsByTagName("input");
+  console.log(currentTab);
+  console.log(y);
   // A loop that checks every input field in the current tab:
   for (i = 0; i < y.length; i++) {
     // If a field is empty...

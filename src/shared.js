@@ -50,6 +50,10 @@ export const deniedFolder = 162221803333;
 
 export const submitterFolder = 162222418449;
 
+export const dataPlatformFolder = 196554876811;
+
+export const publicDataFolder = 196819085811;
+
 export const getFolderItems = async (id) => {
   try {
     const access_token = JSON.parse(localStorage.parms).access_token;
@@ -323,6 +327,69 @@ export const createFolder = async (folderId, folderName) => {
   } catch (err) {
     if ((await refreshToken()) === true)
       return await createFolder(folderId, foldername);
+  }
+};
+
+export const descFolder = async (folderId, description) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    // let obj = {
+    //   parent: {
+    //     description: description,
+    //   },
+    // };
+    let response = await fetch(`https://api.box.com/2.0/folders/${folderId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      body: JSON.stringify({
+        description: description,
+      }),//JSON.stringify(obj),
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await descFolder(folderId, description);
+    } else if (response.status === 201) {
+      return response;
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await descFolder(folderId, description);
+  }
+};
+
+export const descFile = async (fileId, description) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    let response = await fetch(`https://api.box.com/2.0/files/${fileId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      body: JSON.stringify({
+        description: description,
+      }),//JSON.stringify(obj),
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await descFile(fileId, description);
+    } else if (response.status === 201) {
+      return response;
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await descFile(fileId, description);
   }
 };
 
