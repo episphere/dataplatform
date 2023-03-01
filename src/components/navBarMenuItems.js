@@ -19,26 +19,34 @@ export const navBarMenutemplate = () => {
             </a>
         </div>
         <div class="grid-elements">
-        <a class="nav-link nav-menu-links white-font" href="#researchStudies" title="Research Studies" id="data2">
-            Data Platforms for DCEG Studies
-        </a>
-        </div>
-        <div class="grid-elements">
-        <a class="nav-link nav-menu-links white-font" href="#publicationpage" title="Publication" id="publicationID">
-            Publication
-        </a>
-        </div>
-        </div>
-        <div class="grid-elements">
-          <a class="nav-link nav-menu-links white-font" href="#myDCEG" title="My DCEG Publication Data" id="myDCEGID">
-          Dataset from my DCEG publications
+          <a class="nav-link nav-menu-links white-font" href="#researchStudies" title="Research Studies" id="data2">
+              Data Platforms for DCEG Studies
           </a>
         </div>
         <div class="grid-elements">
+          <a class="nav-link nav-menu-links white-font" href="#publicationpage" title="Publication" id="publicationID">
+              Publication
+          </a>
+        </div>
+        <div class="grid-elements dropdown">
+          <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" title="My DCEG Publication Data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Datasets from my DCEG publications
+          </button>
+          
+          <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="src/pages/uploaddata.js">How to upload data from my published manuscript</a>
+          <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG/upload" id="myDCEGID_upload"> Upload new data</a>
+          <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="https://www.box.com/personal/" id="myDCEGID">See my uploaded data</a>
+
+          </div>
+
+    
+        </div>
+        -<!--<div class="grid-elements">
           <a class="nav-link nav-menu-links white-font" href="#myDCEG/upload" title="My DCEG Publication Data - Upload" id="myDCEGID_upload">
             Upload
           </a>
-        </div>
+        </div>-->
         <div class="grid-elements">
             <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/dataplatform/issues" title="BCRPP github issues">
                 Report issue
