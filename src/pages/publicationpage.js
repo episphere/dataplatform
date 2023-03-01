@@ -37,7 +37,12 @@ export const publication = () => {
       </div>
         </span>
         <div class="align-left">
-        Data from the following publications can be requested. Click the request data bottom for the publication of interest to goto the data request form. This will require logging in through a Box.com account for authentication and authorization. If you do not have a Box.com account, you can use <a href= "https://www.box.com/personal/">this link </a><br> to create a free account. After approval of the data request,datasets and data dictionaries can be accessed through their permanent identifiers (or uniform resource locators, URL)provided by Box.com.
+        Data from the following publications can be requested. Click the request data button for the publication of 
+        interest to go to the data request form. This will require logging in through a Box.com account for 
+        authentication and authorization. If you do not have a Box.com account, you can use 
+        <a href= "https://www.box.com/personal/">this link </a> to create a free account. 
+        After approval of the data request,datasets and data dictionaries can be accessed through 
+        their permanent identifiers (or uniform resource locators, URL) provided by Box.com. 
         </div> 
       <div>
       `;

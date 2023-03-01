@@ -63,7 +63,7 @@ export const dataAccessNotSignedIn = () => {
               </div>
               <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
                   <div class="row m-0">
-                  The following are data platform for collaborative consortium projects that are coordinated by DCEG:
+                  The following are data platforms for collaborative consortium projects that are coordinated by DCEG:
                   </div></br>
                   <div class="row m-0">
                       The following data access procedures are planned:
@@ -75,7 +75,7 @@ export const dataAccessNotSignedIn = () => {
                           The Confluence Project is a large international project to study breast cancer genetic susceptibility in women and men of multiple ancestries, by integrating existing and new genome-wide genetic data, across several breast cancer consortia.
                            </li>
                            <li><a href= "https://episphere.github.io/confluence">The Breast Cancer Risk Prediction Project (BCRPP):</a>
-                           The BCRPP is a collaboration in the NCI Cohort Consortium Study that is developing risk prediction models for female breast across racial and ethnic groups.                           
+                           The BCRPP is a collaboration in the NCI Cohort Consortium Study that is developing risk prediction models for female breast cancer across racial and ethnic groups.                           
                            </li>
                       </ul>
                   </div>
@@ -147,14 +147,14 @@ export const dataAccess = (activeTab, showDescripton) => {
             <div class="container body-min-height">
                 <div class="main-summary-row">
                     <div class="align-left">
-                        <h1 class="page-header">Data Platforms for Consortia Projects
+                        <h1 class="page-header">Data Platforms for Consortium Projects
                         </h1>
                     </div>
                 </div>
                 <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
                     <div class="row m-0">
 
-                        The following are data platform for collaborative consortium projects that are coordinated by DCEG:
+                        The following are data platforms for collaborative consortium projects that are coordinated by DCEG:
 
                     </div></br>
                     <div class="row m-0">
@@ -168,7 +168,7 @@ export const dataAccess = (activeTab, showDescripton) => {
                             </li>
                             <li> 
                             <a href= "https://episphere.github.io/confluence">The Breast Cancer Risk Prediction Project (BCRPP):</a>
-                            The BCRPP is a collaboration in the NCI Cohort Consortium Study that is developing risk prediction models for female breast across racial and ethnic groups.
+                            The BCRPP is a collaboration in the NCI Cohort Consortium Study that is developing risk prediction models for female breast cancer across racial and ethnic groups.
                             </li>
                         </ul>
                     </div> `;
