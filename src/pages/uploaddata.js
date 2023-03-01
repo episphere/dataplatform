@@ -149,29 +149,17 @@ export const dataUploadForm = async () => {
   const prevPress = document.getElementById("prevBtn");
   prevPress.addEventListener("click", async function() {
       await nextPrev(-1, currentTab);
-      //if (tabmove) {
         currentTab -=1;
-      //}
     });
   const nextPress = document.getElementById("nextBtn");
   nextPress.addEventListener("click", async function() {
       for (var ele of document.getElementsByClassName('form2')) {
         var eleCheck = ele.querySelectorAll('input[type="checkbox"]');
         if (!Array.prototype.slice.call(eleCheck).some(x => x.checked)) return alert("Please select at least one checkbox per study.")
-
-        // for (eleInput of ele.getElementsByTagName("input")) {
-        //   if eleInput.checked
-        // }
       }
       await nextPrev(1, currentTab);
-      //if (tabmove) {
         currentTab += 1;
-      //}
     });
-  // const subPress = document.getElementById("subBtn");
-  // subPress.addEventListener("submit", function() {
-  //     subForm();
-  //   });
   const form = await document.querySelector(".contact-form");
   form.addEventListener("submit", subForm);
 }
@@ -406,7 +394,7 @@ export async function subForm(eventtest) {
   const author_last = document.getElementById(`author_last`).value;
 
   const folderName = JSON.parse(localStorage.parms).login.split('@')[0];
-  const folderId = await folderStructure(dataPlatformFolder, folderName); //create users parent folder //make Variable
+  const folderId = await folderStructure(dataPlatformFolder, folderName+'_DCEG_Data_Platform'); //create users parent folder //make Variable
   const folderName2 = journal_acro + '_' + date
   const folderId2 = await folderStructure(folderId, folderName+'_'+folderName2) //create per journal/year folder
   var studies = []
@@ -464,7 +452,7 @@ export async function subForm(eventtest) {
           <p><b>Author Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId}" target="__blank">${folderName}</a></p>
           <p><b>Author Folder ID:</b> ${folderId}</p>
           <p><b>Publication Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId2}" target="__blank">${folderName2}</a></p>
-          <p><b>Author Folder ID:</b> ${folderId2}</p>
+          <p><b>Publication Folder ID:</b> ${folderId2}</p>
           `
           ;
         $("#popUpModal").modal("show");
@@ -481,9 +469,6 @@ export async function uploadStructure(file, folder, description) {
 
 export async function folderStructure(folderID, folderName) {
   let folderItems = await getFolderItems(folderID);
-  console.log(folderItems);
-  //const folderName = JSON.parse(localStorage.parms).login.split('@')[0];
-  console.log(folderName);
   const folderNames = [];
   for (const folder of folderItems.entries){
     folderNames.push(folder.name);
@@ -568,6 +553,9 @@ export async function nextPrev(n, currentTab) {
       let id = parent.id.slice(0,-4); //Remove 'Form' from id
       console.log(id);
       let num = eleAll.length
+      if (num > 0 && document.getElementById(`${id}data_upload${num-1}`).value===''){
+        return alert("Please attach file to additional data before adding more data");
+      }
       let idaddAttachment = document.getElementById(`${id}addAttachment`)
       var newInput = document.createElement('div');
       newInput.className = 'input-addedFiles input-group'
