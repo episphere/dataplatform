@@ -49,7 +49,8 @@ export const renderOverView = async () => {
             <div class="col align-left">
                 </br>
                 <span>
-                DCEG is committed to sharing research data according to the NIH Data Sharing Policy following FAIR principles to further advance science, improve public health, while maximizing contributions from research participants. This site provides a suite of epidemiology data platforms to facilitate collaborations and share data from consortia, individual studies and publications led by DCEG investigators.
+                DCEG is committed to sharing research data according to the <a href= "https://sharing.nih.gov/data-management-and-sharing-policy/about-data-management-and-sharing-policies/data-management-and-sharing-policy-overview">NIH Data Sharing Policy</a> to further advance science, improve public health, while maximizing contributions from research participants. This site provides a suite of epidemiology data platforms to facilitate collaborations and share data from consortia, individual studies and publications led by DCEG investigators. 
+
                 </span>
                 </br></br>
                 <span>
@@ -58,13 +59,13 @@ export const renderOverView = async () => {
                 </br></br>
                 <div style="margin-left: 40px">
                 <ul> 
-                <li> Consortia of Studies</li> 
+                <li> Consortia of Studies <strong> that are coordinated by DCEG</strong> </li> 
                 </ul>
                 </i></div>
                 </br>
                 <div style="margin-left: 40px">
                 <ul> 
-                <li> Research Studies
+                <li> <strong>DCEG</strong> Research Studies
                 </li> 
                 </ul>
                 </i></div>
@@ -72,7 +73,7 @@ export const renderOverView = async () => {
                 </br>
                 <div style="margin-left: 40px">
                 <ul> 
-                <li> Publications</li> 
+                <li> <strong>DCEG</strong> Publications</li> 
                 </ul>
                 </i></div>
                 </ul>
