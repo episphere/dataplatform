@@ -1,4 +1,4 @@
-import {csv2Json, csv2JsonTest, uploadFile, uploadFileAny, uploadWordFile, json2other, uploadTSV, createFolder, getFolderItems} from "./../shared.js";
+import {csv2Json, csv2JsonTest, uploadFile, uploadFileAny, uploadWordFile, json2other, uploadTSV, createFolder, getFolderItems, descFolder, dataPlatformFolder, publicDataFolder} from "./../shared.js";
 
 export const uploadData = () => {
   let template = `
@@ -79,26 +79,26 @@ export const dataUploadForm = async () => {
             <h3><b>Journal Information</b></h3>
 
             <div class='input-group input-group2'>
-              <label for="date" style="width: 100%"><b>Month and year of manuscript acceptance: </b></label>
-              <input type="month" id="date" name="date" max=${today} style="width: 20%"/>
+              <label for="date" style="width: 100%"><b>Month and year of manuscript acceptance</b><span class='required-label'>*</span></label>
+              <input type="month" id="date" name="date" max=${today} style="width: 20%" required/>
             </div>
 
             <div class='input-group input-group2'>
               <label for="journal_info" style="display:block"> <b>Please provide the journal name and acronym. The journal acronym can be located using the <a href="https://www.ncbi.nlm.nih.gov/nlmcatalog/journals/" target="__blank"> National Library of Medicine Catalog Database</a>.</b> <span class='required-label'>*</span></label>
-              <input id="journal_name" name="journal_info" type="text" placeholder="Journal Name" style="width: 80%"/>
-              <input id="journal_acro" name="journal_info" type="text" placeholder="Journal Acronym" style="width: 20%"/>
+              <input id="journal_name" name="journal_info" type="text" placeholder="Journal Name" style="width: 80%" required/>
+              <input id="journal_acro" name="journal_info" type="text" placeholder="Journal Acronym" style="width: 20%" required/>
             </div>
 
             <div class='input-group input-group2'>
               <label for="manu_info"> <b>Title of manuscript</b> <span class='required-label'>*</span></label>
-              <input id="manu_title" name="manu_info" type="text" placeholder="Manuscript Title"/>
+              <input id="manu_title" name="manu_info" type="text" placeholder="Manuscript Title" required/>
             </div>
 
             <div class='input-group input-group2'>
               <label for="author_info" style="width: 100%"> <b>First author listed on manuscript</b><span class='required-label'>*</span></label>
-              <input id="author_first" name="author_info" type="text" placeholder="First Name" style="width: 45%"/>
-              <input id="author_middle" name="author_info" type="text" placeholder="Middle Initial" style="width: 10%"/>
-              <input id="author_last" name="author_info" type="text" placeholder="Last Name" style="width: 45%"/>
+              <input id="author_first" name="author_info" type="text" placeholder="First Name" style="width: 45%" required/>
+              <input id="author_middle" name="author_info" type="text" placeholder="Middle Initial" style="width: 10%" required/>
+              <input id="author_last" name="author_info" type="text" placeholder="Last Name" style="width: 45%" required/>
             </div>
 
             <!---<div class='input-group input-group2'>
@@ -126,7 +126,7 @@ export const dataUploadForm = async () => {
               <button type="button" id="nextBtn" class="buttonsubmit">Next</button>
             </div>
             <div style="float:right;">
-              <button type="button" id="subBtn" class="buttonsubmit">Submit</button>
+              <button type="submit" form="regForm" id="subBtn" class="buttonsubmit">Submit</button>
             </div>
           </div>
         </form>
@@ -147,19 +147,33 @@ export const dataUploadForm = async () => {
   // document.getElementById("add_studies_n").addEventListener("click", addStudiesInput);
   document.getElementById("approvedDSMP").addEventListener("change", () => {dsmpSelected(csvData)});
   const prevPress = document.getElementById("prevBtn");
-  prevPress.addEventListener("click", function() {
-      nextPrev(-1, currentTab);
-      currentTab -=1;
+  prevPress.addEventListener("click", async function() {
+      await nextPrev(-1, currentTab);
+      //if (tabmove) {
+        currentTab -=1;
+      //}
     });
   const nextPress = document.getElementById("nextBtn");
-  nextPress.addEventListener("click", function() {
-      nextPrev(1, currentTab);
-      currentTab += 1;
+  nextPress.addEventListener("click", async function() {
+      for (var ele of document.getElementsByClassName('form2')) {
+        var eleCheck = ele.querySelectorAll('input[type="checkbox"]');
+        if (!Array.prototype.slice.call(eleCheck).some(x => x.checked)) return alert("Please select at least one checkbox per study.")
+
+        // for (eleInput of ele.getElementsByTagName("input")) {
+        //   if eleInput.checked
+        // }
+      }
+      await nextPrev(1, currentTab);
+      //if (tabmove) {
+        currentTab += 1;
+      //}
     });
-  const subPress = document.getElementById("subBtn");
-  subPress.addEventListener("click", function() {
-      subForm();
-    });
+  // const subPress = document.getElementById("subBtn");
+  // subPress.addEventListener("submit", function() {
+  //     subForm();
+  //   });
+  const form = await document.querySelector(".contact-form");
+  form.addEventListener("submit", subForm);
 }
 
 export const approvedFormSelect = async (csvData) => { //Is there a DSMP function
@@ -374,17 +388,35 @@ export function showTab(n) {
   //fixStepIndicator(n)
 };
 
-export async function subForm() {
+export async function subForm(eventtest) {
+  const btn = document.activeElement;
+  btn.classList.toggle("buttonsubmit--loading");
+  btn.disabled = true;
+  eventtest.preventDefault();
   const ele = document.getElementById("duoSel");
   const eleAll = ele.getElementsByClassName('form2');
   var obj = [];
+
+  const date = document.getElementById(`date`).value;
+  const journal_name = document.getElementById(`journal_name`).value;
+  const journal_acro = document.getElementById(`journal_acro`).value;
+  const manu_title = document.getElementById(`manu_title`).value;
+  const author_first = document.getElementById(`author_first`).value;
+  const author_middle = document.getElementById(`author_middle`).value;
+  const author_last = document.getElementById(`author_last`).value;
+
+  const folderName = JSON.parse(localStorage.parms).login.split('@')[0];
+  const folderId = await folderStructure(publicDataFolder, folderName); //create users parent folder //make Variable
+  const folderName2 = journal_acro + '_' + date
+  const folderId2 = await folderStructure(folderId, folderName+'_'+folderName2) //create per journal/year folder
+  var studies = []
   for (const form of eleAll) {
-    //var obj = new Object();
     const id = form.getAttribute('id');
     const dsmp = id.split('duo')[0];
     const ver = id.split('duo')[1];
     const cas = form.getAttribute('cas');
     const study = form.getAttribute('study');
+    studies.push(study);
     const nores = document.getElementById(`${dsmp}nores${ver}`).checked;
     const hmb = document.getElementById(`${dsmp}hmb${ver}`).checked;
     const ngm = document.getElementById(`${dsmp}ngm${ver}`).checked;
@@ -392,24 +424,12 @@ export async function subForm() {
     const dsr = document.getElementById(`${dsmp}dsr${ver}`).checked;
     const dsrinput = document.getElementById(`${dsmp}dsr${ver}input`).value;
     const nfp = document.getElementById(`${dsmp}nfp${ver}`).checked;
-    const date = document.getElementById(`date`).value;
-    const journal_name = document.getElementById(`journal_name`).value;
-    const journal_acro = document.getElementById(`journal_acro`).value;
-    const manu_title = document.getElementById(`manu_title`).value;
-    const author_first = document.getElementById(`author_first`).value;
-    const author_middle = document.getElementById(`author_middle`).value;
-    const author_last = document.getElementById(`author_last`).value;
 
     const userval = {dsmp: dsmp, cas: cas, study: study, date: date, 
       journal_name: journal_name, journal_acro: journal_acro, title: manu_title, 
       author_first: author_first, author_middle: author_middle, author_last: author_last, 
       nores: nores, hmb: hmb, ngm: ngm, gru: gru, dsr: dsr, dsr_value: dsrinput, nfp: nfp};
     obj.push(userval);
-
-    const folderName = JSON.parse(localStorage.parms).login.split('@')[0];
-    const folderId = await folderStructure(196554876811, folderName); //create users parent folder //make Variable
-    const folderName2 = journal_acro + '_' + date
-    const folderId2 = await folderStructure(folderId, folderName+'_'+folderName2) //create per journal/year folder
     const studyName = study;
     const folderId3 = await folderStructure(folderId2, studyName);
     
@@ -423,16 +443,8 @@ export async function subForm() {
         uploadStructure(val.files[0], folderId3);
       }
     };
-
-
-
-    // let file = document.getElementById(`dsmp0034.v1cert_upload0`).files[0];
-    // let filename = file.name;
-    // let blob = new Blob([file]);
-    // console.log(blob);
-    // await uploadWordFile(blob, filename, 156698557621);
-
   }
+  await descFolder(folderId2, manu_title + ', ' + studies);
   console.log(obj);
   const headers = Object.keys(obj[0]);
   const tsvValue = json2other(obj, headers, true).replace(/(<b>)|(<\/b>)/g, "");
@@ -517,11 +529,12 @@ export async function nextPrev(n, currentTab) {
   // This function will figure out which tab to display
   var x = document.getElementsByClassName("tab");
   // Exit the function if any field in the current tab is invalid:
-  //if (n == 1 && !validateForm()) return false;
+  //if (n == 1 && !validateForm(currentTab)) return false;
   // Hide the current tab:
   x[currentTab].style.display = "none";
   // Increase or decrease the current tab by 1:
   currentTab = currentTab + n;
+  //console.log(currentTab);
   // if you have reached the end of the form...
   if (currentTab >= x.length) {
     // ... the form gets submitted:
@@ -555,18 +568,18 @@ export async function nextPrev(n, currentTab) {
           <h4><b>cas: ${cas}</b>, ${study}</h4>
             <div class='input-group input-group2' >
               <label for="${id}data_upload"> <b>Upload data</b> </label>
-              <input id="${id}data_files" name="${id}data_upload" type="file" single/>
-              <input id="${id}data_description" name="${id}data_upload" type="text" placeholder="Provide description of uploaded data files. Note, this will be viewable by users of the data"/>
+              <input id="${id}data_files" name="${id}data_upload" type="file" single required/>
+              <input id="${id}data_description" name="${id}data_upload" type="text" placeholder="Provide description of uploaded data files. Note, this will be viewable by users of the data" required/>
             </div>
             <div class='input-group input-group2'>
               <label for="${id}dict_upload"> <b>Upload data dictionary</b> </label>
-              <input id="${id}data_dictionary" name="${id}dict_upload" type="file" single/> 
-              <input id="${id}data_dictionary_description" name="${id}dict_upload" type="text" placeholder="Provide description of uploaded data dictionary. Note, this will be viewable by users of the data"/>            
+              <input id="${id}data_dictionary" name="${id}dict_upload" type="file" single required/> 
+              <input id="${id}data_dictionary_description" name="${id}dict_upload" type="text" placeholder="Provide description of uploaded data dictionary. Note, this will be viewable by users of the data" required/>            
             </div>
             <div class='input-group input-group2 d-none' id='${id}addAttachment'>
             </div>
             <div class='input-group input-group2'>
-              <button type="button" id="addDataBtn" class="buttonsubmit">+Data</button>
+              <button type="button" id="addDataBtn" class="buttonsubmit">+Data or Metadata</button>
             </div>
           </div>
         </div>
@@ -582,16 +595,17 @@ export async function nextPrev(n, currentTab) {
       let id = parent.id.slice(0,-4); //Remove 'Form' from id
       console.log(id);
       let num = eleAll.length
-      let idaddAttachement = document.getElementById(`${id}addAttachment`)
-      let template = `
-      <div class='input-addedFiles input-group'>
+      let idaddAttachment = document.getElementById(`${id}addAttachment`)
+      var newInput = document.createElement('div');
+      newInput.className = 'input-addedFiles input-group'
+
+      newInput.innerHTML = `
         <label for="${id}data${num}"> <b>Upload additional data</b> </label>
-        <input id="${id}data_upload${num}" name="${id}data${num}" type="file" single/>
-        <input id="${id}data_upload_description${num}" name="${id}data${num}" type="text" placeholder="Provide description of uploaded data. Note, this will be viewable by users of the data"/>
-      </div>
+        <input id="${id}data_upload${num}" name="${id}data${num}" type="file" single required/>
+        <input id="${id}data_upload_description${num}" name="${id}data${num}" type="text" placeholder="Provide description of uploaded data. Note, this will be viewable by users of the data" required/>
       `
-      idaddAttachement.innerHTML += template;
-      idaddAttachement.classList.toggle("d-none", false);
+      idaddAttachment.appendChild(newInput);
+      idaddAttachment.classList.toggle("d-none", false);
     }
     addDataBtns.forEach((item) => {
       item.addEventListener('click', clickEvent);
@@ -600,11 +614,13 @@ export async function nextPrev(n, currentTab) {
   showTab(currentTab);
 };
 
-export function validateForm() {
+export function validateForm(currentTab) {
   // This function deals with validation of the form fields
   var x, y, i, valid = true;
   x = document.getElementsByClassName("tab");
   y = x[currentTab].getElementsByTagName("input");
+  console.log(currentTab);
+  console.log(y);
   // A loop that checks every input field in the current tab:
   for (i = 0; i < y.length; i++) {
     // If a field is empty...
