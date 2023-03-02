@@ -91,12 +91,11 @@ export const publication = (modified_at) => {
 
 const getDescription = async () => {
   const data = await (await fetch("./imports/pubPubData.tsv")).text();
+  console.log(data);
   const tsv2json = tsv2Json(data);
   const json = tsv2json.data;
   const headers = tsv2json.headers;
   console.log(json);
-  let newJsons = {};
-  let prevAcronym = "";
   // json.forEach((obj) => {
   //   if (obj["Cohort name"]) obj["Cohort name"] = obj["Cohort name"].trim();
   //   if (obj["Acronym"]) obj["Acronym"] = obj["Acronym"].trim();
