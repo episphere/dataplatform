@@ -44,14 +44,14 @@ export const infoDeck = () => {
   });
   template += cardContents({
     header: "Research Studies",
-    button: "Data Platforms for DCEG Research Studies",
+    button: "Data Platforms for DCEG studies",
     href: "#researchStudies",
     icon: "fa-database",
     explanation: "",
   });
   template += cardContents({
-    header: "Dataset from DCEG publications",
-    button: "Dataset from DCEG publications",
+    header: "Datasets from DCEG publications",
+    button: "Datasets from DCEG publications available for request",
     href: "#publicationpage",
     icon: "fa-database",
     explanation: "",
