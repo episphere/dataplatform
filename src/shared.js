@@ -1779,11 +1779,11 @@ export const tsv2Json = (tsv) => {
       if (currentline[j]) {
         let value = headers[j];
         obj[value] = currentline[j];
+        console.log(obj[value]);
       }
     }
     if (Object.keys(obj).length > 0) result.push(obj);
   }
-  console.log(result);
   return {
     data: result,
     headers,
