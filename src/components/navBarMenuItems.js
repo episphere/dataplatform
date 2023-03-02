@@ -20,17 +20,17 @@ export const navBarMenutemplate = () => {
         </div>
         <div class="grid-elements">
           <a class="nav-link nav-menu-links white-font" href="#researchStudies" title="Research Studies" id="data2">
-              Data Platforms for DCEG Studies
+          Research Studies
           </a>
         </div>
         <div class="grid-elements">
-          <a class="nav-link nav-menu-links white-font" href="#publicationpage" title="Publication" id="publicationID">
-              Publication
+          <a class="nav-link nav-menu-links white-font" href="#publicationpage" title="DCEG Publications" id="publicationID">
+          DCEG Publications
           </a>
         </div>
         <div class="grid-elements dropdown">
           <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" title="My DCEG Publication Data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Datasets from my DCEG publications
+          My DCEG Publications
           </button>
           
           <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
