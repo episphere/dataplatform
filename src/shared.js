@@ -1838,7 +1838,7 @@ function CSVtoArray(text) {
   var re_valid = /^\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*(?:,\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*)*$/;
   var re_value = /(?!\s*$)\s*(?:'([^'\\]*(?:\\[\S\s][^'\\]*)*)'|"([^"\\]*(?:\\[\S\s][^"\\]*)*)"|([^,'"\s\\]*(?:\s+[^,'"\s\\]+)*))\s*(?:,|$)/g;
   // Return NULL if input string is not well formed CSV string.
-  if (!re_valid.test(text)) return null;
+  //if (!re_valid.test(text)) return null;
   var a = [];                     // Initialize array to receive values.
   text.replace(re_value, // "Walk" the string using replace with callback.
       function(m0, m1, m2, m3) {
@@ -1856,13 +1856,13 @@ function CSVtoArray(text) {
 
 export const csv2JsonTest = (csv) => {
   const lines = csv.replace(/""/g,"'").split(/[\r\n]+/g);
-  //console.log(lines);
+  console.log(csv);
   const result = [];
   const headers = lines[0].replace(/"/g, "").split(/[,\t]/g);
   for (let i = 1; i < lines.length; i++) {
     const obj = {};
     const currentline = CSVtoArray(lines[i]);
-    //console.log(currentline);
+    console.log(currentline);
     for (let j = 0; j < headers.length; j++) {
       if (currentline[j]) {
         let value = headers[j];

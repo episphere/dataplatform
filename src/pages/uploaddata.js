@@ -135,7 +135,7 @@ export const dataUploadForm = async () => {
   var currentTab = 0;
   showTab(currentTab);
   console.log(currentTab);
-  const dsmp = await (await fetch("./imports/dsmp_output.csv")).text();
+  const dsmp = await (await fetch("./imports/dsmp_output_0.csv")).text();
   //console.log(dsmp);
   let csvData = csv2JsonTest(dsmp);
   //await populateApprovedSelect(csvData);
@@ -444,7 +444,7 @@ export async function subForm(eventtest) {
   link.setAttribute("href", encodedUri);
   link.setAttribute("download", `test.tsv`);
   await uploadTSV(tsvValue, folderName+folderName2+".tsv", publicDataFolder);
-  // //link.click();
+  link.click();
   document.body.appendChild(link);
   document.getElementById("modalBody").innerHTML = `
           <p><b>Files successfully uploaded.</b></p>

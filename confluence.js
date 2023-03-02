@@ -78,7 +78,6 @@ import { footerTemplate } from "./src/components/footer.js";
 import { renderDescription } from "./src/pages/description.js";
 import { dataDictionaryTemplate } from "./src/pages/dictionary.js";
 import { showPreview } from "./src/components/boxPreview.js";
-import { publicationPageTemplate } from "./src/pages/publicationpage.js";
 import { uploadData, dataUploadForm, approvedFormSelect, populateApprovedSelect, showTab, addStudiesInput } from "./src/pages/uploaddata.js";
 
 /**
@@ -360,8 +359,10 @@ export const confluence = async () => {
       if (element.classList.contains("navbar-active")) return;
       document.title = "DCEG - Publication";
       assignNavbarActive(element);
-      confluenceDiv.innerHTML = publication();
-      publicationPageTemplate();
+      //confluenceDiv.innerHTML = publication();
+      aboutConfluence("overview");
+      publication();
+      //publicationPageTemplate();
       hideAnimation();
     });
     MyDCEGPageElement.addEventListener("click", () => {
@@ -702,16 +703,16 @@ const manageHash = async () => {
   //   //aboutConfluence("contact");
   //   confluenceContactPage();
   //   hideAnimation();
-  // } else if (hash === "#about/description") {
-  //   const element = document.getElementById("aboutBCRPP");
-  //   if (!element) return;
-  //   assignNavbarActive(element);
-  //   document.title = "BCRP - Study Description";
-  //   showAnimation();
-  //   const fileInfo = await getFileInfo(904897189551); //new: 904897189551; original: 881144462693
-  //   aboutConfluence("description", fileInfo ? true : false);
-  //   renderDescription(fileInfo["content_modified_at"]);
-  //   hideAnimation();
+  } else if (hash === "#about/description") {
+    const element = document.getElementById("aboutBCRPP");
+    if (!element) return;
+    assignNavbarActive(element);
+    document.title = "BCRP - Study Description";
+    showAnimation();
+    const fileInfo = await getFileInfo(904897189551); //new: 904897189551; original: 881144462693
+    aboutConfluence("description", fileInfo ? true : false);
+    renderDescription(fileInfo["content_modified_at"]);
+    hideAnimation();
   } else if (hash === "#join") {
     const element = document.getElementById("resourcesBCRPP");
     if (!element) return;
