@@ -31,7 +31,7 @@ export const publication = () => {
       <div class="publication">
       <div class="align-left">
            <h1 
-           class="page-header">Datasets from DCEG publications
+           class="page-header">Datasets from DCEG Publications
            </h1>
       </div> 
       </div>

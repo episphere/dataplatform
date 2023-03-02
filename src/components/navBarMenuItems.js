@@ -42,7 +42,7 @@ export const navBarMenutemplate = () => {
 
     
         </div>
-        -<!--<div class="grid-elements">
+        <!---<div class="grid-elements">
           <a class="nav-link nav-menu-links white-font" href="#myDCEG/upload" title="My DCEG Publication Data - Upload" id="myDCEGID_upload">
             Upload
           </a>

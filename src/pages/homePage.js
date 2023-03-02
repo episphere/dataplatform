@@ -42,8 +42,8 @@ export const infoDeck = () => {
     explanation: "",
   });
   template += cardContents({
-    header: "Datasets from DCEG publications",
-    button: "Datasets from DCEG publications available for request",
+    header: "Datasets from DCEG Publications",
+    button: "Datasets from DCEG Publications available for request",
     href: "#publicationpage",
     icon: "fa-database",
     explanation: "",
@@ -123,8 +123,8 @@ export const infoDeckAfterLoggedIn = async () => {
     explanation: "",
   });
   template += cardContents({
-    header: "Datasets from DCEG publications",
-    button: "Datasets from DCEG publications available for request",
+    header: "Datasets from DCEG Publications",
+    button: "Datasets from DCEG Publications available for request",
     href: "#publicationpage",
     icon: "fa-database",
     explanation: "",
