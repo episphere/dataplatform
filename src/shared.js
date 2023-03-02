@@ -315,7 +315,7 @@ export const createFolder = async (folderId, folderName) => {
     });
     if (response.status === 401) {
       if ((await refreshToken()) === true)
-        return await createFolder(folderId, foldername);
+        return await createFolder(folderId, folderName);
     } else if (response.status === 201) {
       return response.json();
     } else {
@@ -326,7 +326,7 @@ export const createFolder = async (folderId, folderName) => {
     }
   } catch (err) {
     if ((await refreshToken()) === true)
-      return await createFolder(folderId, foldername);
+      return await createFolder(folderId, folderName);
   }
 };
 
