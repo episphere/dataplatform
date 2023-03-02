@@ -4,6 +4,7 @@ import {
   getFile,
   shortenText,
   tsv2Json,
+  selectProps,
 } from "./../shared.js";
 import { downloadFiles } from "./dictionary.js";
 let previousValue = "";
@@ -193,14 +194,23 @@ const getDescription = async () => {
 
 const renderStudyDescription = (descriptions, pageSize, headers) => {
   let template = "";
-  const allTitles = Object.values(descriptions).map((dt) => dt["title"]);
-
+  const newDesc = descriptions.map(selectProps("title", "date", "author", "journal_name", "journal_acro"));
+  console.log(newDesc);
+  console.log(descriptions);
+	
+  let uniqueTitles = [...new Map(newDesc.map((item) => [item["title"], item])).values()];
+  console.log(uniqueTitles);
+  // const allTitles = Object.values(newDesc).map((dt) => [dt["title"], dt["date"], dt["author"], dt["journal_name"], dt["journal_acro"]]);
+  // console.log(allTitles);
+  // let set = new Set(allTitles.map(JSON.stringify));
+  // let uniqueTitles = Array.from(set).map(JSON.parse);
+  // console.log(uniqueTitles);
   // const countries = allCountries
   //   .filter((d, i) => allCountries.indexOf(d) === i)
   //   .sort();
-  const uniqueTitles = allTitles
-    .filter((d, i) => d && allTitles.indexOf(d.trim()) === i)
-    .sort();
+  //const uniqueTitles = allTitles.filter((d, i) => d && allTitles.indexOf(d.trim()) === i).sort();
+
+
   if (descriptions.length > 0) {
     template = `
         <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
@@ -209,50 +219,50 @@ const renderStudyDescription = (descriptions, pageSize, headers) => {
             <div class="col-md-2 font-bold ws-nowrap">Date <button class="transparent-btn sort-column" data-column-name="date"><i class="fas fa-sort"></i></button></div>
             <div class="col-md-1"></div>
         </div>`;
-    uniqueTitles.forEach((title, index) => {
+    uniqueTitles.forEach((desc, index) => {
       if (index > pageSize) return;
-      var desc = descriptions.filter((dt) => dt['title'] === title);
+      var desc2 = descriptions.filter((dt) => dt['title'] === desc["title"]);
       //descTitle.forEach(desc => {
         console.log(desc);
         template += `
               <div class="card mt-1 mb-1 align-left">
-                  <div style="padding: 10px" aria-expanded="false" id="heading${desc[0]["title"].replace(/\s+/g,"")}">
+                  <div style="padding: 10px" aria-expanded="false" id="heading${desc["title"].replace(/\s+/g,"")}">
                       <div class="row">
                           <div class="col-md-5">${
-                            desc[0]["title"] ? desc[0]["title"] : ""
+                            desc["title"] ? desc["title"] : ""
                           }</div>
                           <div class="col-md-3">${
-                            desc[0]["author"] ? desc[0]["author"] : ""
+                            desc["author"] ? desc["author"] : ""
                           }</div>
                           <div class="col-md-2">${
-                            desc[0]["date"] ? desc[0]["date"] : ""
+                            desc["date"] ? desc["date"] : ""
                           }</div>
                           <div class="col-md-1">
-                              <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${desc[0]["title"].replace(/\s+/g,"")}">
+                              <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${desc["title"].replace(/\s+/g,"")}">
                                   <i class="fas fa-caret-down fa-2x"></i>
                               </button>
                           </div>
                       </div>
                   </div>
-                  <div id="study${desc[0]["title"].replace(/\s+/g,"")}" class="collapse" aria-labelledby="heading${desc[0]["title"]}">
+                  <div id="study${desc["title"].replace(/\s+/g,"")}" class="collapse" aria-labelledby="heading${desc["title"]}">
                       <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
                       ${
-                        desc[0]["journal_name"]
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Journal</div><div class="col">${desc[0]["journal_name"]}</div></div>`
+                        desc["journal_name"]
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Journal</div><div class="col">${desc["journal_name"]}</div></div>`
                           : ``
                       }
                       ${
-                        desc[0]["journal_acro"]
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Journal Acronym</div><div class="col">${desc[0]["journal_acro"]}</div></div>`
+                        desc["journal_acro"]
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Journal Acronym</div><div class="col">${desc["journal_acro"]}</div></div>`
                           : ``
                       }
                       ${
-                        desc[0]["author_first"]
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">First Author</div><div class="col">${desc[0]["author"]}</div></div>`
+                        desc["author_first"]
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">First Author</div><div class="col">${desc["author"]}</div></div>`
                           : ``
                       }`
 
-                    desc.forEach(desc2 => {
+                    desc2.forEach(desc2 => {
                       template += `
                       <HR>
                       ${
@@ -482,7 +492,7 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
     if (dt["author"].toLowerCase().includes(currentValue)) found = true;
     if (dt["date"].toLowerCase().includes(currentValue)) found = true;
     if (dt["journal_name"].toLowerCase().includes(currentValue)) found = true;
-    if (dt["dsr_value"] && dt["dsr_value"].toLowerCase().includes(currentValue)) found = true;
+    //if (dt["dsr_value"].toLowerCase().includes(currentValue)) found = true;
     if (found) return dt;
   });
   searchedData = searchedData.map((dt) => {
@@ -502,10 +512,10 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
       new RegExp(currentValue, "gi"),
       "<b>$&</b>"
     );
-    dt["dsr_value"] = dt["dsr_value"].replace(
-      new RegExp(currentValue, "gi"),
-      "<b>$&</b>"
-    );
+    // dt["dsr_value"] = dt["dsr_value"].replace(
+    //   new RegExp(currentValue, "gi"),
+    //   "<b>$&</b>"
+    // );
     return dt;
   });
 

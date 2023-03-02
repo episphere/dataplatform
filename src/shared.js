@@ -1971,6 +1971,17 @@ export const handleRangeRequests = async () => {
   });
 };
 
+export function selectProps(...props){
+  return function(obj){
+    const newObj = {};
+    props.forEach(name =>{
+      newObj[name] = obj[name];
+    });
+    
+    return newObj;
+  }
+};
+
 // Need to change to BCRPP urls
 export const applicationURLs = {
   dev: "https://episphere.github.io/dataplatform",

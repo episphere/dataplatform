@@ -359,6 +359,7 @@ export const confluence = async () => {
       if (element.classList.contains("navbar-active")) return;
       document.title = "DCEG - Publication";
       assignNavbarActive(element);
+      console.log('publication');
       //confluenceDiv.innerHTML = publication();
       aboutConfluence("overview");
       publication();
@@ -504,7 +505,8 @@ const manageRouter = async () => {
     if (element.classList.contains("navbar-active")) return;
     document.title = "DCEG - publicationpage";
     assignNavbarActive(element);
-    confluenceDiv.innerHTML = publication();
+    aboutConfluence("overview");
+    publication();
   } else if (hash === "#myDCEG") {
     const element = document.getElementById("myDCEGID");
     if (!element) return;

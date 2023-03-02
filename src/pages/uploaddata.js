@@ -415,7 +415,7 @@ export async function subForm(eventtest) {
 
     const userval = {dsmp: dsmp, cas: cas, study: study, date: date, 
       journal_name: journal_name, journal_acro: journal_acro, title: manu_title, 
-      author_first: author_first, author_middle: author_middle, author_last: author_last, 
+      author: author_first + ' ' + author_middle + ' ' + author_last, 
       nores: nores, hmb: hmb, ngm: ngm, gru: gru, dsr: dsr, dsr_value: dsrinput, nfp: nfp};
     obj.push(userval);
     const studyName = study;
