@@ -1772,14 +1772,16 @@ export const tsv2Json = (tsv) => {
     .split(/[\r]+/g);
   const result = [];
   const headers = lines[0].replace(/"/g, "").split(/[\t]/g);
+  console.log(lines);
   for (let i = 1; i < lines.length; i++) {
     const obj = {};
     const currentline = lines[i].split(/[\t]/g);
+    console.log(currentline);
     for (let j = 0; j < headers.length; j++) {
       if (currentline[j]) {
         let value = headers[j];
         obj[value] = currentline[j];
-        console.log(obj[value]);
+        //console.log(obj[value]);
       }
     }
     if (Object.keys(obj).length > 0) result.push(obj);
