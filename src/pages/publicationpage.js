@@ -5,6 +5,7 @@ import {
   shortenText,
   tsv2Json,
   selectProps,
+  tsv2Json2,
 } from "./../shared.js";
 import { downloadFiles } from "./dictionary.js";
 let previousValue = "";
@@ -92,7 +93,7 @@ export const publication = (modified_at) => {
 const getDescription = async () => {
   const data = await (await fetch("./imports/pubPubData.tsv")).text();
   console.log(data);
-  const tsv2json = tsv2Json(data);
+  const tsv2json = tsv2Json2(data);
   const json = tsv2json.data;
   const headers = tsv2json.headers;
   console.log(json);
