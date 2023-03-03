@@ -1829,10 +1829,10 @@ form {
   margin-bottom: 15px;
 }
 
-/* .banner-logo {
+.steps {
     max-width: 100%;
     height: auto;
-} */
+}
 
 .banner-logo {
   background-attachment: fixed;

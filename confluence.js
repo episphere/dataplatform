@@ -3,8 +3,8 @@ import { infoDeck, infoDeckAfterLoggedIn } from "./src/pages/homePage.js";
 import { testPage2 } from "./src/pages/researchStudies.js";
 import { publication } from "./src/pages/publicationpage.js";
 import { myDCEGpublication } from "./src/pages/myDCEG.js";
-import {
-  dataSubmissionTemplate,
+import { instruction } from "./src/pages/uploadinstruction.js";
+import { dataSubmissionTemplate,
   lazyload,
   userSubmissionsView,
   userSubmissionTemplate,
@@ -153,6 +153,7 @@ export const confluence = async () => {
     const PublicationPageElement = document.getElementById("publicationID");
     const MyDCEGPageElement = document.getElementById("myDCEGID");
     const MyDCEGPageElement_upload = document.getElementById("myDCEGID_upload");
+    const uploadInstructionElement = document.getElementById("instructionID");
     // const platformTutorialElement = document.getElementById('platformTutorial');
     // const dataAnalysisElement = document.getElementById('dataAnalysis');
 
@@ -374,6 +375,16 @@ export const confluence = async () => {
       confluenceDiv.innerHTML = myDCEGpublication();
       hideAnimation();
     });
+    uploadInstructionElement.addEventListener("click", () => {
+      if (uploadInstructionElement.classList.contains("navbar-active")) return;
+      const element = document.getElementById("instructionID");
+      if (!element) return;
+      if (element.classList.contains("navbar-active")) return;
+      document.title = "DCEG - instructionID";
+      assignNavbarActive(element);
+      confluenceDiv.innerHTML = instruction();
+      hideAnimation();
+    });
     MyDCEGPageElement_upload.addEventListener("click", () => {
       if (MyDCEGPageElement_upload.classList.contains("navbar-active")) return;
       const element = document.getElementById("myDCEGID_upload");
@@ -511,6 +522,14 @@ const manageRouter = async () => {
     document.title = "BCRPP - My DCEG Publication Data";
     assignNavbarActive(element);
     confluenceDiv.innerHTML = myDCEGpublication();
+  }
+  else if (hash === "#uploadinstruction") {
+    const element = document.getElementById("instructionID");
+    if (!element) return;
+    if (element.classList.contains("navbar-active")) return;
+    document.title = "BCRPP - Instruction";
+    assignNavbarActive(element);
+    confluenceDiv.innerHTML = myDCEGpublication();
   } else if (hash === "#myDCEG/upload") {
     const element = document.getElementById("myDCEGID_upload");
     if (!element) return;
@@ -635,6 +654,9 @@ const manageHash = async () => {
     element.click();
   } else if (hash === "#myDCEG") {
     const element = document.getElementById("myDCEGID");
+    element.click();
+  } else if (hash === "#uploadinstruction") {
+    const element = document.getElementById("instructionID");
     element.click();
   } else if (hash === "#myDCEG/upload") {
     const element = document.getElementById("myDCEGID_upload");

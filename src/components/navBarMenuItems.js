@@ -34,7 +34,7 @@ export const navBarMenutemplate = () => {
           </button>
           
           <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="src/pages/uploaddata.js">How to upload data from my published manuscript</a>
+          <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#uploadinstruction" id="instructionID">How to upload data from my published manuscript </a>
           <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG/upload" id="myDCEGID_upload"> Upload new data</a>
           <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="https://www.box.com/personal/" id="myDCEGID">See my uploaded data</a>
 
