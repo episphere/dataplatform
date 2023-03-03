@@ -276,19 +276,19 @@ export const confluence = async () => {
           );
         if (getMyPermissionLevel) {
           confluenceDiv.innerHTML = await formSection("form");
-          populateAmendSelect();
-          document
-            .getElementById("amendmentyes")
-            .addEventListener("click", amendFormSelect);
-          document
-            .getElementById("amendmentno")
-            .addEventListener("click", amendFormSelect);
+          //populateAmendSelect();
+          // document
+          //   .getElementById("amendmentyes")
+          //   .addEventListener("click", amendFormSelect);
+          // document
+          //   .getElementById("amendmentno")
+          //   .addEventListener("click", amendFormSelect);
           await dataForm();
         } else {
           confluenceDiv.innerHTML = await formSectionOther("form");
           hideAnimation();
         }
-        formFunctions();
+        //formFunctions();
         hideAnimation();
       });
     }

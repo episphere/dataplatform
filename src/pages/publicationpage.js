@@ -244,7 +244,7 @@ const renderStudyDescription = (descriptions, pageSize, headers) => {
                               </button>
                           </div>
                           <div class-"col-md-1">
-                            <button title="LinkToAccess" class="buttonsubmit"  onclick="window.location.href = '#myDCEG/upload'"><span class="buttonsubmit__text"> Request Data </span></button>
+                            <button title="LinkToAccess" class="buttonsubmit"  onclick="window.location.href = '#data_access/form'"><span class="buttonsubmit__text"> Request Data </span></button>
                           </div>
                       </div>
                   </div>

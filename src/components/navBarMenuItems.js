@@ -23,6 +23,13 @@ export const navBarMenutemplate = () => {
           Research Studies
           </a>
         </div>
+
+        <div class="grid-elements">
+          <a class="nav-link nav-menu-links white-font" href="#data_access/form" title="Data Form" id="dataForm"> 
+            Data Form
+          </a>
+        </div>
+
         <div class="grid-elements">
           <a class="nav-link nav-menu-links white-font" href="#publicationpage" title="DCEG Publications" id="publicationID">
           DCEG Publications
