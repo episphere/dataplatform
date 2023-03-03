@@ -344,9 +344,7 @@ export const populateApprovedSelect = async (csvData) => { //Pulling data from d
     if (!option[1]) {
       option[1] = 'None';
     }
-    console.log(option[1]);
     var studies = option[1].split(";");
-    console.log(studies);
     if (!option[2]) {
       option[2] = 'None';
     }

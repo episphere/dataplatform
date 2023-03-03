@@ -1859,18 +1859,23 @@ function CSVtoArray(text) {
 };
 
 export const csv2JsonTest = (csv) => {
+  //const lines = csv.replace(/""/g,"'").replace(/'/g, "").split(/[\r\n]+/g);
   const lines = csv.replace(/""/g,"'").split(/[\r\n]+/g);
-  console.log(csv);
+  //console.log(csv);
   const result = [];
   const headers = lines[0].replace(/"/g, "").split(/[,\t]/g);
   for (let i = 1; i < lines.length; i++) {
     const obj = {};
-    const currentline = CSVtoArray(lines[i]);
+    //const currentline = CSVtoArray(lines[i]);
+    console.log(lines[i]);
+    const currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)//match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
     console.log(currentline);
-    for (let j = 0; j < headers.length; j++) {
-      if (currentline[j]) {
-        let value = headers[j];
-        obj[value] = currentline[j];
+    if (currentline){
+      for (let j = 0; j < headers.length; j++) {
+        if (currentline[j]) {
+          let value = headers[j];
+          obj[value] = currentline[j];
+        }
       }
     }
     if (Object.keys(obj).length > 0) result.push(obj);
