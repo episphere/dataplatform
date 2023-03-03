@@ -35,11 +35,6 @@ export const instruction = () => {
                    <br> <li>Review that your data/metadata were properly uploaded to Box </li></br>
                    <img src="static/images/step5.png" alt="Instruction-step5">
                   </ol>
-                        
-
-                        
-
-   
                     <div>
                 <div>
             <div>
