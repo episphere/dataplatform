@@ -1829,9 +1829,13 @@ form {
   margin-bottom: 15px;
 }
 
-.steps {
-    max-width: 100%;
-    height: auto;
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  max-width: ; /* adjust as needed */
 }
 
 .banner-logo {

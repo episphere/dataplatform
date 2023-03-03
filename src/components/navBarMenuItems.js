@@ -30,7 +30,7 @@ export const navBarMenutemplate = () => {
         </div>
         <div class="grid-elements dropdown">
           <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" title="My DCEG Publication Data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          My DCEG Publications
+          DCEG Investigators
           </button>
           
           <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
