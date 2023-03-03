@@ -50,6 +50,10 @@ export const deniedFolder = 162221803333;
 
 export const submitterFolder = 162222418449;
 
+export const dataPlatformFolder = 196554876811;
+
+export const publicDataFolder = 196819085811;
+
 export const getFolderItems = async (id) => {
   try {
     const access_token = JSON.parse(localStorage.parms).access_token;
@@ -311,7 +315,7 @@ export const createFolder = async (folderId, folderName) => {
     });
     if (response.status === 401) {
       if ((await refreshToken()) === true)
-        return await createFolder(folderId, foldername);
+        return await createFolder(folderId, folderName);
     } else if (response.status === 201) {
       return response.json();
     } else {
@@ -322,7 +326,70 @@ export const createFolder = async (folderId, folderName) => {
     }
   } catch (err) {
     if ((await refreshToken()) === true)
-      return await createFolder(folderId, foldername);
+      return await createFolder(folderId, folderName);
+  }
+};
+
+export const descFolder = async (folderId, description) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    // let obj = {
+    //   parent: {
+    //     description: description,
+    //   },
+    // };
+    let response = await fetch(`https://api.box.com/2.0/folders/${folderId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      body: JSON.stringify({
+        description: description,
+      }),//JSON.stringify(obj),
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await descFolder(folderId, description);
+    } else if (response.status === 201) {
+      return response;
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await descFolder(folderId, description);
+  }
+};
+
+export const descFile = async (fileId, description) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    let response = await fetch(`https://api.box.com/2.0/files/${fileId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      body: JSON.stringify({
+        description: description,
+      }),//JSON.stringify(obj),
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await descFile(fileId, description);
+    } else if (response.status === 201) {
+      return response;
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await descFile(fileId, description);
   }
 };
 
@@ -1696,6 +1763,7 @@ export const csvJSON = (csv) => {
 };
 
 export const tsv2Json = (tsv) => {
+  console.log(tsv);
   const lines = tsv
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -1704,13 +1772,16 @@ export const tsv2Json = (tsv) => {
     .split(/[\r]+/g);
   const result = [];
   const headers = lines[0].replace(/"/g, "").split(/[\t]/g);
+  console.log(lines);
   for (let i = 1; i < lines.length; i++) {
     const obj = {};
     const currentline = lines[i].split(/[\t]/g);
+    console.log(currentline);
     for (let j = 0; j < headers.length; j++) {
       if (currentline[j]) {
         let value = headers[j];
         obj[value] = currentline[j];
+        //console.log(obj[value]);
       }
     }
     if (Object.keys(obj).length > 0) result.push(obj);
@@ -1771,7 +1842,7 @@ function CSVtoArray(text) {
   var re_valid = /^\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*(?:,\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*)*$/;
   var re_value = /(?!\s*$)\s*(?:'([^'\\]*(?:\\[\S\s][^'\\]*)*)'|"([^"\\]*(?:\\[\S\s][^"\\]*)*)"|([^,'"\s\\]*(?:\s+[^,'"\s\\]+)*))\s*(?:,|$)/g;
   // Return NULL if input string is not well formed CSV string.
-  if (!re_valid.test(text)) return null;
+  //if (!re_valid.test(text)) return null;
   var a = [];                     // Initialize array to receive values.
   text.replace(re_value, // "Walk" the string using replace with callback.
       function(m0, m1, m2, m3) {
@@ -1788,18 +1859,23 @@ function CSVtoArray(text) {
 };
 
 export const csv2JsonTest = (csv) => {
+  //const lines = csv.replace(/""/g,"'").replace(/'/g, "").split(/[\r\n]+/g);
   const lines = csv.replace(/""/g,"'").split(/[\r\n]+/g);
-  //console.log(lines);
+  //console.log(csv);
   const result = [];
   const headers = lines[0].replace(/"/g, "").split(/[,\t]/g);
   for (let i = 1; i < lines.length; i++) {
     const obj = {};
-    const currentline = CSVtoArray(lines[i]);
-    //console.log(currentline);
-    for (let j = 0; j < headers.length; j++) {
-      if (currentline[j]) {
-        let value = headers[j];
-        obj[value] = currentline[j];
+    //const currentline = CSVtoArray(lines[i]);
+    console.log(lines[i]);
+    const currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)//match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+    console.log(currentline);
+    if (currentline){
+      for (let j = 0; j < headers.length; j++) {
+        if (currentline[j]) {
+          let value = headers[j];
+          obj[value] = currentline[j];
+        }
       }
     }
     if (Object.keys(obj).length > 0) result.push(obj);
@@ -1902,6 +1978,17 @@ export const handleRangeRequests = async () => {
     if (i === lines.length - 1) return;
     dataArray.push(l.split(/[\s]/g));
   });
+};
+
+export function selectProps(...props){
+  return function(obj){
+    const newObj = {};
+    props.forEach(name =>{
+      newObj[name] = obj[name];
+    });
+    
+    return newObj;
+  }
 };
 
 // Need to change to BCRPP urls

@@ -12,7 +12,7 @@ export const renderDescription = (modified_at) => {
   let template = `
   <div class="main-summary-row">
          <div class="row align-left w-100 m-0">
-              <h1 class="col page-header pl-0 pt-2">Study Description</h1>
+              <h1 class="col page-header pl-0 pt-2">Datasets from DCEG publications</h1>
                 <div class="ml-auto allow-overflow mr-2" style="margin:1rem 0" id="pagesContainer"></div>
                 <div class="ml-auto mt-3 mb-3 mr-2" id="pageSizeContainer"></div>
                 <div class="ml-auto mt-3 mb-3" id="downloadContainer">
@@ -41,11 +41,11 @@ export const renderDescription = (modified_at) => {
             </div>
             <div class="col-xl-10 padding-right-zero font-size-16" id="summaryStatsCharts">
                 <button id="filterBarToggle"><i class="fas fa-lg fa-caret-left"></i></button>
-                <div class="main-summary-row pl-2" style="min-height: 10px;margin-bottom: 1rem;">
+                <!---<div class="main-summary-row pl-2" style="min-height: 10px;margin-bottom: 1rem;">
                     <div class="col white-bg div-border align-left font-size-17" style="padding: 0.5rem;" id="listFilters">
                         <span class="font-bold">Region:</span> All
                     </div>
-                </div>
+                </div>--->
                 <div class="main-summary-row pl-2">
                     <div class="col-xl-12 pb-2 pl-0 pr-0 white-bg div-border">
                         <div class="pt-0 pl-2 pb-2 pr-2 allow-overflow" style="height: calc(100vh - 190px) !important;min-height: 500px;" id="descriptionBody"></div>
@@ -66,43 +66,47 @@ export const renderDescription = (modified_at) => {
 };
 
 const getDescription = async () => {
-  const data = await getFile(904897189551);
+  const data = await (await fetch("./imports/pubPubData.tsv")).text();
   const tsv2json = tsv2Json(data);
   const json = tsv2json.data;
   const headers = tsv2json.headers;
+  console.log(json);
   let newJsons = {};
   let prevAcronym = "";
-  json.forEach((obj) => {
-    if (obj["Cohort name"]) obj["Cohort name"] = obj["Cohort name"].trim();
-    if (obj["Acronym"]) obj["Acronym"] = obj["Acronym"].trim();
-    const consortium = obj["Cohort name"] ? obj["Cohort name"] : undefined;
-    const studyAcronym = obj["Acronym"] ? obj["Acronym"] : undefined;
-    if (studyAcronym && newJsons[`${consortium}${studyAcronym}`] === undefined)
-      newJsons[`${consortium}${studyAcronym}`] = {};
-    if (studyAcronym) {
-      prevAcronym = `${consortium}${studyAcronym}`;
-      newJsons[`${consortium}${studyAcronym}`] = obj;
-    } else {
-    }
-  });
+  // json.forEach((obj) => {
+  //   if (obj["Cohort name"]) obj["Cohort name"] = obj["Cohort name"].trim();
+  //   if (obj["Acronym"]) obj["Acronym"] = obj["Acronym"].trim();
+  //   const consortium = obj["Cohort name"] ? obj["Cohort name"] : undefined;
+  //   const studyAcronym = obj["Acronym"] ? obj["Acronym"] : undefined;
+  //   if (studyAcronym && newJsons[`${consortium}${studyAcronym}`] === undefined)
+  //     newJsons[`${consortium}${studyAcronym}`] = {};
+  //   if (studyAcronym) {
+  //     prevAcronym = `${consortium}${studyAcronym}`;
+  //     newJsons[`${consortium}${studyAcronym}`] = obj;
+  //   } else {
+  //   }
+  // });
 
-  const allCountries = [];
-  Object.values(newJsons).forEach((dt) => {
-    if (dt["Region"] === undefined) return;
-    dt["Region"].split(",").forEach((ctr) => {
-      ctr.split(" and ").forEach((c) => {
-        if (c.trim()) allCountries.push(c.trim());
-      });
-    });
-  });
-  const allConsortium = Object.values(newJsons).map((dt) => dt["Acronym"]);
+  // const allCountries = [];
+  // Object.values(newJsons).forEach((dt) => {
+  //   if (dt["Region"] === undefined) return;
+  //   dt["Region"].split(",").forEach((ctr) => {
+  //     ctr.split(" and ").forEach((c) => {
+  //       if (c.trim()) allCountries.push(c.trim());
+  //     });
+  //   });
+  // });
+  const allTitles = Object.values(json).map((dt) => dt["title"]);
 
-  const countries = allCountries
-    .filter((d, i) => allCountries.indexOf(d) === i)
+  // const countries = allCountries
+  //   .filter((d, i) => allCountries.indexOf(d) === i)
+  //   .sort();
+  const uniqueTitles = allTitles
+    .filter((d, i) => d && allTitles.indexOf(d.trim()) === i)
     .sort();
-  const uniqueConsortium = allConsortium
-    .filter((d, i) => d && allConsortium.indexOf(d.trim()) === i)
-    .sort();
+
+  console.log(uniqueTitles);
+  console.log(json.filter((dt) => dt['title'] === uniqueTitles[0]));
 
   let filterTemplate = `
         <div class="main-summary-row">
@@ -113,36 +117,37 @@ const getDescription = async () => {
             </div>
         </div>
         `;
-  filterTemplate += `
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="main-summary-row">
-            <div style="width: 100%;">
-                <div class="form-group" margin:0px>
-                    <label class="filter-label font-size-13" for="countriesList">Region</label>
-                    <ul class="remove-padding-left font-size-15 filter-sub-div allow-overflow" id="countriesList">
-                        `;
-  countries.forEach((region) => {
-    filterTemplate += `
-                <li class="filter-list-item">
-                    <input type="checkbox" data-country="${region}" id="label${region}" class="select-country" style="margin-left: 1px !important;">
-                    <label for="label${region}" class="country-name" title="${region}">${shortenText(
-      region,
-      15
-    )}</label>
-                </li>
-            `;
-  });
-  filterTemplate += `
-                    </ul>
-                </div>
-            </div>
-        </div>
-    `;
+  // filterTemplate += `
+  //                   </ul>
+  //               </div>
+  //           </div>
+  //       </div>
+  //       <div class="main-summary-row">
+  //           <div style="width: 100%;">
+  //               <div class="form-group" margin:0px>
+  //                   <label class="filter-label font-size-13" for="countriesList">Region</label>
+  //                   <ul class="remove-padding-left font-size-15 filter-sub-div allow-overflow" id="countriesList">
+  //                       `;
+  // countries.forEach((region) => {
+  //   filterTemplate += `
+  //               <li class="filter-list-item">
+  //                   <input type="checkbox" data-country="${region}" id="label${region}" class="select-country" style="margin-left: 1px !important;">
+  //                   <label for="label${region}" class="country-name" title="${region}">${shortenText(
+  //     region,
+  //     15
+  //   )}</label>
+  //               </li>
+  //           `;
+  // });
+  // filterTemplate += `
+  //                   </ul>
+  //               </div>
+  //           </div>
+  //       </div>
+  //   `;
   document.getElementById("filterDataCatalogue").innerHTML = filterTemplate;
-  const descriptions = Object.values(newJsons);
+  // const descriptions = Object.values(json);
+  // console.log(descriptions);
   document.getElementById("searchContainer").innerHTML = `
     <div class="input-group">
         <input type="search" class="form-control rounded" autocomplete="off" placeholder="Search min. 3 characters" aria-label="Search" id="searchDataCatalog" aria-describedby="search-addon" />
@@ -151,105 +156,129 @@ const getDescription = async () => {
         </span>
     </div>
     `;
-  addEventFilterDataCatalogue(descriptions, headers);
-  downloadFiles(descriptions, headers, "study_description", true);
-  renderStudyDescription(descriptions, defaultPageSize, headers);
-  paginationHandler(descriptions, defaultPageSize, headers);
+  addEventFilterDataCatalogue(json, headers);
+  downloadFiles(json, headers, "study_description", true);
+  renderStudyDescription(json, defaultPageSize, headers);
+  paginationHandler(json, defaultPageSize, headers);
   document.getElementById("pageSizeContainer").innerHTML = pageSizeTemplate(
-    descriptions,
+    json,
     defaultPageSize
   );
-  addEventPageSizeSelection(descriptions, headers);
+  addEventPageSizeSelection(json, headers);
   addEventFilterBarToggle();
 };
 
 const renderStudyDescription = (descriptions, pageSize, headers) => {
   let template = "";
+  const allTitles = Object.values(descriptions).map((dt) => dt["title"]);
+
+  // const countries = allCountries
+  //   .filter((d, i) => allCountries.indexOf(d) === i)
+  //   .sort();
+  const uniqueTitles = allTitles
+    .filter((d, i) => d && allTitles.indexOf(d.trim()) === i)
+    .sort();
   if (descriptions.length > 0) {
     template = `
         <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
-            <div class="col-md-3 font-bold ws-nowrap pl-2">Cohort <button class="transparent-btn sort-column" data-column-name="Cohort name"><i class="fas fa-sort"></i></button></div>
-            <div class="col-md-2 font-bold ws-nowrap">Acronym <button class="transparent-btn sort-column" data-column-name="Acronym"><i class="fas fa-sort"></i></button></div>
-            <div class="col-md-2 font-bold ws-nowrap">Region <button class="transparent-btn sort-column" data-column-name="Region"><i class="fas fa-sort"></i></button></div>
-            <div class="col-md-3 font-bold ws-nowrap">Population Type <button class="transparent-btn sort-column" data-column-name="Population type"<i class=>"fas fa-sort"></i></button></div>
+            <div class="col-md-5 font-bold ws-nowrap pl-2">Title of Publication <button class="transparent-btn sort-column" data-column-name="title"><i class="fas fa-sort"></i></button></div>
+            <div class="col-md-3 font-bold ws-nowrap">First Author <button class="transparent-btn sort-column" data-column-name="author"><i class="fas fa-sort"></i></button></div>
+            <div class="col-md-2 font-bold ws-nowrap">Date <button class="transparent-btn sort-column" data-column-name="date"><i class="fas fa-sort"></i></button></div>
             <div class="col-md-1"></div>
         </div>`;
-    descriptions.forEach((desc, index) => {
+    uniqueTitles.forEach((title, index) => {
       if (index > pageSize) return;
-      template += `
-            <div class="card mt-1 mb-1 align-left">
-                <div style="padding: 10px" aria-expanded="false" id="heading${desc[
-                  "Acronym"
-                ].replace(/(<b>)|(<\/b>)/g, "")}">
-                    <div class="row">
-                        <div class="col-md-3">${
-                          desc["Cohort name"] ? desc["Cohort name"] : ""
-                        }</div>
-                        <div class="col-md-2">${
-                          desc["Acronym"] ? desc["Acronym"] : ""
-                        }</div>
-                        <div class="col-md-2">${
-                          desc["Region"] ? desc["Region"] : ""
-                        }</div>
-                        <div class="col-md-3">${
-                          desc["Population type"] ? desc["Population type"] : ""
-                        }</div>
-                        <div class="col-md-1">
-                            <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${desc[
-                              "Acronym"
-                            ].replace(/(<b>)|(<\/b>)/g, "")}">
-                                <i class="fas fa-caret-down fa-2x"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div id="study${desc["Acronym"].replace(
-                  /(<b>)|(<\/b>)/g,
-                  ""
-                )}" class="collapse" aria-labelledby="heading${
-        desc["Acronym"]
-      }">
-                    <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
-                    ${
-                      desc["Location"]
-                        ? `<div class="row mb-1 m-0"><div class="col-md-2 font-bold">Location</div><div class="col">${desc["Location"]}</div></div>`
-                        : ``
-                    }
-                    ${
-                      desc["Years of recruitment"]
-                        ? `<div class="row mb-1 m-0"><div class="col-md-2 font-bold">Years of Recruitment</div><div class="col">${desc["Years of recruitment"]}</div></div>`
-                        : ``
-                    }
-                    ${
-                      desc["Age at recruitment"]
-                        ? `<div class="row mb-1 m-0"><div class="col-md-2 font-bold">Age at Recruitment</div><div class="col">${desc["Age at recruitment"]}</div></div>`
-                        : ``
-                    }
-                    ${
-                      desc["No. women enrolled"]
-                        ? `<div class="row mb-1 m-0"><div class="col-md-2 font-bold">Women Enrolled</div><div class="col">${desc["No. women enrolled"]}</div></div>`
-                        : ``
-                    }
-                    ${
-                      desc["Reference"]
-                        ? `<div class="row mb-1 m-0"><div class="col-md-2 font-bold">Reference</div><div class="col">${desc["Reference"]}</div></div>`
-                        : ``
-                    }
-                    ${
-                      desc["PI1"]
-                        ? `<div class="row mb-1 m-0"><div class="col-md-2 font-bold">PI</div><div class="col">${desc["PI1"]}: ${desc["PI1_email"]}</div></div>`
-                        : ``
-                    }
-                    ${
-                      desc["PI2"]
-                        ? `<div class="row mb-1 m-0"><div class="col-md-2 font-bold">PI</div><div class="col">${desc["PI2"]}: ${desc["PI2_email"]}</div></div>`
-                        : ``
-                    }
-                    `;
-      template += `
-                    </div>
-                </div>
-            </div>`;
+      var desc = descriptions.filter((dt) => dt['title'] === title);
+      //descTitle.forEach(desc => {
+        console.log(desc);
+        template += `
+              <div class="card mt-1 mb-1 align-left">
+                  <div style="padding: 10px" aria-expanded="false" id="heading${desc[0]["title"].replace(/\s+/g,"")}">
+                      <div class="row">
+                          <div class="col-md-5">${
+                            desc[0]["title"] ? desc[0]["title"] : ""
+                          }</div>
+                          <div class="col-md-3">${
+                            desc[0]["author"] ? desc[0]["author"] : ""
+                          }</div>
+                          <div class="col-md-2">${
+                            desc[0]["date"] ? desc[0]["date"] : ""
+                          }</div>
+                          <div class="col-md-1">
+                              <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${desc[0]["title"].replace(/\s+/g,"")}">
+                                  <i class="fas fa-caret-down fa-2x"></i>
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+                  <div id="study${desc[0]["title"].replace(/\s+/g,"")}" class="collapse" aria-labelledby="heading${desc[0]["title"]}">
+                      <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
+                      ${
+                        desc[0]["journal_name"]
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Journal</div><div class="col">${desc[0]["journal_name"]}</div></div>`
+                          : ``
+                      }
+                      ${
+                        desc[0]["journal_acro"]
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Journal Acronym</div><div class="col">${desc[0]["journal_acro"]}</div></div>`
+                          : ``
+                      }
+                      ${
+                        desc[0]["author_first"]
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">First Author</div><div class="col">${desc[0]["author"]}</div></div>`
+                          : ``
+                      }`
+
+                    desc.forEach(desc2 => {
+                      template += `
+                      <HR>
+                      ${
+                        desc2["study"]
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Study</div><div class="col">${desc2["study"]}</div></div>`
+                          : ``
+                      }
+                      ${
+                        desc2["cas"]
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">cas</div><div class="col">${desc2["cas"]}</div></div>`
+                          : ``
+                      }
+                      <div class="row mb-1 m-0"><div class="col-md-3 font-bold">Restrictions</div></div>
+                      ${
+                        desc2["nores"]==='true'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">No Restrictions</div></div>`
+                          : ``
+                      }
+                      ${
+                        desc2["hmb"]==='true'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">Health/Medical/Biomedical</div></div>`
+                          : ``
+                      }
+                      ${
+                        desc2["ngm"]==='true'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">No General Methods</div></div>`
+                          : ``
+                      }
+                      ${
+                        desc2["nfp"]==='true'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">Not for Profit Use Only</div></div>`
+                          : ``
+                      }
+                      ${
+                        desc2["gru"]==='true'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">General Research Use</div></div>`
+                          : ``
+                      }
+                      ${
+                        desc2["dsr"]==='true'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">Disease-Specific Research: ${desc2["dsr_value"]}</div></div>`
+                          : ``
+                      }
+                      `;
+                    });
+        template += `
+                      </div>
+                  </div>
+              </div>`;
     });
   } else {
     template += "Data not found!";
@@ -259,38 +288,72 @@ const renderStudyDescription = (descriptions, pageSize, headers) => {
   addEventSortColumn(descriptions, pageSize, headers);
 };
 
+// const addEventSortColumn = (descriptions, pageSize, headers) => {
+//   const btns = document.getElementsByClassName("sort-column");
+//   Array.from(btns).forEach((btn) => {
+//     btn.addEventListener("click", () => {
+//       const columnName = btn.dataset.columnName;
+//       descriptions = descriptions.sort((a, b) =>
+//         a[columnName] > b[columnName]
+//           ? 1
+//           : b[columnName] > a[columnName]
+//           ? -1
+//           : 0
+//       );
+//       renderStudyDescription(descriptions, pageSize, headers);
+//     });
+//   });
+// };
+
 const addEventSortColumn = (descriptions, pageSize, headers) => {
+  console.log(descriptions);
+  console.log(headers);
   const btns = document.getElementsByClassName("sort-column");
   Array.from(btns).forEach((btn) => {
     btn.addEventListener("click", () => {
+      const sortDirection = !btn.classList.contains("sort-column-asc") ? 1 : -1;
       const columnName = btn.dataset.columnName;
+      console.log(columnName);
       descriptions = descriptions.sort((a, b) =>
         a[columnName] > b[columnName]
-          ? 1
+          ? 1 * sortDirection
           : b[columnName] > a[columnName]
-          ? -1
+          ? -1 * sortDirection
           : 0
       );
+      console.log(descriptions);
+      btn.classList.remove("sort-column-asc", "sort-column-desc");
+
       renderStudyDescription(descriptions, pageSize, headers);
+
+      if (sortDirection === 1) {
+        document
+          .querySelectorAll(`[data-column-name="${columnName}"]`)[0]
+          .classList.add("sort-column-asc");
+      } else {
+        document
+          .querySelectorAll(`[data-column-name="${columnName}"]`)[0]
+          .classList.add("sort-column-desc");
+      }
     });
   });
 };
 
 const addEventFilterDataCatalogue = (descriptions, headers) => {
-  const consortiumTypeSelection =
-    document.getElementsByClassName("select-consortium");
-  Array.from(consortiumTypeSelection).forEach((ele) => {
-    ele.addEventListener("click", () => {
-      filterDataBasedOnSelection(descriptions, headers);
-    });
-  });
+  // const consortiumTypeSelection =
+  //   document.getElementsByClassName("select-consortium");
+  // Array.from(consortiumTypeSelection).forEach((ele) => {
+  //   ele.addEventListener("click", () => {
+  //     filterDataBasedOnSelection(descriptions, headers);
+  //   });
+  // });
 
-  const countrySelection = document.getElementsByClassName("select-country");
-  Array.from(countrySelection).forEach((ele) => {
-    ele.addEventListener("click", () => {
-      filterDataBasedOnSelection(descriptions, headers);
-    });
-  });
+  // const countrySelection = document.getElementsByClassName("select-country");
+  // Array.from(countrySelection).forEach((ele) => {
+  //   ele.addEventListener("click", () => {
+  //     filterDataBasedOnSelection(descriptions, headers);
+  //   });
+  // });
   const input = document.getElementById("searchDataCatalog");
   input.addEventListener("input", () => {
     filterDataBasedOnSelection(descriptions, headers);
@@ -313,57 +376,57 @@ export const addEventToggleCollapsePanelBtn = () => {
 };
 
 const filterDataBasedOnSelection = (descriptions, headers) => {
-  const consortiumSelected = Array.from(
-    document.getElementsByClassName("select-consortium")
-  )
-    .filter((dt) => dt.checked)
-    .map((dt) => dt.dataset.consortium);
+  // const consortiumSelected = Array.from(
+  //   document.getElementsByClassName("select-consortium")
+  // )
+  //   .filter((dt) => dt.checked)
+  //   .map((dt) => dt.dataset.consortium);
 
-  const countrySelected = Array.from(
-    document.getElementsByClassName("select-country")
-  )
-    .filter((dt) => dt.checked)
-    .map((dt) => dt.dataset.country);
+  // const countrySelected = Array.from(
+  //   document.getElementsByClassName("select-country")
+  // )
+  //   .filter((dt) => dt.checked)
+  //   .map((dt) => dt.dataset.country);
 
   let filteredData = descriptions;
 
-  if (consortiumSelected.length > 0) {
-    filteredData = filteredData.filter(
-      (dt) => consortiumSelected.indexOf(dt["Acronym"]) !== -1
-    );
-  }
+  // if (consortiumSelected.length > 0) {
+  //   filteredData = filteredData.filter(
+  //     (dt) => consortiumSelected.indexOf(dt["Acronym"]) !== -1
+  //   );
+  // }
 
-  if (countrySelected.length > 0) {
-    filteredData = filteredData.filter((dt) => {
-      let found = false;
-      countrySelected.forEach((ctr) => {
-        if (dt["Region"] === undefined) return;
-        if (found) return;
-        if (dt["Region"].match(new RegExp(ctr, "ig"))) found = true;
-      });
-      if (found) return dt;
-    });
-  }
+  // if (countrySelected.length > 0) {
+  //   filteredData = filteredData.filter((dt) => {
+  //     let found = false;
+  //     countrySelected.forEach((ctr) => {
+  //       if (dt["Region"] === undefined) return;
+  //       if (found) return;
+  //       if (dt["Region"].match(new RegExp(ctr, "ig"))) found = true;
+  //     });
+  //     if (found) return dt;
+  //   });
+  // }
 
-  document.getElementById("listFilters").innerHTML = `
+  // document.getElementById("listFilters").innerHTML = `
         
-        ${
-          countrySelected.length > 0
-            ? `
-            <span class="font-bold">Region: </span>${countrySelected[0]} ${
-                countrySelected.length > 1
-                  ? `and <span class="other-variable-count">${
-                      countrySelected.length - 1
-                    } other</span>`
-                  : ``
-              }
-        `
-            : `
-            <span class="font-bold">Region:</span> All
-        `
-        }
-    `;
-  if (countrySelected.length === 0) filteredData = descriptions;
+  //       ${
+  //         countrySelected.length > 0
+  //           ? `
+  //           <span class="font-bold">Region: </span>${countrySelected[0]} ${
+  //               countrySelected.length > 1
+  //                 ? `and <span class="other-variable-count">${
+  //                     countrySelected.length - 1
+  //                   } other</span>`
+  //                 : ``
+  //             }
+  //       `
+  //           : `
+  //           <span class="font-bold">Region:</span> All
+  //       `
+  //       }
+  //   `;
+  // if (countrySelected.length === 0) filteredData = descriptions;
   const input = document.getElementById("searchDataCatalog");
   const currentValue = input.value.trim().toLowerCase();
 
@@ -392,28 +455,31 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
   let searchedData = JSON.parse(JSON.stringify(filteredData));
   searchedData = searchedData.filter((dt) => {
     let found = false;
-    if (dt["Region"] && dt["Region"].toLowerCase().includes(currentValue))
-      found = true;
-    if (dt["Acronym"].toLowerCase().includes(currentValue)) found = true;
-    if (dt["Cohort name"].toLowerCase().includes(currentValue)) found = true;
-    if (dt["Population type"].toLowerCase().includes(currentValue))
-      found = true;
+    if (dt["title"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["author"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["date"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["journal_name"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["dsr_value"] && dt["dsr_value"].toLowerCase().includes(currentValue)) found = true;
     if (found) return dt;
   });
   searchedData = searchedData.map((dt) => {
-    dt["Region"] = dt["Region"].replace(
+    dt["title"] = dt["title"].replace(
       new RegExp(currentValue, "gi"),
       "<b>$&</b>"
     );
-    dt["Acronym"] = dt["Acronym"].replace(
+    dt["author"] = dt["author"].replace(
       new RegExp(currentValue, "gi"),
       "<b>$&</b>"
     );
-    dt["Cohort name"] = dt["Cohort name"].replace(
+    dt["date"] = dt["date"].replace(
       new RegExp(currentValue, "gi"),
       "<b>$&</b>"
     );
-    dt["Population type"] = dt["Population type"].replace(
+    dt["journal_name"] = dt["journal_name"].replace(
+      new RegExp(currentValue, "gi"),
+      "<b>$&</b>"
+    );
+    dt["dsr_value"] = dt["dsr_value"].replace(
       new RegExp(currentValue, "gi"),
       "<b>$&</b>"
     );
