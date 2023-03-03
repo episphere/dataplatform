@@ -14,10 +14,8 @@ export const testPage2 = () => {
                 <div class="row m-0">  
                   <span>
                     <br><a href= "https://aghealth.nih.gov/">Agricultural Health Study</a><br>
-                    <br><a href= "http://atbcstudy.cancer.gov/">Alpha-Tocopherol, Beta-Carotene Study</a><br> 
                     <br><a href= "http://dietandhealth.cancer.gov/">NIH-AARP Diet and Health Study</a><br>
                     <br><a href= "https://biometry.nci.nih.gov/cdas/plco/">The Prostate, Lung, Colorectal and Ovarian</a><br>
-                    <br><a href= "http://radtechstudy.nci.nih.gov/">CRadiologic Technologists Study</a><br> 
                     <br><a href= "https://dceg2.cancer.gov/gemshare/">GEMINI Shared Repoisitory</a><br> 
                   </span> 
                 </div>
