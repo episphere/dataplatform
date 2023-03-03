@@ -78,7 +78,6 @@ import { footerTemplate } from "./src/components/footer.js";
 import { renderDescription } from "./src/pages/description.js";
 import { dataDictionaryTemplate } from "./src/pages/dictionary.js";
 import { showPreview } from "./src/components/boxPreview.js";
-import { publicationPageTemplate } from "./src/pages/publicationpage.js";
 import { uploadData, dataUploadForm, approvedFormSelect, populateApprovedSelect, showTab, addStudiesInput } from "./src/pages/uploaddata.js";
 
 /**
@@ -207,7 +206,7 @@ export const confluence = async () => {
         const confluenceDiv = document.getElementById("confluenceDiv");
         showAnimation();
         assignNavbarActive(dataSummarySubsetElement, 1);
-        document.title = "BCRPP - Subset Statistics";
+        document.title = "DCEG - Subset Statistics";
         confluenceDiv.innerHTML = dataSummary(
           "Subset Statistics",
           false,
@@ -229,7 +228,7 @@ export const confluence = async () => {
           return;
         showAnimation();
         assignNavbarActive(viewUserSubmissionElement);
-        document.title = "BCRPP - Your Submissions";
+        document.title = "DCEG - Your Submissions";
         await userSubmissionTemplate("Your Submissions", "User Submissions");
         hideAnimation();
       });
@@ -240,7 +239,7 @@ export const confluence = async () => {
         const confluenceDiv = document.getElementById("confluenceDiv");
         showAnimation();
         assignNavbarActive(dataDictionaryElement);
-        document.title = "BCRPP - Research Studies";
+        document.title = "DCEG - Research Studies";
         confluenceDiv.innerHTML = dataSummary(
           "Research Studies",
           true,
@@ -262,7 +261,7 @@ export const confluence = async () => {
         showAnimation();
         if (!element) return;
         if (element.classList.contains("navbar-active")) return;
-        document.title = "BCRPP - Data Form";
+        document.title = "DCEG - Data Form";
         assignNavbarActive(element);
         //dataForm();
         const getCollaborators = await getCollaboration(
@@ -300,7 +299,7 @@ export const confluence = async () => {
         showAnimation();
         if (!element) return;
         if (element.classList.contains("navbar-active")) return;
-        document.title = "BCRPP - Accepted Studies";
+        document.title = "DCEG - Accepted Studies";
         assignNavbarActive(element);
         confluenceDiv.innerHTML = acceptedStudiesSection("acceptedStudies");
         acceptedStudiesView();
@@ -314,7 +313,7 @@ export const confluence = async () => {
         showAnimation();
         if (!element) return;
         if (element.classList.contains("navbar-active")) return;
-        document.title = "BCRPP - Chair View";
+        document.title = "DCEG - Chair View";
         assignNavbarActive(element);
         confluenceDiv.innerHTML = chairSection("chairView");
         chairFileView();
@@ -327,7 +326,7 @@ export const confluence = async () => {
         showAnimation();
         if (!element) return;
         if (element.classList.contains("navbar-active")) return;
-        document.title = "BCRPP - DACC View";
+        document.title = "DCEG - DACC View";
         assignNavbarActive(element);
         confluenceDiv.innerHTML = daccSection("daccView");
         daccFileView();
@@ -339,7 +338,7 @@ export const confluence = async () => {
       const element = document.getElementById("dataRequest");
       if (!element) return;
       if (element.classList.contains("navbar-active")) return;
-      document.title = "BCRPP - Consortia";
+      document.title = "DCEG - Consortia";
       assignNavbarActive(element);
       confluenceDiv.innerHTML = dataRequestTemplate("overview");
       hideAnimation();
@@ -361,8 +360,11 @@ export const confluence = async () => {
       if (element.classList.contains("navbar-active")) return;
       document.title = "DCEG - Publication";
       assignNavbarActive(element);
-      confluenceDiv.innerHTML = publication();
-      publicationPageTemplate();
+      console.log('publication');
+      //confluenceDiv.innerHTML = publication();
+      aboutConfluence("overview");
+      publication();
+      //publicationPageTemplate();
       hideAnimation();
     });
     MyDCEGPageElement.addEventListener("click", () => {
@@ -474,7 +476,7 @@ const manageRouter = async () => {
     const element = document.getElementById("aboutBCRPP");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
-    document.title = "BCRPP - Overview";
+    document.title = "DCEG - Overview";
     assignNavbarActive(element);
     aboutConfluence("overview");
     renderOverView();
@@ -482,7 +484,7 @@ const manageRouter = async () => {
     const element = document.getElementById("resourcesBCRPP");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
-    document.title = "BCRPP - Resources";
+    document.title = "DCEG - Resources";
     assignNavbarActive(element);
     confluenceResources();
   }
@@ -498,28 +500,29 @@ const manageRouter = async () => {
     const element = document.getElementById("dataRequest");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
-    document.title = "BCRPP - Consortia";
+    document.title = "DCEG - Consortia";
     assignNavbarActive(element);
     confluenceDiv.innerHTML = dataAccessNotSignedIn();
   } else if (hash === "#researchStudies") {
     const element = document.getElementById("data2");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
-    document.title = "BCRPP - researchStudies";
+    document.title = "DCEG - researchStudies";
     assignNavbarActive(element);
     confluenceDiv.innerHTML = testPage2();
   } else if (hash === "#publicationpage") {
     const element = document.getElementById("publicationID");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
-    document.title = "BCRPP - publicationpage";
+    document.title = "DCEG - publicationpage";
     assignNavbarActive(element);
-    confluenceDiv.innerHTML = publication();
+    aboutConfluence("overview");
+    publication();
   } else if (hash === "#myDCEG") {
     const element = document.getElementById("myDCEGID");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
-    document.title = "BCRPP - My DCEG Publication Data";
+    document.title = "DCEG - My DCEG Publication Data";
     assignNavbarActive(element);
     confluenceDiv.innerHTML = myDCEGpublication();
   }
@@ -544,7 +547,7 @@ const manageRouter = async () => {
     if (dataFormElement.classList.contains("navbar-active")) return;
     showAnimation();
     assignNavbarActive(dataFormElement);
-    document.title = "BCRPP - Data Form";
+    document.title = "DCEG - Data Form";
     confluenceDiv.innerHTML = await formSection();
     removeActiveClass("nav-link", "active");
     formFunctions();
@@ -556,7 +559,7 @@ const manageRouter = async () => {
     if (acceptedStudiesElement.classList.contains("navbar-active")) return;
     showAnimation();
     assignNavbarActive(acceptedStudiesElement);
-    document.title = "BCRPP - Accepted Studies";
+    document.title = "DCEG - Accepted Studies";
     confluenceDiv.innerHTML = acceptedStudiesSection();
     removeActiveClass("nav-link", "active");
   } else if (hash === "#data_access/chairView") {
@@ -565,7 +568,7 @@ const manageRouter = async () => {
     if (chairViewElement.classList.contains("navbar-active")) return;
     showAnimation();
     assignNavbarActive(chairViewElement);
-    document.title = "BCRPP - Chair View";
+    document.title = "DCEG - Chair View";
     confluenceDiv.innerHTML = chairSection();
     removeActiveClass("nav-link", "active");
   } else if (hash === "#data_access/daccView") {
@@ -574,7 +577,7 @@ const manageRouter = async () => {
     if (!daccViewElement) return;
     if (daccViewElement.classList.contains("navbar-active")) return;
     assignNavbarActive(daccViewElement);
-    document.title = "BCRPP - DACC View";
+    document.title = "DCEG - DACC View";
     confluenceDiv.innerHTML = daccSection();
     removeActiveClass("nav-link", "active");
   } else if (hash === "#data_exploration/dictionary") {
@@ -586,7 +589,7 @@ const manageRouter = async () => {
       return;
     showAnimation();
     assignNavbarActive(dataDictionaryElement);
-    document.title = "BCRPP - Research Studies";
+    document.title = "DCEG - Research Studies";
     confluenceDiv.innerHTML = dataSummary(
       "Research Studies",
       true,
@@ -609,7 +612,7 @@ const manageRouter = async () => {
       return;
     showAnimation();
     assignNavbarActive(viewUserSubmissionElement);
-    document.title = "BCRPP - Your Submissions";
+    document.title = "DCEG - Your Submissions";
     userSubmissionTemplate("Your Submissions", "User Submissions");
     hideAnimation();
   } else window.location.hash = "#home";
@@ -705,7 +708,7 @@ const manageHash = async () => {
     const element = document.getElementById("aboutBCRPP");
     if (!element) return;
     assignNavbarActive(element);
-    document.title = "BCRP - Overview";
+    document.title = "DCEG - Overview";
 
     //const fileInfo = await getFileInfo(904897189551);
     //aboutConfluence("overview", fileInfo ? true : false);
@@ -724,22 +727,22 @@ const manageHash = async () => {
   //   //aboutConfluence("contact");
   //   confluenceContactPage();
   //   hideAnimation();
-  // } else if (hash === "#about/description") {
-  //   const element = document.getElementById("aboutBCRPP");
-  //   if (!element) return;
-  //   assignNavbarActive(element);
-  //   document.title = "BCRP - Study Description";
-  //   showAnimation();
-  //   const fileInfo = await getFileInfo(904897189551); //new: 904897189551; original: 881144462693
-  //   aboutConfluence("description", fileInfo ? true : false);
-  //   renderDescription(fileInfo["content_modified_at"]);
-  //   hideAnimation();
+  } else if (hash === "#about/description") {
+    const element = document.getElementById("aboutBCRPP");
+    if (!element) return;
+    assignNavbarActive(element);
+    document.title = "BCRP - Study Description";
+    showAnimation();
+    const fileInfo = await getFileInfo(904897189551); //new: 904897189551; original: 881144462693
+    aboutConfluence("description", fileInfo ? true : false);
+    renderDescription(fileInfo["content_modified_at"]);
+    hideAnimation();
   } else if (hash === "#join") {
     const element = document.getElementById("resourcesBCRPP");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
     assignNavbarActive(element);
-    document.title = "BCRP - Resources";
+    document.title = "DCEG - Resources";
     confluenceResources();
     hideAnimation();
   }
