@@ -93,7 +93,7 @@ export const publication = (modified_at) => {
 const getDescription = async () => {
   const data = await (await fetch("./imports/pubPubData.tsv")).text();
   console.log(data);
-  const tsv = tsv2Json(data);
+  const tsv = tsv2Json2(data);
   const json = tsv.data;
   const headers = tsv.headers;
   console.log(json);
