@@ -13,8 +13,8 @@ export const instruction = () => {
                         <div><b>NOTE: Before you can upload data to the DCEG PDR you need to have an approved <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx/"> data sharing and management (DSM)
                         </a> plan and an <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx"> Institutional Certificate (IC)</a> for the data you are uploading. If you have questions about the IC, please contact your Data Sharing Administrator (DSA).</b>
                         </br>
-                        Questions about the DCEG PDR can be emailed to <a href=mailto:thomas.ahearn@nih.gov">thomas.ahearn@nih.gov"</a>
-                        <h2 class="page-header"> Data upload Process(PDR)</h2>
+                        Questions about the DCEG PDR can be emailed to <a href=mailto:thomas.ahearn@nih.gov>thomas.ahearn@nih.gov"</a>
+                        <h2 class="page-header"> Data Upload Process</h2>
                         <ol>
                         <br>
                         <li>Select the approved data sharing management (DSM) plan for your data. This can either be a specific DSM for your publication data or a DSM (or multiple DSMs) for the study(ies) that generated the data you are uploading.
