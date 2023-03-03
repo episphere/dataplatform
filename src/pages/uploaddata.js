@@ -135,7 +135,7 @@ export const dataUploadForm = async () => {
   var currentTab = 0;
   showTab(currentTab);
   console.log(currentTab);
-  const dsmp = await (await fetch("./imports/dsmp_output_0.csv")).text();
+  const dsmp = await (await fetch("./imports/dsmp_output.csv")).text();
   //console.log(dsmp);
   let csvData = csv2JsonTest(dsmp);
   //await populateApprovedSelect(csvData);
@@ -212,8 +212,13 @@ export const dsmpSelected = async (csvData) => {
   console.log(values);
   for (const value of values){
     var selectedData = csvData.data.find(item => item.planID === value);
-    console.log(selectedData.studyName);
+    if (!selectedData.studyName){
+      selectedData.studyName = 'None'
+    }
     var studies = selectedData.studyName.split(";");
+    if (!selectedData.cas){
+      selectedData.cas = 'None'
+    }
     var cas = selectedData.cas.split(";");
     console.log(studies);
     console.log(cas);
@@ -305,10 +310,12 @@ export const populateApprovedSelect = async (csvData) => { //Pulling data from d
     approvedEl.multiple = false;
     approvedEl.size="1";
     for (const value of dsmpdata) {
-      var email = value.contact_claims.split('|').pop();
-        if (email === JSON.parse(localStorage.parms).login) {
-          options = [...options,[value.planID, value.studyName, value.cas]];
-        }
+      if (value.dmsPlanType === 'Publication/Presentation') {
+        options = [...options, [value.planID, value.studyName, value.cas]];
+      // var email = value.contact_claims.split('|').pop();
+      //   if (email === JSON.parse(localStorage.parms).login) {
+      //     options = [...options,[value.planID, value.studyName, value.cas]];
+      }
     }
   } else if (studyEl.checked) {
     approvedEl.multiple = true;
@@ -334,8 +341,15 @@ export const populateApprovedSelect = async (csvData) => { //Pulling data from d
     console.log(optionEl.value);
     optionEl.text = `${option[0]}`//: ${option[1]}, cas: ${option[2]}`;
     approvedEl.appendChild(optionEl);
+    if (!option[1]) {
+      option[1] = 'None';
+    }
+    console.log(option[1]);
     var studies = option[1].split(";");
     console.log(studies);
+    if (!option[2]) {
+      option[2] = 'None';
+    }
     var cas = option[2].split(";");
     for (let i=0; i <studies.length; i++) {
       const optionEl = document.createElement("option");
