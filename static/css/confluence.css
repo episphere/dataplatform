@@ -1835,7 +1835,7 @@ form {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  max-width: ; /* adjust as needed */
+  width:100 px /* adjust as needed */
 }
 
 .banner-logo {
