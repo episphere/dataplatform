@@ -49,7 +49,7 @@ export const renderOverView = async () => {
             <div class="col align-left">
                 </br>
                 <span>
-                DCEG is committed to sharing research data according to the <a href= "https://sharing.nih.gov/data-management-and-sharing-policy/about-data-management-and-sharing-policies/data-management-and-sharing-policy-overview">NIH Data Sharing Policy</a> to further advance science, improve public health, while maximizing contributions from research participants. This site provides a suite of epidemiology data platforms to facilitate collaborations and share data from consortia, individual studies and publications led by DCEG investigators. 
+                DCEG is committed to sharing research data according to the <a href= "https://sharing.nih.gov/data-management-and-sharing-policy/about-data-management-and-sharing-policies/data-management-and-sharing-policy-overview" target="__blank">NIH Data Sharing Policy</a> to further advance science, improve public health, while maximizing contributions from research participants. This site provides a suite of epidemiology data platforms to facilitate collaborations and share data from consortia, individual studies and publications led by DCEG investigators. 
 
                 </span>
                 </br></br>

@@ -13,10 +13,10 @@ export const testPage2 = () => {
                 The following are DCEG studies with data platform that provide information about the studies and instructions on requesting study data:
                 <div class="row m-0">  
                   <span>
-                    <br><a href= "https://aghealth.nih.gov/">Agricultural Health Study</a><br>
-                    <br><a href= "http://dietandhealth.cancer.gov/">NIH-AARP Diet and Health Study</a><br>
-                    <br><a href= "https://biometry.nci.nih.gov/cdas/plco/">The Prostate, Lung, Colorectal and Ovarian</a><br>
-                    <br><a href= "https://dceg2.cancer.gov/gemshare/">GEMINI Shared Repoisitory</a><br> 
+                    <br><a href= "https://aghealth.nih.gov/" target="__blank">Agricultural Health Study</a><br>
+                    <br><a href= "http://dietandhealth.cancer.gov/" target="__blank">NIH-AARP Diet and Health Study</a><br>
+                    <br><a href= "https://biometry.nci.nih.gov/cdas/plco/" target="__blank">The Prostate, Lung, Colorectal and Ovarian</a><br>
+                    <br><a href= "https://dceg2.cancer.gov/gemshare/" target="__blank">GEMINI Shared Repoisitory</a><br> 
                   </span> 
                 </div>
               </div>

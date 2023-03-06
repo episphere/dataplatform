@@ -33,7 +33,7 @@ export const confluenceResources = () => {
 
                         <div class="consortia-desc">
                             <a href="http://cimba.ccge.medschl.cam.ac.uk/" target="__blank">Consortium of Investigators of Modifiers of BRCA1/2</a> (CIMBA)</br>
-                            The CIMBA was formed by a collaborative group of researchers working on genetic modifiers of cancer risk in BRCA1 and BRCA2 mutation carriers. The aim of CIMBA is to provide sufficient sample sizes to allow large scale studies in order to evaluate reliably the effects of genetic modifiers.
+                            The CIMBA was formed by a collaborative group of researchers working on genetic modifiers of cancer risk in BRCA1 and BRCA2 mutation carriers. The aim of CIMBA is to provide sufficient sample sizes to allow large scale studies in order to evaluate reliably the effects of genetic modifiers.
                         </div>
 
                         <div class="consortia-desc">
@@ -47,8 +47,8 @@ export const confluenceResources = () => {
                         <!---<div class="consortia-desc">
                             For more information:</br>
                             Visit: <a href="https://dceg.cancer.gov/research/cancer-types/breast-cancer/confluence-project" target="__blank">https://dceg.cancer.gov/research/cancer-types/breast-cancer/confluence-project</a></br>
-                            Email: <a href="mailto:ConfluenceProject@nih.gov">ConfluenceProject@nih.gov</a>--->
-                        </div>
+                            Email: <a href="mailto:ConfluenceProject@nih.gov">ConfluenceProject@nih.gov</a>
+                        </div>--->
                     <div>
                 <div>
             <div>
