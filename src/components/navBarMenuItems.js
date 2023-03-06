@@ -24,7 +24,7 @@ export const navBarMenutemplate = () => {
           </a>
         </div>
 
-        <div class="grid-elements">
+        <div class="grid-elements" style="display: none;">
           <a class="nav-link nav-menu-links white-font" href="#data_access/form" title="Data Form" id="dataForm"> 
             Data Form
           </a>
