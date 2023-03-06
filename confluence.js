@@ -367,6 +367,7 @@ export const confluence = async () => {
       //publicationPageTemplate();
       hideAnimation();
     });
+    if (MyDCEGPageElement){
     MyDCEGPageElement.addEventListener("click", () => {
       if (MyDCEGPageElement.classList.contains("navbar-active")) return;
       const element = document.getElementById("myDCEGID");
@@ -376,7 +377,8 @@ export const confluence = async () => {
       assignNavbarActive(element);
       confluenceDiv.innerHTML = myDCEGpublication();
       hideAnimation();
-    });
+    })};
+    if (uploadInstructionElement){
     uploadInstructionElement.addEventListener("click", () => {
       if (uploadInstructionElement.classList.contains("navbar-active")) return;
       const element = document.getElementById("instructionID");
@@ -386,7 +388,8 @@ export const confluence = async () => {
       assignNavbarActive(element);
       confluenceDiv.innerHTML = instruction();
       hideAnimation();
-    });
+    })};
+    if (MyDCEGPageElement_upload){
     MyDCEGPageElement_upload.addEventListener("click", () => {
       if (MyDCEGPageElement_upload.classList.contains("navbar-active")) return;
       const element = document.getElementById("myDCEGID_upload");
@@ -398,7 +401,7 @@ export const confluence = async () => {
       dataUploadForm();
       //populateApprovedSelect();
       hideAnimation();
-    });
+    })};
     const folders = await getFolderItems(0);
     const array = filterConsortiums(folders.entries);
     const projectArray = filterProjects(folders.entries);

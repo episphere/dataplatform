@@ -35,20 +35,21 @@ export const navBarMenutemplate = () => {
           DCEG Publications
           </a>
         </div>
-        <div class="grid-elements dropdown">
-          <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" title="My DCEG Publication Data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          DCEG Investigators
-          </button>
-          
-          <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#uploadinstruction" id="instructionID">How to upload data from my published manuscript </a>
-          <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG/upload" id="myDCEGID_upload"> Upload new data</a>
-          <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="https://www.box.com/personal/" id="myDCEGID">See my uploaded data</a>
+        ${JSON.parse(localStorage.parms).login.split('@')[1].includes('nih.gov')
+          ?`<div class="grid-elements dropdown">
+            <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" title="My DCEG Publication Data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            DCEG Investigators
+            </button>
+            
+            <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#uploadinstruction" id="instructionID">How to upload data from my published manuscript </a>
+            <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG/upload" id="myDCEGID_upload"> Upload new data</a>
+            <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="https://www.box.com/personal/" id="myDCEGID">See my uploaded data</a>
 
-          </div>
-
-    
-        </div>
+            </div>
+          </div>`
+          :``
+        }
         <!---<div class="grid-elements">
           <a class="nav-link nav-menu-links white-font" href="#myDCEG/upload" title="My DCEG Publication Data - Upload" id="myDCEGID_upload">
             Upload
