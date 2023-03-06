@@ -551,9 +551,10 @@ const manageRouter = async () => {
     showAnimation();
     assignNavbarActive(dataFormElement);
     document.title = "DCEG - Data Form";
-    confluenceDiv.innerHTML = await formSection();
+    confluenceDiv.innerHTML = await formSection("form");
     removeActiveClass("nav-link", "active");
-    formFunctions();
+    hideAnimation();
+    //formFunctions();
   } else if (hash === "#data_access/acceptedStudies") {
     const acceptedStudiesElement = document.getElementById(
       "acceptedStudiesView"

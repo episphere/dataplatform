@@ -54,7 +54,7 @@ export const navBarMenutemplate = () => {
           <a class="nav-link nav-menu-links white-font" href="#myDCEG/upload" title="My DCEG Publication Data - Upload" id="myDCEGID_upload">
             Upload
           </a>
-        </div>-->
+        </div>--->
         <div class="grid-elements">
             <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/dataplatform/issues" title="BCRPP github issues">
                 Report issue
@@ -77,8 +77,8 @@ export const navBarMenutemplate = () => {
                       viewSubmissionsShow
                         ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#userSubmissions" title='View Your Submissions' id="userSubmissions"> </a>`
                         : ""
-                    }-->
-                    <!--a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/accepted" title="Accepted Studies" id="dataAccepted"> Accepted </a-->
+                    }--->
+                    <!---a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/accepted" title="Accepted Studies" id="dataAccepted"> Accepted </a--->
                     ${
                       emailforChair.indexOf(
                         JSON.parse(localStorage.parms).login
