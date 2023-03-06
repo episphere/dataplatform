@@ -274,11 +274,11 @@ const renderStudyDescription = (descriptions, pageSize, headers) => {
                           ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Study</div><div class="col">${desc2["study"]}</div></div>`
                           : ``
                       }
-                      ${
+                      <!---${
                         desc2["cas"]
                           ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">cas</div><div class="col">${desc2["cas"]}</div></div>`
                           : ``
-                      }
+                      }--->
                       <div class="row mb-1 m-0"><div class="col-md-3 font-bold">Restrictions</div></div>
                       ${
                         desc2["nores"]==='true'
