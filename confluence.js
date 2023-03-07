@@ -140,8 +140,7 @@ export const confluence = async () => {
 
     const dataSubmissionElement = document.getElementById("dataSubmission");
     const dataSummaryElement = document.getElementById("dataSummary");
-    const dataSummarySubsetElement =
-      document.getElementById("dataSummarySubset");
+    const dataSummarySubsetElement = document.getElementById("dataSummarySubset");
     const dataDictionaryElement = document.getElementById("dataDictionary");
     const dataRequestElement = document.getElementById("dataRequest");
     const dataFormElement = document.getElementById("dataForm");
@@ -153,6 +152,8 @@ export const confluence = async () => {
     const MyDCEGPageElement = document.getElementById("myDCEGID");
     const MyDCEGPageElement_upload = document.getElementById("myDCEGID_upload");
     const uploadInstructionElement = document.getElementById("instructionID");
+    const dataGovernance = document.getElementById("dataGovernance");
+
     // const platformTutorialElement = document.getElementById('platformTutorial');
     // const dataAnalysisElement = document.getElementById('dataAnalysis');
 
@@ -402,11 +403,26 @@ export const confluence = async () => {
       //populateApprovedSelect();
       hideAnimation();
     })};
+    if (dataGovernance){
+      dataGovernance.addEventListener("click", () => {
+        if (dataGovernance.classList.contains("navbar-active")) return;
+        const element = document.getElementById("dataGovernance");
+        if (!element) return;
+        if (element.classList.contains("navbar-active")) return;
+        document.title = "See my uploaded data";
+        assignNavbarActive(element);
+        addEventDataGovernanceNavBar(true);
+        //addEventMyProjects();
+        // confluenceDiv.innerHTML = uploadData();
+        // dataUploadForm();
+        //populateApprovedSelect();
+        hideAnimation();
+      })};
     const folders = await getFolderItems(0);
     const array = filterConsortiums(folders.entries);
     const projectArray = filterProjects(folders.entries);
     //const getCollaborators = await getCollaboration(145995765326, "folders");
-    let getMyPermissionLevel = false;
+    let getMyPermissionLevel = true;
     // if (getCollaborators)
     //   getMyPermissionLevel = checkDataSubmissionPermissionLevel(
     //     getCollaborators,

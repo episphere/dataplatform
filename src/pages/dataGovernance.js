@@ -15,7 +15,8 @@ import {
 } from "../shared.js";
 
 export const template = async () => {
-  const array = await getFolderInfo("145995765326"); //BCRP: 145995765326, Confluence: 137304373658
+  const array = await getFolderInfo("196554876811"); //DCEG: 196554876811 BCRP: 145995765326, Confluence: 137304373658
+  console.log(array);
   if (!array) return;
 
   let template = `<div class="card" style="border: 0px;"><div class="card-header"></div>`;
@@ -38,6 +39,7 @@ export const template = async () => {
 };
 export const dataGovernanceProjects = async () => {
   const response = await getFolderItems(0);
+  console.log(response);
   const projectArray = filterProjects(response.entries);
   const div = document.getElementById("dataGovernanceProjects");
   let template = "";

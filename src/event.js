@@ -833,7 +833,7 @@ export const addEventDataGovernanceNavBar = (bool) => {
     // if(dataGovernanceElement.classList.contains('navbar-active')) return;
     showAnimation();
     assignNavbarActive(dataGovernanceElement, 2);
-    document.title = "BCRPP - Data Governance";
+    document.title = "DCEG - Data Governance";
     const confluenceDiv = document.getElementById("confluenceDiv");
     // if(bool){
     confluenceDiv.classList.add("general-bg");
@@ -844,7 +844,7 @@ export const addEventDataGovernanceNavBar = (bool) => {
     const headerDiv = document.createElement("div");
     headerDiv.classList = ["main-summary-row"];
     headerDiv.innerHTML = `<div class="align-left">
-                                        <h1 class="page-header">Data Governance</h1>
+                                        <h1 class="page-header">Data Governance of Uploaded Data</h1>
                                     </div>`;
     const divRow = document.createElement("div");
     divRow.classList = ["main-summary-row white-bg div-border"];
@@ -852,6 +852,7 @@ export const addEventDataGovernanceNavBar = (bool) => {
 
     const div1 = document.createElement("div");
     div1.classList = ["col-lg-6 align-left"];
+
     div1.innerHTML = await dataGovernanceTemplate();
     hideAnimation();
     divRow.appendChild(div1);
