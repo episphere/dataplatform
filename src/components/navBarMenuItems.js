@@ -4,12 +4,12 @@ const viewSubmissionsShow = true;
 export const navBarMenutemplate = () => {
   return `
         <div class="grid-elements">
-            <a class="nav-link nav-menu-links white-font" href="#home" title="BCRPP Home" id="homePage">
+            <a class="nav-link nav-menu-links white-font" href="#home" title="DCEG Home" id="homePage">
                 Home
             </a>
         </div>
         <div class="grid-elements">
-            <a class="nav-link nav-menu-links white-font" href="#about/overview" id="aboutBCRPP">
+            <a class="nav-link nav-menu-links white-font" href="#about/overview" id="aboutDCEG">
             About
             </a>            
         </div>

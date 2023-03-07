@@ -492,7 +492,7 @@ const manageRouter = async () => {
     infoDeck();
     hideAnimation();
   } else if (hash === "#about/overview") {
-    const element = document.getElementById("aboutBCRPP");
+    const element = document.getElementById("aboutDCEG");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
     document.title = "DCEG - Overview";
@@ -516,6 +516,7 @@ const manageRouter = async () => {
   //   confluenceDiv.innerHTML = confluenceContactPage();
   // }
   else if (hash === "#data_access/overview") {
+    console.log('dataRequest')
     const element = document.getElementById("dataRequest");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
@@ -725,7 +726,7 @@ const manageHash = async () => {
     infoDeckAfterLoggedIn();
     hideAnimation();
   } else if (hash === "#about/overview") {
-    const element = document.getElementById("aboutBCRPP");
+    const element = document.getElementById("aboutDCEG");
     if (!element) return;
     assignNavbarActive(element);
     document.title = "DCEG - Overview";
@@ -748,7 +749,7 @@ const manageHash = async () => {
   //   confluenceContactPage();
   //   hideAnimation();
   } else if (hash === "#about/description") {
-    const element = document.getElementById("aboutBCRPP");
+    const element = document.getElementById("aboutDCEG");
     if (!element) return;
     assignNavbarActive(element);
     document.title = "BCRP - Study Description";
