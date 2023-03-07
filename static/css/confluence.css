@@ -1103,6 +1103,7 @@ label {
   top: 50%;
   left: 53%;
   transform: translate(-50%, -50%);
+  width: 75%;
 }
 
 .confluence-banner {
