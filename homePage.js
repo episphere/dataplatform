@@ -100,7 +100,7 @@ export const infoDeckAfterLoggedIn = async () => {
                         <h1 class="banner-overlay-h1">DCEG Epidemiology Data Platforms
                         </h1>
                         <div class="banner-overlay-line"></div>
-                        <h2 class="banner-overlay-h3" style="font-size:2vw;">  an integrated, multi-ethnic breast cancer risk prediction modelFAIR principles in Support of Epidemiological Research
+                        <h2 class="banner-overlay-h3" style="font-size:2vw;">  Following FAIR principles in Support of Epidemiological Research
                         </h2>
                     </div>
                 </div>
