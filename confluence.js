@@ -365,6 +365,7 @@ export const confluence = async () => {
       //confluenceDiv.innerHTML = publication();
       aboutConfluence("overview");
       publication();
+      addEventUpdateSummaryStatsData();
       //publicationPageTemplate();
       hideAnimation();
     });
@@ -386,7 +387,7 @@ export const confluence = async () => {
       if (!element) return;
       if (element.classList.contains("navbar-active")) return;
       document.title = "DCEG - instructionID";
-      assignNavbarActive(element);
+      assignNavbarActive(uploadInstructionElement, 1);
       confluenceDiv.innerHTML = instruction();
       hideAnimation();
     })};
@@ -397,7 +398,7 @@ export const confluence = async () => {
       if (!element) return;
       if (element.classList.contains("navbar-active")) return;
       document.title = "Upload - My DCEG Publication Data";
-      assignNavbarActive(element);
+      assignNavbarActive(MyDCEGPageElement_upload, 1);
       confluenceDiv.innerHTML = uploadData();
       dataUploadForm();
       //populateApprovedSelect();
@@ -410,7 +411,8 @@ export const confluence = async () => {
         if (!element) return;
         if (element.classList.contains("navbar-active")) return;
         document.title = "See my uploaded data";
-        assignNavbarActive(element);
+        console.log("testing governance");
+        //assignNavbarActive(dataGovernance, 1);
         addEventDataGovernanceNavBar(true);
         //addEventMyProjects();
         // confluenceDiv.innerHTML = uploadData();

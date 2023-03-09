@@ -1426,7 +1426,7 @@ span.icon {
 
 .collapsible-items {
   white-space: nowrap;
-  overflow: auto;
+  /* overflow: auto; */
 }
 
 .modal-close-btn {
@@ -1440,6 +1440,20 @@ span.icon {
 .modal-body {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
 #loadingAnimation {
@@ -1951,10 +1965,10 @@ p {
   overflow: hidden;
 }
 
-/* .input-group {
+.input-group {
   margin-top: 0.25rem;
   padding: 0.5rem 1rem;
-} */
+}
 
 .input-addedFiles {
   margin-top: 0.25rem;
@@ -2208,6 +2222,32 @@ ul.about-consortia {
   margin-bottom: 0;
   vertical-align: middle;
 }
+
+.field-br {
+  word-break: break-all;
+}
+
+label h4{
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+}
+
+/* .inline-field input {
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  margin: 0;
+  vertical-align: bottom;
+  position: relative;
+  top: -1px;
+}
+
+.inline-field label {
+  display: block;
+  padding-left: 15px;
+  text-indent: 15px;
+} */
 
 .container-cl {
   display: block;

@@ -27,6 +27,8 @@ import {
   assignNavbarActive,
   reSizePlots,
   showComments,
+  tsv2Json,
+  json2other
 } from "./shared.js";
 import { renderDataSummary } from "./pages/about.js";
 import { variables } from "./variables.js";
@@ -832,7 +834,7 @@ export const addEventDataGovernanceNavBar = (bool) => {
   dataGovernanceElement.addEventListener("click", async () => {
     // if(dataGovernanceElement.classList.contains('navbar-active')) return;
     showAnimation();
-    assignNavbarActive(dataGovernanceElement, 2);
+    assignNavbarActive(dataGovernanceElement, 1);
     document.title = "DCEG - Data Governance";
     const confluenceDiv = document.getElementById("confluenceDiv");
     // if(bool){
@@ -1263,25 +1265,25 @@ export const addEventVariableDefinitions = () => {
 
 export const addEventUpdateSummaryStatsData = () => {
   const btn = document.getElementById("updateSummaryStatsData");
+  console.log(btn);
   if (!btn) return;
   btn.addEventListener("click", async () => {
     const header = document.getElementById("confluenceModalHeader");
     const body = document.getElementById("confluenceModalBody");
 
-    header.innerHTML = `<h5 class="modal-title">Update data</h5>
+    header.innerHTML = `<h5 class="modal-title">Download updated data</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>`;
 
     let template = '<form id="updateSummaryStatsForm">';
-    template += `<label>Select data type</label></br> <div style="padding-left:40px"><input type="radio" required value="summary" name="summarydataType"> Summary data</div><div style="padding-left:40px"><input value="missingness" required type="radio" name="summarydataType"> Missingness data</div>`;
-    template += '</br><div id="summaryDataFolderList"></div>';
+    template += `<p>Updating data will download an updated publication </br> file to be uploaded to: https://github.com/episphere/dataplatform/tree/production/imports</p>`;
 
     template +=
       '<div class="modal-footer"><button type="submit" class="btn btn-outline-primary">Update data</button></div>';
     template += "</form>";
     body.innerHTML = template;
-    addEventDataTypeRadio();
+    //addEventDataTypeRadio();
     addEventUpdateSummaryStatsForm();
   });
 };
@@ -1341,19 +1343,41 @@ const addEventUpdateSummaryStatsForm = () => {
   const form = document.getElementById("updateSummaryStatsForm");
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const dataType = Array.from(
-      document.getElementsByName("summarydataType")
-    ).filter((ele) => ele.checked === true)[0].value;
-    form.querySelectorAll('[type="submit"]')[0].classList.add("disabled");
-    form.querySelectorAll('[type="submit"]')[0].innerHTML = "Updating...";
-    const selectedBtn = form.querySelectorAll(".active-filter");
-    const folderIds = Array.from(selectedBtn).map((btn) =>
-      parseInt(btn.dataset.folderId)
-    );
-    if (folderIds.length === 0) return;
-    let masterArray = [];
-    let publicDataObj = {};
-    let allHeaders = [];
+    const files = await getFolderItems(196819085811);
+    if (files.length === 0) return;
+    console.log(files.entries);
+    form.innerHTML = "Gathering data...";
+
+    var dataArray = [];
+    for (let file of files.entries) {
+      const tsv = await getFile(file.id);
+      form.innerHTML = `Processing File: ${file.name}`;
+      const responseData = tsv2Json(tsv);
+      const jsonArray = responseData.data;
+      console.log(jsonArray);
+      //dataArray.push(jsonArray);
+      Array.prototype.push.apply(dataArray,jsonArray);
+    }
+    form.innerHTML = `Saving File...`
+    console.log(dataArray);
+    const headers = Object.keys(dataArray[0]);
+    const tsvValue = json2other(dataArray, headers, true).replace(/(<b>)|(<\/b>)/g, "");
+    let tsvContent =
+        "data:text/tsv;charset=utf-8," +
+        tsvValue;
+    const encodedUri = encodeURI(tsvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `DCEG_Publications.tsv`);
+    link.click();
+    return;
+    // const folderIds = Array.from(selectedBtn).map((btn) =>
+    //   parseInt(btn.dataset.folderId)
+    // );
+    // if (folderIds.length === 0) return;
+    // let masterArray = [];
+    // let publicDataObj = {};
+    // let allHeaders = [];
     for (let id of folderIds) {
       const response = await getFolderItems(id);
       let file = [];
@@ -1370,6 +1394,7 @@ const addEventUpdateSummaryStatsForm = () => {
             /_missingness_statistics.csv/i.test(dt.name) === true
         );
       if (file.length === 0) return;
+
       form.querySelectorAll(
         '[type="submit"]'
       )[0].innerHTML = `Processing ${file[0].name}...`;

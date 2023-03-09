@@ -24,21 +24,21 @@ export const infoDeck = () => {
     header: "About DCEG Data",
     button: "Information on Accessing DCEG Data",
     href: "#about/overview",
-    icon: "fa-database",
+    icon: "fa-info",
     explanation: "",
   });
   template += cardContents({
     header: "Consortia Projects",
     button: "Data Platforms for Consortia Projects",
     href: "#data_access/overview",
-    icon: "fa-database",
+    icon: "fa-folder-open",
     explanation: "",
   });
   template += cardContents({
     header: "Research Studies",
     button: "Data Platforms for DCEG studies",
     href: "#researchStudies",
-    icon: "fa-database",
+    icon: "fa-layer-group",
     explanation: "",
   });
   template += cardContents({
@@ -112,14 +112,14 @@ export const infoDeckAfterLoggedIn = async () => {
     header: "Consortia Projects",
     button: "Data Platforms for Consortia Projects",
     href: "#data_access/overview",
-    icon: "fa-database",
+    icon: "fa-folder-open",
     explanation: "",
   });
   template += cardContents({
     header: "Research Studies",
     button: "Data Platforms for DCEG studies",
     href: "#researchStudies",
-    icon: "fa-database",
+    icon: "fa-layer-group",
     explanation: "",
   });
   template += cardContents({
@@ -133,7 +133,7 @@ export const infoDeckAfterLoggedIn = async () => {
     header: "DCEG Investigators",
     button: "Manage Publication Data",
     href: "#myDCEG",
-    icon: "fa-database",
+    icon: "fa-user",
     explanation: "",
   });
   template += `</div>

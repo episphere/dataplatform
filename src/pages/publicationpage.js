@@ -6,32 +6,10 @@ import {
   tsv2Json,
   selectProps,
   tsv2Json2,
+  emailsAllowedToUpdateData
 } from "./../shared.js";
 import { downloadFiles } from "./dictionary.js";
 let previousValue = "";
-
-
-// export const publication = () => {
-//   return `
-//       <div class="publication">
-//       <div class="align-left">
-//            <h1 
-//            class="page-header">Datasets from DCEG publications
-//            </h1>
-//       </div> 
-//       </div>
-//         </span>
-//         <div class="align-left">
-//         Data from the following publications can be requested. Click the request data button for the publication of 
-//         interest to go to the data request form. This will require logging in through a Box.com account for 
-//         authentication and authorization. If you do not have a Box.com account, you can use 
-//         <a href= "https://www.box.com/personal/">this link </a> to create a free account. 
-//         After approval of the data request,datasets and data dictionaries can be accessed through 
-//         their permanent identifiers (or uniform resource locators, URL) provided by Box.com. 
-//         </div> 
-//       <div>
-//       `;
-// };
 
 export const publication = (modified_at) => {
   let template = `
@@ -55,6 +33,19 @@ export const publication = (modified_at) => {
                 </div>
             </div>
         </div>
+
+        ${
+          localStorage.parms &&
+          JSON.parse(localStorage.parms).login &&
+          emailsAllowedToUpdateData.indexOf(
+            JSON.parse(localStorage.parms).login
+          ) !== -1
+            ? `
+            <div class="main-summary-row"><button id="updateSummaryStatsData" class="btn btn-outline-dark" aria-label="Update publication data" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#confluenceMainModal">Update data</button></div>
+        `
+            : ``
+        }
+      
         <div class="main-summary-row">
             <div class="col-xl-2 filter-column div-border white-bg align-left p-2" id="summaryFilterSiderBar">
                 <div class="main-summary-row">
@@ -80,9 +71,7 @@ export const publication = (modified_at) => {
         </div>
         <div class="main-summary-row">
             <div class="offset-xl-2 col data-last-modified align-left mt-3 mb-0 pl-4" id="dataLastModified">
-                Data last modified at - ${new Date(
-                  modified_at
-                ).toLocaleString()}
+                Data last modified at - ${new Date(modified_at).toLocaleString()}
             </div>
         </div>
     `;
@@ -91,12 +80,22 @@ export const publication = (modified_at) => {
 };
 
 const getDescription = async () => {
-  const data = await (await fetch("./imports/pubPubData.tsv")).text();
+  const data = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/production/imports/DCEG_Publications.tsv")).text();
   console.log(data);
   const tsv = tsv2Json2(data);
   const json = tsv.data;
   const headers = tsv.headers;
   console.log(json);
+  json.forEach((obj) => {
+    if (obj["nores"] === "true") obj["nores"] = "No Restrictions";
+    if (obj["hmb"] === "true") obj["hmb"] = "Health/Medical/Biomedical";
+    if (obj["ngm"] === "true") obj["ngm"] = "No General Methods";
+    if (obj["nfp"] === "true") obj["nfp"] = "Not for Profit Use Only";
+    if (obj["gru"] === "true") obj["gru"] = "General Research Use";
+    if (obj["dsr"] === "true") obj["dsr"] = "Disease-Specific Research";
+    if (obj["dsr_value"] === undefined) obj["dsr_value"] = "False";
+    console.log(obj["dsr_value"]);
+  });
   // json.forEach((obj) => {
   //   if (obj["Cohort name"]) obj["Cohort name"] = obj["Cohort name"].trim();
   //   if (obj["Acronym"]) obj["Acronym"] = obj["Acronym"].trim();
@@ -223,11 +222,12 @@ const renderStudyDescription = (descriptions, pageSize, headers) => {
     uniqueTitles.forEach((desc, index) => {
       if (index > pageSize) return;
       var desc2 = descriptions.filter((dt) => dt['title'] === desc["title"]);
+      console.log(desc2);
       //descTitle.forEach(desc => {
         console.log(desc);
         template += `
               <div class="card mt-1 mb-1 align-left">
-                  <div style="padding: 10px" aria-expanded="false" id="heading${desc["title"].replace(/\s+/g,"")}">
+                  <div style="padding: 10px" aria-expanded="false" id="heading${desc["title"].replace(/\s+/g,"").replace(/[^a-zA-Z ]/g, "")}">
                       <div class="row">
                           <div class="col-md-4">${
                             desc["title"] ? desc["title"] : ""
@@ -239,7 +239,7 @@ const renderStudyDescription = (descriptions, pageSize, headers) => {
                             desc["date"] ? desc["date"] : ""
                           }</div>
                           <div class="col-md-1">
-                              <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${desc["title"].replace(/\s+/g,"")}">
+                              <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${desc["title"].replace(/\s+/g,"").replace(/[^a-zA-Z ]/g, "")}">
                                   <i class="fas fa-caret-down fa-2x"></i>
                               </button>
                           </div>
@@ -248,7 +248,7 @@ const renderStudyDescription = (descriptions, pageSize, headers) => {
                           </div>
                       </div>
                   </div>
-                  <div id="study${desc["title"].replace(/\s+/g,"")}" class="collapse" aria-labelledby="heading${desc["title"]}">
+                  <div id="study${desc["title"].replace(/\s+/g,"").replace(/[^a-zA-Z ]/g, "")}" class="collapse" aria-labelledby="heading${desc["title"]}">
                       <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
                       ${
                         desc["journal_name"]
@@ -274,40 +274,35 @@ const renderStudyDescription = (descriptions, pageSize, headers) => {
                           ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Study</div><div class="col">${desc2["study"]}</div></div>`
                           : ``
                       }
-                      <!---${
-                        desc2["cas"]
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">cas</div><div class="col">${desc2["cas"]}</div></div>`
-                          : ``
-                      }--->
                       <div class="row mb-1 m-0"><div class="col-md-3 font-bold">Restrictions</div></div>
                       ${
-                        desc2["nores"]==='true'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">No Restrictions</div></div>`
+                        desc2["nores"]==='No Restrictions'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["nores"]}</div></div>`
                           : ``
                       }
                       ${
-                        desc2["hmb"]==='true'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">Health/Medical/Biomedical</div></div>`
+                        desc2["hmb"]==='Health/Medical/Biomedical'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["hmb"]}</div></div>`
                           : ``
                       }
                       ${
-                        desc2["ngm"]==='true'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">No General Methods</div></div>`
+                        desc2["ngm"]==='No General Methods'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["ngm"]}</div></div>`
                           : ``
                       }
                       ${
-                        desc2["nfp"]==='true'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">Not for Profit Use Only</div></div>`
+                        desc2["nfp"]==='Not for Profit Use Only'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["nfp"]}</div></div>`
                           : ``
                       }
                       ${
-                        desc2["gru"]==='true'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">General Research Use</div></div>`
+                        desc2["gru"]==='General Research Use'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["gru"]}</div></div>`
                           : ``
                       }
                       ${
-                        desc2["dsr"]==='true'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">Disease-Specific Research: ${desc2["dsr_value"]}</div></div>`
+                        desc2["dsr"]==='Disease-Specific Research'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["dsr"]}: ${desc2["dsr_value"]}</div></div>`
                           : ``
                       }
                       `;
@@ -496,7 +491,13 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
     if (dt["author"].toLowerCase().includes(currentValue)) found = true;
     if (dt["date"].toLowerCase().includes(currentValue)) found = true;
     if (dt["journal_name"].toLowerCase().includes(currentValue)) found = true;
-    //if (dt["dsr_value"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["nores"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["hmb"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["ngm"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["nfp"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["gru"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["dsr"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["dsr_value"].toLowerCase().includes(currentValue)) found = true;
     if (found) return dt;
   });
   searchedData = searchedData.map((dt) => {
@@ -516,6 +517,10 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
       new RegExp(currentValue, "gi"),
       "<b>$&</b>"
     );
+    // dt["nores"] = dt["nores"].replace(
+    //   new RegExp(currentValue, "gi"),
+    //   "<b>$&</b>"
+    // );
     // dt["dsr_value"] = dt["dsr_value"].replace(
     //   new RegExp(currentValue, "gi"),
     //   "<b>$&</b>"

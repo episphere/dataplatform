@@ -15,7 +15,7 @@ import {
 } from "../shared.js";
 
 export const template = async () => {
-  const array = await getFolderInfo("196554876811"); //DCEG: 196554876811 BCRP: 145995765326, Confluence: 137304373658
+  const array = await getFolderInfo(0); //DCEG: 196554876811 BCRP: 145995765326, Confluence: 137304373658
   console.log(array);
   if (!array) return;
 
@@ -41,6 +41,7 @@ export const dataGovernanceProjects = async () => {
   const response = await getFolderItems(0);
   console.log(response);
   const projectArray = filterProjects(response.entries);
+  console.log(projectArray);
   const div = document.getElementById("dataGovernanceProjects");
   let template = "";
   let checker = false;
@@ -100,7 +101,13 @@ export const dataGovernanceLazyLoad = (element) => {
     const status = element.dataset.status;
     const folderName = element.dataset.folderName;
     const type = element.dataset.type;
-    if (type && JSON.parse(localStorage.parms).login) {
+    console.log(id);
+    console.log(status);
+    console.log(folderName);
+    console.log(type);
+    let test = await getFolderItems(id);
+    console.log(test);
+    if (type && JSON.parse(localStorage.parms).login && id !== "0") {
       const bool = await checkMyPermissionLevel(
         await getCollaboration(id, `${type}s`),
         JSON.parse(localStorage.parms).login,

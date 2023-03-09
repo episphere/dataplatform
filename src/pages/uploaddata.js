@@ -62,8 +62,7 @@ export const dataUploadForm = async () => {
             <div class='input-group input-group2 d-none' >
               <label for="dsmp_name"> <b>Please select from a DSMP:</b><span class='required-label'>*</span> </label>
                 <select class='form-select' id='approvedDSMP' name='dsmp_name' multiple>
-                </select>
-                <p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>                
+                </select>             
             </div>
 
             <div class='d-none' id="dsmp_no">
@@ -71,7 +70,7 @@ export const dataUploadForm = async () => {
             </div>
 
             <div class='input-group input-group2 d-none' id="duoSel">
-              <label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with the data based on the study's Institutional Certification (IC). If you have questions about your study's IC, please contact your <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Data Sharing Administrator (DSA)</a>.</b><span class='required-label'>*</span> </label> 
+              <label for="duoSel"> <b>Please select the study and required data use restrictions and requirements associated with the data based on the study's Institutional Certification (IC). If you have questions about your study's IC, please contact your <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Data Sharing Administrator (DSA)</a>.</b><span class='required-label'>*</span> </label> 
             </div>
           </div>
 
@@ -153,10 +152,18 @@ export const dataUploadForm = async () => {
     });
   const nextPress = document.getElementById("nextBtn");
   nextPress.addEventListener("click", async function() {
-      for (var ele of document.getElementsByClassName('form2')) {
-        var eleCheck = ele.querySelectorAll('input[type="checkbox"]');
-        if (!Array.prototype.slice.call(eleCheck).some(x => x.checked)) return alert("Please select at least one checkbox per study.")
-      }
+    var allStudies = document.getElementsByName('studySel')
+    var selStudies = Array.from(allStudies).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value)
+    if (selStudies.length < 1) return alert("Please select at least one study");
+    for (var study of selStudies){
+      var ele = document.getElementById(study);
+      var eleCheck = ele.querySelectorAll('input[type="checkbox"]')
+      if (!Array.prototype.slice.call(eleCheck).some(x => x.checked)) return alert("Please select at least one data use restriction per study.")
+    }
+      // for (var ele of document.getElementsByClassName('form2')) {
+      //   var eleCheck = ele.querySelectorAll('input[type="checkbox"]');
+      //   if (!Array.prototype.slice.call(eleCheck).some(x => x.checked)) return alert("Please select at least one checkbox per study.")
+      // }
       await nextPrev(1, currentTab);
         currentTab += 1;
     });
@@ -229,9 +236,12 @@ export const dsmpSelected = async (csvData) => {
             for (let i=0; i <studies.length; i++) {
               console.log(studies[i]);
     template += `
-              <div class="input-group input-group2 font-size-22">
-                <h4><b>cas: ${cas[i]}</b>, ${studies[i]}</h4>
-                <div class="input-group input-group2">
+            <div class="input-group input-group2 font-size-22">
+              <div class="inline-field field-br">
+                <input id="${value}sel${i}" name="studySel" type="checkbox" value="${value}duo${i}"/>
+                <label class="container-ul" for="${value}sel${i}"><h4><b>cas: ${cas[i]}</b>, ${studies[i]}</h4></label>
+              </div>
+              <div class="input-group input-group2">
                 <ul class="form2" id='${value}duo${i}' cas='${cas[i]}' study='${studies[i]}'>
                   <div class="inline-field">
                     <input id="${value}nores${i}" name="duoSel" type="checkbox" value="NR"/>
@@ -262,16 +272,8 @@ export const dsmpSelected = async (csvData) => {
                   </div>
                 </ul>
                 </div>
-                <!---<div class='input-group input-group2'>
-                  <label for="${value}cert_upload${i}"> <b>Upload Institutional Certifications</b> </label>
-                  <input id="${value}cert_upload${i}" name="${value}cert_upload${i}" type="file" multiple/>              
-                </div>--->
               </div>
             `
-              // console.log(document.getElementById(`${value}dsr${i}`));
-              // document.getElementById(`${value}dsr${i}`).addEventListener("change", () => {
-              // document.getElementById(`${value}dsr${i}input`).classList.toggle("d-none");
-              // });
             }
   }
   template +=`
@@ -393,8 +395,10 @@ export async function subForm(eventtest) {
   btn.disabled = true;
   eventtest.preventDefault();
   showAnimation();
-  const ele = document.getElementById("duoSel");
-  const eleAll = ele.getElementsByClassName('form2');
+  // const ele = document.getElementById("duoSel");
+  // const eleAll = ele.getElementsByClassName('form2');
+  const ele = document.getElementsByName('studySel');
+  const eleAll = Array.from(ele).filter((checkbox) => checkbox.checked).map((checkbox) => document.getElementById(checkbox.value));
   var obj = [];
 
   const date = document.getElementById(`date`).value;
@@ -461,7 +465,7 @@ export async function subForm(eventtest) {
   document.getElementById("modalBody").innerHTML = `
           <p><b>Files successfully uploaded.</b></p>
           <p><b>Please visit the below folders to check all files were properly uploaded.</b></p>
-          <p><b>Author Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId}" target="__blank">${folderName}</a></p>
+          <p><b>Author Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId}" target="__blank">${folderName}_DCEG_Data_Platform</a></p>
           <p><b>Author Folder ID:</b> ${folderId}</p>
           <p><b>Publication Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId2}" target="__blank">${folderName2}</a></p>
           <p><b>Publication Folder ID:</b> ${folderId2}</p>
@@ -519,8 +523,10 @@ export async function nextPrev(n, currentTab) {
     // var ele = document.getElementById("approvedDSMP");
     // var values = Array.from(ele.selectedOptions).map(v=>v.value);
     let template =`<h3><b>Upload Manuscript Data, Data Dictionary, and Other Associated Metadata</b></h3>`
-    const ele = document.getElementById("duoSel");
-    const eleAll = ele.getElementsByClassName('form2');
+    const ele = document.getElementsByName('studySel');
+    const eleAll = Array.from(ele).filter((checkbox) => checkbox.checked).map((checkbox) => document.getElementById(checkbox.value));
+    //const ele = document.getElementById("duoSel");
+    //const eleAll = ele.getElementsByClassName('form2');
     //const testallval = testall.length;
     // console.log(test);
     // console.log(testall);
@@ -548,17 +554,23 @@ export async function nextPrev(n, currentTab) {
             </div>
             <div class='input-group input-group2 d-none' id='${id}addAttachment'>
             </div>
-            <div class='input-group input-group2'>
-              <button type="button" id="addDataBtn" class="buttonsubmit">+Data or Metadata</button>
+            <div style="overflow:auto;">
+              <div style="float:left;">
+                <button type="button" id="${id}addDataBtn" class="buttonsubmit"><i class="fa fa-plus" aria-hidden="true"></i> (Meta)Data</button>
+              </div>
+              <div style="display: none; float:right;">
+                <button type="button" id="${id}remDataBtn" class="buttonsubmit"><i class="fa fa-trash-can" aria-hidden="true"></i> Last (Meta)Data</button>
+              </div>
             </div>
           </div>
         </div>
           `
     }
     document.getElementById("uploadData").innerHTML = template;
-    let addDataBtns = document.querySelectorAll('#addDataBtn');
+    let addDataBtns = document.querySelectorAll('[id$=addDataBtn]');
+    let remDataBtns = document.querySelectorAll('[id$=remDataBtn]');
     const clickEvent = e => {
-      let parent = e.target.parentElement.parentElement.parentElement;
+      let parent = e.target.parentElement.parentElement.parentElement.parentElement;
       //const ele = document.getElementById(parent);
       console.log(parent);
       const eleAll = parent.getElementsByClassName('input-addedFiles');
@@ -573,15 +585,40 @@ export async function nextPrev(n, currentTab) {
       newInput.className = 'input-addedFiles input-group'
 
       newInput.innerHTML = `
-        <label for="${id}data${num}"> <b>Upload additional data</b> </label>
+        <label for="${id}data${num}"> <b>Upload additional data/metadata</b> </label>
         <input id="${id}data_upload${num}" name="${id}data${num}" type="file" single required/>
-        <input id="${id}data_upload_description${num}" name="${id}data${num}" type="text" placeholder="Provide description of uploaded data. Note, this will be viewable by users of the data" required/>
+        <input id="${id}data_upload_description${num}" name="${id}data${num}" type="text" placeholder="Provide description of uploaded data/metadata. Note, this will be viewable by users of the data" required/>
       `
       idaddAttachment.appendChild(newInput);
       idaddAttachment.classList.toggle("d-none", false);
+      var remBtn = document.getElementById(`${id}remDataBtn`);
+      remBtn.parentElement.style.display = "inline";
+
+      // remBtn.addEventListener('click', function(e) {
+      //   console.log(e.target.id);
+      //   var parId = e.target.id.replace('removeDataBtn','addAttachment');
+      //   var parDiv = document.getElementById(parId);
+      //   console.log(parDiv.lastChild);
+      //   parDiv.removeChild(parDiv.lastChild);
+      //   if (parDiv.childElementCount < 1) {
+      //     remBtn.parentElement.style.display = "none";
+      //   }
+      // })
+    }
+    const clickEventRem = e => {
+      var parId = e.target.id.replace('remDataBtn','addAttachment');
+      var parDiv = document.getElementById(parId);
+      console.log(parDiv.lastChild);
+      parDiv.removeChild(parDiv.lastChild);
+      if (parDiv.childElementCount < 1) {
+        e.target.parentElement.style.display = "none";
+      }
     }
     addDataBtns.forEach((item) => {
       item.addEventListener('click', clickEvent);
+    })
+    remDataBtns.forEach((item) => {
+      item.addEventListener('click', clickEventRem);
     })
   }
   showTab(currentTab);
