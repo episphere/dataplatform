@@ -238,7 +238,7 @@ export const dsmpSelected = async (csvData) => {
     template += `
             <div class="input-group input-group2 font-size-22">
               <div class="inline-field field-br">
-                <input id="${value}sel${i}" name="studySel" type="checkbox" value="${value}duo${i}" ${studies.length === 1 ? 'checked':''}/>
+                <input id="${value}sel${i}" name="studySel" type="checkbox" value="${value}duo${i}" checked/> <!---${studies.length === 1 ? 'checked':''}--->
                 <label class="container-ul" for="${value}sel${i}"><h4><b>cas: ${cas[i]}</b>, ${studies[i]}</h4></label>
               </div>
               <div class="input-group input-group2">
@@ -268,7 +268,7 @@ export const dsmpSelected = async (csvData) => {
                     <label class="container-ul" for="${value}dsr${i}">Disease-specific Research</label>
                   </div>
                   <div class="inline-field">
-                    <input id="${value}dsr${i}input" name="duoSel" type="text" placeholder="Cancer" class='d-none'/>
+                    <input id="${value}dsr${i}input" name="duoSel" type="text" placeholder="Name of specific disease" class='d-none'/>
                   </div>
                 </ul>
                 </div>
@@ -426,7 +426,7 @@ export async function subForm(eventtest) {
     const ngm = document.getElementById(`${dsmp}ngm${ver}`).checked;
     const gru = document.getElementById(`${dsmp}gru${ver}`).checked;
     const dsr = document.getElementById(`${dsmp}dsr${ver}`).checked;
-    const dsrinput = document.getElementById(`${dsmp}dsr${ver}input`).value;
+    const dsrinput = document.getElementById(`${dsmp}dsr${ver}input`).value==='' ? 'none' : document.getElementById(`${dsmp}dsr${ver}input`).value;
     const nfp = document.getElementById(`${dsmp}nfp${ver}`).checked;
 
     const userval = {dsmp: dsmp, cas: cas, study: study, date: date, 
