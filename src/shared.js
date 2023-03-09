@@ -1867,9 +1867,9 @@ export const csv2JsonTest = (csv) => {
   for (let i = 1; i < lines.length; i++) {
     const obj = {};
     //const currentline = CSVtoArray(lines[i]);
-    console.log(lines[i]);
+    //console.log(lines[i]);
     const currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)//match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
-    console.log(currentline);
+    //console.log(currentline);
     if (currentline){
       for (let j = 0; j < headers.length; j++) {
         if (currentline[j]) {

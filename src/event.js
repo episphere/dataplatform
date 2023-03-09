@@ -1277,7 +1277,7 @@ export const addEventUpdateSummaryStatsData = () => {
                             </button>`;
 
     let template = '<form id="updateSummaryStatsForm">';
-    template += `<p>Updating data will download an updated publication </br> file to be uploaded to: https://github.com/episphere/dataplatform/tree/production/imports</p>`;
+    template += `<p>Updating data will download an updated publication </br> file to be uploaded to: <a href="https://github.com/episphere/dataplatform/tree/production/imports" target="__blank">DCEG PDR GitHub</a></p>`;
 
     template +=
       '<div class="modal-footer"><button type="submit" class="btn btn-outline-primary">Update data</button></div>';
@@ -1370,6 +1370,7 @@ const addEventUpdateSummaryStatsForm = () => {
     link.setAttribute("href", encodedUri);
     link.setAttribute("download", `DCEG_Publications.tsv`);
     link.click();
+    form.innerHTML = `Complete: Please upload file to: </br> <a href="https://github.com/episphere/dataplatform/tree/production/imports" target="__blank">DCEG PDR GitHub</a>`
     return;
     // const folderIds = Array.from(selectedBtn).map((btn) =>
     //   parseInt(btn.dataset.folderId)

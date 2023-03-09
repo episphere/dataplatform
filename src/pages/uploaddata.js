@@ -133,7 +133,7 @@ export const dataUploadForm = async () => {
   document.getElementById("uploadFormView").innerHTML = template;
   var currentTab = 0;
   showTab(currentTab);
-  console.log(currentTab);
+  //console.log(currentTab);
   const dsmp = await (await fetch("./imports/dsmp_output.csv")).text();
   //console.log(dsmp);
   let csvData = csv2JsonTest(dsmp);
@@ -193,18 +193,18 @@ export const approvedFormSelect = async (csvData) => { //Is there a DSMP functio
   }
 
   if (pubpresEl.checked && yesEl.checked) {
-    console.log('pubpres selected');
+    //console.log('pubpres selected');
     approvedEl.parentElement.classList.toggle("d-none", !pubpresEl.checked);
     duoEl.classList.toggle("d-none", !pubpresEl.checked);
     document.getElementById("nextBtn").style.display = "none";
-    console.log(csvData);
+    //console.log(csvData);
     await populateApprovedSelect(csvData);
   } else if (studyEl.checked && yesEl.checked) {
-    console.log('study selected');
+    //console.log('study selected');
     approvedEl.parentElement.classList.toggle("d-none", !studyEl.checked);
     duoEl.classList.toggle("d-none", !studyEl.checked);
     document.getElementById("nextBtn").style.display = "none";
-    console.log(csvData);
+    //console.log(csvData);
     await populateApprovedSelect(csvData);
   }
 };
@@ -216,7 +216,7 @@ export const dsmpSelected = async (csvData) => {
     <div class='input-group input-group2 font-size-22'>`;
   var ele = document.getElementById("approvedDSMP");
   var values = Array.from(ele.selectedOptions).map(({ value }) => value);//Array.from(ele.selectedOptions).map(v=>v.value);
-  console.log(values);
+  //console.log(values);
   for (const value of values){
     var selectedData = csvData.data.find(item => item.planID === value);
     if (!selectedData.studyName){
@@ -227,14 +227,14 @@ export const dsmpSelected = async (csvData) => {
       selectedData.cas = 'None'
     }
     var cas = selectedData.cas.split(";");
-    console.log(studies);
-    console.log(cas);
+    //console.log(studies);
+    //console.log(cas);
     const duoEl = document.getElementById("duoSel");
     duoEl.classList.toggle("d-none", values === "");
     template +=`
           <h3>DSMP: ${value}</h3>`;
             for (let i=0; i <studies.length; i++) {
-              console.log(studies[i]);
+              //console.log(studies[i]);
     template += `
             <div class="input-group input-group2 font-size-22">
               <div class="inline-field field-br">
@@ -288,7 +288,7 @@ export const dsmpSelected = async (csvData) => {
       })
     }
   }
-  console.log(dsrs[0].id);
+  //console.log(dsrs[0].id);
 }
 
 export const addStudiesInput = () => { //Is there a DSMP function
@@ -300,7 +300,7 @@ export const addStudiesInput = () => { //Is there a DSMP function
 
 export const populateApprovedSelect = async (csvData) => { //Pulling data from dsmp_output
   const dsmpdata = csvData.data;
-  console.log(dsmpdata);
+  //(dsmpdata);
   const dsmpheaders = csvData.headers;
   const pubpresEl = document.getElementById("dsmp_pubpres");
   const studyEl = document.getElementById("dsmp_study")
@@ -328,7 +328,7 @@ export const populateApprovedSelect = async (csvData) => { //Pulling data from d
       }
     }
   }
-  console.log(options);
+  //console.log(options);
   approvedEl.length = 0;
   const optionEl = document.createElement("option")
   optionEl.disabled = true;
@@ -340,7 +340,7 @@ export const populateApprovedSelect = async (csvData) => { //Pulling data from d
     const optionEl = document.createElement("option");
     optionEl.style="font-weight:bold";
     optionEl.value = option[0];
-    console.log(optionEl.value);
+    //console.log(optionEl.value);
     optionEl.text = `${option[0]}`//: ${option[1]}, cas: ${option[2]}`;
     approvedEl.appendChild(optionEl);
     if (!option[1]) {
@@ -356,7 +356,7 @@ export const populateApprovedSelect = async (csvData) => { //Pulling data from d
       optionEl.disabled = true;
       optionEl.style="font-style:italic";
       optionEl.value = '';
-      console.log(optionEl.value);
+      //console.log(optionEl.value);
       optionEl.text = `${studies[i]}, cas: ${cas[i]}`;
       approvedEl.appendChild(optionEl);
     }
@@ -440,16 +440,16 @@ export async function subForm(eventtest) {
     await uploadStructure(document.getElementById(`${id}data_files`).files[0], folderId3, document.getElementById(`${id}data_description`).value);
     await uploadStructure(document.getElementById(`${id}data_dictionary`).files[0], folderId3, document.getElementById(`${id}data_dictionary_description`).value);
     const dataAdded = document.querySelectorAll(`[id*="${id}data_upload"]`);
-    console.log(dataAdded);
+    //console.log(dataAdded);
     for (var val of dataAdded){
-      console.log(val);
+      //console.log(val);
       if (!val.id.includes('data_upload_description')){
         uploadStructure(val.files[0], folderId3, document.getElementById(val.id.replace('data_upload', 'data_upload_description')).value);
       }
     }
   }
   await descFolder(folderId2, manu_title + ', ' + studies);
-  console.log(obj);
+  //console.log(obj);
   const headers = Object.keys(obj[0]);
   const tsvValue = json2other(obj, headers, true).replace(/(<b>)|(<\/b>)/g, "");
   let tsvContent =
@@ -489,7 +489,7 @@ export async function folderStructure(folderID, folderName) {
   for (const folder of folderItems.entries){
     folderNames.push(folder.name);
   };
-  console.log(folderNames);
+  //console.log(folderNames);
   if (folderNames.includes(folderName)) {
     const testing = folderItems.entries.filter(dt => dt.name === folderName);
     return testing[0].id
@@ -531,10 +531,10 @@ export async function nextPrev(n, currentTab) {
     // console.log(test);
     // console.log(testall);
     // console.log(testallval);
-    console.log(eleAll);
+    //console.log(eleAll);
     for (let form of eleAll){
       const id = form.getAttribute('id');
-      console.log(id);
+      //console.log(id);
       const cas = form.getAttribute('cas');
       const study = form.getAttribute('study');
       template +=
@@ -572,10 +572,10 @@ export async function nextPrev(n, currentTab) {
     const clickEvent = e => {
       let parent = e.target.parentElement.parentElement.parentElement.parentElement;
       //const ele = document.getElementById(parent);
-      console.log(parent);
+      //console.log(parent);
       const eleAll = parent.getElementsByClassName('input-addedFiles');
       let id = parent.id.slice(0,-4); //Remove 'Form' from id
-      console.log(id);
+      //console.log(id);
       let num = eleAll.length
       if (num > 0 && document.getElementById(`${id}data_upload${num-1}`).value===''){
         return alert("Please attach file to additional data before adding more data");
@@ -608,7 +608,7 @@ export async function nextPrev(n, currentTab) {
     const clickEventRem = e => {
       var parId = e.target.id.replace('remDataBtn','addAttachment');
       var parDiv = document.getElementById(parId);
-      console.log(parDiv.lastChild);
+      //console.log(parDiv.lastChild);
       parDiv.removeChild(parDiv.lastChild);
       if (parDiv.childElementCount < 1) {
         e.target.parentElement.style.display = "none";
@@ -629,8 +629,8 @@ export function validateForm(currentTab) {
   var x, y, i, valid = true;
   x = document.getElementsByClassName("tab");
   y = x[currentTab].getElementsByTagName("input");
-  console.log(currentTab);
-  console.log(y);
+  //console.log(currentTab);
+  //console.log(y);
   // A loop that checks every input field in the current tab:
   for (i = 0; i < y.length; i++) {
     // If a field is empty...
