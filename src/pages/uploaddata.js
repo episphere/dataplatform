@@ -238,7 +238,7 @@ export const dsmpSelected = async (csvData) => {
     template += `
             <div class="input-group input-group2 font-size-22">
               <div class="inline-field field-br">
-                <input id="${value}sel${i}" name="studySel" type="checkbox" value="${value}duo${i}"/>
+                <input id="${value}sel${i}" name="studySel" type="checkbox" value="${value}duo${i}" ${studies.length === 1 ? 'checked':''}/>
                 <label class="container-ul" for="${value}sel${i}"><h4><b>cas: ${cas[i]}</b>, ${studies[i]}</h4></label>
               </div>
               <div class="input-group input-group2">
