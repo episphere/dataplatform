@@ -463,7 +463,7 @@ export async function subForm(eventtest) {
   link.click();
   document.body.appendChild(link);
   document.getElementById("modalBody").innerHTML = `
-          <p><b>Files successfully uploaded.</b></p>
+          <p><b>Process complete.</b></p>
           <p><b>Please visit the below folders to check all files were properly uploaded.</b></p>
           <p><b>Author Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId}" target="__blank">${folderName}_DCEG_Data_Platform</a></p>
           <p><b>Author Folder ID:</b> ${folderId}</p>
@@ -471,8 +471,16 @@ export async function subForm(eventtest) {
           <p><b>Publication Folder ID:</b> ${folderId2}</p>
           `
           ;
-        $("#popUpModal").modal("show");
+  $("#popUpModal").modal("show");
+  let popup = document.getElementById('popUpModal');
+  let btns = popup.querySelectorAll('button');
+  for (let button of btns) {
+    button.addEventListener('click', function () {
+      location.reload();
+    })
+  }
   hideAnimation();
+  //location.reload();
   btn.disabled = false;
 }
 
