@@ -1,4 +1,4 @@
-dsmp	cas	study	date	journal_name	journal_acro	title	author	nores	hmb	ngm	gru	dsr	nfp
-"dsmp0015.v3"	"3031"	"ATBC Study"	"2023-03"	"PLOS Water"	"PLOS Water"	"Test Paper: DCEG PDR, Let's see how well this works!"	"Thomas U Ahearn"	"false"	"false"	"false"	"false"	"false"	"true"
-"dsmp008.v1"	"3152"	"AARP prospective study of diet and cancer"	"2020-01"	"Nature Cancer"	"Nat Cancer"	"This is a testing manuscript"	"Ben P Kopchick"	"false"	"false"	"false"	"true"	"true"	"false"
-"dsmp0012.v4"	"10410"	"Effects of germline genetic variation and somatic mutations on cancer risk"	"2020-01"	"Nature Cancer"	"Nat Cancer"	"This is a testing manuscript"	"Ben P Kopchick"	"false"	"true"	"false"	"true"	"false"	"false"
+dsmp	cas	study	date	journal_name	journal_acro	title	author	nores	hmb	ngm	gru	dsr	dsr_value	nfp
+"dsmp0015.v3"	"3031"	"ATBC Study"	"2023-03"	"PLOS Water"	"PLOS Water"	"Test Paper: DCEG PDR, Let's see how well this works!"	"Thomas U Ahearn"	"false"	"false"	"false"	"false"	"false"	"none"	"true"
+"dsmp008.v1"	"3152"	"AARP prospective study of diet and cancer"	"2020-01"	"Nature Cancer"	"Nat Cancer"	"This is a testing manuscript"	"Ben P Kopchick"	"false"	"false"	"false"	"true"	"true"	"Brain Cancer"	"false"
+"dsmp0012.v4"	"10410"	"Effects of germline genetic variation and somatic mutations on cancer risk"	"2020-01"	"Nature Cancer"	"Nat Cancer"	"This is a testing manuscript"	"Ben P Kopchick"	"false"	"true"	"false"	"true"	"false"	"none"	"false"
