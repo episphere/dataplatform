@@ -134,7 +134,7 @@ export const dataUploadForm = async () => {
   var currentTab = 0;
   showTab(currentTab);
   //console.log(currentTab);
-  const dsmp = await (await fetch("./imports/dsmp_output.csv")).text();
+  const dsmp = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/main/imports/dmsp_output.csv")).text()//await (await fetch("./imports/dsmp_output.csv")).text();
   //console.log(dsmp);
   let csvData = csv2JsonTest(dsmp);
   //await populateApprovedSelect(csvData);
@@ -300,6 +300,7 @@ export const addStudiesInput = () => { //Is there a DSMP function
 
 export const populateApprovedSelect = async (csvData) => { //Pulling data from dsmp_output
   const dsmpdata = csvData.data;
+  console.log(dsmpdata);
   //(dsmpdata);
   const dsmpheaders = csvData.headers;
   const pubpresEl = document.getElementById("dsmp_pubpres");
