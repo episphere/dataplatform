@@ -2,7 +2,8 @@ import {
   addEventShowAllCollaborator,
   addEventAddNewCollaborator,
   addEventFileStats,
-  addEventVariableDefinitions
+  addEventVariableDefinitions,
+  addEventShowExtCollaborator
 } from "../event.js";
 import { boxRoles } from "../config.js";
 import {
@@ -380,6 +381,7 @@ export const shareData = (element) => {
   const folderToShare = document.getElementById("folderToShare");
   addEventAddNewCollaborator();
   addEventShowAllCollaborator();
+  addEventShowExtCollaborator();
   element.addEventListener("click", () => {
     folderToShare.dataset.folderId = element.dataset.folderId;
     folderToShare.dataset.folderName = element.dataset.folderName;

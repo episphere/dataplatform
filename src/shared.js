@@ -811,6 +811,27 @@ export const getCurrentUser = async () => {
   }
 };
 
+export const getUser = async (id) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    const response = await fetch(`https://api.box.com/2.0/users/${id}`, {
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true) return await getUser(id);
+    }
+    if (response.status === 200) {
+      return response.json();
+    } else {
+      return null;
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true) return await getUser(id);
+  }
+};
+
 export const addNewCollaborator = async (id, type, login, role) => {
   try {
     const access_token = JSON.parse(localStorage.parms).access_token;

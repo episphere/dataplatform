@@ -28,7 +28,8 @@ import {
   reSizePlots,
   showComments,
   tsv2Json,
-  json2other
+  json2other,
+  getUser
 } from "./shared.js";
 import { renderDataSummary } from "./pages/about.js";
 import { variables } from "./variables.js";
@@ -373,6 +374,7 @@ const numberType = (aa) => {
 export const addEventShowAllCollaborator = () => {
   const btn1 = document.getElementById("addNewCollaborators");
   const btn2 = document.getElementById("listCollaborators");
+  const btn3 = document.getElementById("listExtCollaborators");
   const folderToShare = document.getElementById("folderToShare");
   btn2.addEventListener("click", async () => {
     if (btn2.classList.contains("active-tab")) return;
@@ -381,6 +383,7 @@ export const addEventShowAllCollaborator = () => {
     const type = folderToShare.dataset.objectType;
     btn2.classList.add("active-tab");
     btn1.classList.remove("active-tab");
+    btn3.classList.remove("active-tab");
     const collaboratorModalBody = document.getElementById(
       "collaboratorModalBody"
     );
@@ -391,18 +394,17 @@ export const addEventShowAllCollaborator = () => {
     let allEntries = [];
     if (response && response.entries.length > 0) {
       let entries = response.entries;
-
       entries.forEach((entry) => {
         const name = !entry.invite_email ? entry.accessible_by.name : "";
-        const email = !entry.invite_email
-          ? entry.accessible_by.login
-          : entry.invite_email;
+        const email = !entry.invite_email ? entry.accessible_by.login : entry.invite_email;
         const role = entry.role;
         const status = entry.status;
         const id = entry.id;
-        // const folderName = entry.item.name;
+        //const userid = entry.accessible_by.id;
+        //const folderName = entry.item.name;
         const addedBy = `${entry.created_by.name}`;
-        const addedAt = new Date(entry.created_at).toLocaleString();
+        const addedAt = new Date(entry.added_at).toLocaleString();
+        const expiresAt = new Date(entry.expires_at).toLocaleString();
         allEntries.push({
           name,
           email,
@@ -412,8 +414,11 @@ export const addEventShowAllCollaborator = () => {
           addedAt,
           id,
           folderName,
+          expiresAt
+          //userid
         });
       });
+
       allEntries = allEntries.sort((a, b) =>
         a.name.toLowerCase() > b.name.toLowerCase()
           ? 1
@@ -439,9 +444,115 @@ export const addEventShowAllCollaborator = () => {
     } else {
       table = "Collaborators not found!";
     }
+    console.log(allEntries);
+    // await Promise.all(allEntries.map(async (input) => {
+    //   if (input.name) {
+    //     console.log("true");
+    //   } else {
+    //     const userName = await getUser(input.userid);
+    //     console.log(userName);
+    //   }
+    // }));
     collaboratorModalBody.innerHTML = `
-            <div class="modal-body allow-overflow">${table}</div>
+            <div class="modal-body allow-overflow max-height-collaboration-list">${table}</div>
             <div class="modal-footer">
+                <button type="button" id="extendCollaborations" title="Extend" class="btn btn-light" data-dismiss="modal">Extend Collaboration</button>
+                <button type="button" title="Close" class="btn btn-dark" data-dismiss="modal">Close</button>
+            </div>
+        `;
+    renderCollaboratorsList(allEntries, userPermission);
+    addEventSearchCollaborators(allEntries, userPermission);
+  });
+};
+
+export const addEventShowExtCollaborator = () => {
+  const btn1 = document.getElementById("addNewCollaborators");
+  const btn2 = document.getElementById("listCollaborators");
+  const btn3 = document.getElementById("listExtCollaborators");
+  const folderToShare = document.getElementById("folderToShare");
+  btn3.addEventListener("click", async () => {
+    if (btn3.classList.contains("active-tab")) return;
+    const ID = folderToShare.dataset.folderId;
+    const folderName = folderToShare.dataset.folderName;
+    const type = folderToShare.dataset.objectType;
+    btn3.classList.add("active-tab");
+    btn1.classList.remove("active-tab");
+    btn2.classList.remove("active-tab");
+    const collaboratorModalBody = document.getElementById(
+      "collaboratorModalBody"
+    );
+    collaboratorModalBody.innerHTML = ``;
+    const response = await getCollaboration(ID, `${type}s`);
+    const userPermission = checkPermissionLevel(response);
+    let table = "";
+    let allEntries = [];
+    if (response && response.entries.length > 0) {
+      let entries = response.entries;
+      entries.forEach((entry) => {
+        const name = !entry.invite_email ? entry.accessible_by.name : "";
+        const email = !entry.invite_email ? entry.accessible_by.login : entry.invite_email;
+        const role = entry.role;
+        const status = entry.status;
+        const id = entry.id;
+        //const userid = entry.accessible_by.id;
+        //const folderName = entry.item.name;
+        const addedBy = `${entry.created_by.name}`;
+        const addedAt = new Date(entry.added_at).toLocaleString();
+        const expiresAt = new Date(entry.expires_at).toLocaleString();
+        if (!email.includes("@nih.gov")){
+          allEntries.push({
+            name,
+            email,
+            role,
+            status,
+            addedBy,
+            addedAt,
+            id,
+            folderName,
+            expiresAt
+            //userid
+          });
+        };
+      });
+
+      allEntries = allEntries.sort((a, b) =>
+        a.name.toLowerCase() > b.name.toLowerCase()
+          ? 1
+          : b.name.toLowerCase() > a.name.toLowerCase()
+          ? -1
+          : 0
+      );
+
+      table += `
+                <div class="row mb-3">
+                    <div class="col"><strong>${folderName}</strong></div>
+                    <div class="col">
+                        <div class="input-group">
+                            <input type="search" class="form-control rounded pt-0 pb-0" style="font-size:0.75rem" autocomplete="off" placeholder="Search min. 3 characters" aria-label="Search" id="searchCollaborators" aria-describedby="search-addon">
+                            <span class="input-group-text border-0 search-input-collaborator">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <table id="collaboratorsList" class="table table-borderless table-striped collaborator-table"></table>
+            `;
+    } else {
+      table = "Collaborators not found!";
+    }
+    console.log(allEntries);
+    // await Promise.all(allEntries.map(async (input) => {
+    //   if (input.name) {
+    //     console.log("true");
+    //   } else {
+    //     const userName = await getUser(input.userid);
+    //     console.log(userName);
+    //   }
+    // }));
+    collaboratorModalBody.innerHTML = `
+            <div class="modal-body allow-overflow max-height-collaboration-list">${table}</div>
+            <div class="modal-footer">
+                <button type="button" id="extendCollaborations" title="Extend" class="btn btn-light" data-dismiss="modal">Extend Collaboration</button>
                 <button type="button" title="Close" class="btn btn-dark" data-dismiss="modal">Close</button>
             </div>
         `;
@@ -460,12 +571,12 @@ const renderCollaboratorsList = (allEntries, userPermission) => {
   let table = `
         <thead>
             <tr>
-                <th>Name <button class="transparent-btn sort-column" data-column-name="name" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
-                <th>Email <button class="transparent-btn sort-column" data-column-name="email" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
-                <th>Role <button class="transparent-btn sort-column" data-column-name="role" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
-                <th>Added by <button class="transparent-btn sort-column" data-column-name="addedBy" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
-                <th>Added at <button class="transparent-btn sort-column" data-column-name="addedAt" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
-                <th></th>
+              <th>Check </th>
+              <th>Name <button class="transparent-btn sort-column" data-column-name="name" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
+              <th>Email <button class="transparent-btn sort-column" data-column-name="email" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
+              <th>Role <button class="transparent-btn sort-column" data-column-name="role" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
+              <th>Added by <button class="transparent-btn sort-column" data-column-name="addedBy" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
+              <th>Expires at <button class="transparent-btn sort-column" data-column-name="expiresAt" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
             </tr>
         </thead>
         <tbody id="tBodyCollaboratorList"></tbody>
@@ -473,47 +584,23 @@ const renderCollaboratorsList = (allEntries, userPermission) => {
   document.getElementById("collaboratorsList").innerHTML = table;
   renderCollaboratorListTBody(allEntries, userPermission);
   addEventSortTable(allEntries, userPermission);
+  addEventExtendCollaborations();
 };
 
 const renderCollaboratorListTBody = (allEntries, userPermission) => {
   let tbody = "";
   allEntries.forEach((entry) => {
-    const { name, email, role, addedBy, addedAt, id, folderName } = entry;
+    const { name, email, role, addedBy, expiresAt, id, folderName } = entry;
     const userName = JSON.parse(localStorage.parms).name;
     tbody += `<tr>
-                    <td title="${name}">${
-      name.length > 20 ? `${name.slice(0, 20)}...` : `${name}`
-    }</td>
-                    <td title="${email}">${
-      email.length > 20 ? `${email.slice(0, 20)}...` : `${email}`
-    }</td>
-                    <td>${
-                      email !== JSON.parse(localStorage.parms).login &&
-                      userPermission &&
-                      updatePermissionsOptions(userPermission, role) &&
-                      userName === addedBy
-                        ? `
-                    <select title="Update permission" data-collaborator-id="${id}" data-previous-permission="${role}" data-collaborator-name="${name}" data-collaborator-login="${email}" class="form-control updateCollaboratorRole">${updatePermissionsOptions(
-                            userPermission,
-                            role
-                          )}</select>
-                `
-                        : `${role}`
-                    }</td>
-                    <td title="${addedBy}">${
-      addedBy.length > 20 ? `${addedBy.slice(0, 20)}...` : `${addedBy}`
-    }</td>
-                    <td title="${new Date(
-                      addedAt
-                    ).toLocaleString()}">${new Date(
-      addedAt
-    ).toDateString()}</td>
-                    <td>${
-                      addedBy === userName
-                        ? `<button class="removeCollaborator" title="Remove collaborator" data-collaborator-id="${id}" data-email="${email}" data-collaborator-name="${name}" data-folder-name="${folderName}"><i class="fas fa-user-minus"></i></button>`
-                        : ``
-                    }</td>
-                </tr>`;
+                <td title="${id}"><input type="checkbox" id="${id}" name="extendCollab" value="${role}" checked></td>
+                <td title="${name}">${name.length > 20 ? `${name.slice(0, 20)}...` : `${name}`}</td>
+                <td title="${email}">${email.length > 20 ? `${email.slice(0, 20)}...` : `${email}`}</td>
+                <td>${email !== JSON.parse(localStorage.parms).login && userPermission && updatePermissionsOptions(userPermission, role) && userName === addedBy? `<select title="Update permission" data-collaborator-id="${id}" data-previous-permission="${role}" data-collaborator-name="${name}" data-collaborator-login="${email}" class="form-control updateCollaboratorRole">${updatePermissionsOptions(userPermission,role)}</select>`: `${role}`}</td>
+                <td title="${addedBy}">${addedBy.length > 20 ? `${addedBy.slice(0, 20)}...` : `${addedBy}`}</td>
+                <td title="${new Date(expiresAt).toLocaleString()}">${new Date(expiresAt).toDateString()}</td>
+                <td>${addedBy === userName? `<button class="removeCollaborator" title="Remove collaborator" data-collaborator-id="${id}" data-email="${email}" data-collaborator-name="${name}" data-folder-name="${folderName}"><i class="fas fa-user-minus"></i></button>`: ``}</td>
+              </tr>`;
   });
   document.getElementById("tBodyCollaboratorList").innerHTML = tbody;
   addEventRemoveCollaborator();
@@ -702,6 +789,116 @@ const addEventRemoveCollaborator = () => {
   });
 };
 
+const addEventExtendCollaborations = async () => {
+  const btn = document.getElementById('extendCollaborations');
+  if(!btn) return;
+  btn.addEventListener('click', async () => {
+      const header = document.getElementById('confluenceModalHeader');
+      const body = document.getElementById('confluenceModalBody');
+      
+      header.innerHTML = `<h5 class="modal-title">Collaborations Updating</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>`;
+      var checkboxes = document.getElementsByName('extendCollab');
+      console.log(checkboxes);
+      var result = [];
+      const promises = []
+      Date.prototype.addDays = function(days) {
+          var date = new Date(this.valueOf());
+          date.setDate(date.getDate() + days);
+          return date;
+      }
+      var date = new Date();
+      const newDate = date.addDays(90);
+      const newDateString = newDate.toISOString();
+      for (var i=0; i < checkboxes.length; i++) {
+          if (checkboxes[i].checked) {
+              const promise = updateBoxCollaboratorTime(checkboxes[i].id, checkboxes[i].value, newDateString)
+                  .then(response => response.json());
+              promises.push(promise);
+              //result.push(checkboxes[i].id);
+              //promises.push(checkboxes[i].value);
+          }
+      }
+      showAnimation();
+      Promise.all(promises).then(results => {
+          alert("Please confirm collaborations have been updated");
+          hideAnimation();
+      });
+  })
+};
+
+export const addEventUpdateExtCollaborators = async () => {
+  const btn = document.getElementById('updateCollaborations');
+  if(!btn) return;
+  btn.addEventListener('click', async () => {
+      const header = document.getElementById('confluenceModalHeader');
+      const body = document.getElementById('confluenceModalBody');
+      
+      header.innerHTML = `<h5 class="modal-title">Update Collaborations</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>`;
+      const ID = 156698557621;
+      let collabs = await getCollaboration(ID, 'folders');
+      console.log(collabs);
+      Date.prototype.addDays = function(days) {
+          var date = new Date(this.valueOf());
+          date.setDate(date.getDate() + days);
+          return date;
+      }
+      var date = new Date();
+      const newDate = date.addDays(360);
+      const newDateString = newDate.toISOString();
+      console.log(newDateString);
+      const allEntries = collabs.entries;
+      console.log(allEntries[0]);
+      let test = await updateBoxCollaboratorTime(43582145593, "editor", newDateString);
+      console.log(test);
+      // allEntries.forEach(entry => {
+      //     console.log(entry);
+      //     let test = await updateBoxCollaboratorTime()
+      // })
+
+  })
+};
+
+export const addEventUpdateAllCollaborators = async () => {
+  const btn = document.getElementById('updateCollaborations');
+  if(!btn) return;
+  btn.addEventListener('click', async () => {
+      const header = document.getElementById('confluenceModalHeader');
+      const body = document.getElementById('confluenceModalBody');
+      
+      header.innerHTML = `<h5 class="modal-title">Update Collaborations</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>`;
+      const ID = 156698557621;
+      let collabs = await getCollaboration(ID, 'folders');
+      console.log(collabs);
+      Date.prototype.addDays = function(days) {
+          var date = new Date(this.valueOf());
+          date.setDate(date.getDate() + days);
+          return date;
+      }
+      var date = new Date();
+      const newDate = date.addDays(360);
+      const newDateString = newDate.toISOString();
+      console.log(newDateString);
+      const allEntries = collabs.entries;
+      console.log(allEntries[0]);
+      let test = await updateBoxCollaboratorTime(43582145593, "editor", newDateString);
+      console.log(test);
+      // allEntries.forEach(entry => {
+      //     console.log(entry);
+      //     let test = await updateBoxCollaboratorTime()
+      // })
+
+  })
+};
+
 const checkPermissionLevel = (data) => {
   if (data.entries.length === 0) return null;
   const login =
@@ -725,6 +922,7 @@ const checkPermissionLevel = (data) => {
 export const addEventAddNewCollaborator = () => {
   const btn1 = document.getElementById("addNewCollaborators");
   const btn2 = document.getElementById("listCollaborators");
+  const btn3 = document.getElementById("listExtCollaborators");
   const folderToShare = document.getElementById("folderToShare");
   btn1.addEventListener("click", () => {
     const ID = folderToShare.dataset.folderId;
@@ -732,6 +930,7 @@ export const addEventAddNewCollaborator = () => {
     const type = folderToShare.dataset.objectType;
     btn1.classList.add("active-tab");
     btn2.classList.remove("active-tab");
+    btn3.classList.remove("active-tab");
     const collaboratorModalBody = document.getElementById(
       "collaboratorModalBody"
     );
