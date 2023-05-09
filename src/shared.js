@@ -914,6 +914,30 @@ export const updateBoxCollaborator = async (id, role) => {
   }
 };
 
+export const updateBoxCollaboratorTime = async (id, role, time) => {
+  try {
+      const access_token = JSON.parse(localStorage.parms).access_token;
+      const response = await fetch(`https://api.box.com/2.0/collaborations/${id}`, {
+          method: 'PUT',
+          headers: {
+              Authorization: "Bearer "+access_token
+          },
+          body: JSON.stringify(
+              {role: role,
+              expires_at: time})
+      });
+      if(response.status === 401){
+          if((await refreshToken()) === true) return await updateBoxCollaboratorTime(id, role, time);
+      }
+      else {
+          return response;
+      }
+  }
+  catch(err) {
+      if((await refreshToken()) === true) return await updateBoxCollaboratorTime(id, role, time);
+  }
+};
+
 export const deleteTask = async (taskId) => {
   try {
     const access_token = JSON.parse(localStorage.parms).access_token;

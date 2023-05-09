@@ -29,7 +29,8 @@ import {
   showComments,
   tsv2Json,
   json2other,
-  getUser
+  getUser,
+  updateBoxCollaboratorTime
 } from "./shared.js";
 import { renderDataSummary } from "./pages/about.js";
 import { variables } from "./variables.js";
@@ -833,6 +834,7 @@ export const addEventUpdateExtCollaborators = async () => {
   const btn = document.getElementById('updateCollaborations');
   if(!btn) return;
   btn.addEventListener('click', async () => {
+      const id = document.getElementById('')
       const header = document.getElementById('confluenceModalHeader');
       const body = document.getElementById('confluenceModalBody');
       
@@ -856,10 +858,6 @@ export const addEventUpdateExtCollaborators = async () => {
       console.log(allEntries[0]);
       let test = await updateBoxCollaboratorTime(43582145593, "editor", newDateString);
       console.log(test);
-      // allEntries.forEach(entry => {
-      //     console.log(entry);
-      //     let test = await updateBoxCollaboratorTime()
-      // })
 
   })
 };
