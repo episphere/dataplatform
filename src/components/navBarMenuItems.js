@@ -45,6 +45,7 @@ export const navBarMenutemplate = () => {
             <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#uploadinstruction" id="instructionID">How to upload data from my published manuscript </a>
             <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG/upload" id="myDCEGID_upload"> Upload new data</a>
             <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#data_governance" id="dataGovernance">See my uploaded data</a>
+            <div id="governanceNav" class="grid-elements"></div>
 
             </div>
           </div>`

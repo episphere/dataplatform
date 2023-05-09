@@ -37,7 +37,7 @@ import {
   addFields,
   dataGovernanceLazyLoad,
   dataGovernanceCollaboration,
-  dataGovernanceProjects,
+  dataGovernanceProjects, testingDataGov
 } from "./pages/dataGovernance.js";
 import { myProjectsTemplate } from "./pages/myProjects.js";
 import { createProjectModal } from "./components/modal.js";
@@ -832,37 +832,38 @@ export const addEventDataGovernanceNavBar = (bool) => {
   const dataGovernanceElement = document.getElementById("dataGovernance");
   if (!dataGovernanceElement) return;
   dataGovernanceElement.addEventListener("click", async () => {
-    // if(dataGovernanceElement.classList.contains('navbar-active')) return;
+    // // if(dataGovernanceElement.classList.contains('navbar-active')) return;
     showAnimation();
     assignNavbarActive(dataGovernanceElement, 1);
-    document.title = "DCEG - Data Governance";
-    const confluenceDiv = document.getElementById("confluenceDiv");
-    // if(bool){
-    confluenceDiv.classList.add("general-bg");
+    // document.title = "DCEG - Data Governance";
+    // const confluenceDiv = document.getElementById("confluenceDiv");
+    // // if(bool){
+    // confluenceDiv.classList.add("general-bg");
 
-    const containerDiv = document.createElement("div");
-    containerDiv.classList = ["container padding-bottom-1rem"];
+    // const containerDiv = document.createElement("div");
+    // containerDiv.classList = ["container padding-bottom-1rem"];
 
-    const headerDiv = document.createElement("div");
-    headerDiv.classList = ["main-summary-row"];
-    headerDiv.innerHTML = `<div class="align-left">
-                                        <h1 class="page-header">Data Governance of Uploaded Data</h1>
-                                    </div>`;
-    const divRow = document.createElement("div");
-    divRow.classList = ["main-summary-row white-bg div-border"];
-    divRow.id = "dataGovernanceMain";
+    // const headerDiv = document.createElement("div");
+    // headerDiv.classList = ["main-summary-row"];
+    // headerDiv.innerHTML = `<div class="align-left">
+    //                                     <h1 class="page-header">Data Governance of Uploaded Data</h1>
+    //                                 </div>`;
+    // const divRow = document.createElement("div");
+    // divRow.classList = ["main-summary-row white-bg div-border"];
+    // divRow.id = "dataGovernanceMain";
 
-    const div1 = document.createElement("div");
-    div1.classList = ["col-lg-6 align-left"];
+    // const div1 = document.createElement("div");
+    // div1.classList = ["col-lg-6 align-left"];
 
-    div1.innerHTML = await dataGovernanceTemplate();
+    //div1.innerHTML = await dataGovernanceTemplate();
+    await dataGovernanceTemplate();
     hideAnimation();
-    divRow.appendChild(div1);
-    confluenceDiv.innerHTML = ``;
-    containerDiv.appendChild(headerDiv);
+    // divRow.appendChild(div1);
+    // confluenceDiv.innerHTML = ``;
+    // containerDiv.appendChild(headerDiv);
     // containerDiv.appendChild(btnDiv)
-    containerDiv.appendChild(divRow);
-    confluenceDiv.appendChild(containerDiv);
+    // containerDiv.appendChild(divRow);
+    // confluenceDiv.appendChild(containerDiv);
     //     dataGovernanceProjects();
     dataGovernanceLazyLoad();
     dataGovernanceCollaboration();
@@ -954,7 +955,8 @@ const addEventcreateProjectForm = () => {
                   `<span class="successMsg">Added new collaborator</span>`,
                   `${login} added to ${projectName} as ${role.value} successfully!`
                 );
-                dataGovernanceProjects();
+                //dataGovernanceProjects();
+                testingDataGov();
               } else {
                 template += notificationTemplate(
                   top,
