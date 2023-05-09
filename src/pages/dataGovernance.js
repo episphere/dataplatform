@@ -2,6 +2,7 @@ import {
   addEventShowAllCollaborator,
   addEventAddNewCollaborator,
   addEventFileStats,
+  addEventVariableDefinitions
 } from "../event.js";
 import { boxRoles } from "../config.js";
 import {
@@ -34,11 +35,11 @@ export const template = async () => {
             <div class="card" style="border: 0px;">
               <div class="card-header">
               </div>
-              <form><label for="folderID">Please Input Folder ID: </label>
-                <input type="text" id="folderID" name="folderID"><br><form>
+              <form><label for="folderID">Please Input Folder ID: <button class="info-btn variable-definition" aria-label="More info" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#confluenceMainModal" data-variable='folderUpdateInput'><i class="fas fa-question-circle cursor-pointer"></i></button></label>
+                <input type="text" id="folderID" name="folderID"><br>
                 <button type="submit" id="submitID" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
                 <span class="buttonsubmit__text"> Submit </span>
-              </button><br>
+              </button><br></form>
               <div id="folderInput">
               </div>
             </div>
@@ -87,19 +88,27 @@ export const template = async () => {
   // template += `</ul></div></div>`;
   document.getElementById("confluenceDiv").innerHTML = template;
   testingDataGov();
+  addEventVariableDefinitions();
 };
 
 export const testingDataGov = async () => {
   console.log("testingDataLoaded")
   const testform = document.getElementById("submitID");
-  testform.addEventListener("click", dataGovTest);
+  testform.addEventListener("click", function(e) {
+    e.preventDefault();
+    dataGovTest();
+  });
 };
 
 export const dataGovTest = async () => {
   console.log("testing data gov test function");
-  const array = await getFolderInfo(0); //DCEG: 196554876811 BCRP: 145995765326, Confluence: 137304373658
-  console.log(array);
-  if (!array) return;
+  const val = document.getElementById('folderID').value
+  const array = await getFolderInfo(val); //DCEG: 196554876811 BCRP: 145995765326, Confluence: 137304373658
+  if (!array) {
+    document.getElementById("submitID").classList.toggle('buttonsubmit--loading');
+    alert("Error: Please input a valid folder ID and check that you have the necessary permissions to access it.");
+    return false;
+  }
 
   let template =
     '<div class="card-body data-governance"><ul class="ul-list-style first-list-item collapsible-items p-0 m-0">';
@@ -118,6 +127,8 @@ export const dataGovTest = async () => {
   document.getElementById("folderInput").innerHTML = template;
   dataGovernanceLazyLoad();
   dataGovernanceCollaboration();
+  document.getElementById("submitID").classList.toggle('buttonsubmit--loading');
+  return false;
 }
 export const dataGovernanceProjects = async () => {
   console.log("Event Clicked");

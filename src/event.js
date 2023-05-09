@@ -865,8 +865,8 @@ export const addEventDataGovernanceNavBar = (bool) => {
     // containerDiv.appendChild(divRow);
     // confluenceDiv.appendChild(containerDiv);
     //     dataGovernanceProjects();
-    dataGovernanceLazyLoad();
-    dataGovernanceCollaboration();
+    // dataGovernanceLazyLoad();
+    // dataGovernanceCollaboration();
   });
 };
 
@@ -1167,7 +1167,8 @@ export const addEventFileStats = (element) => {
 export const addEventVariableDefinitions = () => {
   const elements = document.getElementsByClassName("variable-definition");
   Array.from(elements).forEach((element) => {
-    element.addEventListener("click", () => {
+    element.addEventListener("click", (e) => {
+      e.preventDefault();
       const variable = element.dataset.variable;
       let variableName = "";
       let definition = "";
@@ -1251,6 +1252,10 @@ export const addEventVariableDefinitions = () => {
       if (variable === "Reproductive_History2") {
         variableName = "Reproductive History 2";
         definition = "Definition of Reproductive History 2";
+      }
+      if (variable === "folderUpdateInput") {
+        variableName = "Box Folder Input";
+        definition = "Enter Box folder ID. To see all folders enter 0. Only folder owners can extend access.";
       }
 
       const header = document.getElementById("confluenceModalHeader");
