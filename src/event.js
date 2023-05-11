@@ -457,7 +457,6 @@ export const addEventShowAllCollaborator = () => {
     collaboratorModalBody.innerHTML = `
             <div class="modal-body allow-overflow max-height-collaboration-list">${table}</div>
             <div class="modal-footer">
-                <button type="button" id="extendCollaborations" title="Extend" class="btn btn-light" data-dismiss="modal">Extend Collaboration</button>
                 <button type="button" title="Close" class="btn btn-dark" data-dismiss="modal">Close</button>
             </div>
         `;
