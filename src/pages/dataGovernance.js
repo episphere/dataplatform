@@ -196,19 +196,8 @@ export const dataGovernanceLazyLoad = (element) => {
     const status = element.dataset.status;
     const folderName = element.dataset.folderName;
     const type = element.dataset.type;
-    // console.log(id);
-    // console.log(status);
-    // console.log(folderName);
-    // console.log(type);
-    // let test = await getFolderItems(id);
-    // console.log(test);
     if (type && JSON.parse(localStorage.parms).login && id !== "0") {
-      const bool = await checkMyPermissionLevel(
-        await getCollaboration(id, `${type}s`),
-        JSON.parse(localStorage.parms).login,
-        id,
-        type
-      );
+      const bool = await checkMyPermissionLevel(await getCollaboration(id, `${type}s`), JSON.parse(localStorage.parms).login, id, type);
       if (bool === true) {
         const button = document.createElement("button");
         button.dataset.toggle = "modal";
