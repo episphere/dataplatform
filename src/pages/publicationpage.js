@@ -117,6 +117,7 @@ const getDescription = async () => {
         if (ctr.trim()) allJournals.push(ctr.trim());
     });
   });
+
   //console.log(allJournals);
   const uniqueJournals = allJournals
     .filter((d, i) => d && allJournals.indexOf(d.trim()) === i)
@@ -144,10 +145,6 @@ const getDescription = async () => {
         </div>
         `;
   filterTemplate += `
-                    </ul>
-                </div>
-            </div>
-        </div>
         <div class="main-summary-row">
             <div style="width: 100%;">
                 <div class="form-group" margin:0px>
@@ -158,10 +155,39 @@ const getDescription = async () => {
     filterTemplate += `
                 <li class="filter-list-item">
                     <input type="checkbox" data-journal="${journ}" id="label${journ}" class="select-journal" style="margin-left: 1px !important;">
-                    <label for="label${journ}" class="country-name" title="${journ}">${shortenText(journ,15)}</label>
+                    <label for="label${journ}" class="journal-name" title="${journ}">${shortenText(journ,25)}</label>
                 </li>
             `;
   });
+  filterTemplate += `
+                  </ul>
+                    <label class="filter-label font-size-13" for="restrictionsList">Restrictions</label>
+                    <ul class="remove-padding-left font-size-15 filter-sub-div allow-overflow" id="restrictionsList">
+                    <li class="filter-list-item">
+                        <input type="checkbox" data-restrictions="nores" id="labelnores" class="select-restrictions" style="margin-left: 1px !important;">
+                        <label for="labelnores" class="restrictions-name" title="nores">No Restrictions</label>
+                    </li>
+                    <li class="filter-list-item">
+                        <input type="checkbox" data-restrictions="hmb" id="labelhmb" class="select-restrictions" style="margin-left: 1px !important;">
+                        <label for="labelhmb" class="restrictions-name" title="hmb">Health/Medical/Biomedical</label>
+                    </li>
+                    <li class="filter-list-item">
+                        <input type="checkbox" data-restrictions="ngm" id="labelngm" class="select-restrictions" style="margin-left: 1px !important;">
+                        <label for="labelngm" class="restrictions-name" title="ngm">No General Methods</label>
+                    </li>
+                    <li class="filter-list-item">
+                        <input type="checkbox" data-restrictions="nfp" id="labelnfp" class="select-restrictions" style="margin-left: 1px !important;">
+                        <label for="labelnfp" class="restrictions-name" title="nfp">Not for Profit Use Only</label>
+                    </li>
+                    <li class="filter-list-item">
+                        <input type="checkbox" data-restrictions="gru" id="labelgru" class="select-restrictions" style="margin-left: 1px !important;">
+                        <label for="labelgru" class="restrictions-name" title="gru">General Research Use</label>
+                    </li>
+                    <li class="filter-list-item">
+                        <input type="checkbox" data-restrictions="dsr" id="labeldsr" class="select-restrictions" style="margin-left: 1px !important;">
+                        <label for="labeldsr" class="restrictions-name" title="dsr">Disease-Specific Research</label>
+                    </li>
+            `;
   filterTemplate += `
                     </ul>
                 </div>
@@ -387,6 +413,13 @@ const addEventFilterDataCatalogue = (descriptions, headers) => {
     });
   });
 
+  const restrictionsSelection = document.getElementsByClassName("select-restrictions");
+  Array.from(restrictionsSelection).forEach((ele) => {
+    ele.addEventListener("click", () => {
+      filterDataBasedOnSelection(descriptions, headers);
+    });
+  });
+
   const input = document.getElementById("searchDataCatalog");
   input.addEventListener("input", () => {
     filterDataBasedOnSelection(descriptions, headers);
@@ -420,9 +453,17 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
   )
     .filter((dt) => dt.checked)
     .map((dt) => dt.dataset.journal);
-  console.log(journalSelected);
+  //console.log(journalSelected);
+
+  const restrictionsSelected = Array.from(
+    document.getElementsByClassName("select-restrictions")
+  )
+    .filter((dt) => dt.checked)
+    .map((dt) => dt.dataset.restrictions);
+  console.log(restrictionsSelected);
 
   let filteredData = descriptions;
+  console.log(filteredData);
 
   // if (consortiumSelected.length > 0) {
   //   filteredData = filteredData.filter(
@@ -435,6 +476,23 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
       (dt) => journalSelected.indexOf(dt["journal_name"]) !== -1
     );
   }
+
+  if (restrictionsSelected.length > 0) {
+    filteredData = filteredData.filter((dt) => {
+      let found = false;
+      if (restrictionsSelected.includes("nores") && dt["nores"] !== "false")  found = true;
+      if (restrictionsSelected.includes("hmb") && dt["hmb"] !== "false") found = true;
+      if (restrictionsSelected.includes("ngm") && dt["ngm"] !== "false") found = true;
+      if (restrictionsSelected.includes("nfp") && dt["nfp"] !== "false") found = true;
+      if (restrictionsSelected.includes("gru") && dt["gru"] !== "false") found = true;
+      if (restrictionsSelected.includes("dsr") && dt["dsr"] !== "false") found = true;
+      if (restrictionsSelected.includes("dsr_value") && dt["dsr_value"] !== "false") found = true;
+      console.log(found);
+      if (found) return dt;
+    });
+  }
+
+  console.log(filteredData);
 
   // if (journalSelected.length > 0) {
   //   filteredData = filteredData.filter((dt) => {
@@ -466,7 +524,7 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
   //       `
   //       }
   //   `;
-  if (journalSelected.length === 0) filteredData = descriptions;
+  if (journalSelected.length === 0 && restrictionsSelected === 0) filteredData = descriptions;
   const input = document.getElementById("searchDataCatalog");
   const currentValue = input.value.trim().toLowerCase();
 

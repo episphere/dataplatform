@@ -1756,6 +1756,7 @@ form {
 .select-variable,
 .select-country,
 .select-journal,
+.select-restrictions,
 .select-study-design,
 .select-variable-type,
 .select-cohort {
@@ -1801,7 +1802,7 @@ form {
 }
 
 .filter-sub-div {
-  max-height: 112px;
+  max-height: 250px;
 }
 
 .checkbox-consortia {
