@@ -110,15 +110,18 @@ const getDescription = async () => {
   //   }
   // });
 
-  // const allCountries = [];
-  // Object.values(newJsons).forEach((dt) => {
-  //   if (dt["Region"] === undefined) return;
-  //   dt["Region"].split(",").forEach((ctr) => {
-  //     ctr.split(" and ").forEach((c) => {
-  //       if (c.trim()) allCountries.push(c.trim());
-  //     });
-  //   });
-  // });
+  const allJournals = [];
+  Object.values(json).forEach((dt) => {
+    if (dt["journal_name"] === undefined) return;
+    dt["journal_name"].split(",").forEach((ctr) => {
+        if (ctr.trim()) allJournals.push(ctr.trim());
+    });
+  });
+  //console.log(allJournals);
+  const uniqueJournals = allJournals
+    .filter((d, i) => d && allJournals.indexOf(d.trim()) === i)
+    .sort();
+  //console.log(uniqueJournals);
   const allTitles = Object.values(json).map((dt) => dt["title"]);
 
   // const countries = allCountries
@@ -128,8 +131,8 @@ const getDescription = async () => {
     .filter((d, i) => d && allTitles.indexOf(d.trim()) === i)
     .sort();
 
-  console.log(uniqueTitles);
-  console.log(json.filter((dt) => dt['title'] === uniqueTitles[0]));
+  //console.log(uniqueTitles);
+  //console.log(json.filter((dt) => dt['title'] === uniqueTitles[0]));
 
   let filterTemplate = `
         <div class="main-summary-row">
@@ -140,34 +143,31 @@ const getDescription = async () => {
             </div>
         </div>
         `;
-  // filterTemplate += `
-  //                   </ul>
-  //               </div>
-  //           </div>
-  //       </div>
-  //       <div class="main-summary-row">
-  //           <div style="width: 100%;">
-  //               <div class="form-group" margin:0px>
-  //                   <label class="filter-label font-size-13" for="countriesList">Region</label>
-  //                   <ul class="remove-padding-left font-size-15 filter-sub-div allow-overflow" id="countriesList">
-  //                       `;
-  // countries.forEach((region) => {
-  //   filterTemplate += `
-  //               <li class="filter-list-item">
-  //                   <input type="checkbox" data-country="${region}" id="label${region}" class="select-country" style="margin-left: 1px !important;">
-  //                   <label for="label${region}" class="country-name" title="${region}">${shortenText(
-  //     region,
-  //     15
-  //   )}</label>
-  //               </li>
-  //           `;
-  // });
-  // filterTemplate += `
-  //                   </ul>
-  //               </div>
-  //           </div>
-  //       </div>
-  //   `;
+  filterTemplate += `
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="main-summary-row">
+            <div style="width: 100%;">
+                <div class="form-group" margin:0px>
+                    <label class="filter-label font-size-13" for="journalsList">Journal</label>
+                    <ul class="remove-padding-left font-size-15 filter-sub-div allow-overflow" id="journalsList">
+                        `;
+  uniqueJournals.forEach((journ) => {
+    filterTemplate += `
+                <li class="filter-list-item">
+                    <input type="checkbox" data-journal="${journ}" id="label${journ}" class="select-journal" style="margin-left: 1px !important;">
+                    <label for="label${journ}" class="country-name" title="${journ}">${shortenText(journ,15)}</label>
+                </li>
+            `;
+  });
+  filterTemplate += `
+                    </ul>
+                </div>
+            </div>
+        </div>
+    `;
   document.getElementById("filterDataCatalogue").innerHTML = filterTemplate;
   // const descriptions = Object.values(json);
   // console.log(descriptions);
@@ -380,12 +380,13 @@ const addEventFilterDataCatalogue = (descriptions, headers) => {
   //   });
   // });
 
-  // const countrySelection = document.getElementsByClassName("select-country");
-  // Array.from(countrySelection).forEach((ele) => {
-  //   ele.addEventListener("click", () => {
-  //     filterDataBasedOnSelection(descriptions, headers);
-  //   });
-  // });
+  const journalSelection = document.getElementsByClassName("select-journal");
+  Array.from(journalSelection).forEach((ele) => {
+    ele.addEventListener("click", () => {
+      filterDataBasedOnSelection(descriptions, headers);
+    });
+  });
+
   const input = document.getElementById("searchDataCatalog");
   input.addEventListener("input", () => {
     filterDataBasedOnSelection(descriptions, headers);
@@ -414,11 +415,12 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
   //   .filter((dt) => dt.checked)
   //   .map((dt) => dt.dataset.consortium);
 
-  // const countrySelected = Array.from(
-  //   document.getElementsByClassName("select-country")
-  // )
-  //   .filter((dt) => dt.checked)
-  //   .map((dt) => dt.dataset.country);
+  const journalSelected = Array.from(
+    document.getElementsByClassName("select-journal")
+  )
+    .filter((dt) => dt.checked)
+    .map((dt) => dt.dataset.journal);
+  console.log(journalSelected);
 
   let filteredData = descriptions;
 
@@ -428,13 +430,19 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
   //   );
   // }
 
-  // if (countrySelected.length > 0) {
+  if (journalSelected.length > 0) {
+    filteredData = filteredData.filter(
+      (dt) => journalSelected.indexOf(dt["journal_name"]) !== -1
+    );
+  }
+
+  // if (journalSelected.length > 0) {
   //   filteredData = filteredData.filter((dt) => {
   //     let found = false;
-  //     countrySelected.forEach((ctr) => {
-  //       if (dt["Region"] === undefined) return;
+  //     journalSelected.forEach((ctr) => {
+  //       if (dt["journal_name"] === undefined) return;
   //       if (found) return;
-  //       if (dt["Region"].match(new RegExp(ctr, "ig"))) found = true;
+  //       if (dt["journal_name"].match(new RegExp(ctr, "ig"))) found = true;
   //     });
   //     if (found) return dt;
   //   });
@@ -458,7 +466,7 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
   //       `
   //       }
   //   `;
-  // if (countrySelected.length === 0) filteredData = descriptions;
+  if (journalSelected.length === 0) filteredData = descriptions;
   const input = document.getElementById("searchDataCatalog");
   const currentValue = input.value.trim().toLowerCase();
 
