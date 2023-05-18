@@ -554,7 +554,7 @@ export async function nextPrev(n, currentTab) {
             <div class='input-group input-group2' >
               <label for="${id}data_upload"> <b>Upload data</b> </label>
               <input id="${id}data_files" name="${id}data_upload" type="file" single required/>
-              <input id="${id}data_description" name="${id}data_upload" type="text" placeholder="Provide description of uploaded data files. Note, this will be viewable by users of the data" required/>
+              <input id="${id}data_description" name="${id}data_upload" type="text" placeholder="Provide description of uploaded data files including any software required to view data. Note, this will be viewable by users of the data" required/>
             </div>
             <div class='input-group input-group2'>
               <label for="${id}dict_upload"> <b>Upload data dictionary</b> </label>
