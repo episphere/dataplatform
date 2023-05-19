@@ -163,30 +163,30 @@ const getDescription = async () => {
                   </ul>
                     <label class="filter-label font-size-13" for="restrictionsList">Restrictions</label>
                     <ul class="remove-padding-left font-size-15 filter-sub-div allow-overflow" id="restrictionsList">
-                    <li class="filter-list-item">
-                        <input type="checkbox" data-restrictions="nores" id="labelnores" class="select-restrictions" style="margin-left: 1px !important;">
-                        <label for="labelnores" class="restrictions-name" title="nores">No Restrictions</label>
-                    </li>
-                    <li class="filter-list-item">
-                        <input type="checkbox" data-restrictions="hmb" id="labelhmb" class="select-restrictions" style="margin-left: 1px !important;">
-                        <label for="labelhmb" class="restrictions-name" title="hmb">Health/Medical/Biomedical</label>
-                    </li>
-                    <li class="filter-list-item">
-                        <input type="checkbox" data-restrictions="ngm" id="labelngm" class="select-restrictions" style="margin-left: 1px !important;">
-                        <label for="labelngm" class="restrictions-name" title="ngm">No General Methods</label>
-                    </li>
-                    <li class="filter-list-item">
-                        <input type="checkbox" data-restrictions="nfp" id="labelnfp" class="select-restrictions" style="margin-left: 1px !important;">
-                        <label for="labelnfp" class="restrictions-name" title="nfp">Not for Profit Use Only</label>
-                    </li>
-                    <li class="filter-list-item">
-                        <input type="checkbox" data-restrictions="gru" id="labelgru" class="select-restrictions" style="margin-left: 1px !important;">
-                        <label for="labelgru" class="restrictions-name" title="gru">General Research Use</label>
-                    </li>
-                    <li class="filter-list-item">
-                        <input type="checkbox" data-restrictions="dsr" id="labeldsr" class="select-restrictions" style="margin-left: 1px !important;">
-                        <label for="labeldsr" class="restrictions-name" title="dsr">Disease-Specific Research</label>
-                    </li>
+                      <li class="filter-list-item">
+                          <input type="checkbox" data-restrictions="nores" id="labelnores" class="select-restrictions" style="margin-left: 1px !important;">
+                          <label for="labelnores" class="restrictions-name" title="nores">No Restrictions</label>
+                      </li>
+                      <li class="filter-list-item">
+                          <input type="checkbox" data-restrictions="hmb" id="labelhmb" class="select-restrictions" style="margin-left: 1px !important;">
+                          <label for="labelhmb" class="restrictions-name" title="hmb">Health/Medical/Biomedical</label>
+                      </li>
+                      <li class="filter-list-item">
+                          <input type="checkbox" data-restrictions="ngm" id="labelngm" class="select-restrictions" style="margin-left: 1px !important;">
+                          <label for="labelngm" class="restrictions-name" title="ngm">No General Methods</label>
+                      </li>
+                      <li class="filter-list-item">
+                          <input type="checkbox" data-restrictions="nfp" id="labelnfp" class="select-restrictions" style="margin-left: 1px !important;">
+                          <label for="labelnfp" class="restrictions-name" title="nfp">Not for Profit Use Only</label>
+                      </li>
+                      <li class="filter-list-item">
+                          <input type="checkbox" data-restrictions="gru" id="labelgru" class="select-restrictions" style="margin-left: 1px !important;">
+                          <label for="labelgru" class="restrictions-name" title="gru">General Research Use</label>
+                      </li>
+                      <li class="filter-list-item">
+                          <input type="checkbox" data-restrictions="dsr" id="labeldsr" class="select-restrictions" style="margin-left: 1px !important;">
+                          <label for="labeldsr" class="restrictions-name" title="dsr">Disease-Specific Research</label>
+                      </li>
             `;
   filterTemplate += `
                     </ul>
