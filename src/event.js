@@ -472,6 +472,7 @@ export const addEventShowExtCollaborator = () => {
   const folderToShare = document.getElementById("folderToShare");
   btn3.addEventListener("click", async () => {
     if (btn3.classList.contains("active-tab")) return;
+    showAnimation();
     const ID = folderToShare.dataset.folderId;
     const folderName = folderToShare.dataset.folderName;
     const type = folderToShare.dataset.objectType;
@@ -591,7 +592,7 @@ export const addEventShowExtCollaborator = () => {
     } else {
       table = "Collaborators not found!";
     }
-    console.log(allEntries);
+    // console.log(allEntries);
     // await Promise.all(allEntries.map(async (input) => {
     //   if (input.name) {
     //     console.log("true");
@@ -609,6 +610,7 @@ export const addEventShowExtCollaborator = () => {
         `;
     renderCollaboratorsList(allEntries, userPermission);
     addEventSearchCollaborators(allEntries, userPermission);
+    hideAnimation();
   });
 };
 
