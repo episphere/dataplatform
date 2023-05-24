@@ -489,7 +489,7 @@ export const addEventShowExtCollaborator = () => {
       const typeAll = entry.dataset.objectType;
       allFolders.push([idAll, typeAll]);
     })
-    console.log(allFolders);
+    //console.log(allFolders);
     const responseParent = await getCollaboration(ID, `${type}s`);
     const userPermission = checkPermissionLevel(responseParent);
     let responses = await getCollaboration(allFolders[0][0], `${allFolders[0][1]}s`);
@@ -500,11 +500,11 @@ export const addEventShowExtCollaborator = () => {
     //   //responses = {...responses,...response};
     //   responses.push(response);
     // })
-    console.log(responses);
+    //console.log(responses);
     for (let index = 1; index < allFolders.length; index++) {
       let response = (await getCollaboration(allFolders[index][0], `${allFolders[index][1]}s`)).entries;
-      console.log(response);
-      console.log(responses);
+      // console.log(response);
+      // console.log(responses);
       //response = response.entries;
       // //responses = {...responses,...response};
       // //responses.entries.push(response.entries);
@@ -513,11 +513,11 @@ export const addEventShowExtCollaborator = () => {
       //responses = responses.concat(response);
       responses = [...responses, ...response.filter(d => !ids.has(d.id))];
       ids = new Set(responses.map(d => d.id));
-      console.log(responses);
+      //console.log(responses);
     };
     responses = [...new Set(responses.map((item) => item))];
     //let dataTest = await Promise.all(responses);
-    console.log(responses);
+    //console.log(responses);
     // let allTest = [...responses[0],...responses[1]];
     // console.log(allTest);
     // let dataTest = responses;
@@ -539,7 +539,7 @@ export const addEventShowExtCollaborator = () => {
     if (responseParent && responses.length > 0) {
       //let entries = responses.entries;
       responses.forEach(entry => {
-        console.log(entry);
+        //console.log(entry);
         const name = !entry.invite_email ? entry.accessible_by.name : "";
         const email = !entry.invite_email ? entry.accessible_by.login : entry.invite_email;
         const role = entry.role;
