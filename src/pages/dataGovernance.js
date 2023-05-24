@@ -37,7 +37,7 @@ export const template = async () => {
               <div class="card-header">
               </div>
               <form><label for="folderID">Please Input Folder ID: <button class="info-btn variable-definition" aria-label="More info" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#confluenceMainModal" data-variable='folderUpdateInput'><i class="fas fa-question-circle cursor-pointer"></i></button></label>
-                <input type="text" id="folderID" name="folderID"><br>
+                <input type="text" id="folderID" name="folderID" value='0'><br>
                 <button type="submit" id="submitID" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
                 <span class="buttonsubmit__text"> Submit </span>
               </button><br></form>
@@ -103,7 +103,9 @@ export const testingDataGov = async () => {
 
 export const dataGovTest = async () => {
   console.log("testing data gov test function");
-  const val = document.getElementById('folderID').value
+  let val = document.getElementById('folderID').value
+  if (val === '') val = '0';
+  console.log(val);
   const array = await getFolderInfo(val); //DCEG: 196554876811 BCRP: 145995765326, Confluence: 137304373658
   if (!array) {
     document.getElementById("submitID").classList.toggle('buttonsubmit--loading');
@@ -191,6 +193,7 @@ export const dataGovernanceLazyLoad = (element) => {
   let spinners = document.getElementsByClassName("lazy-loading-spinner");
   if (element)
     spinners = element.parentNode.querySelectorAll(".lazy-loading-spinner");
+  console.log(spinners);
   Array.from(spinners).forEach(async (element) => {
     const id = element.dataset.id;
     const status = element.dataset.status;

@@ -482,13 +482,64 @@ export const addEventShowExtCollaborator = () => {
       "collaboratorModalBody"
     );
     collaboratorModalBody.innerHTML = ``;
-    const response = await getCollaboration(ID, `${type}s`);
-    const userPermission = checkPermissionLevel(response);
+    let x = document.getElementById(`toggle${ID}`).querySelectorAll(".share-folder")
+    let allFolders = [[ID, type]];
+    x.forEach(entry => {
+      const idAll = entry.dataset.folderId;
+      const typeAll = entry.dataset.objectType;
+      allFolders.push([idAll, typeAll]);
+    })
+    console.log(allFolders);
+    const responseParent = await getCollaboration(ID, `${type}s`);
+    const userPermission = checkPermissionLevel(responseParent);
+    let responses = await getCollaboration(allFolders[0][0], `${allFolders[0][1]}s`);
+    responses = responses.entries
+    var ids = new Set(responses.map(d => d.id));
+    // allFolders.forEach(entry => {
+    //   const response = getCollaboration(entry[0], `${entry[1]}s`);
+    //   //responses = {...responses,...response};
+    //   responses.push(response);
+    // })
+    console.log(responses);
+    for (let index = 1; index < allFolders.length; index++) {
+      let response = (await getCollaboration(allFolders[index][0], `${allFolders[index][1]}s`)).entries;
+      console.log(response);
+      console.log(responses);
+      //response = response.entries;
+      // //responses = {...responses,...response};
+      // //responses.entries.push(response.entries);
+      // console.log(response.entries);
+      // console.log(responses);
+      //responses = responses.concat(response);
+      responses = [...responses, ...response.filter(d => !ids.has(d.id))];
+      ids = new Set(responses.map(d => d.id));
+      console.log(responses);
+    };
+    responses = [...new Set(responses.map((item) => item))];
+    //let dataTest = await Promise.all(responses);
+    console.log(responses);
+    // let allTest = [...responses[0],...responses[1]];
+    // console.log(allTest);
+    // let dataTest = responses;
+    // console.log(dataTest);
+    // console.log(dataTest.reduce(((r, c) => Object.assign(r, c)), {}));
+    // console.log(Object.assign({}, ...dataTest));
+    // let testing = {};
+    // dataTest.forEach(entry => {
+    //   testing = {...testing, ...entry};
+    //   console.log(testing);
+    // })
+    // //let testing = {...dataTest[0], ...dataTest[1]};
+    // console.log(testing);
+    // const response = await getCollaboration(ID, `${type}s`);
+    // const userPermission = checkPermissionLevel(response);
+    console.log(responseParent);
     let table = "";
     let allEntries = [];
-    if (response && response.entries.length > 0) {
-      let entries = response.entries;
-      entries.forEach((entry) => {
+    if (responseParent && responses.length > 0) {
+      //let entries = responses.entries;
+      responses.forEach(entry => {
+        console.log(entry);
         const name = !entry.invite_email ? entry.accessible_by.name : "";
         const email = !entry.invite_email ? entry.accessible_by.login : entry.invite_email;
         const role = entry.role;
@@ -570,9 +621,9 @@ const renderCollaboratorsList = (allEntries, userPermission) => {
   if (!document.getElementById("collaboratorsList")) return;
   let table = `
         <thead>
-            <tr>
-              <th>Check </th>
-              <th>Name <button class="transparent-btn sort-column" data-column-name="name" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
+            <tr>`
+      table += document.getElementById("listExtCollaborators").classList.contains("active-tab") ? `<th>Check </th>` : ``;
+      table += `<th>Name <button class="transparent-btn sort-column" data-column-name="name" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
               <th>Email <button class="transparent-btn sort-column" data-column-name="email" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
               <th>Role <button class="transparent-btn sort-column" data-column-name="role" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
               <th>Added by <button class="transparent-btn sort-column" data-column-name="addedBy" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
@@ -592,9 +643,9 @@ const renderCollaboratorListTBody = (allEntries, userPermission) => {
   allEntries.forEach((entry) => {
     const { name, email, role, addedBy, expiresAt, id, folderName } = entry;
     const userName = JSON.parse(localStorage.parms).name;
-    tbody += `<tr>
-                <td title="${id}"><input type="checkbox" id="${id}" name="extendCollab" value="${role}" checked></td>
-                <td title="${name}">${name.length > 20 ? `${name.slice(0, 20)}...` : `${name}`}</td>
+    tbody += `<tr>`
+    tbody += document.getElementById("listExtCollaborators").classList.contains("active-tab") ? `<td title="${id}"><input type="checkbox" id="${id}" name="extendCollab" value="${role}" checked></td>` : ``;
+    tbody += `  <td title="${name}">${name.length > 20 ? `${name.slice(0, 20)}...` : `${name}`}</td>
                 <td title="${email}">${email.length > 20 ? `${email.slice(0, 20)}...` : `${email}`}</td>
                 <td>${email !== JSON.parse(localStorage.parms).login && userPermission && updatePermissionsOptions(userPermission, role) && userName === addedBy? `<select title="Update permission" data-collaborator-id="${id}" data-previous-permission="${role}" data-collaborator-name="${name}" data-collaborator-login="${email}" class="form-control updateCollaboratorRole">${updatePermissionsOptions(userPermission,role)}</select>`: `${role}`}</td>
                 <td title="${addedBy}">${addedBy.length > 20 ? `${addedBy.slice(0, 20)}...` : `${addedBy}`}</td>
