@@ -496,61 +496,27 @@ export const addEventShowExtCollaborator = () => {
     let responses = await getCollaboration(allFolders[0][0], `${allFolders[0][1]}s`);
     responses = responses.entries
     var ids = new Set(responses.map(d => d.id));
-    // allFolders.forEach(entry => {
-    //   const response = getCollaboration(entry[0], `${entry[1]}s`);
-    //   //responses = {...responses,...response};
-    //   responses.push(response);
-    // })
-    //console.log(responses);
     for (let index = 1; index < allFolders.length; index++) {
       let response = (await getCollaboration(allFolders[index][0], `${allFolders[index][1]}s`)).entries;
-      // console.log(response);
-      // console.log(responses);
-      //response = response.entries;
-      // //responses = {...responses,...response};
-      // //responses.entries.push(response.entries);
-      // console.log(response.entries);
-      // console.log(responses);
-      //responses = responses.concat(response);
       responses = [...responses, ...response.filter(d => !ids.has(d.id))];
       ids = new Set(responses.map(d => d.id));
       //console.log(responses);
     };
     responses = [...new Set(responses.map((item) => item))];
-    //let dataTest = await Promise.all(responses);
-    //console.log(responses);
-    // let allTest = [...responses[0],...responses[1]];
-    // console.log(allTest);
-    // let dataTest = responses;
-    // console.log(dataTest);
-    // console.log(dataTest.reduce(((r, c) => Object.assign(r, c)), {}));
-    // console.log(Object.assign({}, ...dataTest));
-    // let testing = {};
-    // dataTest.forEach(entry => {
-    //   testing = {...testing, ...entry};
-    //   console.log(testing);
-    // })
-    // //let testing = {...dataTest[0], ...dataTest[1]};
-    // console.log(testing);
-    // const response = await getCollaboration(ID, `${type}s`);
-    // const userPermission = checkPermissionLevel(response);
     console.log(responseParent);
     let table = "";
     let allEntries = [];
     if (responseParent && responses.length > 0) {
       //let entries = responses.entries;
       responses.forEach(entry => {
-        //console.log(entry);
         const name = !entry.invite_email ? entry.accessible_by.name : "";
         const email = !entry.invite_email ? entry.accessible_by.login : entry.invite_email;
         const role = entry.role;
         const status = entry.status;
         const id = entry.id;
-        //const userid = entry.accessible_by.id;
-        //const folderName = entry.item.name;
-        const addedBy = `${entry.created_by.name}`;
+        const addedBy = entry.created_by ? entry.created_by.name : "";
         const addedAt = new Date(entry.added_at).toLocaleString();
-        const expiresAt = new Date(entry.expires_at).toLocaleString();
+        const expiresAt = entry.expires_at !== null ? new Date(entry.expires_at).toDateString() : "None";
         if (!email.includes("@nih.gov")){
           allEntries.push({
             name,
@@ -651,7 +617,7 @@ const renderCollaboratorListTBody = (allEntries, userPermission) => {
                 <td title="${email}">${email.length > 20 ? `${email.slice(0, 20)}...` : `${email}`}</td>
                 <td>${email !== JSON.parse(localStorage.parms).login && userPermission && updatePermissionsOptions(userPermission, role) && userName === addedBy? `<select title="Update permission" data-collaborator-id="${id}" data-previous-permission="${role}" data-collaborator-name="${name}" data-collaborator-login="${email}" class="form-control updateCollaboratorRole">${updatePermissionsOptions(userPermission,role)}</select>`: `${role}`}</td>
                 <td title="${addedBy}">${addedBy.length > 20 ? `${addedBy.slice(0, 20)}...` : `${addedBy}`}</td>
-                <td title="${new Date(expiresAt).toLocaleString()}">${new Date(expiresAt).toDateString()}</td>
+                <td title="${expiresAt}">${expiresAt}</td>
                 <td>${addedBy === userName? `<button class="removeCollaborator" title="Remove collaborator" data-collaborator-id="${id}" data-email="${email}" data-collaborator-name="${name}" data-folder-name="${folderName}"><i class="fas fa-user-minus"></i></button>`: ``}</td>
               </tr>`;
   });
