@@ -27,6 +27,10 @@ import {
   assignNavbarActive,
   reSizePlots,
   showComments,
+  tsv2Json,
+  json2other,
+  getUser,
+  updateBoxCollaboratorTime
 } from "./shared.js";
 import { renderDataSummary } from "./pages/about.js";
 import { variables } from "./variables.js";
@@ -35,7 +39,7 @@ import {
   addFields,
   dataGovernanceLazyLoad,
   dataGovernanceCollaboration,
-  dataGovernanceProjects,
+  dataGovernanceProjects, testingDataGov
 } from "./pages/dataGovernance.js";
 import { myProjectsTemplate } from "./pages/myProjects.js";
 import { createProjectModal } from "./components/modal.js";
@@ -371,6 +375,7 @@ const numberType = (aa) => {
 export const addEventShowAllCollaborator = () => {
   const btn1 = document.getElementById("addNewCollaborators");
   const btn2 = document.getElementById("listCollaborators");
+  const btn3 = document.getElementById("listExtCollaborators");
   const folderToShare = document.getElementById("folderToShare");
   btn2.addEventListener("click", async () => {
     if (btn2.classList.contains("active-tab")) return;
@@ -379,6 +384,7 @@ export const addEventShowAllCollaborator = () => {
     const type = folderToShare.dataset.objectType;
     btn2.classList.add("active-tab");
     btn1.classList.remove("active-tab");
+    btn3.classList.remove("active-tab");
     const collaboratorModalBody = document.getElementById(
       "collaboratorModalBody"
     );
@@ -389,18 +395,17 @@ export const addEventShowAllCollaborator = () => {
     let allEntries = [];
     if (response && response.entries.length > 0) {
       let entries = response.entries;
-
       entries.forEach((entry) => {
         const name = !entry.invite_email ? entry.accessible_by.name : "";
-        const email = !entry.invite_email
-          ? entry.accessible_by.login
-          : entry.invite_email;
+        const email = !entry.invite_email ? entry.accessible_by.login : entry.invite_email;
         const role = entry.role;
         const status = entry.status;
         const id = entry.id;
-        // const folderName = entry.item.name;
+        //const userid = entry.accessible_by.id;
+        //const folderName = entry.item.name;
         const addedBy = `${entry.created_by.name}`;
-        const addedAt = new Date(entry.created_at).toLocaleString();
+        const addedAt = new Date(entry.added_at).toLocaleString();
+        const expiresAt = new Date(entry.expires_at).toLocaleString();
         allEntries.push({
           name,
           email,
@@ -410,8 +415,11 @@ export const addEventShowAllCollaborator = () => {
           addedAt,
           id,
           folderName,
+          expiresAt
+          //userid
         });
       });
+
       allEntries = allEntries.sort((a, b) =>
         a.name.toLowerCase() > b.name.toLowerCase()
           ? 1
@@ -437,14 +445,140 @@ export const addEventShowAllCollaborator = () => {
     } else {
       table = "Collaborators not found!";
     }
+    console.log(allEntries);
+    // await Promise.all(allEntries.map(async (input) => {
+    //   if (input.name) {
+    //     console.log("true");
+    //   } else {
+    //     const userName = await getUser(input.userid);
+    //     console.log(userName);
+    //   }
+    // }));
     collaboratorModalBody.innerHTML = `
-            <div class="modal-body allow-overflow">${table}</div>
+            <div class="modal-body allow-overflow max-height-collaboration-list">${table}</div>
             <div class="modal-footer">
                 <button type="button" title="Close" class="btn btn-dark" data-dismiss="modal">Close</button>
             </div>
         `;
     renderCollaboratorsList(allEntries, userPermission);
     addEventSearchCollaborators(allEntries, userPermission);
+  });
+};
+
+export const addEventShowExtCollaborator = () => {
+  const btn1 = document.getElementById("addNewCollaborators");
+  const btn2 = document.getElementById("listCollaborators");
+  const btn3 = document.getElementById("listExtCollaborators");
+  const folderToShare = document.getElementById("folderToShare");
+  btn3.addEventListener("click", async () => {
+    if (btn3.classList.contains("active-tab")) return;
+    showAnimation();
+    const ID = folderToShare.dataset.folderId;
+    const folderName = folderToShare.dataset.folderName;
+    const type = folderToShare.dataset.objectType;
+    btn3.classList.add("active-tab");
+    btn1.classList.remove("active-tab");
+    btn2.classList.remove("active-tab");
+    const collaboratorModalBody = document.getElementById(
+      "collaboratorModalBody"
+    );
+    collaboratorModalBody.innerHTML = ``;
+    let x = document.getElementById(`toggle${ID}`).querySelectorAll(".share-folder")
+    let allFolders = [[ID, type, folderName]];
+    x.forEach(entry => {
+      //console.log(entry.dataset);
+      const idAll = entry.dataset.folderId;
+      const typeAll = entry.dataset.objectType;
+      const folderAll = entry.dataset.folderName;
+      allFolders.push([idAll, typeAll, folderAll]);
+    })
+    console.log(allFolders);
+    const responseParent = await getCollaboration(ID, `${type}s`);
+    const userPermission = checkPermissionLevel(responseParent);
+    let responses = await getCollaboration(allFolders[0][0], `${allFolders[0][1]}s`);
+    responses = responses.entries;
+    var ids = new Set(responses.map(d => d.id));
+    for (let index = 1; index < allFolders.length; index++) {
+      let response = (await getCollaboration(allFolders[index][0], `${allFolders[index][1]}s`)).entries;
+      responses = [...responses, ...response.filter(d => !ids.has(d.id))];
+      ids = new Set(responses.map(d => d.id));
+      //console.log(responses);
+    };
+    responses = [...new Set(responses.map((item) => item))];
+    console.log(responseParent);
+    let table = "";
+    let allEntries = [];
+    if (responseParent && responses.length > 0) {
+      //let entries = responses.entries;
+      responses.forEach(entry => {
+        const name = !entry.invite_email ? entry.accessible_by.name : "";
+        const email = !entry.invite_email ? entry.accessible_by.login : entry.invite_email;
+        const role = entry.role;
+        const status = entry.status;
+        const id = entry.id;
+        const addedBy = entry.created_by ? entry.created_by.name : "";
+        const addedAt = new Date(entry.added_at).toLocaleString();
+        const expiresAt = entry.expires_at !== null ? new Date(entry.expires_at).toDateString() : "None";
+        if (!email.includes("@nih.gov")){
+          allEntries.push({
+            name,
+            email,
+            role,
+            status,
+            addedBy,
+            addedAt,
+            id,
+            folderName,
+            expiresAt
+            //userid
+          });
+        };
+      });
+
+      allEntries = allEntries.sort((a, b) =>
+        a.name.toLowerCase() > b.name.toLowerCase()
+          ? 1
+          : b.name.toLowerCase() > a.name.toLowerCase()
+          ? -1
+          : 0
+      );
+
+      table += `
+                <div class="row mb-3">
+                    <div class="col"><strong>${folderName}</strong></div>
+                    <div class="col">
+                        <div class="input-group">
+                            <input type="search" class="form-control rounded pt-0 pb-0" style="font-size:0.75rem" autocomplete="off" placeholder="Search min. 3 characters" aria-label="Search" id="searchCollaborators" aria-describedby="search-addon">
+                            <span class="input-group-text border-0 search-input-collaborator">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <table id="collaboratorsList" class="table table-borderless table-striped collaborator-table"></table>
+            `;
+    } else {
+      table = "Collaborators not found!";
+    }
+    // console.log(allEntries);
+    // await Promise.all(allEntries.map(async (input) => {
+    //   if (input.name) {
+    //     console.log("true");
+    //   } else {
+    //     const userName = await getUser(input.userid);
+    //     console.log(userName);
+    //   }
+    // }));
+    collaboratorModalBody.innerHTML = `
+            <div class="modal-body allow-overflow max-height-collaboration-list">${table}</div>
+            <div class="modal-footer">
+                <button type="button" id="extendCollaborations" title="Extend" class="btn btn-light" data-dismiss="modal">Extend Collaboration</button>
+                <button type="button" title="Close" class="btn btn-dark" data-dismiss="modal">Close</button>
+            </div>
+        `;
+    renderCollaboratorsList(allEntries, userPermission);
+    addEventSearchCollaborators(allEntries, userPermission);
+    hideAnimation();
   });
 };
 
@@ -457,13 +591,13 @@ const renderCollaboratorsList = (allEntries, userPermission) => {
   if (!document.getElementById("collaboratorsList")) return;
   let table = `
         <thead>
-            <tr>
-                <th>Name <button class="transparent-btn sort-column" data-column-name="name" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
-                <th>Email <button class="transparent-btn sort-column" data-column-name="email" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
-                <th>Role <button class="transparent-btn sort-column" data-column-name="role" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
-                <th>Added by <button class="transparent-btn sort-column" data-column-name="addedBy" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
-                <th>Added at <button class="transparent-btn sort-column" data-column-name="addedAt" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
-                <th></th>
+            <tr>`
+      table += document.getElementById("listExtCollaborators").classList.contains("active-tab") ? `<th>Check </th>` : ``;
+      table += `<th>Name <button class="transparent-btn sort-column" data-column-name="name" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
+              <th>Email <button class="transparent-btn sort-column" data-column-name="email" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
+              <th>Role <button class="transparent-btn sort-column" data-column-name="role" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
+              <th>Added by <button class="transparent-btn sort-column" data-column-name="addedBy" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
+              <th>Expires at <button class="transparent-btn sort-column" data-column-name="expiresAt" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
             </tr>
         </thead>
         <tbody id="tBodyCollaboratorList"></tbody>
@@ -471,47 +605,23 @@ const renderCollaboratorsList = (allEntries, userPermission) => {
   document.getElementById("collaboratorsList").innerHTML = table;
   renderCollaboratorListTBody(allEntries, userPermission);
   addEventSortTable(allEntries, userPermission);
+  addEventExtendCollaborations();
 };
 
 const renderCollaboratorListTBody = (allEntries, userPermission) => {
   let tbody = "";
   allEntries.forEach((entry) => {
-    const { name, email, role, addedBy, addedAt, id, folderName } = entry;
+    const { name, email, role, addedBy, expiresAt, id, folderName } = entry;
     const userName = JSON.parse(localStorage.parms).name;
-    tbody += `<tr>
-                    <td title="${name}">${
-      name.length > 20 ? `${name.slice(0, 20)}...` : `${name}`
-    }</td>
-                    <td title="${email}">${
-      email.length > 20 ? `${email.slice(0, 20)}...` : `${email}`
-    }</td>
-                    <td>${
-                      email !== JSON.parse(localStorage.parms).login &&
-                      userPermission &&
-                      updatePermissionsOptions(userPermission, role) &&
-                      userName === addedBy
-                        ? `
-                    <select title="Update permission" data-collaborator-id="${id}" data-previous-permission="${role}" data-collaborator-name="${name}" data-collaborator-login="${email}" class="form-control updateCollaboratorRole">${updatePermissionsOptions(
-                            userPermission,
-                            role
-                          )}</select>
-                `
-                        : `${role}`
-                    }</td>
-                    <td title="${addedBy}">${
-      addedBy.length > 20 ? `${addedBy.slice(0, 20)}...` : `${addedBy}`
-    }</td>
-                    <td title="${new Date(
-                      addedAt
-                    ).toLocaleString()}">${new Date(
-      addedAt
-    ).toDateString()}</td>
-                    <td>${
-                      addedBy === userName
-                        ? `<button class="removeCollaborator" title="Remove collaborator" data-collaborator-id="${id}" data-email="${email}" data-collaborator-name="${name}" data-folder-name="${folderName}"><i class="fas fa-user-minus"></i></button>`
-                        : ``
-                    }</td>
-                </tr>`;
+    tbody += `<tr>`
+    tbody += document.getElementById("listExtCollaborators").classList.contains("active-tab") ? `<td title="${id}"><input type="checkbox" id="${id}" name="extendCollab" value="${role}" checked></td>` : ``;
+    tbody += `  <td title="${name}">${name.length > 20 ? `${name.slice(0, 20)}...` : `${name}`}</td>
+                <td title="${email}">${email.length > 20 ? `${email.slice(0, 20)}...` : `${email}`}</td>
+                <td>${email !== JSON.parse(localStorage.parms).login && userPermission && updatePermissionsOptions(userPermission, role) && userName === addedBy? `<select title="Update permission" data-collaborator-id="${id}" data-previous-permission="${role}" data-collaborator-name="${name}" data-collaborator-login="${email}" class="form-control updateCollaboratorRole">${updatePermissionsOptions(userPermission,role)}</select>`: `${role}`}</td>
+                <td title="${addedBy}">${addedBy.length > 20 ? `${addedBy.slice(0, 20)}...` : `${addedBy}`}</td>
+                <td title="${expiresAt}">${expiresAt}</td>
+                <td>${addedBy === userName? `<button class="removeCollaborator" title="Remove collaborator" data-collaborator-id="${id}" data-email="${email}" data-collaborator-name="${name}" data-folder-name="${folderName}"><i class="fas fa-user-minus"></i></button>`: ``}</td>
+              </tr>`;
   });
   document.getElementById("tBodyCollaboratorList").innerHTML = tbody;
   addEventRemoveCollaborator();
@@ -700,6 +810,113 @@ const addEventRemoveCollaborator = () => {
   });
 };
 
+const addEventExtendCollaborations = async () => {
+  const btn = document.getElementById('extendCollaborations');
+  if(!btn) return;
+  btn.addEventListener('click', async () => {
+      const header = document.getElementById('confluenceModalHeader');
+      const body = document.getElementById('confluenceModalBody');
+      
+      header.innerHTML = `<h5 class="modal-title">Collaborations Updating</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>`;
+      var checkboxes = document.getElementsByName('extendCollab');
+      console.log(checkboxes);
+      var result = [];
+      const promises = []
+      Date.prototype.addDays = function(days) {
+          var date = new Date(this.valueOf());
+          date.setDate(date.getDate() + days);
+          return date;
+      }
+      var date = new Date();
+      const newDate = date.addDays(90);
+      const newDateString = newDate.toISOString();
+      for (var i=0; i < checkboxes.length; i++) {
+          if (checkboxes[i].checked) {
+              const promise = updateBoxCollaboratorTime(checkboxes[i].id, checkboxes[i].value, newDateString)
+                  .then(response => response.json());
+              promises.push(promise);
+              //result.push(checkboxes[i].id);
+              //promises.push(checkboxes[i].value);
+          }
+      }
+      showAnimation();
+      Promise.all(promises).then(results => {
+          alert("Please confirm collaborations have been updated");
+          hideAnimation();
+      });
+  })
+};
+
+export const addEventUpdateExtCollaborators = async () => {
+  const btn = document.getElementById('updateCollaborations');
+  if(!btn) return;
+  btn.addEventListener('click', async () => {
+      const id = document.getElementById('')
+      const header = document.getElementById('confluenceModalHeader');
+      const body = document.getElementById('confluenceModalBody');
+      
+      header.innerHTML = `<h5 class="modal-title">Update Collaborations</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>`;
+      const ID = 156698557621;
+      let collabs = await getCollaboration(ID, 'folders');
+      console.log(collabs);
+      Date.prototype.addDays = function(days) {
+          var date = new Date(this.valueOf());
+          date.setDate(date.getDate() + days);
+          return date;
+      }
+      var date = new Date();
+      const newDate = date.addDays(360);
+      const newDateString = newDate.toISOString();
+      console.log(newDateString);
+      const allEntries = collabs.entries;
+      console.log(allEntries[0]);
+      let test = await updateBoxCollaboratorTime(43582145593, "editor", newDateString);
+      console.log(test);
+
+  })
+};
+
+export const addEventUpdateAllCollaborators = async () => {
+  const btn = document.getElementById('updateCollaborations');
+  if(!btn) return;
+  btn.addEventListener('click', async () => {
+      const header = document.getElementById('confluenceModalHeader');
+      const body = document.getElementById('confluenceModalBody');
+      
+      header.innerHTML = `<h5 class="modal-title">Update Collaborations</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>`;
+      const ID = 156698557621;
+      let collabs = await getCollaboration(ID, 'folders');
+      console.log(collabs);
+      Date.prototype.addDays = function(days) {
+          var date = new Date(this.valueOf());
+          date.setDate(date.getDate() + days);
+          return date;
+      }
+      var date = new Date();
+      const newDate = date.addDays(360);
+      const newDateString = newDate.toISOString();
+      console.log(newDateString);
+      const allEntries = collabs.entries;
+      console.log(allEntries[0]);
+      let test = await updateBoxCollaboratorTime(43582145593, "editor", newDateString);
+      console.log(test);
+      // allEntries.forEach(entry => {
+      //     console.log(entry);
+      //     let test = await updateBoxCollaboratorTime()
+      // })
+
+  })
+};
+
 const checkPermissionLevel = (data) => {
   if (data.entries.length === 0) return null;
   const login =
@@ -723,6 +940,7 @@ const checkPermissionLevel = (data) => {
 export const addEventAddNewCollaborator = () => {
   const btn1 = document.getElementById("addNewCollaborators");
   const btn2 = document.getElementById("listCollaborators");
+  const btn3 = document.getElementById("listExtCollaborators");
   const folderToShare = document.getElementById("folderToShare");
   btn1.addEventListener("click", () => {
     const ID = folderToShare.dataset.folderId;
@@ -730,6 +948,7 @@ export const addEventAddNewCollaborator = () => {
     const type = folderToShare.dataset.objectType;
     btn1.classList.add("active-tab");
     btn2.classList.remove("active-tab");
+    btn3.classList.remove("active-tab");
     const collaboratorModalBody = document.getElementById(
       "collaboratorModalBody"
     );
@@ -830,39 +1049,41 @@ export const addEventDataGovernanceNavBar = (bool) => {
   const dataGovernanceElement = document.getElementById("dataGovernance");
   if (!dataGovernanceElement) return;
   dataGovernanceElement.addEventListener("click", async () => {
-    // if(dataGovernanceElement.classList.contains('navbar-active')) return;
+    // // if(dataGovernanceElement.classList.contains('navbar-active')) return;
     showAnimation();
-    assignNavbarActive(dataGovernanceElement, 2);
-    document.title = "BCRPP - Data Governance";
-    const confluenceDiv = document.getElementById("confluenceDiv");
-    // if(bool){
-    confluenceDiv.classList.add("general-bg");
+    assignNavbarActive(dataGovernanceElement);
+    // document.title = "DCEG - Data Governance";
+    // const confluenceDiv = document.getElementById("confluenceDiv");
+    // // if(bool){
+    // confluenceDiv.classList.add("general-bg");
 
-    const containerDiv = document.createElement("div");
-    containerDiv.classList = ["container padding-bottom-1rem"];
+    // const containerDiv = document.createElement("div");
+    // containerDiv.classList = ["container padding-bottom-1rem"];
 
-    const headerDiv = document.createElement("div");
-    headerDiv.classList = ["main-summary-row"];
-    headerDiv.innerHTML = `<div class="align-left">
-                                        <h1 class="page-header">Data Governance</h1>
-                                    </div>`;
-    const divRow = document.createElement("div");
-    divRow.classList = ["main-summary-row white-bg div-border"];
-    divRow.id = "dataGovernanceMain";
+    // const headerDiv = document.createElement("div");
+    // headerDiv.classList = ["main-summary-row"];
+    // headerDiv.innerHTML = `<div class="align-left">
+    //                                     <h1 class="page-header">Data Governance of Uploaded Data</h1>
+    //                                 </div>`;
+    // const divRow = document.createElement("div");
+    // divRow.classList = ["main-summary-row white-bg div-border"];
+    // divRow.id = "dataGovernanceMain";
 
-    const div1 = document.createElement("div");
-    div1.classList = ["col-lg-6 align-left"];
-    div1.innerHTML = await dataGovernanceTemplate();
+    // const div1 = document.createElement("div");
+    // div1.classList = ["col-lg-6 align-left"];
+
+    //div1.innerHTML = await dataGovernanceTemplate();
+    await dataGovernanceTemplate();
     hideAnimation();
-    divRow.appendChild(div1);
-    confluenceDiv.innerHTML = ``;
-    containerDiv.appendChild(headerDiv);
+    // divRow.appendChild(div1);
+    // confluenceDiv.innerHTML = ``;
+    // containerDiv.appendChild(headerDiv);
     // containerDiv.appendChild(btnDiv)
-    containerDiv.appendChild(divRow);
-    confluenceDiv.appendChild(containerDiv);
+    // containerDiv.appendChild(divRow);
+    // confluenceDiv.appendChild(containerDiv);
     //     dataGovernanceProjects();
-    dataGovernanceLazyLoad();
-    dataGovernanceCollaboration();
+    // dataGovernanceLazyLoad();
+    // dataGovernanceCollaboration();
   });
 };
 
@@ -951,7 +1172,8 @@ const addEventcreateProjectForm = () => {
                   `<span class="successMsg">Added new collaborator</span>`,
                   `${login} added to ${projectName} as ${role.value} successfully!`
                 );
-                dataGovernanceProjects();
+                //dataGovernanceProjects();
+                testingDataGov();
               } else {
                 template += notificationTemplate(
                   top,
@@ -1138,7 +1360,7 @@ export const addEventFileStats = (element) => {
             <div class="row file-stats-row">
                 <div class="col" title="File download count">
                     <span class="file-stats-heading">Download count</span></br>
-                    <i class="fas fa-4x fa-download file-stats-icon"></i> <span class="fa-3x"> ${response.download_count}</span>
+                    <i class="fas fa-4x fa-database file-stats-icon"></i> <span class="fa-3x"> ${response.download_count}</span>
                 </div>
                 <div class="col" title="File edit count">
                     <span class="file-stats-heading">Edit count</span></br>
@@ -1162,7 +1384,8 @@ export const addEventFileStats = (element) => {
 export const addEventVariableDefinitions = () => {
   const elements = document.getElementsByClassName("variable-definition");
   Array.from(elements).forEach((element) => {
-    element.addEventListener("click", () => {
+    element.addEventListener("click", (e) => {
+      e.preventDefault();
       const variable = element.dataset.variable;
       let variableName = "";
       let definition = "";
@@ -1247,6 +1470,10 @@ export const addEventVariableDefinitions = () => {
         variableName = "Reproductive History 2";
         definition = "Definition of Reproductive History 2";
       }
+      if (variable === "folderUpdateInput") {
+        variableName = "Box Folder Input";
+        definition = "Enter Box folder ID. To see all folders enter 0. Only folder owners can extend access.";
+      }
 
       const header = document.getElementById("confluenceModalHeader");
       const body = document.getElementById("confluenceModalBody");
@@ -1262,25 +1489,25 @@ export const addEventVariableDefinitions = () => {
 
 export const addEventUpdateSummaryStatsData = () => {
   const btn = document.getElementById("updateSummaryStatsData");
+  console.log(btn);
   if (!btn) return;
   btn.addEventListener("click", async () => {
     const header = document.getElementById("confluenceModalHeader");
     const body = document.getElementById("confluenceModalBody");
 
-    header.innerHTML = `<h5 class="modal-title">Update data</h5>
+    header.innerHTML = `<h5 class="modal-title">Download updated data</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>`;
 
     let template = '<form id="updateSummaryStatsForm">';
-    template += `<label>Select data type</label></br> <div style="padding-left:40px"><input type="radio" required value="summary" name="summarydataType"> Summary data</div><div style="padding-left:40px"><input value="missingness" required type="radio" name="summarydataType"> Missingness data</div>`;
-    template += '</br><div id="summaryDataFolderList"></div>';
+    template += `<p>Updating data will download an updated publication </br> file to be uploaded to: <a href="https://github.com/episphere/dataplatform/tree/production/imports" target="__blank">DCEG PDR GitHub</a></p>`;
 
     template +=
       '<div class="modal-footer"><button type="submit" class="btn btn-outline-primary">Update data</button></div>';
     template += "</form>";
     body.innerHTML = template;
-    addEventDataTypeRadio();
+    //addEventDataTypeRadio();
     addEventUpdateSummaryStatsForm();
   });
 };
@@ -1340,19 +1567,42 @@ const addEventUpdateSummaryStatsForm = () => {
   const form = document.getElementById("updateSummaryStatsForm");
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const dataType = Array.from(
-      document.getElementsByName("summarydataType")
-    ).filter((ele) => ele.checked === true)[0].value;
-    form.querySelectorAll('[type="submit"]')[0].classList.add("disabled");
-    form.querySelectorAll('[type="submit"]')[0].innerHTML = "Updating...";
-    const selectedBtn = form.querySelectorAll(".active-filter");
-    const folderIds = Array.from(selectedBtn).map((btn) =>
-      parseInt(btn.dataset.folderId)
-    );
-    if (folderIds.length === 0) return;
-    let masterArray = [];
-    let publicDataObj = {};
-    let allHeaders = [];
+    const files = await getFolderItems(196819085811);
+    if (files.length === 0) return;
+    console.log(files.entries);
+    form.innerHTML = "Gathering data...";
+
+    var dataArray = [];
+    for (let file of files.entries) {
+      const tsv = await getFile(file.id);
+      form.innerHTML = `Processing File: ${file.name}`;
+      const responseData = tsv2Json(tsv);
+      const jsonArray = responseData.data;
+      console.log(jsonArray);
+      //dataArray.push(jsonArray);
+      Array.prototype.push.apply(dataArray,jsonArray);
+    }
+    form.innerHTML = `Saving File...`
+    console.log(dataArray);
+    const headers = Object.keys(dataArray[0]);
+    const tsvValue = json2other(dataArray, headers, true).replace(/(<b>)|(<\/b>)/g, "");
+    let tsvContent =
+        "data:text/tsv;charset=utf-8," +
+        tsvValue;
+    const encodedUri = encodeURI(tsvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `DCEG_Publications.tsv`);
+    link.click();
+    form.innerHTML = `Complete: Please upload file to: </br> <a href="https://github.com/episphere/dataplatform/tree/production/imports" target="__blank">DCEG PDR GitHub</a>`
+    return;
+    // const folderIds = Array.from(selectedBtn).map((btn) =>
+    //   parseInt(btn.dataset.folderId)
+    // );
+    // if (folderIds.length === 0) return;
+    // let masterArray = [];
+    // let publicDataObj = {};
+    // let allHeaders = [];
     for (let id of folderIds) {
       const response = await getFolderItems(id);
       let file = [];
@@ -1369,6 +1619,7 @@ const addEventUpdateSummaryStatsForm = () => {
             /_missingness_statistics.csv/i.test(dt.name) === true
         );
       if (file.length === 0) return;
+
       form.querySelectorAll(
         '[type="submit"]'
       )[0].innerHTML = `Processing ${file[0].name}...`;

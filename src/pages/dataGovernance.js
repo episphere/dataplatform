@@ -2,6 +2,8 @@ import {
   addEventShowAllCollaborator,
   addEventAddNewCollaborator,
   addEventFileStats,
+  addEventVariableDefinitions,
+  addEventShowExtCollaborator
 } from "../event.js";
 import { boxRoles } from "../config.js";
 import {
@@ -15,12 +17,103 @@ import {
 } from "../shared.js";
 
 export const template = async () => {
-  const array = await getFolderInfo("145995765326"); //BCRP: 145995765326, Confluence: 137304373658
-  if (!array) return;
+  // const array = await getFolderInfo(0); //DCEG: 196554876811 BCRP: 145995765326, Confluence: 137304373658
+  // if (!array) return;
+  //showAnimation();
+  //assignNavbarActive(dataGovernanceElement, 1);
+  document.title = "DCEG - Data Governance";
+  //const confluenceDiv = document.getElementById("confluenceDiv");
+  // if(bool){
+  confluenceDiv.classList.add("general-bg");
+  let template = `
+    <div class="container padding-bottom-1rem"
+      <div class="main-summary-row">
+        <div class="align-left">
+          <h1 class="page-header">Data Governance of Uploaded Data</h1>
+        </div>
+        <div class="main-summary-row white-bg div-border" id="dataGovernanceMain">
+          <div class="col-lg-6 align-left">
+            <div class="card" style="border: 0px;">
+              <div class="card-header">
+              </div>
+              <form><label for="folderID">Please Input Folder ID: <button class="info-btn variable-definition" aria-label="More info" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#confluenceMainModal" data-variable='folderUpdateInput'><i class="fas fa-question-circle cursor-pointer"></i></button></label>
+                <input type="text" id="folderID" name="folderID" value='0'><br>
+                <button type="submit" id="submitID" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+                <span class="buttonsubmit__text"> Submit </span>
+              </button><br></form>
+              <div id="folderInput">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`
+  // const containerDiv = document.createElement("div");
+  // containerDiv.classList = ["container padding-bottom-1rem"];
 
-  let template = `<div class="card" style="border: 0px;"><div class="card-header"></div>`;
+  // const headerDiv = document.createElement("div");
+  // headerDiv.classList = ["main-summary-row"];
+  // headerDiv.innerHTML = `<div class="align-left">
+  //                                     <h1 class="page-header">Data Governance of Uploaded Data</h1>
+  //                                 </div>`;
+  // const divRow = document.createElement("div");
+  // divRow.classList = ["main-summary-row white-bg div-border"];
+  // divRow.id = "dataGovernanceMain";
 
-  template +=
+  // const div1 = document.createElement("div");
+  // div1.classList = ["col-lg-6 align-left"];
+
+  // template += `<div class="card" style="border: 0px;"><div class="card-header"></div>`;
+
+  // template += `<form><label for="folderID">Please Input Folder ID: </label>
+  //               <input type="text" id="folderID" name="folderID"><br><form>
+  //               <button type="submit" id="submitID" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+  //               <span class="buttonsubmit__text"> Submit </span>
+  //             </button><br>`;
+
+  
+
+  // template +=
+  //   '<div class="card-body data-governance"><ul class="ul-list-style first-list-item collapsible-items p-0 m-0">';
+  // const ID = array.id;
+  // const consortiaName = array.name;
+  // let type = array.type;
+  // let liClass = type === "folder" ? "collapsible consortia-folder" : "";
+  // let title = type === "folder" ? "Expand / Collapse" : "";
+  // template += `<li class="collapsible-items">
+  //           <button class="${liClass}" data-toggle="collapse" href="#toggle${ID}">
+  //               <i title="${title}" data-type="${type}" data-id="${ID}" data-folder-name="${consortiaName}" data-status="pending" class="lazy-loading-spinner"></i>
+  //           </button> ${consortiaName}
+  //       </li>
+  //       `;
+  // template += `</ul></div></div>`;
+  document.getElementById("confluenceDiv").innerHTML = template;
+  testingDataGov();
+  addEventVariableDefinitions();
+};
+
+export const testingDataGov = async () => {
+  console.log("testingDataLoaded")
+  const testform = document.getElementById("submitID");
+  testform.addEventListener("click", function(e) {
+    e.preventDefault();
+    dataGovTest();
+  });
+};
+
+export const dataGovTest = async () => {
+  console.log("testing data gov test function");
+  let val = document.getElementById('folderID').value
+  if (val === '') val = '0';
+  console.log(val);
+  const array = await getFolderInfo(val); //DCEG: 196554876811 BCRP: 145995765326, Confluence: 137304373658
+  if (!array) {
+    document.getElementById("submitID").classList.toggle('buttonsubmit--loading');
+    alert("Error: Please input a valid folder ID and check that you have the necessary permissions to access it.");
+    return false;
+  }
+
+  let template =
     '<div class="card-body data-governance"><ul class="ul-list-style first-list-item collapsible-items p-0 m-0">';
   const ID = array.id;
   const consortiaName = array.name;
@@ -34,11 +127,18 @@ export const template = async () => {
         </li>
         `;
   template += `</ul></div></div>`;
-  return template;
-};
+  document.getElementById("folderInput").innerHTML = template;
+  dataGovernanceLazyLoad();
+  dataGovernanceCollaboration();
+  document.getElementById("submitID").classList.toggle('buttonsubmit--loading');
+  return false;
+}
 export const dataGovernanceProjects = async () => {
+  console.log("Event Clicked");
   const response = await getFolderItems(0);
+  console.log(response);
   const projectArray = filterProjects(response.entries);
+  console.log(projectArray);
   const div = document.getElementById("dataGovernanceProjects");
   let template = "";
   let checker = false;
@@ -93,18 +193,14 @@ export const dataGovernanceLazyLoad = (element) => {
   let spinners = document.getElementsByClassName("lazy-loading-spinner");
   if (element)
     spinners = element.parentNode.querySelectorAll(".lazy-loading-spinner");
+  console.log(spinners);
   Array.from(spinners).forEach(async (element) => {
     const id = element.dataset.id;
     const status = element.dataset.status;
     const folderName = element.dataset.folderName;
     const type = element.dataset.type;
-    if (type && JSON.parse(localStorage.parms).login) {
-      const bool = await checkMyPermissionLevel(
-        await getCollaboration(id, `${type}s`),
-        JSON.parse(localStorage.parms).login,
-        id,
-        type
-      );
+    if (type && JSON.parse(localStorage.parms).login && id !== "0") {
+      const bool = await checkMyPermissionLevel(await getCollaboration(id, `${type}s`), JSON.parse(localStorage.parms).login, id, type);
       if (bool === true) {
         const button = document.createElement("button");
         button.dataset.toggle = "modal";
@@ -277,6 +373,7 @@ export const shareData = (element) => {
   const folderToShare = document.getElementById("folderToShare");
   addEventAddNewCollaborator();
   addEventShowAllCollaborator();
+  addEventShowExtCollaborator();
   element.addEventListener("click", () => {
     folderToShare.dataset.folderId = element.dataset.folderId;
     folderToShare.dataset.folderName = element.dataset.folderName;

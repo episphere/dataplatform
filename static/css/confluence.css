@@ -565,6 +565,14 @@ label {
   border-radius: 0rem;
 }
 
+.data-upload {
+  text-align: left;
+  background-color: #fff;
+  margin-bottom: 1rem;
+  padding: 0rem 0;
+  border-radius: 0rem;
+}
+
 .my-projects-div {
   text-align: left;
   padding: 0.5rem 0;
@@ -1095,6 +1103,7 @@ label {
   top: 50%;
   left: 53%;
   transform: translate(-50%, -50%);
+  width: 75%;
 }
 
 .confluence-banner {
@@ -1417,7 +1426,7 @@ span.icon {
 
 .collapsible-items {
   white-space: nowrap;
-  overflow: auto;
+  /* overflow: auto; */
 }
 
 .modal-close-btn {
@@ -1431,6 +1440,20 @@ span.icon {
 .modal-body {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
 #loadingAnimation {
@@ -1732,6 +1755,8 @@ form {
 .select-study,
 .select-variable,
 .select-country,
+.select-journal,
+.select-restrictions,
 .select-study-design,
 .select-variable-type,
 .select-cohort {
@@ -1777,7 +1802,7 @@ form {
 }
 
 .filter-sub-div {
-  max-height: 112px;
+  max-height: 250px;
 }
 
 .checkbox-consortia {
@@ -1821,10 +1846,14 @@ form {
   margin-bottom: 15px;
 }
 
-/* .banner-logo {
-    max-width: 100%;
-    height: auto;
-} */
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width:100 px /* adjust as needed */
+}
 
 .banner-logo {
   background-attachment: fixed;
@@ -1832,7 +1861,7 @@ form {
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 350px;
-  background-image: url("../images/nci-vol-10623-150.jpg");
+  background-image: url("../images/iStock-1157887211-edit.jpg");
 }
 
 @media only screen and (max-device-width: 1366px) {
@@ -1884,10 +1913,16 @@ body {
 
 /* Headings use a different font because they’re hipsters. */
 h1,
-h2 {
+h2,
+h3 {
   color: var(--color-darkest);
   font-size: 110%;
   line-height: 1.1;
+}
+
+h3 {
+  font-size: 100%;
+  text-align: center;
 }
 
 h1 {
@@ -1935,6 +1970,16 @@ p {
 .input-group {
   margin-top: 0.25rem;
   padding: 0.5rem 1rem;
+}
+
+.input-addedFiles {
+  margin-top: 0.25rem;
+  padding: 0.5rem 0rem;
+}
+
+.input-group2 {
+  margin-top: 0.25rem;
+  padding: 0.5rem 1.0rem;
 }
 
 .contact-form label {
@@ -2149,6 +2194,24 @@ ul.form {
   list-style: none;
 }
 
+ul.form2 {
+  column-count: 2;
+  column-width: 200px;
+  column-gap: 1rem;
+  list-style: none;
+}
+
+ul.upload {
+  column-count: 3;
+  column-width: 200px;
+  column-gap: 1rem;
+  list-style: none;
+  display: block;
+  margin-top: 0.25rem;
+  padding: 0.5rem 1rem;
+  /*padding: 0.5rem 0.5rem;*/
+}
+
 ul.about-consortia {
   column-count: 2;
   column-gap: 0.2rem;
@@ -2161,6 +2224,32 @@ ul.about-consortia {
   margin-bottom: 0;
   vertical-align: middle;
 }
+
+.field-br {
+  word-break: break-all;
+}
+
+label h4{
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+}
+
+/* .inline-field input {
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  margin: 0;
+  vertical-align: bottom;
+  position: relative;
+  top: -1px;
+}
+
+.inline-field label {
+  display: block;
+  padding-left: 15px;
+  text-indent: 15px;
+} */
 
 .container-cl {
   display: block;
@@ -2214,4 +2303,61 @@ th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
+}
+
+.dsmpno {
+  text-align: center;
+  color: darkred;
+}
+
+.step {
+  Display: None;
+}
+.step.active {
+  Display: Block;
+}
+
+button.next-btn,
+button.previous-btn,
+button.submit-btn {
+    Float: Right;
+    Margin-Top: 20px;
+    Padding: 10px 30px;
+    Border: None;
+    Outline: None;
+    /*Font-Family: "Montserrat";*/
+    Font-Size: 18px;
+    Cursor: Pointer; /* Text-Align: Right; */
+}
+button.previous-btn {
+    Float: Left;
+}
+
+.tab {
+  display: none;
+}
+
+.form-inline {  
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.form-inline input {
+  vertical-align: middle;
+  margin: 5px 10px 5px 0;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.form-inline label {
+  margin: 5px 10px 5px 0;
+}
+
+@media (max-width: 800px) {
+  .form-inline input {
+    margin: 10px 0 !important;
+  }
 }

@@ -6,7 +6,7 @@ export const emailsAllowedToUpdateData = [
   "ahearntu@nih.gov", "kopchickbp@nih.gov"
 ];
 
-export const emailforChair = ['Roger.Milne@cancervic.org.au','ahearntu@nih.gov', 'garciacm@nih.gov', 'sbehpour@deloitte.com','kopchickbp@nih.gov'];
+export const emailforChair = []//['Roger.Milne@cancervic.org.au','ahearntu@nih.gov', 'garciacm@nih.gov', 'sbehpour@deloitte.com','kopchickbp@nih.gov'];
 //  [
 // "Roger.Milne@cancervic.org.au",
 // "ahearntu@nih.gov",
@@ -15,7 +15,7 @@ export const emailforChair = ['Roger.Milne@cancervic.org.au','ahearntu@nih.gov',
 // "kopchickbp@nih.gov",
 // ];
 
-export const emailforDACC = ['pkraft@hsph.harvard.edu', 'garciacm@nih.gov', 'ahearntu@nih.gov',  'mukopadhyays2@nih.gov'];;
+export const emailforDACC = []//['pkraft@hsph.harvard.edu', 'garciacm@nih.gov', 'ahearntu@nih.gov',  'mukopadhyays2@nih.gov'];;
 
 // [
 //   "pkraft@hsph.harvard.edu",
@@ -49,6 +49,10 @@ export const acceptedFolder = 162222239448;
 export const deniedFolder = 162221803333;
 
 export const submitterFolder = 162222418449;
+
+export const dataPlatformFolder = 196554876811;
+
+export const publicDataFolder = 196819085811;
 
 export const getFolderItems = async (id) => {
   try {
@@ -311,7 +315,7 @@ export const createFolder = async (folderId, folderName) => {
     });
     if (response.status === 401) {
       if ((await refreshToken()) === true)
-        return await createFolder(folderId, foldername);
+        return await createFolder(folderId, folderName);
     } else if (response.status === 201) {
       return response.json();
     } else {
@@ -322,7 +326,70 @@ export const createFolder = async (folderId, folderName) => {
     }
   } catch (err) {
     if ((await refreshToken()) === true)
-      return await createFolder(folderId, foldername);
+      return await createFolder(folderId, folderName);
+  }
+};
+
+export const descFolder = async (folderId, description) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    // let obj = {
+    //   parent: {
+    //     description: description,
+    //   },
+    // };
+    let response = await fetch(`https://api.box.com/2.0/folders/${folderId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      body: JSON.stringify({
+        description: description,
+      }),//JSON.stringify(obj),
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await descFolder(folderId, description);
+    } else if (response.status === 201) {
+      return response;
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await descFolder(folderId, description);
+  }
+};
+
+export const descFile = async (fileId, description) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    let response = await fetch(`https://api.box.com/2.0/files/${fileId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      body: JSON.stringify({
+        description: description,
+      }),//JSON.stringify(obj),
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await descFile(fileId, description);
+    } else if (response.status === 201) {
+      return response;
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await descFile(fileId, description);
   }
 };
 
@@ -396,14 +463,16 @@ export const uploadFile = async (data, fileName, folderId, html) => {
     const access_token = JSON.parse(localStorage.parms).access_token;
     const form = new FormData();
     let blobData = "";
-    if (html)
+    if (html){
+      console.log('Using HTML');
       blobData = new Blob([data], {
         type: "text/html",
       });
-    else
+    } else{
       blobData = new Blob([JSON.stringify(data)], {
         type: "application/json",
       });
+    }
     form.append("file", blobData);
     form.append(
       "attributes",
@@ -437,6 +506,91 @@ export const uploadFile = async (data, fileName, folderId, html) => {
   } catch (err) {
     if ((await refreshToken()) === true)
       return await uploadFile(data, fileName, folderId, html);
+  }
+};
+
+export const uploadTSV = async (data, fileName, folderId, html) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    const form = new FormData();
+    let blobData = "";
+    console.log('Using HTML');
+    blobData = new Blob([data], {
+      type: "text/html",
+    });
+    form.append("file", blobData);
+    form.append(
+      "attributes",
+      `{"name": "${fileName}", "parent": {"id": "${folderId}"}}`
+    );
+
+    let response = await fetch("https://upload.box.com/api/2.0/files/content", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      body: form,
+      contentType: false,
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await uploadFile(data, fileName, folderId, html);
+    } else if (response.status === 201) {
+      return response.json();
+    } else if (response.status === 409) {
+      return {
+        status: response.status,
+        json: await response.json(),
+      };
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await uploadFile(data, fileName, folderId, html);
+  }
+};
+
+export const uploadFileAny = async (data, fileName, folderId) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    const form = new FormData();
+    form.append("file", data);
+    form.append(
+      "attributes",
+      `{"name": "${fileName}", "parent": {"id": "${folderId}"}}`
+    );
+
+    let response = await fetch("https://upload.box.com/api/2.0/files/content", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      body: form,
+      contentType: false,
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await uploadFileAny(data, fileName, folderId);
+    } else if (response.status === 201) {
+      return response.json();
+    } else if (response.status === 409) {
+      return {
+        status: response.status,
+        json: await response.json(),
+      };
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await uploadFileAny(data, fileName, folderId);
   }
 };
 
@@ -657,6 +811,27 @@ export const getCurrentUser = async () => {
   }
 };
 
+export const getUser = async (id) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    const response = await fetch(`https://api.box.com/2.0/users/${id}`, {
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true) return await getUser(id);
+    }
+    if (response.status === 200) {
+      return response.json();
+    } else {
+      return null;
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true) return await getUser(id);
+  }
+};
+
 export const addNewCollaborator = async (id, type, login, role) => {
   try {
     const access_token = JSON.parse(localStorage.parms).access_token;
@@ -736,6 +911,30 @@ export const updateBoxCollaborator = async (id, role) => {
   } catch (err) {
     if ((await refreshToken()) === true)
       return await updateBoxCollaborator(id, role);
+  }
+};
+
+export const updateBoxCollaboratorTime = async (id, role, time) => {
+  try {
+      const access_token = JSON.parse(localStorage.parms).access_token;
+      const response = await fetch(`https://api.box.com/2.0/collaborations/${id}`, {
+          method: 'PUT',
+          headers: {
+              Authorization: "Bearer "+access_token
+          },
+          body: JSON.stringify(
+              {role: role,
+              expires_at: time})
+      });
+      if(response.status === 401){
+          if((await refreshToken()) === true) return await updateBoxCollaboratorTime(id, role, time);
+      }
+      else {
+          return response;
+      }
+  }
+  catch(err) {
+      if((await refreshToken()) === true) return await updateBoxCollaboratorTime(id, role, time);
   }
 };
 
@@ -1609,6 +1808,7 @@ export const csvJSON = (csv) => {
 };
 
 export const tsv2Json = (tsv) => {
+  console.log(tsv);
   const lines = tsv
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -1617,13 +1817,16 @@ export const tsv2Json = (tsv) => {
     .split(/[\r]+/g);
   const result = [];
   const headers = lines[0].replace(/"/g, "").split(/[\t]/g);
+  console.log(lines);
   for (let i = 1; i < lines.length; i++) {
     const obj = {};
     const currentline = lines[i].split(/[\t]/g);
+    console.log(currentline);
     for (let j = 0; j < headers.length; j++) {
       if (currentline[j]) {
         let value = headers[j];
         obj[value] = currentline[j];
+        //console.log(obj[value]);
       }
     }
     if (Object.keys(obj).length > 0) result.push(obj);
@@ -1674,6 +1877,56 @@ export const csv2Json = (csv) => {
     }
     if (Object.keys(obj).length > 0) result.push(obj);
   }
+  return {
+    data: result,
+    headers,
+  };
+};
+
+function CSVtoArray(text) {
+  var re_valid = /^\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*(?:,\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*)*$/;
+  var re_value = /(?!\s*$)\s*(?:'([^'\\]*(?:\\[\S\s][^'\\]*)*)'|"([^"\\]*(?:\\[\S\s][^"\\]*)*)"|([^,'"\s\\]*(?:\s+[^,'"\s\\]+)*))\s*(?:,|$)/g;
+  // Return NULL if input string is not well formed CSV string.
+  //if (!re_valid.test(text)) return null;
+  var a = [];                     // Initialize array to receive values.
+  text.replace(re_value, // "Walk" the string using replace with callback.
+      function(m0, m1, m2, m3) {
+          // Remove backslash from \' in single quoted values.
+          if      (m1 !== undefined) a.push(m1.replace(/\\'/g, "'"));
+          // Remove backslash from \" in double quoted values.
+          else if (m2 !== undefined) a.push(m2.replace(/\\"/g, '"'));
+          else if (m3 !== undefined) a.push(m3);
+          return ''; // Return empty string.
+      });
+  // Handle special case of empty last value.
+  if (/,\s*$/.test(text)) a.push('');
+  return a;
+};
+
+export const csv2JsonTest = (csv) => {
+  //const lines = csv.replace(/""/g,"'").replace(/'/g, "").split(/[\r\n]+/g);
+  const lines = csv.replace(/""/g,"'").split(/[\r\n]+/g);
+  //console.log(csv);
+  const result = [];
+  const headers = lines[0].replace(/"/g, "").split(/[,\t]/g);
+  for (let i = 1; i < lines.length; i++) {
+    const obj = {};
+    //const currentline = CSVtoArray(lines[i]);
+    //console.log(lines[i]);
+    const currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)//match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+    //console.log(currentline);
+    if (currentline){
+      for (let j = 0; j < headers.length; j++) {
+        if (currentline[j]) {
+          let value = headers[j];
+          obj[value] = currentline[j];
+        }
+      }
+    }
+    if (Object.keys(obj).length > 0) result.push(obj);
+  }
+  // console.log(result)
+  // console.log(headers)
   return {
     data: result,
     headers,
@@ -1772,9 +2025,20 @@ export const handleRangeRequests = async () => {
   });
 };
 
+export function selectProps(...props){
+  return function(obj){
+    const newObj = {};
+    props.forEach(name =>{
+      newObj[name] = obj[name];
+    });
+    
+    return newObj;
+  }
+};
+
 // Need to change to BCRPP urls
 export const applicationURLs = {
-  dev: "https://episphere.github.io/bcrpDataPlatform",
+  dev: "https://episphere.github.io/dataplatform",
   stage: "https://confluence-stage.cancer.gov",
-  prod: "https://confluence.cancer.gov",
+  prod: "34.98.117.145",
 };

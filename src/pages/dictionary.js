@@ -20,6 +20,7 @@ export const dataDictionaryTemplate = async () => {
   const tsvData = tsv2Json(data);
   const dictionary = tsvData.data;
   const headers = tsvData.headers;
+
   let template = `
     <div class="col-xl-2 filter-column" id="summaryFilterSiderBar">
         <div class="div-border white-bg align-left p-2">
@@ -177,10 +178,7 @@ const renderDataDictionaryFilters = (dictionary, headers) => {
     template += `
                         <li class="filter-list-item">
                             <input type="checkbox" data-variable-type="${vt}" id="label${vt}" class="select-variable-type" style="margin-left: 1px !important;">
-                            <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(
-      vt,
-      60
-    )}</label>
+                            <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(vt,60)}</label>
                         </li>
                     `;
   });
@@ -194,10 +192,7 @@ const renderDataDictionaryFilters = (dictionary, headers) => {
     template += `
                         <li class="filter-list-item">
                             <input type="checkbox" data-variable-type="${vt}" id="label${vt}" class="select-variable-type" style="margin-left: 1px !important;">
-                            <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(
-      vt,
-      60
-    )}</label>
+                            <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(vt,60)}</label>
                         </li>
                     `;
   });
@@ -211,10 +206,7 @@ const renderDataDictionaryFilters = (dictionary, headers) => {
     template += `
                         <li class="filter-list-item">
                             <input type="checkbox" data-variable-type="${vt}" id="label${vt}" class="select-variable-type" style="margin-left: 1px !important;">
-                            <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(
-      vt,
-      60
-    )}</label>
+                            <label for="label${vt}" class="sub-category" title="${vt}">${shortenText(vt,60)}</label>
                         </li>
                     `;
   });

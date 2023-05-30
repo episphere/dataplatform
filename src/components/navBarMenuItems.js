@@ -4,70 +4,87 @@ const viewSubmissionsShow = true;
 export const navBarMenutemplate = () => {
   return `
         <div class="grid-elements">
-            <a class="nav-link nav-menu-links white-font" href="#home" title="BCRPP Home" id="homePage">
+            <a class="nav-link nav-menu-links white-font" href="#home" title="DCEG Home" id="homePage">
                 Home
             </a>
         </div>
-        <div class="grid-elements dropdown">
-            <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                About BCRPP
-            </button>
-            <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#about/overview" id="aboutBCRPP">Overview</a>
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#about/description" id="resourcesBCRPP">Description of Studies</a>
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#contact" id="contactBCRPP">Scientific Committee</a>
-            </div>
+        <div class="grid-elements">
+            <a class="nav-link nav-menu-links white-font" href="#about/overview" id="aboutDCEG">
+            About
+            </a>            
         </div>
-        <div class="grid-elements dropdown">
-            <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Explore Data
+        <div class="grid-elements">
+            <a class="nav-link nav-menu-links white-font" href="#data_access/overview" title="Consortia" id="dataRequest">
+                Consortia
+            </a>
+        </div>
+        <div class="grid-elements">
+          <a class="nav-link nav-menu-links white-font" href="#researchStudies" title="Research Studies" id="data2">
+          Research Studies
+          </a>
+        </div>
+
+        <div class="grid-elements" style="display: none;">
+          <a class="nav-link nav-menu-links white-font" href="#data_access/form" title="Data Form" id="dataForm"> 
+            Data Form
+          </a>
+        </div>
+
+        <div class="grid-elements">
+          <a class="nav-link nav-menu-links white-font" href="#publicationpage" title="DCEG Publications" id="publicationID">
+          DCEG Publications
+          </a>
+        </div>
+        ${JSON.parse(localStorage.parms).login.split('@')[1].includes('deloitte.com') || JSON.parse(localStorage.parms).login.split('@')[1].includes('nih.gov')
+          ?`<div class="grid-elements dropdown">
+            <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" title="My DCEG Publication Data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            DCEG Investigators
             </button>
+            
             <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-                <!--h6 class="dropdown-header dropdown-header-bg font-bold">Explore Data</h6-->
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_exploration/dictionary" title="Data Dictionary" id="dataDictionary">
-                Dictionary
-                </a>
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_exploration/summary" title="Summary Statistics" id="dataSummary">
-                    Summary Statistics
-                </a>
-                ${
-                  location.origin.match(applicationURLs.dev)
-                    ? ``
-                    : `
-                        <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_exploration/subset" title="Subset Statistics" id="dataSummarySubset">
-                            Subset Statistics
-                        </a>
-                    `
-                }
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#data_submission" title="Data Submitted" id="dataSubmission"> 
-                </a>
-                <div id="governanceNav" class="grid-elements"></div>
-                <div id="myProjectsNav" class="grid-elements"></div>
-                </div>
+            <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#uploadinstruction" id="instructionID">How to upload data from my published manuscript </a>
+            <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG/upload" id="myDCEGID_upload"> Upload new data</a>
+            <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG" id="myDCEGID">See my uploaded data</a>
+            <div id="governanceNav" class="grid-elements"></div>
+
             </div>
-                <div class='grid-elements dropdown'>
+          </div>`
+          :``
+        }
+        <!---<div class="grid-elements">
+          <a class="nav-link nav-menu-links white-font" href="#myDCEG/upload" title="My DCEG Publication Data - Upload" id="myDCEGID_upload">
+            Upload
+          </a>
+        </div>--->
+        <div class="grid-elements">
+            <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/dataplatform/issues" title="BCRPP github issues">
+                Report issue
+            </a>
+        </div>
+
+                <!---<div class='grid-elements dropdown'>
                     <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Data Access
+                        Consortia
                     </button>
                     <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/overview" title="Data Access" id="dataRequest"> Overview </a>
+                    <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/overview" title="Consortia" id="dataRequest"> Consortia </a>
                     ${
                       showProjectConceptForm
-                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/form" title="Data Form" id="dataForm"> Project Concept Forms </a>
+                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/form" title="Data Form" id="dataForm"> </a>
                     `
                         : ""
                     }
                     ${
                       viewSubmissionsShow
-                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#userSubmissions" title='View Your Submissions' id="userSubmissions">View Submissions</a>`
+                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#userSubmissions" title='View Your Submissions' id="userSubmissions"> </a>`
                         : ""
-                    }
-                    <!--a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/accepted" title="Accepted Studies" id="dataAccepted"> Accepted </a-->
+                    }--->
+                    <!---a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/accepted" title="Accepted Studies" id="dataAccepted"> Accepted </a--->
                     ${
                       emailforChair.indexOf(
                         JSON.parse(localStorage.parms).login
                       ) !== -1
-                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/chairView" title="Chair File View" id="chairView"> Chair Menu </a>`
+                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/chairView" title="Chair File View" id="chairView">  </a>`
                         : ``
                     }
                     ${
@@ -78,12 +95,7 @@ export const navBarMenutemplate = () => {
                         : ``
                     }
             </div>
-        </div>
-        <div class="grid-elements">
-            <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/bcrpDataPlatform/issues" title="BCRPP github issues">
-                Report issue
-            </a>
-        </div>
+
 
         <div class="navbar-nav ml-auto">
             ${
@@ -135,24 +147,24 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
     );
 
     //Active Tab Function
-    if (header === "Overview") {
-      link.href = `#${page}/overview`;
-      if (activeTab === "overview") link.classList.add("active");
-    }
-    
+    // if (header === "Overview") {
+    //   link.href = `#${page}/overview`;
+    //   if (activeTab === "overview") link.classList.add("active");
+    // }
+
     // keeping this part for future use to get "Project Concept Form" and "View Submissions" back.
-    if (header === "Project Concept Form") {
-      link.href = `#${page}/form`;
-      if (activeTab === "form") link.classList.add("active");
-    }
-    if (header === "View Submissions") {
-      link.href = `#userSubmissions`;
-      console.log(
-        "Active Tab in View Submissions",
-        activeTab === "User Submissions"
-      );
-      if (activeTab === "User Submissions") link.classList.add("active");
-    }
+    // if (header === "Project Concept Form") {
+    //   link.href = `#${page}/form`;
+    //   if (activeTab === "form") link.classList.add("active");
+    // }
+    // if (header === "View Submissions") {
+    //   link.href = `#userSubmissions`;
+    //   console.log(
+    //     "Active Tab in View Submissions",
+    //     activeTab === "User Submissions"
+    //   );
+    //   if (activeTab === "User Submissions") link.classList.add("active");
+    // }
     if (header === "Chair Menu") {
       link.href = `#${page}/chairView`;
       if (activeTab === "chairView") link.classList.add("active");

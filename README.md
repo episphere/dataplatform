@@ -8,4 +8,4 @@ DCEG Data Platform, live at https://episphere.github.io/dataplatform
 
 BCRP Data Platform, live at https://episphere.github.io/bcrpDataPlatform
 
-Confluence project, live at  https://episphere.github.io/confluence
+Confluence project, live at https://episphere.github.io/confluence
