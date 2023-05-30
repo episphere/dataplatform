@@ -89,8 +89,8 @@ export const dataUploadForm = async () => {
             </div>
 
             <div class='input-group input-group2'>
-              <label for="manu_info"> <b>Title of manuscript</b> <span class='required-label'>*</span></label>
-              <input id="manu_title" name="manu_info" type="text" placeholder="Manuscript Title" required/>
+              <label for="manu_title"> <b>Title of manuscript</b> <span class='required-label'>*</span></label>
+              <input id="manu_title" name="manu_title" type="text" placeholder="Manuscript Title" required/>
             </div>
 
             <div class='input-group input-group2'>

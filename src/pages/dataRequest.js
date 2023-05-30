@@ -674,12 +674,12 @@ template += `
             </div>--->
             <br>
             <p><u><b>Timeline</b></u><span class='required-label'>*</span></p>
-              <p style="color:red;"><b>TBD</b></p>
-              <!---<div class="input-group">
-                <label for="timeline">Please indicate estimated time from receipt of data to completion of analyses and submission of paper; 
+              <div class="input-group">
+                <p style="color:red;"><b>TBD</b></p>
+              <!---<label for="timeline">Please indicate estimated time from receipt of data to completion of analyses and submission of paper; 
                 the expectation is that results will be published within one year after completion</label>
-                <textarea id="timeline" name="timeline" rows="4" cols="65" required></textarea>
-              </div>--->
+                <textarea id="timeline" name="timeline" rows="4" cols="65" required></textarea>--->
+              </div>
             <br>
             <p><u><b>Authorship</b></u><span class='required-label'>*</span></p>
               <div class="input-group">
