@@ -484,17 +484,19 @@ export const addEventShowExtCollaborator = () => {
     );
     collaboratorModalBody.innerHTML = ``;
     let x = document.getElementById(`toggle${ID}`).querySelectorAll(".share-folder")
-    let allFolders = [[ID, type]];
+    let allFolders = [[ID, type, folderName]];
     x.forEach(entry => {
+      //console.log(entry.dataset);
       const idAll = entry.dataset.folderId;
       const typeAll = entry.dataset.objectType;
-      allFolders.push([idAll, typeAll]);
+      const folderAll = entry.dataset.folderName;
+      allFolders.push([idAll, typeAll, folderAll]);
     })
-    //console.log(allFolders);
+    console.log(allFolders);
     const responseParent = await getCollaboration(ID, `${type}s`);
     const userPermission = checkPermissionLevel(responseParent);
     let responses = await getCollaboration(allFolders[0][0], `${allFolders[0][1]}s`);
-    responses = responses.entries
+    responses = responses.entries;
     var ids = new Set(responses.map(d => d.id));
     for (let index = 1; index < allFolders.length; index++) {
       let response = (await getCollaboration(allFolders[index][0], `${allFolders[index][1]}s`)).entries;

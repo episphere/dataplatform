@@ -2336,3 +2336,28 @@ button.previous-btn {
 .tab {
   display: none;
 }
+
+.form-inline {  
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.form-inline input {
+  vertical-align: middle;
+  margin: 5px 10px 5px 0;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.form-inline label {
+  margin: 5px 10px 5px 0;
+}
+
+@media (max-width: 800px) {
+  .form-inline input {
+    margin: 10px 0 !important;
+  }
+}

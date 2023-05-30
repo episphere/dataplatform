@@ -330,9 +330,9 @@ template += `
           </ul>
           <p>Please fill out the form below. This will be reviewed by the DCEG and the necessary DAC(s)</p>
           <form>
-          <!---<div class='col-3 mb-3 input-group'>
-            <input type='file' class='' id='uploadJSON' />
-          </div>--->
+            <!---<div class='col-3 mb-3 input-group'>
+              <input type='file' class='' id='uploadJSON' />
+            </div>--->
             <div class="input-group">
               <label for="date"><b>Date</b><span class='required-label'>*</span></label>
               <input id="date" name="date" type="date" value='${today}' required/>
@@ -674,20 +674,22 @@ template += `
             </div>--->
             <br>
             <p><u><b>Timeline</b></u><span class='required-label'>*</span></p>
-              <div class="input-group">
-                <label for="timeline">Please indicate estimated time from receipt of data to completion of analysesand submission of paper; 
+              <p style="color:red;"><b>TBD</b></p>
+              <!---<div class="input-group">
+                <label for="timeline">Please indicate estimated time from receipt of data to completion of analyses and submission of paper; 
                 the expectation is that results will be published within one year after completion</label>
                 <textarea id="timeline" name="timeline" rows="4" cols="65" required></textarea>
-              </div>
+              </div>--->
             <br>
             <p><u><b>Authorship</b></u><span class='required-label'>*</span></p>
               <div class="input-group">
-                <label for="authconf"><input id="authconf" name="authconf" type="checkbox" value="Yes" required/> Please confirm that you acknowledge the intention to include representatives of the 
+                <p style="color:red;"><b>TBD</b></p>
+                <!---<label for="authconf"><input id="authconf" name="authconf" type="checkbox" value="Yes" required/> Please confirm that you acknowledge the intention to include representatives of the 
                 contributing cohorts as co-authors and that you will provide contributing cohorts 30 days to review the draft manuscript 
                 before submission. </label>
                 
                 <label for="Authorship"><i>Please include any special considerations you would like to bring to the DACC’s attention.</i></label>
-                <textarea id="authorship" name="authorship" rows="4" cols="65"></textarea>
+                <textarea id="authorship" name="authorship" rows="4" cols="65"></textarea>--->
               </div>
               
               <button type="submit" id="submitFormButton" class="buttonsubmit"> 
