@@ -1,6 +1,6 @@
 import { navBarMenutemplate } from "./src/components/navBarMenuItems.js";
 import { infoDeck, infoDeckAfterLoggedIn } from "./src/pages/homePage.js";
-import { testPage2 } from "./src/pages/researchStudies.js";
+// import { testPage2 } from "./src/pages/researchStudies.js";
 import { publication } from "./src/pages/publicationpage.js";
 import { myDCEGpublication } from "./src/pages/myDCEG.js";
 import { instruction } from "./src/pages/uploadinstruction.js";
@@ -33,11 +33,11 @@ import {
 } from "./src/pages/dataRequest.js";
 import {
   checkAccessTokenValidity,
-  loginAppDev,
-  loginObs,
-  loginAppEpisphere,
+  // loginAppDev,
+  // loginObs,
+  // loginAppEpisphere,
   logOut,
-  loginAppProd,
+  // loginAppProd,
 } from "./src/manageAuthentication.js";
 import {
   storeAccessToken,
@@ -94,18 +94,18 @@ export const confluence = async () => {
   }
   const confluenceDiv = document.getElementById("confluenceDiv");
   const navBarOptions = document.getElementById("navBarOptions");
-  document
-    .getElementById("loginBoxAppDev")
-    .addEventListener("click", loginAppDev);
-  document
-    .getElementById("loginBoxAppStage")
-    .addEventListener("click", loginObs);
-  document
-    .getElementById("loginBoxAppEpisphere")
-    .addEventListener("click", loginAppEpisphere);
-  document
-    .getElementById("loginBoxAppProd")
-    .addEventListener("click", loginAppProd);
+  // document
+  //   .getElementById("loginBoxAppDev")
+  //   .addEventListener("click", loginAppDev);
+  // document
+  //   .getElementById("loginBoxAppStage")
+  //   .addEventListener("click", loginObs);
+  // document
+  //   .getElementById("loginBoxAppEpisphere")
+  //   .addEventListener("click", loginAppEpisphere);
+  // document
+  //   .getElementById("loginBoxAppProd")
+  //   .addEventListener("click", loginAppProd);
 
   if (localStorage.parms === undefined) {
     const loginBoxAppDev = document.getElementById("loginBoxAppDev");
@@ -142,13 +142,14 @@ export const confluence = async () => {
     const dataSummaryElement = document.getElementById("dataSummary");
     const dataSummarySubsetElement = document.getElementById("dataSummarySubset");
     const dataDictionaryElement = document.getElementById("dataDictionary");
-    const dataRequestElement = document.getElementById("dataRequest");
-    const dataFormElement = document.getElementById("dataForm");
+    // const dataRequestElement = document.getElementById("dataRequest");
+    // const dataFormElement = document.getElementById("dataForm");
     const studyAcceptedElement = document.getElementById("studyAccepted");
     const chairViewElement = document.getElementById("chairView");
     const daccViewElement = document.getElementById("daccView");
-    const ConsortiaPageElement = document.getElementById("data2");
-    const PublicationPageElement = document.getElementById("publicationID");
+    const MapVisualizationElement = document.getElementById("map-visualization");
+    // const ConsortiaPageElement = document.getElementById("data2");
+    // const PublicationPageElement = document.getElementById("publicationID");
     const MyDCEGPageElement = document.getElementById("myDCEGID");
     const MyDCEGPageElement_upload = document.getElementById("myDCEGID_upload");
     const uploadInstructionElement = document.getElementById("instructionID");
@@ -255,44 +256,44 @@ export const confluence = async () => {
         dataDictionaryTemplate();
       });
     }
-    if (dataFormElement) {
-      dataFormElement.addEventListener("click", async () => {
-        if (dataFormElement.classList.contains("navbar-active")) return;
-        const element = document.getElementById("dataForm");
-        showAnimation();
-        if (!element) return;
-        if (element.classList.contains("navbar-active")) return;
-        document.title = "DCEG - Data Form";
-        assignNavbarActive(element);
-        //dataForm();
-        const getCollaborators = await getCollaboration(
-          uploadFormFolder,
-          "folders"
-        ); //144028521583, 155292358576
-        let getMyPermissionLevel = false;
-        if (getCollaborators)
-          getMyPermissionLevel = checkDataSubmissionPermissionLevel(
-            getCollaborators,
-            JSON.parse(localStorage.parms).login
-          );
-        if (getMyPermissionLevel) {
-          confluenceDiv.innerHTML = await formSection("form");
-          //populateAmendSelect();
-          // document
-          //   .getElementById("amendmentyes")
-          //   .addEventListener("click", amendFormSelect);
-          // document
-          //   .getElementById("amendmentno")
-          //   .addEventListener("click", amendFormSelect);
-          await dataForm();
-        } else {
-          confluenceDiv.innerHTML = await formSectionOther("form");
-          hideAnimation();
-        }
-        //formFunctions();
-        hideAnimation();
-      });
-    }
+    // if (dataFormElement) {
+    //   dataFormElement.addEventListener("click", async () => {
+    //     if (dataFormElement.classList.contains("navbar-active")) return;
+    //     const element = document.getElementById("dataForm");
+    //     showAnimation();
+    //     if (!element) return;
+    //     if (element.classList.contains("navbar-active")) return;
+    //     document.title = "DCEG - Data Form";
+    //     assignNavbarActive(element);
+    //     //dataForm();
+    //     const getCollaborators = await getCollaboration(
+    //       uploadFormFolder,
+    //       "folders"
+    //     ); //144028521583, 155292358576
+    //     let getMyPermissionLevel = false;
+    //     if (getCollaborators)
+    //       getMyPermissionLevel = checkDataSubmissionPermissionLevel(
+    //         getCollaborators,
+    //         JSON.parse(localStorage.parms).login
+    //       );
+    //     if (getMyPermissionLevel) {
+    //       confluenceDiv.innerHTML = await formSection("form");
+    //       //populateAmendSelect();
+    //       // document
+    //       //   .getElementById("amendmentyes")
+    //       //   .addEventListener("click", amendFormSelect);
+    //       // document
+    //       //   .getElementById("amendmentno")
+    //       //   .addEventListener("click", amendFormSelect);
+    //       await dataForm();
+    //     } else {
+    //       confluenceDiv.innerHTML = await formSectionOther("form");
+    //       hideAnimation();
+    //     }
+    //     //formFunctions();
+    //     hideAnimation();
+    //   });
+    // }
     if (studyAcceptedElement) {
       studyAcceptedElement.addEventListener("click", () => {
         if (studyAcceptedElement.classList.contains("navbar-active")) return;
@@ -334,41 +335,53 @@ export const confluence = async () => {
       });
     }
 
-    dataRequestElement.addEventListener("click", () => {
-      if (dataRequestElement.classList.contains("navbar-active")) return;
-      const element = document.getElementById("dataRequest");
-      if (!element) return;
-      if (element.classList.contains("navbar-active")) return;
-      document.title = "DCEG - Consortia";
-      assignNavbarActive(element);
-      confluenceDiv.innerHTML = dataRequestTemplate("overview");
-      hideAnimation();
-    });
-    ConsortiaPageElement.addEventListener("click", () => {
-      if (ConsortiaPageElement.classList.contains("navbar-active")) return;
-      const element = document.getElementById("data2");
-      if (!element) return;
-      if (element.classList.contains("navbar-active")) return;
-      document.title = "Testing";
-      assignNavbarActive(element);
-      confluenceDiv.innerHTML = testPage2();
-      hideAnimation();
-    });
-    PublicationPageElement.addEventListener("click", () => {
-      if (PublicationPageElement.classList.contains("navbar-active")) return;
-      const element = document.getElementById("publicationID");
-      if (!element) return;
-      if (element.classList.contains("navbar-active")) return;
-      document.title = "DCEG - Publication";
-      assignNavbarActive(element);
-      console.log('publication');
-      //confluenceDiv.innerHTML = publication();
-      aboutConfluence("overview");
-      publication();
-      addEventUpdateSummaryStatsData();
-      //publicationPageTemplate();
-      hideAnimation();
-    });
+    // MapVisualizationElement.addEventListener("click", () => {
+    //   if (MapVisualizationElement.classList.contains("navbar-active")) return;
+    //   const element = document.getElementById("map-visualization");
+    //   if (!element) return;
+    //   if (element.classList.contains("navbar-active")) return;
+    //   document.title = "Map Visualization";
+    //   assignNavbarActive(element);
+    //   // console.log('sahar: ', {confluenceDiv})
+    //   confluenceDiv.innerHTML = testPage2();
+    //   hideAnimation();
+    // });
+
+    // dataRequestElement.addEventListener("click", () => {
+    //   if (dataRequestElement.classList.contains("navbar-active")) return;
+    //   const element = document.getElementById("dataRequest");
+    //   if (!element) return;
+    //   if (element.classList.contains("navbar-active")) return;
+    //   document.title = "DCEG - Consortia";
+    //   assignNavbarActive(element);
+    //   confluenceDiv.innerHTML = dataRequestTemplate("overview");
+    //   hideAnimation();
+    // });
+    // ConsortiaPageElement.addEventListener("click", () => {
+    //   if (ConsortiaPageElement.classList.contains("navbar-active")) return;
+    //   const element = document.getElementById("data2");
+    //   if (!element) return;
+    //   if (element.classList.contains("navbar-active")) return;
+    //   document.title = "Testing";
+    //   assignNavbarActive(element);
+    //   confluenceDiv.innerHTML = testPage2();
+    //   hideAnimation();
+    // });
+    // PublicationPageElement.addEventListener("click", () => {
+    //   if (PublicationPageElement.classList.contains("navbar-active")) return;
+    //   const element = document.getElementById("publicationID");
+    //   if (!element) return;
+    //   if (element.classList.contains("navbar-active")) return;
+    //   document.title = "DCEG - Publication";
+    //   assignNavbarActive(element);
+    //   console.log('publication');
+    //   //confluenceDiv.innerHTML = publication();
+    //   aboutConfluence("overview");
+    //   publication();
+    //   addEventUpdateSummaryStatsData();
+    //   //publicationPageTemplate();
+    //   hideAnimation();
+    // });
     if (MyDCEGPageElement){
     MyDCEGPageElement.addEventListener("click", () => {
       if (MyDCEGPageElement.classList.contains("navbar-active")) return;
@@ -511,14 +524,22 @@ const manageRouter = async () => {
     assignNavbarActive(element);
     aboutConfluence("overview");
     renderOverView();
-  } else if (hash === "#join") {
-    const element = document.getElementById("resourcesBCRPP");
+  } else if (hash === "#map-visualization") {
+    const element = document.getElementById("map-visualization");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
-    document.title = "DCEG - Resources";
+    document.title = "Sahar";
     assignNavbarActive(element);
-    confluenceResources();
-  }
+    confluenceDiv.innerHTML = '<h1>Map...</h1>';
+  } 
+  // else if (hash === "#join") {
+  //   const element = document.getElementById("resourcesBCRPP");
+  //   if (!element) return;
+  //   if (element.classList.contains("navbar-active")) return;
+  //   document.title = "DCEG - Resources";
+  //   assignNavbarActive(element);
+  //   confluenceResources();
+  // }
   // else if (hash === "#contact") {
   //   const element = document.getElementById("contactBCRPP");
   //   if (!element) return;
@@ -527,30 +548,33 @@ const manageRouter = async () => {
   //   assignNavbarActive(element, 1);
   //   confluenceDiv.innerHTML = confluenceContactPage();
   // }
-  else if (hash === "#data_access/overview") {
-    console.log('dataRequest')
-    const element = document.getElementById("dataRequest");
-    if (!element) return;
-    if (element.classList.contains("navbar-active")) return;
-    document.title = "DCEG - Consortia";
-    assignNavbarActive(element);
-    confluenceDiv.innerHTML = dataAccessNotSignedIn();
-  } else if (hash === "#researchStudies") {
-    const element = document.getElementById("data2");
-    if (!element) return;
-    if (element.classList.contains("navbar-active")) return;
-    document.title = "DCEG - researchStudies";
-    assignNavbarActive(element);
-    confluenceDiv.innerHTML = testPage2();
-  } else if (hash === "#publicationpage") {
-    const element = document.getElementById("publicationID");
-    if (!element) return;
-    if (element.classList.contains("navbar-active")) return;
-    document.title = "DCEG - publicationpage";
-    assignNavbarActive(element);
-    aboutConfluence("overview");
-    publication();
-  } else if (hash === "#myDCEG") {
+  // else if (hash === "#data_access/overview") {
+  //   console.log('dataRequest')
+  //   const element = document.getElementById("dataRequest");
+  //   if (!element) return;
+  //   if (element.classList.contains("navbar-active")) return;
+  //   document.title = "DCEG - Consortia";
+  //   assignNavbarActive(element);
+  //   confluenceDiv.innerHTML = dataAccessNotSignedIn();
+  // } 
+  // else if (hash === "#researchStudies") {
+  //   const element = document.getElementById("data2");
+  //   if (!element) return;
+  //   if (element.classList.contains("navbar-active")) return;
+  //   document.title = "DCEG - researchStudies";
+  //   assignNavbarActive(element);
+  //   confluenceDiv.innerHTML = testPage2();
+  // } 
+  // else if (hash === "#publicationpage") {
+  //   const element = document.getElementById("publicationID");
+  //   if (!element) return;
+  //   if (element.classList.contains("navbar-active")) return;
+  //   document.title = "DCEG - publicationpage";
+  //   assignNavbarActive(element);
+  //   aboutConfluence("overview");
+  //   publication();
+  // } 
+  else if (hash === "#myDCEG") {
     const element = document.getElementById("myDCEGID");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
@@ -565,7 +589,8 @@ const manageRouter = async () => {
     document.title = "BCRPP - Instruction";
     assignNavbarActive(element);
     confluenceDiv.innerHTML = myDCEGpublication();
-  } else if (hash === "#myDCEG/upload") {
+  } 
+  else if (hash === "#myDCEG/upload") {
     const element = document.getElementById("myDCEGID_upload");
     if (!element) return;
     if (element.classList.contains("navbar-active")) return;
@@ -573,18 +598,20 @@ const manageRouter = async () => {
     assignNavbarActive(element);
     confluenceDiv.innerHTML = await uploadData();
     dataUploadForm();
-  } else if (hash === "#data_access/form") {
-    const dataFormElement = document.getElementById("dataForm");
-    if (!dataFormElement) return;
-    if (dataFormElement.classList.contains("navbar-active")) return;
-    showAnimation();
-    assignNavbarActive(dataFormElement);
-    document.title = "DCEG - Data Form";
-    confluenceDiv.innerHTML = await formSection("form");
-    removeActiveClass("nav-link", "active");
-    hideAnimation();
-    //formFunctions();
-  } else if (hash === "#data_access/acceptedStudies") {
+  } 
+  // else if (hash === "#data_access/form") {
+  //   const dataFormElement = document.getElementById("dataForm");
+  //   if (!dataFormElement) return;
+  //   if (dataFormElement.classList.contains("navbar-active")) return;
+  //   showAnimation();
+  //   assignNavbarActive(dataFormElement);
+  //   document.title = "DCEG - Data Form";
+  //   confluenceDiv.innerHTML = await formSection("form");
+  //   removeActiveClass("nav-link", "active");
+  //   hideAnimation();
+  //   //formFunctions();
+  // } 
+  else if (hash === "#data_access/acceptedStudies") {
     const acceptedStudiesElement = document.getElementById(
       "acceptedStudiesView"
     );
@@ -679,16 +706,28 @@ const manageHash = async () => {
     const element = document.getElementById("userSubmissions");
     if (!element) return;
     element.click();
-  } else if (hash === "#data_access/overview") {
-    const element = document.getElementById("dataRequest");
+  } 
+  else if (hash === "#map-visualization") {
+    const element = document.getElementById("map-visualization");
     element.click();
-  } else if (hash === "#researchStudies") {
-    const element = document.getElementById("data2");
+  } 
+  else if (hash === "#map-visualization") {
+    const element = document.getElementById("map-visualization");
     element.click();
-  } else if (hash === "#publicationpage") {
-    const element = document.getElementById("publicationID");
-    element.click();
-  } else if (hash === "#myDCEG") {
+  } 
+  // else if (hash === "#data_access/overview") {
+  //   const element = document.getElementById("dataRequest");
+  //   element.click();
+  // } 
+  // else if (hash === "#researchStudies") {
+  //   const element = document.getElementById("data2");
+  //   element.click();
+  // } 
+  // else if (hash === "#publicationpage") {
+  //   const element = document.getElementById("publicationID");
+  //   element.click();
+  // } 
+  else if (hash === "#myDCEG") {
     const element = document.getElementById("myDCEGID");
     element.click();
   } else if (hash === "#uploadinstruction") {
@@ -697,11 +736,13 @@ const manageHash = async () => {
   } else if (hash === "#myDCEG/upload") {
     const element = document.getElementById("myDCEGID_upload");
     element.click();
-  } else if (hash === "#data_access/form") {
-    const element = document.getElementById("dataForm");
-    if (!element) return;
-    element.click();
-  } else if (hash === "#data_access/acceptedStudies") {
+  } 
+  // else if (hash === "#data_access/form") {
+  //   const element = document.getElementById("dataForm");
+  //   if (!element) return;
+  //   element.click();
+  // } 
+  else if (hash === "#data_access/acceptedStudies") {
     const element = document.getElementById("acceptedStudies");
     if (!element) return;
     element.click();
@@ -760,7 +801,17 @@ const manageHash = async () => {
   //   //aboutConfluence("contact");
   //   confluenceContactPage();
   //   hideAnimation();
-  } else if (hash === "#about/description") {
+  } 
+  else if (hash === "#map-visualization") {
+    const element = document.getElementById("map-visualization");
+    if (!element) return;
+    assignNavbarActive(element);
+    document.title = "Map Visualization";
+    // aboutConfluence("overview");
+    // renderOverView();
+    hideAnimation();
+  }
+   else if (hash === "#about/description") {
     const element = document.getElementById("aboutDCEG");
     if (!element) return;
     assignNavbarActive(element);
@@ -770,15 +821,25 @@ const manageHash = async () => {
     aboutConfluence("description", fileInfo ? true : false);
     renderDescription(fileInfo["content_modified_at"]);
     hideAnimation();
-  } else if (hash === "#join") {
-    const element = document.getElementById("resourcesBCRPP");
-    if (!element) return;
-    if (element.classList.contains("navbar-active")) return;
-    assignNavbarActive(element);
-    document.title = "DCEG - Resources";
-    confluenceResources();
-    hideAnimation();
-  }
+  } 
+  // else if (hash === "#map-visualization") {
+  //   const element = document.getElementById("map-visualization/overview");
+  //   if (!element) return;
+  //   if (element.classList.contains("navbar-active")) return;
+  //   assignNavbarActive(element);
+  //   document.title = "Map Visualization";
+  //   // confluenceResources();
+  //   hideAnimation();
+  // }
+  // else if (hash === "#join") {
+  //   const element = document.getElementById("resourcesBCRPP");
+  //   if (!element) return;
+  //   if (element.classList.contains("navbar-active")) return;
+  //   assignNavbarActive(element);
+  //   document.title = "DCEG - Resources";
+  //   confluenceResources();
+  //   hideAnimation();
+  // }
   // else if (hash === "#contact") {
   //   const element = document.getElementById("contactBCRPP");
   //   if (!element) return;
@@ -810,7 +871,7 @@ window.onstorage = () => {
   if (localStorage.parms === undefined) logOut();
   else {
     confluence();
-    document.getElementById("loginBoxAppDev").hidden = true;
+    // document.getElementById("loginBoxAppDev").hidden = true;
     document.getElementById("loginBoxAppStage").hidden = true;
     document.getElementById("loginBoxAppEpisphere").hidden = true;
     document.getElementById("loginBoxAppProd").hidden = true;

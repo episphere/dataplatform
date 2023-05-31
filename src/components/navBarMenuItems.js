@@ -14,27 +14,32 @@ export const navBarMenutemplate = () => {
             </a>            
         </div>
         <div class="grid-elements">
-            <a class="nav-link nav-menu-links white-font" href="#data_access/overview" title="Consortia" id="dataRequest">
-                Consortia
-            </a>
-        </div>
-        <div class="grid-elements">
-          <a class="nav-link nav-menu-links white-font" href="#researchStudies" title="Research Studies" id="data2">
-          Research Studies
-          </a>
-        </div>
+           <a class="nav-link nav-menu-links white-font" href="#map-visualization" title="Map Visualization" id="map-visualization">
+           Map Visualization
+           </a>
+         </div>
+         <!---<div class="grid-elements">
+             <a class="nav-link nav-menu-links white-font" href="#data_access/overview" title="Consortia" id="dataRequest">
+                 Consortia
+             </a>
+         </div>
+         <div class="grid-elements">
+           <a class="nav-link nav-menu-links white-font" href="#researchStudies" title="Research Studies" id="data2">
+           Research Studies
+           </a>
+         </div>
 
-        <div class="grid-elements" style="display: none;">
-          <a class="nav-link nav-menu-links white-font" href="#data_access/form" title="Data Form" id="dataForm"> 
-            Data Form
-          </a>
-        </div>
+         <div class="grid-elements" style="display: none;">
+           <a class="nav-link nav-menu-links white-font" href="#data_access/form" title="Data Form" id="dataForm"> 
+             Data Form
+           </a>
+         </div>
 
-        <div class="grid-elements">
-          <a class="nav-link nav-menu-links white-font" href="#publicationpage" title="DCEG Publications" id="publicationID">
-          DCEG Publications
-          </a>
-        </div>
+         <div class="grid-elements">
+           <a class="nav-link nav-menu-links white-font" href="#publicationpage" title="DCEG Publications" id="publicationID">
+           DCEG Publications
+           </a>
+         </div>--->
         ${JSON.parse(localStorage.parms).login.split('@')[1].includes('deloitte.com') || JSON.parse(localStorage.parms).login.split('@')[1].includes('nih.gov')
           ?`<div class="grid-elements dropdown">
             <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" title="My DCEG Publication Data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

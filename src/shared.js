@@ -234,7 +234,7 @@ export const storeAccessToken = async () => {
       localStorage.parms = JSON.stringify(await response.json());
       window.history.replaceState({}, "", "./#home");
       confluence();
-      document.getElementById("loginBoxAppDev").hidden = true;
+      // document.getElementById("loginBoxAppDev").hidden = true;
       document.getElementById("loginBoxAppStage").hidden = true;
       document.getElementById("loginBoxAppEpisphere").hidden = true;
       document.getElementById("loginBoxAppProd").hidden = true;
@@ -1982,8 +1982,8 @@ export const mapReduce = (data, variable) => {
 };
 
 export const assignNavbarActive = (element, parent) => {
-  removeActiveClass("nav-menu-links", "navbar-active");
-  removeActiveClass("grid-elements", "navbar-active");
+  removeActiveClass("nav-menu-links", "navbar-active", "grid-elements", "navbar-active");
+  // removeActiveClass("grid-elements", "navbar-active");
   element.classList.add("navbar-active");
   if (parent && parent === 1)
     element.parentElement.previousElementSibling.classList.add("navbar-active");
