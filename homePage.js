@@ -1,4 +1,5 @@
 // Major updates required
+//test
 // Need to update infoDeck and infoDeckAfterLoggedIn to match template
 import { getFileInfo } from "./../shared.js";
 
@@ -7,52 +8,61 @@ export const infoDeck = () => {
   template += `
         <div class="secondary-bg padding-bottom-1rem">
             <div class="confluence-banner">
-                <img src="./static/images/nci-vol-10623-150.jpg" class="banner-logo" style="min-height: 120px;  max-height=450px;" alt="Confluence logo">
+                <!---<img src="./static/images/nci-vol-10623-150.jpg" class="banner-logo" style="min-height: 120px;  max-height=450px;" alt="Confluence logo">--->
                 <div class="banner-overlay-text row justify-content-center text-center">
                     <div class="col-xl-12">
-                        <h1 class="banner-overlay-h1">The Breast Cancer Risk Prediction Project (BCRPP)</h1>
+                        <h1 class="banner-overlay-h1">DCEG Epidemiology Data Platforms
+                        </h1>
                         <div class="banner-overlay-line"></div>
-                        <h2 class="banner-overlay-h3" style="font-size:1.7vw;"> Building an integrated, multi-ethnic breast cancer risk prediction model</h2>
+                        <h2 class="banner-overlay-h3" style="font-size:2vw;"> Following FAIR principles in Support of Epidemiological Research
+                        </h2>
                     </div>
                 </div>
             </div>
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`;
   template += cardContents({
-    header: "Learn about BCRPP",
-    button: "Learn about BCRPP",
+    header: "Information on Accessing DCEG Data",
+    button: "Information on Accessing DCEG Data",
     href: "#about/overview",
-    icon: "fa-download",
-    explanation: "View main goals and collaborating institutions.",
+    icon: "fa-database",
+    explanation: "",
   });
   template += cardContents({
-    header: "Participating Studies",
-    button: "Study Description",
+    header: "About DCEG Data",
+    button: "Information on Accessing DCEG Data",
     href: "#join",
     icon: "fa-chart-bar",
-    explanation: "View description of prospective cohort studies.",
+    explanation: "",
   });
   template += cardContents({
-    header: "Data Access",
-    button: "Data Access",
+    header: "Consortia Projects",
+    button: "Data Platform for Consortia Projects",
     href: "#data_access/overview",
-    icon: "fa-handshake",
-    explanation: "View procedures for accessing data.",
+    icon: "fa-database",
+    explanation: "",
   });
   template += cardContents({
-    header: "Data Dictionary",
-    button: "Data Dictionary",
-    href: "#data_exploration/dictionary",
+    header: "Research Studies",
+    button: "Data Platforms for DCEG studies",
+    href: "#researchStudies",
     icon: "fa-database",
-    explanation: "View data types collected from participating cohort studies.",
+    explanation: "",
+  });
+  template += cardContents({
+    header: "Datasets from DCEG Publications",
+    button: "Datasets from DCEG Publications available for request",
+    href: "#publicationpage",
+    icon: "fa-database",
+    explanation: "",
   });
   template += `</div>
             </div>
         </div>
         <div class="secondary-bg inverse-triangle"></div>
         <div class="container align-center">
-            <div class="font-size-28 font-bold font-family-helvetica our-goals mt-3 mb-2">OUR GOALS</div>
-            <div class="row">
+            <!--<div class="font-size-28 font-bold font-family-helvetica our-goals mt-3 mb-2">OUR GOALS</div>
+            <div class="row">-->
                 <div class="col-lg-3"></div>
                 <div class="col-lg-6 font-size-18 align-left">To build a large-scale collaborative research resource with data from over 1.5 million women of different race/ethnic backgrounds participating in prospective cohort studies or trials to:</div>
                 <div class="col-lg-3"></div>
@@ -71,9 +81,7 @@ export const infoDeck = () => {
         </div>
         <div class="ternary-bg">
             <div class="container align-left confluence-info font-family-montserrat">
-
-                <!---<div>The BCRPP is funded by the US National Cancer Institute (NCI) and coordinated by the Division of Cancer Epidemiology and Genetics (DCEG) of NCI and the Harvard T.H. Chan School of Public Health in collaboration with the NCI Cohort Consortium.</div>--->
-                <div>The BCRPP is funded by the US National Cancer Institute (NCI) grant number <a href="https://maps.cancer.gov/overview/DCCPSGrants/abstract.jsp?applId=10263893&term=CA249866">1U01CA249866-01</a> and the NCI Intramural Research Funds. BCRPP is coordinated by the Harvard T.H. Chan School of Public Health and the Division of Cancer Epidemiology and Genetics (DCEG) of NCI, in collaboration with the NCI Cohort Consortium.</div>
+                <div>The Division of Cancer Epidemiology and Genetics (DCEG) is a research program of the National Cancer Institure (NCI), one of the National Institutes of Health (NIH).</div>
             </div>
         </div>
     `;
@@ -86,53 +94,69 @@ export const infoDeckAfterLoggedIn = async () => {
   template += `
         <div class="secondary-bg padding-bottom-1rem">
             <div class="confluence-banner">
-                <img src="./static/images/nci-vol-10623-150.jpg" class="banner-logo" style="min-height: 120px;  max-height=250px;" alt="Confluence logo">
+                <!---<img src="./static/images/nci-vol-10623-150.jpg" class="banner-logo" style="min-height: 120px;  max-height=250px;" alt="Confluence logo">--->
                 <div class="banner-overlay-text row justify-content-center text-center">
                     <div class="col-md-12">
-                        <h1 class="banner-overlay-h1">The Breast Cancer Risk Prediction Project (BCRPP)</h1>
+                        <h1 class="banner-overlay-h1">DCEG Epidemiology Data Platforms
+                        </h1>
                         <div class="banner-overlay-line"></div>
-                        <h2 class="banner-overlay-h3" style="font-size:1.7vw;"> Building an integrated, multi-ethnic breast cancer risk prediction model</h2>
+                        <h2 class="banner-overlay-h3" style="font-size:2vw;">  Following FAIR principles in Support of Epidemiological Research
+                        </h2>
                     </div>
                 </div>
             </div>
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`;
-  if (studyDescription)
-    template += cardContents({
-      header: "Study Description",
-      button: "Study Description",
-      href: "#about/description",
-      icon: "fa-file-alt",
-      explanation: "View descriptions of participating studies.",
-    });
+  // if (studyDescription)
+  //   template += cardContents({
+  //     header: "Study Description",
+  //     button: "Study Description",
+  //     href: "#about/description",
+  //     icon: "fa-file-alt",
+  //     explanation: "View descriptions of participating studies.",
+  //   });
   template += cardContents({
-    header: "Data Dictionary",
-    button: "Data Dictionary",
-    href: "#data_exploration/dictionary",
-    icon: "fa-database",
-    explanation: "View variables from participating studies.",
-  });
-  template += cardContents({
-    header: "Explore Data",
-    button: "Explore Data",
-    href: "#data_exploration/summary",
-    icon: "fa-chart-bar",
-    explanation: "Explore summary-level data to plan analyses.",
-  });
-  template += cardContents({
-    header: "Data Access",
-    button: "Data Access",
+    header: "Consortia Projects",
+    button: "Data Platforms for Consortia Projects",
     href: "#data_access/overview",
     icon: "fa-handshake",
-    explanation: "View procedures for accessing data.",
+    explanation: "",
   });
+  // template += cardContents({
+  //   header: "Data Platforms for Consortia Projects",
+  //   button: "Data Platforms for Consortia Projects",
+  //   href: "#data_access/overview",
+  //   icon: "fa-handshake",
+  //   explanation: "",
+  // });
+  template += cardContents({
+    header: "Research Studies",
+    button: "Data Platforms for Datasets from DCEG Studies",
+    href: "#researchStudies",
+    icon: "fa-database",
+    explanation: "",
+  });
+  template += cardContents({
+    header: "Publication",
+    button: "My Manuscript Datasets from DCEG Publications",
+    href: "#publicationpage",
+    icon: "fa-database",
+    explanation: "",
+  });
+  // template += cardContents({
+  //   header: "Explore Data",
+  //   button: "Explore Data",
+  //   href: "#data_exploration/summary",
+  //   icon: "fa-chart-bar",
+  //   explanation: "Explore summary-level data to plan analyses.",
+  // });
   template += `</div>
             </div>
         </div>
         <div class="secondary-bg inverse-triangle"></div>
         <div class="container align-center">
-            <div class="font-size-28 font-bold font-family-montserrat our-goals mt-3 mb-2">OUR GOALS</div>
-            <div class="row">
+            <!---<div class="font-size-28 font-bold font-family-montserrat our-goals mt-3 mb-2">OUR GOALS</div>
+            <div class="row">-->
                 <div class="col-lg-3"></div>
                 <div class="col-lg-6 font-size-18 align-left">To build a large-scale collaborative research resource with data from over 1.5 million women of different race/ethnic backgrounds participating in prospective cohort studies or trials to:</div>
                 <div class="col-lg-3"></div>
@@ -151,9 +175,7 @@ export const infoDeckAfterLoggedIn = async () => {
         </div>
         <div class="ternary-bg">
             <div class="container align-left confluence-info font-family-montserrat">
-
-            <!---<div>The BCRPP is funded by the US National Cancer Institute (NCI) and coordinated by the Division of Cancer Epidemiology and Genetics (DCEG) of NCI and the Harvard T.H. Chan School of Public Health in collaboration with the NCI Cohort Consortium.</div>--->
-            <div>The BCRPP is funded by the US National Cancer Institute (NCI) grant number <a href="https://maps.cancer.gov/overview/DCCPSGrants/abstract.jsp?applId=10263893&term=CA249866">1U01CA249866-01</a> and the NCI Intramural Research Funds. BCRPP is coordinated by the Harvard T.H. Chan School of Public Health and the Division of Cancer Epidemiology and Genetics (DCEG) of NCI, in collaboration with the NCI Cohort Consortium.</div>
+                <div>The Division of Cancer Epidemiology and Genetics (DCEG) is a research program of the National Cancer Institure (NCI), one of the National Institutes of Health (NIH).</div>
             </div>
         </div>
     `;

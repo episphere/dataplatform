@@ -4,11 +4,14 @@ import {
   getFile,
   shortenText,
   tsv2Json,
+  selectProps,
+  tsv2Json2,
+  emailsAllowedToUpdateData
 } from "./../shared.js";
 import { downloadFiles } from "./dictionary.js";
 let previousValue = "";
 
-export const renderDescription = (modified_at) => {
+export const publication = (modified_at) => {
   let template = `
   <div class="main-summary-row">
          <div class="row align-left w-100 m-0">
@@ -30,6 +33,19 @@ export const renderDescription = (modified_at) => {
                 </div>
             </div>
         </div>
+
+        ${
+          localStorage.parms &&
+          JSON.parse(localStorage.parms).login &&
+          emailsAllowedToUpdateData.indexOf(
+            JSON.parse(localStorage.parms).login
+          ) !== -1
+            ? `
+            <div class="main-summary-row"><button id="updateSummaryStatsData" class="btn btn-outline-dark" aria-label="Update publication data" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#confluenceMainModal">Update data</button></div>
+        `
+            : ``
+        }
+      
         <div class="main-summary-row">
             <div class="col-xl-2 filter-column div-border white-bg align-left p-2" id="summaryFilterSiderBar">
                 <div class="main-summary-row">
@@ -55,9 +71,7 @@ export const renderDescription = (modified_at) => {
         </div>
         <div class="main-summary-row">
             <div class="offset-xl-2 col data-last-modified align-left mt-3 mb-0 pl-4" id="dataLastModified">
-                Data last modified at - ${new Date(
-                  modified_at
-                ).toLocaleString()}
+                Data last modified at - ${new Date(modified_at).toLocaleString()}
             </div>
         </div>
     `;
@@ -66,13 +80,22 @@ export const renderDescription = (modified_at) => {
 };
 
 const getDescription = async () => {
-  const data = await (await fetch("./imports/pubPubData.tsv")).text();
-  const tsv2json = tsv2Json(data);
-  const json = tsv2json.data;
-  const headers = tsv2json.headers;
+  const data = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/production/imports/DCEG_Publications.tsv")).text();
+  console.log(data);
+  const tsv = tsv2Json2(data);
+  const json = tsv.data;
+  const headers = tsv.headers;
   console.log(json);
-  let newJsons = {};
-  let prevAcronym = "";
+  json.forEach((obj) => {
+    if (obj["nores"] === "true") obj["nores"] = "No Restrictions";
+    if (obj["hmb"] === "true") obj["hmb"] = "Health/Medical/Biomedical";
+    if (obj["ngm"] === "true") obj["ngm"] = "No General Methods";
+    if (obj["nfp"] === "true") obj["nfp"] = "Not for Profit Use Only";
+    if (obj["gru"] === "true") obj["gru"] = "General Research Use";
+    if (obj["dsr"] === "true") obj["dsr"] = "Disease-Specific Research";
+    if (obj["dsr_value"] === undefined) obj["dsr_value"] = "False";
+    console.log(obj["dsr_value"]);
+  });
   // json.forEach((obj) => {
   //   if (obj["Cohort name"]) obj["Cohort name"] = obj["Cohort name"].trim();
   //   if (obj["Acronym"]) obj["Acronym"] = obj["Acronym"].trim();
@@ -87,15 +110,19 @@ const getDescription = async () => {
   //   }
   // });
 
-  // const allCountries = [];
-  // Object.values(newJsons).forEach((dt) => {
-  //   if (dt["Region"] === undefined) return;
-  //   dt["Region"].split(",").forEach((ctr) => {
-  //     ctr.split(" and ").forEach((c) => {
-  //       if (c.trim()) allCountries.push(c.trim());
-  //     });
-  //   });
-  // });
+  const allJournals = [];
+  Object.values(json).forEach((dt) => {
+    if (dt["journal_name"] === undefined) return;
+    dt["journal_name"].split(",").forEach((ctr) => {
+        if (ctr.trim()) allJournals.push(ctr.trim());
+    });
+  });
+
+  //console.log(allJournals);
+  const uniqueJournals = allJournals
+    .filter((d, i) => d && allJournals.indexOf(d.trim()) === i)
+    .sort();
+  //console.log(uniqueJournals);
   const allTitles = Object.values(json).map((dt) => dt["title"]);
 
   // const countries = allCountries
@@ -105,8 +132,8 @@ const getDescription = async () => {
     .filter((d, i) => d && allTitles.indexOf(d.trim()) === i)
     .sort();
 
-  console.log(uniqueTitles);
-  console.log(json.filter((dt) => dt['title'] === uniqueTitles[0]));
+  //console.log(uniqueTitles);
+  //console.log(json.filter((dt) => dt['title'] === uniqueTitles[0]));
 
   let filterTemplate = `
         <div class="main-summary-row">
@@ -117,34 +144,56 @@ const getDescription = async () => {
             </div>
         </div>
         `;
-  // filterTemplate += `
-  //                   </ul>
-  //               </div>
-  //           </div>
-  //       </div>
-  //       <div class="main-summary-row">
-  //           <div style="width: 100%;">
-  //               <div class="form-group" margin:0px>
-  //                   <label class="filter-label font-size-13" for="countriesList">Region</label>
-  //                   <ul class="remove-padding-left font-size-15 filter-sub-div allow-overflow" id="countriesList">
-  //                       `;
-  // countries.forEach((region) => {
-  //   filterTemplate += `
-  //               <li class="filter-list-item">
-  //                   <input type="checkbox" data-country="${region}" id="label${region}" class="select-country" style="margin-left: 1px !important;">
-  //                   <label for="label${region}" class="country-name" title="${region}">${shortenText(
-  //     region,
-  //     15
-  //   )}</label>
-  //               </li>
-  //           `;
-  // });
-  // filterTemplate += `
-  //                   </ul>
-  //               </div>
-  //           </div>
-  //       </div>
-  //   `;
+  filterTemplate += `
+        <div class="main-summary-row">
+            <div style="width: 100%;">
+                <div class="form-group" margin:0px>
+                    <label class="filter-label font-size-13" for="journalsList">Journal</label>
+                    <ul class="remove-padding-left font-size-15 filter-sub-div allow-overflow" id="journalsList">
+                        `;
+  uniqueJournals.forEach((journ) => {
+    filterTemplate += `
+                <li class="filter-list-item">
+                    <input type="checkbox" data-journal="${journ}" id="label${journ}" class="select-journal" style="margin-left: 1px !important;">
+                    <label for="label${journ}" class="journal-name" title="${journ}">${shortenText(journ,25)}</label>
+                </li>
+            `;
+  });
+  filterTemplate += `
+                  </ul>
+                    <label class="filter-label font-size-13" for="restrictionsList">Restrictions</label>
+                    <ul class="remove-padding-left font-size-15 filter-sub-div allow-overflow" id="restrictionsList">
+                      <li class="filter-list-item">
+                          <input type="checkbox" data-restrictions="nores" id="labelnores" class="select-restrictions" style="margin-left: 1px !important;">
+                          <label for="labelnores" class="restrictions-name" title="nores">No Restrictions</label>
+                      </li>
+                      <li class="filter-list-item">
+                          <input type="checkbox" data-restrictions="hmb" id="labelhmb" class="select-restrictions" style="margin-left: 1px !important;">
+                          <label for="labelhmb" class="restrictions-name" title="hmb">Health/Medical/Biomedical</label>
+                      </li>
+                      <li class="filter-list-item">
+                          <input type="checkbox" data-restrictions="ngm" id="labelngm" class="select-restrictions" style="margin-left: 1px !important;">
+                          <label for="labelngm" class="restrictions-name" title="ngm">No General Methods</label>
+                      </li>
+                      <li class="filter-list-item">
+                          <input type="checkbox" data-restrictions="nfp" id="labelnfp" class="select-restrictions" style="margin-left: 1px !important;">
+                          <label for="labelnfp" class="restrictions-name" title="nfp">Not for Profit Use Only</label>
+                      </li>
+                      <li class="filter-list-item">
+                          <input type="checkbox" data-restrictions="gru" id="labelgru" class="select-restrictions" style="margin-left: 1px !important;">
+                          <label for="labelgru" class="restrictions-name" title="gru">General Research Use</label>
+                      </li>
+                      <li class="filter-list-item">
+                          <input type="checkbox" data-restrictions="dsr" id="labeldsr" class="select-restrictions" style="margin-left: 1px !important;">
+                          <label for="labeldsr" class="restrictions-name" title="dsr">Disease-Specific Research</label>
+                      </li>
+            `;
+  filterTemplate += `
+                    </ul>
+                </div>
+            </div>
+        </div>
+    `;
   document.getElementById("filterDataCatalogue").innerHTML = filterTemplate;
   // const descriptions = Object.values(json);
   // console.log(descriptions);
@@ -170,66 +219,80 @@ const getDescription = async () => {
 
 const renderStudyDescription = (descriptions, pageSize, headers) => {
   let template = "";
-  const allTitles = Object.values(descriptions).map((dt) => dt["title"]);
-
+  const newDesc = descriptions.map(selectProps("title", "date", "author", "journal_name", "journal_acro"));
+  console.log(newDesc);
+  console.log(descriptions);
+	
+  let uniqueTitles = [...new Map(newDesc.map((item) => [item["title"], item])).values()];
+  console.log(uniqueTitles);
+  // const allTitles = Object.values(newDesc).map((dt) => [dt["title"], dt["date"], dt["author"], dt["journal_name"], dt["journal_acro"]]);
+  // console.log(allTitles);
+  // let set = new Set(allTitles.map(JSON.stringify));
+  // let uniqueTitles = Array.from(set).map(JSON.parse);
+  // console.log(uniqueTitles);
   // const countries = allCountries
   //   .filter((d, i) => allCountries.indexOf(d) === i)
   //   .sort();
-  const uniqueTitles = allTitles
-    .filter((d, i) => d && allTitles.indexOf(d.trim()) === i)
-    .sort();
+  //const uniqueTitles = allTitles.filter((d, i) => d && allTitles.indexOf(d.trim()) === i).sort();
+
+
   if (descriptions.length > 0) {
     template = `
         <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
-            <div class="col-md-5 font-bold ws-nowrap pl-2">Title of Publication <button class="transparent-btn sort-column" data-column-name="title"><i class="fas fa-sort"></i></button></div>
+            <div class="col-md-4 font-bold ws-nowrap pl-2">Title of Publication <button class="transparent-btn sort-column" data-column-name="title"><i class="fas fa-sort"></i></button></div>
             <div class="col-md-3 font-bold ws-nowrap">First Author <button class="transparent-btn sort-column" data-column-name="author"><i class="fas fa-sort"></i></button></div>
             <div class="col-md-2 font-bold ws-nowrap">Date <button class="transparent-btn sort-column" data-column-name="date"><i class="fas fa-sort"></i></button></div>
             <div class="col-md-1"></div>
+            <div class="col-md-1"></div>
         </div>`;
-    uniqueTitles.forEach((title, index) => {
+    uniqueTitles.forEach((desc, index) => {
       if (index > pageSize) return;
-      var desc = descriptions.filter((dt) => dt['title'] === title);
+      var desc2 = descriptions.filter((dt) => dt['title'] === desc["title"]);
+      console.log(desc2);
       //descTitle.forEach(desc => {
         console.log(desc);
         template += `
               <div class="card mt-1 mb-1 align-left">
-                  <div style="padding: 10px" aria-expanded="false" id="heading${desc[0]["title"].replace(/\s+/g,"")}">
+                  <div style="padding: 10px" aria-expanded="false" id="heading${desc["title"].replace(/\s+/g,"").replace(/[^a-zA-Z ]/g, "")}">
                       <div class="row">
-                          <div class="col-md-5">${
-                            desc[0]["title"] ? desc[0]["title"] : ""
+                          <div class="col-md-4">${
+                            desc["title"] ? desc["title"] : ""
                           }</div>
                           <div class="col-md-3">${
-                            desc[0]["author"] ? desc[0]["author"] : ""
+                            desc["author"] ? desc["author"] : ""
                           }</div>
                           <div class="col-md-2">${
-                            desc[0]["date"] ? desc[0]["date"] : ""
+                            desc["date"] ? desc["date"] : ""
                           }</div>
                           <div class="col-md-1">
-                              <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${desc[0]["title"].replace(/\s+/g,"")}">
+                              <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${desc["title"].replace(/\s+/g,"").replace(/[^a-zA-Z ]/g, "")}">
                                   <i class="fas fa-caret-down fa-2x"></i>
                               </button>
                           </div>
+                          <div class-"col-md-1">
+                            <button title="LinkToAccess" class="buttonsubmit"  onclick="window.location.href = '#data_access/form'"><span class="buttonsubmit__text"> Request Data </span></button>
+                          </div>
                       </div>
                   </div>
-                  <div id="study${desc[0]["title"].replace(/\s+/g,"")}" class="collapse" aria-labelledby="heading${desc[0]["title"]}">
+                  <div id="study${desc["title"].replace(/\s+/g,"").replace(/[^a-zA-Z ]/g, "")}" class="collapse" aria-labelledby="heading${desc["title"]}">
                       <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
                       ${
-                        desc[0]["journal_name"]
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Journal</div><div class="col">${desc[0]["journal_name"]}</div></div>`
+                        desc["journal_name"]
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Journal</div><div class="col">${desc["journal_name"]}</div></div>`
                           : ``
                       }
                       ${
-                        desc[0]["journal_acro"]
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Journal Acronym</div><div class="col">${desc[0]["journal_acro"]}</div></div>`
+                        desc["journal_acro"]
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Journal Acronym</div><div class="col">${desc["journal_acro"]}</div></div>`
                           : ``
                       }
                       ${
-                        desc[0]["author_first"]
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">First Author</div><div class="col">${desc[0]["author"]}</div></div>`
+                        desc["author_first"]
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">First Author</div><div class="col">${desc["author"]}</div></div>`
                           : ``
                       }`
 
-                    desc.forEach(desc2 => {
+                    desc2.forEach(desc2 => {
                       template += `
                       <HR>
                       ${
@@ -237,40 +300,35 @@ const renderStudyDescription = (descriptions, pageSize, headers) => {
                           ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Study</div><div class="col">${desc2["study"]}</div></div>`
                           : ``
                       }
-                      ${
-                        desc2["cas"]
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">cas</div><div class="col">${desc2["cas"]}</div></div>`
-                          : ``
-                      }
                       <div class="row mb-1 m-0"><div class="col-md-3 font-bold">Restrictions</div></div>
                       ${
-                        desc2["nores"]==='true'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">No Restrictions</div></div>`
+                        desc2["nores"]==='No Restrictions'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["nores"]}</div></div>`
                           : ``
                       }
                       ${
-                        desc2["hmb"]==='true'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">Health/Medical/Biomedical</div></div>`
+                        desc2["hmb"]==='Health/Medical/Biomedical'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["hmb"]}</div></div>`
                           : ``
                       }
                       ${
-                        desc2["ngm"]==='true'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">No General Methods</div></div>`
+                        desc2["ngm"]==='No General Methods'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["ngm"]}</div></div>`
                           : ``
                       }
                       ${
-                        desc2["nfp"]==='true'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">Not for Profit Use Only</div></div>`
+                        desc2["nfp"]==='Not for Profit Use Only'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["nfp"]}</div></div>`
                           : ``
                       }
                       ${
-                        desc2["gru"]==='true'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">General Research Use</div></div>`
+                        desc2["gru"]==='General Research Use'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["gru"]}</div></div>`
                           : ``
                       }
                       ${
-                        desc2["dsr"]==='true'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">Disease-Specific Research: ${desc2["dsr_value"]}</div></div>`
+                        desc2["dsr"]==='Disease-Specific Research'
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["dsr"]}: ${desc2["dsr_value"]}</div></div>`
                           : ``
                       }
                       `;
@@ -348,12 +406,20 @@ const addEventFilterDataCatalogue = (descriptions, headers) => {
   //   });
   // });
 
-  // const countrySelection = document.getElementsByClassName("select-country");
-  // Array.from(countrySelection).forEach((ele) => {
-  //   ele.addEventListener("click", () => {
-  //     filterDataBasedOnSelection(descriptions, headers);
-  //   });
-  // });
+  const journalSelection = document.getElementsByClassName("select-journal");
+  Array.from(journalSelection).forEach((ele) => {
+    ele.addEventListener("click", () => {
+      filterDataBasedOnSelection(descriptions, headers);
+    });
+  });
+
+  const restrictionsSelection = document.getElementsByClassName("select-restrictions");
+  Array.from(restrictionsSelection).forEach((ele) => {
+    ele.addEventListener("click", () => {
+      filterDataBasedOnSelection(descriptions, headers);
+    });
+  });
+
   const input = document.getElementById("searchDataCatalog");
   input.addEventListener("input", () => {
     filterDataBasedOnSelection(descriptions, headers);
@@ -382,13 +448,22 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
   //   .filter((dt) => dt.checked)
   //   .map((dt) => dt.dataset.consortium);
 
-  // const countrySelected = Array.from(
-  //   document.getElementsByClassName("select-country")
-  // )
-  //   .filter((dt) => dt.checked)
-  //   .map((dt) => dt.dataset.country);
+  const journalSelected = Array.from(
+    document.getElementsByClassName("select-journal")
+  )
+    .filter((dt) => dt.checked)
+    .map((dt) => dt.dataset.journal);
+  //console.log(journalSelected);
+
+  const restrictionsSelected = Array.from(
+    document.getElementsByClassName("select-restrictions")
+  )
+    .filter((dt) => dt.checked)
+    .map((dt) => dt.dataset.restrictions);
+  console.log(restrictionsSelected);
 
   let filteredData = descriptions;
+  console.log(filteredData);
 
   // if (consortiumSelected.length > 0) {
   //   filteredData = filteredData.filter(
@@ -396,13 +471,36 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
   //   );
   // }
 
-  // if (countrySelected.length > 0) {
+  if (journalSelected.length > 0) {
+    filteredData = filteredData.filter(
+      (dt) => journalSelected.indexOf(dt["journal_name"]) !== -1
+    );
+  }
+
+  if (restrictionsSelected.length > 0) {
+    filteredData = filteredData.filter((dt) => {
+      let found = false;
+      if (restrictionsSelected.includes("nores") && dt["nores"] !== "false")  found = true;
+      if (restrictionsSelected.includes("hmb") && dt["hmb"] !== "false") found = true;
+      if (restrictionsSelected.includes("ngm") && dt["ngm"] !== "false") found = true;
+      if (restrictionsSelected.includes("nfp") && dt["nfp"] !== "false") found = true;
+      if (restrictionsSelected.includes("gru") && dt["gru"] !== "false") found = true;
+      if (restrictionsSelected.includes("dsr") && dt["dsr"] !== "false") found = true;
+      if (restrictionsSelected.includes("dsr_value") && dt["dsr_value"] !== "false") found = true;
+      console.log(found);
+      if (found) return dt;
+    });
+  }
+
+  console.log(filteredData);
+
+  // if (journalSelected.length > 0) {
   //   filteredData = filteredData.filter((dt) => {
   //     let found = false;
-  //     countrySelected.forEach((ctr) => {
-  //       if (dt["Region"] === undefined) return;
+  //     journalSelected.forEach((ctr) => {
+  //       if (dt["journal_name"] === undefined) return;
   //       if (found) return;
-  //       if (dt["Region"].match(new RegExp(ctr, "ig"))) found = true;
+  //       if (dt["journal_name"].match(new RegExp(ctr, "ig"))) found = true;
   //     });
   //     if (found) return dt;
   //   });
@@ -426,7 +524,7 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
   //       `
   //       }
   //   `;
-  // if (countrySelected.length === 0) filteredData = descriptions;
+  if (journalSelected.length === 0 && restrictionsSelected === 0) filteredData = descriptions;
   const input = document.getElementById("searchDataCatalog");
   const currentValue = input.value.trim().toLowerCase();
 
@@ -459,7 +557,13 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
     if (dt["author"].toLowerCase().includes(currentValue)) found = true;
     if (dt["date"].toLowerCase().includes(currentValue)) found = true;
     if (dt["journal_name"].toLowerCase().includes(currentValue)) found = true;
-    if (dt["dsr_value"] && dt["dsr_value"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["nores"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["hmb"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["ngm"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["nfp"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["gru"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["dsr"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["dsr_value"].toLowerCase().includes(currentValue)) found = true;
     if (found) return dt;
   });
   searchedData = searchedData.map((dt) => {
@@ -479,10 +583,14 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
       new RegExp(currentValue, "gi"),
       "<b>$&</b>"
     );
-    dt["dsr_value"] = dt["dsr_value"].replace(
-      new RegExp(currentValue, "gi"),
-      "<b>$&</b>"
-    );
+    // dt["nores"] = dt["nores"].replace(
+    //   new RegExp(currentValue, "gi"),
+    //   "<b>$&</b>"
+    // );
+    // dt["dsr_value"] = dt["dsr_value"].replace(
+    //   new RegExp(currentValue, "gi"),
+    //   "<b>$&</b>"
+    // );
     return dt;
   });
 
