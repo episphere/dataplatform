@@ -11,7 +11,7 @@ export const infoDeck = () => {
                 <!---<img src="./static/images/nci-vol-10623-150.jpg" class="banner-logo" style="min-height: 120px;  max-height=450px;" alt="Confluence logo">--->
                 <div class="banner-overlay-text row justify-content-center text-center">
                     <div class="col-xl-12">
-                        <h1 class="banner-overlay-h1">Epitracker Data Platform
+                        <h1 class="banner-overlay-h1">DCEG Epidemiology Data Platforms
                         </h1>
                         <div class="banner-overlay-line"></div>
                         <h2 class="banner-overlay-h3" style="font-size:2vw;"> Following FAIR principles in Support of Epidemiological Research

@@ -79,7 +79,8 @@ import { renderDescription } from "./src/pages/description.js";
 import { dataDictionaryTemplate } from "./src/pages/dictionary.js";
 import { showPreview } from "./src/components/boxPreview.js";
 import { uploadData, dataUploadForm, approvedFormSelect, populateApprovedSelect, showTab, addStudiesInput } from "./src/pages/uploaddata.js";
-
+import { renderMapVisualizationPage } from "./src/pages/mapVisualization.js"
+import {loadData, dataLoaded} from "./src/utils/quantiles.js"
 /**
  * 1. add Scientifix comitte to menu
  * 2. add corresponsing page
@@ -530,7 +531,9 @@ const manageRouter = async () => {
     if (element.classList.contains("navbar-active")) return;
     document.title = "Sahar";
     assignNavbarActive(element);
-    confluenceDiv.innerHTML = '<h1>Map...</h1>';
+
+    confluenceDiv.innerHTML = renderMapVisualizationPage()
+    loadData().then((datas => dataLoaded(...datas)))
   } 
   // else if (hash === "#join") {
   //   const element = document.getElementById("resourcesBCRPP");

@@ -48,24 +48,24 @@ export const renderOverView = async () => {
         <div class="main-summary-row">
             <div class="col align-left">
                 </br>
-                <span>
+                <!-- <span>
                 DCEG is committed to sharing research data according to the <a href= "https://sharing.nih.gov/data-management-and-sharing-policy/about-data-management-and-sharing-policies/data-management-and-sharing-policy-overview" target="__blank">NIH Data Sharing Policy</a> to further advance science, improve public health, while maximizing contributions from research participants. This site provides a suite of epidemiology data platforms to facilitate collaborations and share data from consortia, individual studies and publications led by DCEG investigators. 
 
                 </span>
-                </br></br>
-                <span>
-                <b>DCEG Epidemiology Data Platforms support data sharing from:</b>
-                </span>
-                </br></br>
+                </br>-->
+                <b>Goal:</b>
+                
+                Developing an epidemiology data tracker platform with real-time interactive visual analytics. <br>  
+              
+              <b>Data:</b>
+                The data comes from CBC national center of statistics for national health certificate data, CDC Wonder, a freely available platform where you can explore national health certificate data. 
+                  
+              
+                </div>
+                <!--</br>
                 <div style="margin-left: 40px">
                 <ul> 
-                <li> Consortia of Studies that are coordinated by DCEG </li> 
-                </ul>
-                </i></div>
-                </br>
-                <div style="margin-left: 40px">
-                <ul> 
-                <li> DCEG Research Studies
+                <li> DCEG Quintiles
                 </li> 
                 </ul>
                 </i></div>
@@ -85,7 +85,7 @@ export const renderOverView = async () => {
                </i> </div>
                 </br>
             </div>
-        </div>
+        </div>-->
         <div class="align-left" id="confluenceDataSummary"></div>
     </div>
 `;

@@ -57,7 +57,7 @@ export const dataAccessNotSignedIn = () => {
           <div class="container body-min-height">
               <div class="main-summary-row">
                   <div class="align-left">
-                      <h1 class="page-header">Data Platforms for Consortia Projects
+                      <h1 class="page-header">Visualization
                       </h1>
                   </div>
               </div>
@@ -875,7 +875,7 @@ export const acceptedStudiesView = async () => {
   let template = `
     <div class="main-summary-row">
             <div class="row align-left w-100 m-0">
-                <h1 class="col page-header pl-0 pt-2">Information on Accessing DCEG Data</h1>
+                <h1 class="col page-header pl-0 pt-2">Information on Epitracker Datapaltfrom</h1>
                 <div class="ml-auto allow-overflow mr-2" style="margin:1rem 0" id="pagesContainer"></div>
                 <div class="ml-auto mt-3 mb-3 mr-2" id="pageSizeContainer"></div>
                 <div class="ml-auto mt-3 mb-3" id="downloadContainer">

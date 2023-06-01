@@ -21,29 +21,29 @@ export const infoDeck = () => {
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`;
   template += cardContents({
-    header: "About DCEG Data",
-    button: "Information on Accessing DCEG Data",
+    header: "About Epitracker",
+    button: "Information on Epitracker Dataplatfrom",
     href: "#about/overview",
     icon: "fa-info",
     explanation: "",
   });
   template += cardContents({
-    header: "Consortia Projects",
-    button: "Data Platforms for Consortia Projects",
+    header: "Geographic Visualization",
+    button: "Geographic Visualization",
     href: "#data_access/overview",
     icon: "fa-folder-open",
     explanation: "",
   });
   template += cardContents({
-    header: "Research Studies",
-    button: "Data Platforms for DCEG studies",
+    header: "Quintiles",
+    button: " Quintiles",
     href: "#researchStudies",
     icon: "fa-layer-group",
     explanation: "",
   });
   template += cardContents({
-    header: "Datasets from DCEG Publications",
-    button: "Datasets from DCEG Publications available for request",
+    header: "Death Rate",
+    button: "Death Rate",
     href: "#publicationpage",
     icon: "fa-database",
     explanation: "",
@@ -109,22 +109,22 @@ export const infoDeckAfterLoggedIn = async () => {
   //       explanation: "",
   //     });
   template += cardContents({
-    header: "Consortia Projects",
-    button: "Data Platforms for Consortia Projects",
+    header: "Geographic Visualization",
+    button: "Geographic Visualization",
     href: "#data_access/overview",
     icon: "fa-folder-open",
     explanation: "",
   });
   template += cardContents({
-    header: "Research Studies",
+    header: "Quintiles",
     button: "Data Platforms for DCEG studies",
     href: "#researchStudies",
     icon: "fa-layer-group",
     explanation: "",
   });
   template += cardContents({
-    header: "Datasets from DCEG Publications",
-    button: "Datasets from DCEG Publications available for request",
+    header: "Death Rate",
+    button: "Death Rate",
     href: "#publicationpage",
     icon: "fa-database",
     explanation: "",

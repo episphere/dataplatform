@@ -5,7 +5,7 @@ export const testPage2 = () => {
               <div class="main-summary-row">
                 <div class="align-left">
                   <h1 
-                    class="page-header">Data Platforms for DCEG Research Studies
+                    class="page-header">Quintiles
                   </h1>
                 </div>
               </div>
