@@ -486,7 +486,6 @@ export const addEventShowExtCollaborator = () => {
     let x = document.getElementById(`toggle${ID}`).querySelectorAll(".share-folder")
     let allFolders = [[ID, type, folderName]];
     x.forEach(entry => {
-      //console.log(entry.dataset);
       const idAll = entry.dataset.folderId;
       const typeAll = entry.dataset.objectType;
       const folderAll = entry.dataset.folderName;
@@ -495,21 +494,19 @@ export const addEventShowExtCollaborator = () => {
     console.log(allFolders);
     const responseParent = await getCollaboration(ID, `${type}s`);
     const userPermission = checkPermissionLevel(responseParent);
-    let responses = await getCollaboration(allFolders[0][0], `${allFolders[0][1]}s`);
+    let responses = responseParent;//await getCollaboration(allFolders[0][0], `${allFolders[0][1]}s`);
     responses = responses.entries;
     var ids = new Set(responses.map(d => d.id));
     for (let index = 1; index < allFolders.length; index++) {
       let response = (await getCollaboration(allFolders[index][0], `${allFolders[index][1]}s`)).entries;
       responses = [...responses, ...response.filter(d => !ids.has(d.id))];
       ids = new Set(responses.map(d => d.id));
-      //console.log(responses);
     };
     responses = [...new Set(responses.map((item) => item))];
     console.log(responseParent);
     let table = "";
     let allEntries = [];
     if (responseParent && responses.length > 0) {
-      //let entries = responses.entries;
       responses.forEach(entry => {
         const name = !entry.invite_email ? entry.accessible_by.name : "";
         const email = !entry.invite_email ? entry.accessible_by.login : entry.invite_email;
@@ -530,7 +527,6 @@ export const addEventShowExtCollaborator = () => {
             id,
             folderName,
             expiresAt
-            //userid
           });
         };
       });
@@ -833,19 +829,24 @@ const addEventExtendCollaborations = async () => {
       var date = new Date();
       const newDate = date.addDays(90);
       const newDateString = newDate.toISOString();
+      const delay = ms => new Promise(res => setTimeout(res, ms));
+      showAnimation();
       for (var i=0; i < checkboxes.length; i++) {
           if (checkboxes[i].checked) {
               const promise = updateBoxCollaboratorTime(checkboxes[i].id, checkboxes[i].value, newDateString)
                   .then(response => response.json());
               promises.push(promise);
-              //result.push(checkboxes[i].id);
-              //promises.push(checkboxes[i].value);
+              if(i%15==0){
+                console.log("Waiting 1 second");
+                await delay(1000);
+              }
           }
-      }
+      };
       showAnimation();
+      
       Promise.all(promises).then(results => {
-          alert("Please confirm collaborations have been updated");
           hideAnimation();
+          alert("Please confirm collaborations have been updated");
       });
   })
 };
