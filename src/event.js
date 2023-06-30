@@ -509,7 +509,19 @@ export const addEventShowExtCollaborator = () => {
     if (responseParent && responses.length > 0) {
       responses.forEach(entry => {
         const name = !entry.invite_email ? entry.accessible_by.name : "";
-        const email = !entry.invite_email ? entry.accessible_by.login : entry.invite_email;
+        let email = "";
+        if (!entry.invite_email) {
+          if (!entry.accessible_by.login) {
+            email = "null";
+          } else {
+            email = entry.accessible_by.login;
+          }
+        } else {
+          email = entry.invite_email;
+        }
+        //console.log(email);
+        //const email = !entry.invite_email ? entry.accessible_by.login : entry.invite_email;
+        // email = email == null ? "null" : email;
         const role = entry.role;
         const status = entry.status;
         const id = entry.id;
