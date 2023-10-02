@@ -71,7 +71,7 @@ export const dataAccessNotSignedIn = () => {
                   <div class="row m-0">
                       <ul>
                           <li>
-                          <a href= "https://episphere.github.io/confluence" target="__blank">The Confluence Project:</a>
+                          <a href= "https://confluence.cancer.gov" target="__blank">The Confluence Project:</a>
                           The Confluence Project is a large international project to study breast cancer genetic susceptibility in women and men of multiple ancestries, by integrating existing and new genome-wide genetic data, across several breast cancer consortia.
                            </li>
                            <li><a href= "https://episphere.github.io/bcrpDataPlatform" target="__blank">The Breast Cancer Risk Prediction Project (BCRPP):</a>
@@ -163,7 +163,7 @@ export const dataAccess = (activeTab, showDescripton) => {
                     <div class="row m-0">
                         <ul> 
                             <li>
-                            <a href= "https://episphere.github.io/confluence" target="__blank">The Confluence Project:</a>
+                            <a href= "https://confluence.cancer.gov" target="__blank">The Confluence Project:</a>
                             The Confluence Project is a large international project to study breast cancer genetic susceptibility in women and men of multiple ancestries, by integrating existing and new genome-wide genetic data, across several breast cancer consortia.
                             </li>
                             <li> 
