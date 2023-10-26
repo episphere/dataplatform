@@ -27,7 +27,7 @@ export const aboutConfluence = (activeTab, showDescripton) => {
                 ${navBarItems}
                     <!---<button class="sub-menu-btn"><a class="nav-link ${
                       activeTab === "contact" ? "active" : ""
-                    } black-font font-size-14" href="#contact"> <strong> Scientific Committee</strong></a></button>--->
+                    } black-font font-size-14" href="#contact"> <strong> DACC Members</strong></a></button>--->
                
             </div>
         </div>

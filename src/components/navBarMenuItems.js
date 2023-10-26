@@ -183,7 +183,7 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
       link.href = `#${page}/description`;
       if (activeTab === "description") link.classList.add("active");
     }
-    if (header === "Scientific Committee") {
+    if (header === "DACC Members") {
       link.href = `#${page}/contact`;
       if (activeTab === "contact") link.classList.add("active");
     }

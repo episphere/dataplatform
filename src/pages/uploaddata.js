@@ -1,4 +1,5 @@
 import {csv2Json, csv2JsonTest, uploadFile, uploadFileAny, uploadWordFile, json2other, uploadTSV, createFolder, getFolderItems, descFolder, dataPlatformFolder, publicDataFolder, descFile, showAnimation, hideAnimation} from "./../shared.js";
+import { config } from "./../config.js";
 
 export const uploadData = () => {
   let template = `
@@ -40,6 +41,11 @@ export const dataUploadForm = async () => {
     "-" +
     ("0" + (dateToday.getMonth() + 1)).slice(-2);
   let template = `
+        <div class="input-group input-group2">
+          <button class="nav-link nav-menu-links custom-btn" title="Login ERa" id="loginERa">
+            Login ERa
+          </button>
+        </div>
         <form class="contact-form" id="regForm">
           <div class="tab">
             <h3><b>Data Sharing Plan</b></h3>
@@ -131,6 +137,9 @@ export const dataUploadForm = async () => {
         </form>
   `
   document.getElementById("uploadFormView").innerHTML = template;
+  document.getElementById("loginERa").addEventListener("click", async function () {
+    location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/&state=${config.iniAppLocal.stateIni}`
+  });
   var currentTab = 0;
   showTab(currentTab);
   //console.log(currentTab);
