@@ -349,7 +349,7 @@ export const confluence = async () => {
       const element = document.getElementById("data2");
       if (!element) return;
       if (element.classList.contains("navbar-active")) return;
-      document.title = "Testing";
+      document.title = "Research Studies";
       assignNavbarActive(element);
       confluenceDiv.innerHTML = testPage2();
       hideAnimation();

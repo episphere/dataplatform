@@ -41,9 +41,9 @@ export const dataUploadForm = async () => {
     "-" +
     ("0" + (dateToday.getMonth() + 1)).slice(-2);
   let template = `
-        <div class="input-group input-group2">
+      <div class="input-group input-group2" hidden>
           <button class="nav-link nav-menu-links custom-btn" title="Login ERa" id="loginERa">
-            Login ERa
+            <img src="./static/images/era.png"> Login ERa
           </button>
         </div>
         <form class="contact-form" id="regForm">
@@ -58,7 +58,7 @@ export const dataUploadForm = async () => {
             </div>
 
             <div class="input-group input-group2 d-none">
-              <label for="dsmp_type"> <b>What type of DSMP(s) are you selecting from? </b><span class='required-label'>*</span> </label>      
+              <label for="dsmp_type"> <b>What type of DMSP(s) are you selecting from? </b><span class='required-label'>*</span> </label>      
                 <input id="dsmp_pubpres" name="dsmp_type" type="radio" value="Publication/Presentation" required/>
                   <label class="inline" for="dsmp_pubpres"> Publication/Presentation </label>
                 <input id="dsmp_study" name="dsmp_type" type="radio" value="Study" required/>
@@ -66,13 +66,13 @@ export const dataUploadForm = async () => {
             </div>
 
             <div class='input-group input-group2 d-none' >
-              <label for="dsmp_name"> <b>Please select from a DSMP:</b><span class='required-label'>*</span> </label>
+              <label for="dsmp_name"> <b>Please select from a DMSP:</b><span class='required-label'>*</span> </label>
                 <select class='form-select' id='approvedDSMP' name='dsmp_name' multiple>
                 </select>             
             </div>
 
             <div class='d-none' id="dsmp_no">
-              <p class="dsmpno"><b>A DSMP must first be created before uploading. <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Click here to create a DSMP.</a></b></p>
+              <p class="dsmpno"><b>A DMSP must first be created before uploading. <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Click here to create a DMSP.</a></b></p>
             </div>
 
             <div class='input-group input-group2 d-none' id="duoSel">
@@ -143,8 +143,9 @@ export const dataUploadForm = async () => {
   var currentTab = 0;
   showTab(currentTab);
   //console.log(currentTab);
-  const dsmp = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/main/imports/dmsp_output.csv")).text()//await (await fetch("./imports/dsmp_output.csv")).text();
-  //console.log(dsmp);
+  const dsmp = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/main/imports/dmsp_output.csv")).text();//await (await fetch("./imports/dsmp_output.csv")).text();
+  // const icoutput = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/main/imports/ic_output.csv")).text();
+  // console.log(icoutput);
   let csvData = csv2JsonTest(dsmp);
   //await populateApprovedSelect(csvData);
   document.getElementById("approvedyes").addEventListener("click", approvedFormSelect);
@@ -220,6 +221,9 @@ export const approvedFormSelect = async (csvData) => { //Is there a DSMP functio
 
 export const dsmpSelected = async (csvData) => {
   document.getElementById("nextBtn").style.display = "inline";
+  const icoutput = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/main/imports/ic_output.csv")).text();
+  let icData = csv2JsonTest(icoutput);
+  console.log(icData);
   let template =`
   <label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with the data based on the study's Institutional Certification (IC). If you have questions about your study's IC, please contact your <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Data Sharing Administrator (DSA)</a>.</b><span class='required-label'>*</span> </label>
     <div class='input-group input-group2 font-size-22'>`;
@@ -227,6 +231,11 @@ export const dsmpSelected = async (csvData) => {
   var values = Array.from(ele.selectedOptions).map(({ value }) => value);//Array.from(ele.selectedOptions).map(v=>v.value);
   //console.log(values);
   for (const value of values){
+    let dmspVal = value.split('.v')[0];
+    var dmspIC = icData.data.find(item => item.planID === dmspVal);
+    if (dmspIC){
+      console.log('yes');
+    }
     var selectedData = csvData.data.find(item => item.planID === value);
     if (!selectedData.studyName){
       selectedData.studyName = 'None'
@@ -241,8 +250,28 @@ export const dsmpSelected = async (csvData) => {
     const duoEl = document.getElementById("duoSel");
     duoEl.classList.toggle("d-none", values === "");
     template +=`
-          <h3>DSMP: ${value}</h3>`;
-            for (let i=0; i <studies.length; i++) {
+          <h3>DMSP: ${value}</h3>`;
+    if (dmspIC){
+      for (let i=0; i <studies.length; i++) {
+      template += `
+      <div class="input-group input-group2 font-size-22">
+        <div class="inline-field field-br">
+          <input id="${value}sel${i}" name="studySel" type="checkbox" value="${value}duo${i}" checked/> <!---${studies.length === 1 ? 'checked':''}--->
+          <label class="container-ul" for="${value}sel${i}"><h4><b>cas: ${cas[i]}</b>, ${studies[i]}</h4></label>
+        </div>
+        <div class="input-group input-group2">
+          <ul class="form2" id='${value}duo${i}' cas='${cas[i]}' study='${studies[i]}'>
+            <div class="inline-field">
+              <input id="${value}${dmspIC.dul}${i}" name="duoSel" type="checkbox" value="NR" checked disabled/>
+              <label class="container-ul" for="${value}nores${i}">${dmspIC.dul}: ${dmspIC.ds_dul}</label>
+            </div>
+          </ul>
+          </div>
+        </div>
+      `
+      }
+    } else {
+    for (let i=0; i <studies.length; i++) {
               //console.log(studies[i]);
     template += `
             <div class="input-group input-group2 font-size-22">
@@ -284,6 +313,7 @@ export const dsmpSelected = async (csvData) => {
               </div>
             `
             }
+    }
   }
   template +=`
             </div>`
@@ -344,7 +374,7 @@ export const populateApprovedSelect = async (csvData) => { //Pulling data from d
   optionEl.disabled = true;
   optionEl.selected = true;
   optionEl.value = '';
-  optionEl.text = `--select a DSMP--`;
+  optionEl.text = `--select a DMSP--`;
   approvedEl.appendChild(optionEl);
   options.forEach((option) => {
     const optionEl = document.createElement("option");
@@ -367,7 +397,7 @@ export const populateApprovedSelect = async (csvData) => { //Pulling data from d
       optionEl.style="font-style:italic";
       optionEl.value = '';
       //console.log(optionEl.value);
-      optionEl.text = `${studies[i]}, cas: ${cas[i]}`;
+      optionEl.text = `${studies[i]}`; //`${studies[i]}, cas: ${cas[i]}`;
       approvedEl.appendChild(optionEl);
     }
   });
@@ -557,7 +587,7 @@ export async function nextPrev(n, currentTab) {
       const study = form.getAttribute('study');
       template +=
       `<div class="contact-form input-group input-group2 font-size-22" id="${id}Form">
-        <h3>DSMP: ${id.split('duo')[0]}</h3>
+        <h3>DMSP: ${id.split('duo')[0]}</h3>
         <div class="input-group input-group2 font-size-22">
           <h4><b>cas: ${cas}</b>, ${study}</h4>
             <div class='input-group input-group2' >

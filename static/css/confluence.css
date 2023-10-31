@@ -1797,6 +1797,11 @@ form {
   border: 0px;
 }
 
+.custom-btn img {
+  width: 50px;
+  height: auto;
+}
+
 .custom-border {
   border: 3px solid #dddddd !important;
 }
@@ -2360,4 +2365,9 @@ button.previous-btn {
   .form-inline input {
     margin: 10px 0 !important;
   }
+}
+
+.center {
+  display: flex;
+  justify-content: center;
 }
