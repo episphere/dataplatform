@@ -79,6 +79,7 @@ import { renderDescription } from "./src/pages/description.js";
 import { dataDictionaryTemplate } from "./src/pages/dictionary.js";
 import { showPreview } from "./src/components/boxPreview.js";
 import { uploadData, dataUploadForm, approvedFormSelect, populateApprovedSelect, showTab, addStudiesInput } from "./src/pages/uploaddata.js";
+import { config } from "./src/config.js";
 
 /**
  * 1. add Scientifix comitte to menu
@@ -284,6 +285,9 @@ export const confluence = async () => {
           // document
           //   .getElementById("amendmentno")
           //   .addEventListener("click", amendFormSelect);
+          document.getElementById("loginERa").addEventListener("click", async function () {
+            location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/&state=${config.iniAppLocal.stateIni}`
+          });
           await dataForm();
         } else {
           confluenceDiv.innerHTML = await formSectionOther("form");

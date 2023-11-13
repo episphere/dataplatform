@@ -2038,7 +2038,7 @@ p {
   border-color: var(--color-gray-medium);
 }
 
-.contact-form button {
+/* .contact-form button {
   display: block;
   position: relative;
   margin: 0.5rem 1rem 0;
@@ -2052,16 +2052,49 @@ p {
   line-height: 1.5;
   text-transform: uppercase;
   transition: 150ms all linear;
-}
+} */
 
-.contact-form button:hover,
+/* .contact-form button:hover,
 .contact-form button:active,
 .contact-form button:focus {
   background: var(--color-darkest);
   cursor: pointer;
+} */
+
+/* .contact-form button--loading .popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+} */
+
+.buttonsubmit2 {
+  display: block;
+  position: relative;
+  margin: 0.5rem 1rem 0;
+  padding: 0 1rem 0.125rem;
+  background-color: #2a72a5;
+  border: 0;
+  color: var(--color-lightest);
+  font-family: lato, sans-serif;
+  font-size: 100%;
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  transition: 150ms all linear;
 }
 
-.contact-form button--loading .popup {
+.buttonsubmit2:hover,
+.buttonsubmit2:active,
+.buttonsubmit2:focus {
+  background: #225c85;
+  cursor: pointer;
+}
+
+.buttonsubmit2 button--loading .popup {
   position: relative;
   display: inline-block;
   cursor: pointer;

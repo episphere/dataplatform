@@ -426,6 +426,21 @@ const addEventFilterDataCatalogue = (descriptions, headers) => {
   });
 };
 
+const addEventFilterDMSPCatalogue = (descriptions, headers) => {
+  // const consortiumTypeSelection =
+  //   document.getElementsByClassName("select-consortium");
+  // Array.from(consortiumTypeSelection).forEach((ele) => {
+  //   ele.addEventListener("click", () => {
+  //     filterDataBasedOnSelection(descriptions, headers);
+  //   });
+  // });
+
+  const input = document.getElementById("searchDataCatalog");
+  input.addEventListener("input", () => {
+    filterDataBasedOnSelection(descriptions, headers);
+  });
+};
+
 export const addEventToggleCollapsePanelBtn = () => {
   const btns = document.getElementsByClassName("collapse-panel-btn");
   Array.from(btns).forEach((btn) => {
@@ -494,36 +509,6 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
 
   console.log(filteredData);
 
-  // if (journalSelected.length > 0) {
-  //   filteredData = filteredData.filter((dt) => {
-  //     let found = false;
-  //     journalSelected.forEach((ctr) => {
-  //       if (dt["journal_name"] === undefined) return;
-  //       if (found) return;
-  //       if (dt["journal_name"].match(new RegExp(ctr, "ig"))) found = true;
-  //     });
-  //     if (found) return dt;
-  //   });
-  // }
-
-  // document.getElementById("listFilters").innerHTML = `
-        
-  //       ${
-  //         countrySelected.length > 0
-  //           ? `
-  //           <span class="font-bold">Region: </span>${countrySelected[0]} ${
-  //               countrySelected.length > 1
-  //                 ? `and <span class="other-variable-count">${
-  //                     countrySelected.length - 1
-  //                   } other</span>`
-  //                 : ``
-  //             }
-  //       `
-  //           : `
-  //           <span class="font-bold">Region:</span> All
-  //       `
-  //       }
-  //   `;
   if (journalSelected.length === 0 && restrictionsSelected === 0) filteredData = descriptions;
   const input = document.getElementById("searchDataCatalog");
   const currentValue = input.value.trim().toLowerCase();

@@ -321,7 +321,12 @@ template += `
               <button id='autofillJson' class='d-none'>AutoFill JSON</button>
           </div>
       </div>
-      <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">             
+      <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
+        <div class="input-group input-group2">
+          <button class="nav-link nav-menu-links custom-btn" title="Login ERa" id="loginERa">
+            <img src="./static/images/era.png"> Login ERa
+          </button>
+        </div>           
         <section class="contact-form">
           <p style="color:red;"><b>This form is a work in progress and will change dependent on feedback. Current plans include:</b></p>
           <ul>

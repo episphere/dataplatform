@@ -1,5 +1,7 @@
-import {csv2Json, csv2JsonTest, uploadFile, uploadFileAny, uploadWordFile, json2other, uploadTSV, createFolder, getFolderItems, descFolder, dataPlatformFolder, publicDataFolder, descFile, showAnimation, hideAnimation} from "./../shared.js";
+import {csv2Json, csv2JsonTest, uploadFile, uploadFileAny, uploadWordFile, json2other, uploadTSV, createFolder, getFolderItems, descFolder, dataPlatformFolder, publicDataFolder, descFile, showAnimation, hideAnimation, selectProps} from "./../shared.js";
 import { config } from "./../config.js";
+import { addEventFilterBarToggle } from "../event.js";
+let previousValue = "";
 
 export const uploadData = () => {
   let template = `
@@ -41,11 +43,6 @@ export const dataUploadForm = async () => {
     "-" +
     ("0" + (dateToday.getMonth() + 1)).slice(-2);
   let template = `
-      <div class="input-group input-group2" hidden>
-          <button class="nav-link nav-menu-links custom-btn" title="Login ERa" id="loginERa">
-            <img src="./static/images/era.png"> Login ERa
-          </button>
-        </div>
         <form class="contact-form" id="regForm">
           <div class="tab">
             <h3><b>Data Sharing Plan</b></h3>
@@ -65,10 +62,28 @@ export const dataUploadForm = async () => {
                   <label class="inline" for="dsmp_study"> Study </label>
             </div>
 
-            <div class='input-group input-group2 d-none' >
+            <!--<div class='input-group input-group2 d-none' >
               <label for="dsmp_name"> <b>Please select from a DMSP:</b><span class='required-label'>*</span> </label>
                 <select class='form-select' id='approvedDSMP' name='dsmp_name' multiple>
                 </select>             
+            </div>-->
+
+            <div class="main-summary-row input-group input-group2 d-none" id='approvedDSMP'>
+              <div class="col-xl-2 filter-column white-bg align-left p-2" id="summaryFilterSiderBar">
+                      <div class="col-xl-12 pl-1 pr-0 div-border">
+                          <span class="font-size-17 font-bold">Filter</span>
+                          <div id="filterDataCatalogue" class="align-left"></div>
+                      </div>
+              </div>
+              <div class="col-xl-10 padding-right-zero font-size-16" id="summaryStatsCharts">
+                  <button id="filterBarToggle"><i class="fas fa-lg fa-caret-left"></i></button>
+                  <div class="main-summary-row pl-2">
+                      <div class="col-xl-12 pb-2 pl-0 pr-0 white-bg div-border">
+                          <div class="pt-0 pl-2 pb-2 pr-2 allow-overflow" style="height: calc(100vh - 190px) !important;min-height: 500px;" id="descriptionBody">  
+                          </div>
+                      </div>
+                  </div>
+              </div>
             </div>
 
             <div class='d-none' id="dsmp_no">
@@ -125,21 +140,21 @@ export const dataUploadForm = async () => {
 
           <div style="overflow:auto;">
             <div style="float:left;">
-              <button type="button" id="prevBtn" class="buttonsubmit">Previous</button>
+              <button type="button" id="prevBtn" class="buttonsubmit2">Previous</button>
             </div>
             <div style="float:right;">
-              <button type="button" id="nextBtn" class="buttonsubmit">Next</button>
+              <button type="button" id="nextBtn" class="buttonsubmit2">Next</button>
             </div>
             <div style="float:right;">
-              <button type="submit" form="regForm" id="subBtn" class="buttonsubmit">Submit</button>
+              <button type="submit" form="regForm" id="subBtn" class="buttonsubmit2">Submit</button>
             </div>
           </div>
         </form>
   `
   document.getElementById("uploadFormView").innerHTML = template;
-  document.getElementById("loginERa").addEventListener("click", async function () {
-    location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/&state=${config.iniAppLocal.stateIni}`
-  });
+  // document.getElementById("loginERa").addEventListener("click", async function () {
+  //   location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/&state=${config.iniAppLocal.stateIni}`
+  // });
   var currentTab = 0;
   showTab(currentTab);
   //console.log(currentTab);
@@ -177,7 +192,8 @@ export const dataUploadForm = async () => {
       await nextPrev(1, currentTab);
         currentTab += 1;
     });
-  const form = await document.querySelector(".contact-form");
+  addEventFilterBarToggle();
+  const form = document.querySelector(".contact-form");
   form.addEventListener("submit", subForm);
 }
 
@@ -190,12 +206,13 @@ export const approvedFormSelect = async (csvData) => { //Is there a DSMP functio
   const dsmp_noEl = document.getElementById("dsmp_no");
   const duoEl = document.getElementById("duoSel");
   var ele = document.getElementById("approvedDSMP");
-
+  const dsmpdata = csvData.data;
+  const dsmpdataHeaders = csvData.headers;
   pubpresEl.parentElement.classList.toggle("d-none", !yesEl.checked);
   dsmp_noEl.classList.toggle("d-none", !noEl.checked);
 
   if (noEl.checked) {
-    approvedEl.parentElement.classList.toggle("d-none", !yesEl.checked);
+    approvedEl.classList.toggle("d-none", !yesEl.checked);
     dsmp_noEl.classList.toggle("d-none", !noEl.checked);
     duoEl.classList.toggle("d-none", !yesEl.checked);
     document.getElementById("nextBtn").style.display = "none";
@@ -204,18 +221,29 @@ export const approvedFormSelect = async (csvData) => { //Is there a DSMP functio
 
   if (pubpresEl.checked && yesEl.checked) {
     //console.log('pubpres selected');
-    approvedEl.parentElement.classList.toggle("d-none", !pubpresEl.checked);
+    approvedEl.classList.toggle("d-none", !pubpresEl.checked);
     duoEl.classList.toggle("d-none", !pubpresEl.checked);
     document.getElementById("nextBtn").style.display = "none";
-    //console.log(csvData);
-    await populateApprovedSelect(csvData);
+    // const dsmpdata = csvData.data;
+    // const dsmpdataHeaders = csvData.headers;
+    const dsmpdataPDR = dsmpdata.filter((df) => ((df['repositories'] || []).includes('PDR')) && (df['dmsPlanType']).includes('Publication/Presentation'));
+    console.log(dsmpdataPDR);
+    createFilter(dsmpdataPDR, dsmpdataHeaders);
+    await populateApprovedSelect(dsmpdataPDR, dsmpdataHeaders);
+
   } else if (studyEl.checked && yesEl.checked) {
     //console.log('study selected');
-    approvedEl.parentElement.classList.toggle("d-none", !studyEl.checked);
+    approvedEl.classList.toggle("d-none", !studyEl.checked);
     duoEl.classList.toggle("d-none", !studyEl.checked);
     document.getElementById("nextBtn").style.display = "none";
-    //console.log(csvData);
-    await populateApprovedSelect(csvData);
+    // const dsmpdata = csvData.data;
+    // for (const value of dsmpdata){
+    //   console.log(value);
+    // }
+    // const dsmpdataHeaders = csvData.headers;
+    const dsmpdataPDR = dsmpdata.filter((df) => ((df['repositories'] || []).includes('PDR')) && (df['dmsPlanType']).includes('Study'));
+    createFilter(dsmpdataPDR, dsmpdataHeaders);
+    await populateApprovedSelect(dsmpdataPDR, dsmpdataHeaders);
   }
 };
 
@@ -227,9 +255,11 @@ export const dsmpSelected = async (csvData) => {
   let template =`
   <label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with the data based on the study's Institutional Certification (IC). If you have questions about your study's IC, please contact your <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Data Sharing Administrator (DSA)</a>.</b><span class='required-label'>*</span> </label>
     <div class='input-group input-group2 font-size-22'>`;
-  var ele = document.getElementById("approvedDSMP");
-  var values = Array.from(ele.selectedOptions).map(({ value }) => value);//Array.from(ele.selectedOptions).map(v=>v.value);
-  //console.log(values);
+  const elePlan = document.getElementById('approvedDSMP')
+  const checked = elePlan.querySelectorAll('input[type="checkbox"]:checked');
+  const values = [...checked].map(c=>c.value);
+  //var values = Array.from(ele.selectedOptions).map(({ value }) => value);//Array.from(ele.selectedOptions).map(v=>v.value);
+  console.log(values);
   for (const value of values){
     let dmspVal = value.split('.v')[0];
     var dmspIC = icData.data.find(item => item.planID === dmspVal);
@@ -337,70 +367,103 @@ export const addStudiesInput = () => { //Is there a DSMP function
   approvedEl.parentElement.classList.toggle("d-none", !yesEl.checked);
 };
 
-export const populateApprovedSelect = async (csvData) => { //Pulling data from dsmp_output
-  const dsmpdata = csvData.data;
-  console.log(dsmpdata);
-  //(dsmpdata);
-  const dsmpheaders = csvData.headers;
+export const createFilter = (dsmpdataPDR, dsmpdataHeaders) => {
+  let filterTemplate = `
+  <div class="main-summary-row">
+      <div style="width: 100%;">
+          <div class="form-group" margin:0px>
+              <div id="searchContainer">
+                <div class="input-group">
+                    <input type="search" class="form-control rounded" autocomplete="off" placeholder="Search min. 3 characters" aria-label="Search" id="searchDataCatalog" aria-describedby="search-addon" />
+                    <span class="input-group-text border-0 search-input">
+                        <i class="fas fa-search"></i>
+                    </span>
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  `; 
+  document.getElementById("filterDataCatalogue").innerHTML = filterTemplate;
+  const input = document.getElementById("searchDataCatalog");
+  input.addEventListener("input", () => {
+    filterDataBasedOnSelectionDSMP(dsmpdataPDR, dsmpdataHeaders);
+  });
+}
+
+export const populateApprovedSelect = async (dsmpdataPDR, dsmpheaders) => { //Pulling data from dsmp_output
+  // const dsmpdataPDR = csvData;
+  // console.log(dsmpdataPDR);
+  //console.log(dsmpdata);
+  //const dsmpdataPDR = dsmpdata.filter((df) => (df['repositories'] || []).includes('PDR'));
+  //console.log(dsmpdataPDR);
+  //const dsmpheaders = csvData.headers;
   const pubpresEl = document.getElementById("dsmp_pubpres");
   const studyEl = document.getElementById("dsmp_study")
   const approvedEl = document.getElementById("approvedDSMP");
   const duoEl = document.getElementById("duoSel");
   duoEl.classList.toggle("d-none");
-  let options = [];
-  if (pubpresEl.checked) {
-    approvedEl.multiple = false;
-    approvedEl.size="1";
-    for (const value of dsmpdata) {
-      if (value.dmsPlanType === 'Publication/Presentation') {
-        options = [...options, [value.planID, value.studyName, value.cas]];
-      // var email = value.contact_claims.split('|').pop();
-      //   if (email === JSON.parse(localStorage.parms).login) {
-      //     options = [...options,[value.planID, value.studyName, value.cas]];
-      }
-    }
-  } else if (studyEl.checked) {
-    approvedEl.multiple = true;
-    approvedEl.size="10";
-    for (const value of dsmpdata) {
-      if (value.dmsPlanType === 'Study') {
-        options = [...options, [value.planID, value.studyName, value.cas]];
-      }
-    }
-  }
-  //console.log(options);
-  approvedEl.length = 0;
-  const optionEl = document.createElement("option")
-  optionEl.disabled = true;
-  optionEl.selected = true;
-  optionEl.value = '';
-  optionEl.text = `--select a DMSP--`;
-  approvedEl.appendChild(optionEl);
-  options.forEach((option) => {
-    const optionEl = document.createElement("option");
-    optionEl.style="font-weight:bold";
-    optionEl.value = option[0];
-    //console.log(optionEl.value);
-    optionEl.text = `${option[0]}`//: ${option[1]}, cas: ${option[2]}`;
-    approvedEl.appendChild(optionEl);
-    if (!option[1]) {
-      option[1] = 'None';
-    }
-    var studies = option[1].split(";");
-    if (!option[2]) {
-      option[2] = 'None';
-    }
-    var cas = option[2].split(";");
-    for (let i=0; i <studies.length; i++) {
-      const optionEl = document.createElement("option");
-      optionEl.disabled = true;
-      optionEl.style="font-style:italic";
-      optionEl.value = '';
-      //console.log(optionEl.value);
-      optionEl.text = `${studies[i]}`; //`${studies[i]}, cas: ${cas[i]}`;
-      approvedEl.appendChild(optionEl);
-    }
-  });
+
+  // let filterTemplate = `
+  //   <div class="main-summary-row">
+  //       <div style="width: 100%;">
+  //           <div class="form-group" margin:0px>
+  //               <div id="searchContainer">
+  //                 <div class="input-group">
+  //                     <input type="search" class="form-control rounded" autocomplete="off" placeholder="Search min. 3 characters" aria-label="Search" id="searchDataCatalog" aria-describedby="search-addon" />
+  //                     <span class="input-group-text border-0 search-input">
+  //                         <i class="fas fa-search"></i>
+  //                     </span>
+  //                 </div>
+  //               </div>
+  //           </div>
+  //       </div>
+  //   </div>
+  //   `; 
+  // document.getElementById("filterDataCatalogue").innerHTML = filterTemplate;
+
+  let template = "";
+  const newDesc = dsmpdataPDR.map(selectProps("planID", "contact_email", "contact_displayName", "studyName", "cas"));
+  //console.log(newDesc);
+  template = `
+      <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
+          <div class="col-md-1"></div>
+          <div class="col-md-2 font-bold ws-nowrap pl-2">Plan ID <button class="transparent-btn sort-column" data-column-name="planID"><i class="fas fa-sort"></i></button></div>
+          <div class="col-md-3 font-bold ws-nowrap">Name <button class="transparent-btn sort-column" data-column-name="contact_displayName"><i class="fas fa-sort"></i></button></div>
+          <div class="col-md-5 font-bold ws-nowrap">Study Name <button class="transparent-btn sort-column" data-column-name="studyName"><i class="fas fa-sort"></i></button></div>
+          <div class="col-md-1"></div>
+      </div>`;
+  newDesc.forEach((desc, index) => {
+    //console.log(desc);
+    //console.log(index);
+    template += `
+    <div class="card mt-1 mb-1 align-left">
+        <div style="padding: 10px" aria-expanded="false" id="heading${index}">
+            <div class="row">
+                <div class="col-md-1">
+                  <input type="checkbox" id="${index}" name="dsmpSelected" value="${desc.planID}">
+                </div>
+                <div class="col-md-2">${
+                  desc["planID"] ? desc["planID"] : ""
+                }</div>
+                <div class="col-md-3">${
+                  desc["contact_displayName"] ? desc["contact_displayName"] : ""
+                }</div>
+                <div class="col-md-5">${
+                  desc["studyName"] ? desc["studyName"] : ""
+                }</div>
+                <div class="col-md-1">
+                    <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${index}">
+                        <i class="fas fa-caret-down fa-2x"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+      </div>`
+  })
+  document.getElementById("descriptionBody").innerHTML = template;
+  addEventToggleCollapsePanelBtn();
+  addEventSortColumn(newDesc, dsmpheaders);
 };
 
 export function showTab(n) {
@@ -604,10 +667,10 @@ export async function nextPrev(n, currentTab) {
             </div>
             <div style="overflow:auto;">
               <div style="float:left;">
-                <button type="button" id="${id}addDataBtn" class="buttonsubmit"><i class="fa fa-plus" aria-hidden="true"></i> (Meta)Data</button>
+                <button type="button" id="${id}addDataBtn" class="buttonsubmit2"><i class="fa fa-plus" aria-hidden="true"></i> (Meta)Data</button>
               </div>
               <div style="display: none; float:right;">
-                <button type="button" id="${id}remDataBtn" class="buttonsubmit"><i class="fa fa-trash-can" aria-hidden="true"></i> Last (Meta)Data</button>
+                <button type="button" id="${id}remDataBtn" class="buttonsubmit2"><i class="fa fa-trash-can" aria-hidden="true"></i> Last (Meta)Data</button>
               </div>
             </div>
           </div>
@@ -704,4 +767,101 @@ export function fixStepIndicator(n) {
   }
   //... and adds the "active" class on the current step:
   x[n].className += " active";
+};
+
+const filterDataBasedOnSelectionDSMP = (descriptions, headers) => {
+  let filteredData = descriptions;
+  const input = document.getElementById("searchDataCatalog");
+  const currentValue = input.value.trim().toLowerCase();
+
+  //console.log(currentValue);
+
+  if (
+    currentValue.length <= 2 &&
+    (previousValue.length > 2 || previousValue.length === 0)
+  ) {
+    populateApprovedSelect(
+      filteredData,
+      headers
+    );
+    return;
+  }
+
+  previousValue = currentValue;
+  let searchedData = JSON.parse(JSON.stringify(filteredData));
+  searchedData = searchedData.filter((dt) => {
+    let found = false;
+    if (dt["planID"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["contact_displayName"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["studyName"]) if (dt["studyName"].toLowerCase().includes(currentValue)) found = true;
+    if (found) return dt;
+  });
+  searchedData = searchedData.map((dt) => {
+    dt["planID"] = dt["planID"].replace(
+      new RegExp(currentValue, "gi"),
+      "<b>$&</b>"
+    );
+    dt["contact_displayName"] = dt["contact_displayName"].replace(
+      new RegExp(currentValue, "gi"),
+      "<b>$&</b>"
+    );
+    if (dt["studyName"]){ 
+    dt["studyName"] = dt["studyName"].replace(
+      new RegExp(currentValue, "gi"),
+      "<b>$&</b>"
+    );
+  }
+    return dt;
+  });
+
+  populateApprovedSelect(
+    searchedData,
+    headers
+  );
+};
+
+const addEventSortColumn = (descriptions, headers) => {
+  const btns = document.getElementsByClassName("sort-column");
+  Array.from(btns).forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const sortDirection = !btn.classList.contains("sort-column-asc") ? 1 : -1;
+      const columnName = btn.dataset.columnName;
+      console.log(columnName);
+      descriptions = descriptions.sort((a, b) =>
+        a[columnName] > b[columnName]
+          ? 1 * sortDirection
+          : b[columnName] > a[columnName]
+          ? -1 * sortDirection
+          : 0
+      );
+      btn.classList.remove("sort-column-asc", "sort-column-desc");
+
+      populateApprovedSelect(descriptions, headers);
+
+      if (sortDirection === 1) {
+        document
+          .querySelectorAll(`[data-column-name="${columnName}"]`)[0]
+          .classList.add("sort-column-asc");
+      } else {
+        document
+          .querySelectorAll(`[data-column-name="${columnName}"]`)[0]
+          .classList.add("sort-column-desc");
+      }
+    });
+  });
+};
+
+export const addEventToggleCollapsePanelBtn = () => {
+  const btns = document.getElementsByClassName("collapse-panel-btn");
+  Array.from(btns).forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (btn.querySelector(".fas.fa-2x").classList.contains("fa-caret-down")) {
+        btn.querySelector(".fas.fa-2x").classList.remove("fa-caret-down");
+        btn.querySelector(".fas.fa-2x").classList.add("fa-caret-up");
+      } else {
+        btn.querySelector(".fas.fa-2x").classList.remove("fa-caret-up");
+        btn.querySelector(".fas.fa-2x").classList.add("fa-caret-down");
+      }
+    });
+  });
 };

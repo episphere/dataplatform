@@ -1919,7 +1919,7 @@ export const csv2JsonTest = (csv) => {
       for (let j = 0; j < headers.length; j++) {
         if (currentline[j]) {
           let value = headers[j];
-          obj[value] = currentline[j];
+          obj[value] = currentline[j].replace(/"/g, "").replace(/\\/g, "");
         }
       }
     }
