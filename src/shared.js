@@ -289,15 +289,7 @@ export const storeAccessTokenERa = async () => {
       window.history.replaceState({}, "", "./#home");
       confluence();
     }
-  } else {
-    if (localStorage.parms) {
-      confluence.parms = JSON.parse(localStorage.parms);
-      if (confluence.parms.access_token === undefined) {
-        localStorage.clear();
-        alert("access token not found, please contact system administrator");
-      }
-    }
-  }
+  } 
 };
 
 export const refreshToken = async () => {
@@ -860,6 +852,25 @@ export const getCurrentUser = async () => {
     if ((await refreshToken()) === true) return await getCurrentUser();
   }
 };
+
+export const getCurrentUserERa = async () => {
+  try{
+    const access_token = JSON.parse(localStorage.parmsERa).access_token;
+    const response = await fetch(`https://stsstg.nih.gov/openid/connect/v1/userinfo`, {
+      headers: {
+        Authorization: "Bearer " + access_token,
+      }
+    });
+    if (response.status === 200) {
+      return response.json();
+    } else {
+      return null;
+    }
+  } catch (err) {
+    let test = await reponse.json();
+    console.log(test);
+  }
+}
 
 export const getUser = async (id) => {
   try {
