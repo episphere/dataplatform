@@ -60,6 +60,7 @@ import {
   uploadFile,
   uploadWordFile,
   getFile,
+  storeAccessTokenERa,
 } from "./src/shared.js";
 import {
   addEventConsortiaSelect,
@@ -122,6 +123,11 @@ export const confluence = async () => {
       loginBoxAppProd.hidden = false;
     if (location.origin.match("episphere")) loginBoxAppEpisphere.hidden = false;
     await storeAccessToken();
+    manageRouter();
+  }
+  if (localStorage.parmsERa === undefined) {
+    console.log("No ERa");
+    await storeAccessTokenERa();
     manageRouter();
   }
   if (localStorage.parms && JSON.parse(localStorage.parms).access_token) {
@@ -286,7 +292,7 @@ export const confluence = async () => {
           //   .getElementById("amendmentno")
           //   .addEventListener("click", amendFormSelect);
           document.getElementById("loginERa").addEventListener("click", async function () {
-            location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/&state=${config.iniAppLocal.stateIni}`
+            location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/#data_access/form&state=${config.iniAppLocal.stateIni}`
           });
           await dataForm();
         } else {

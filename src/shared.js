@@ -250,6 +250,55 @@ export const storeAccessToken = async () => {
   }
 };
 
+export const storeAccessTokenERa = async () => {
+  let parms = searchParms();
+  if (parms.code) {
+    //exchange code for authorization token
+    let clt = {};
+    clt.client_id = 'ff775e46-ec74-46a3-b19f-ee2c60e8cf11';
+    clt.server_id = '86514167-daf2-4d14-8b9e-84f895190f3f';
+    document.getElementById("confluenceDiv").innerHTML = "";
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("grant_type", "authorization_code");
+    urlencoded.append("client_id", clt.client_id);
+    urlencoded.append("client_secret", clt.server_id);
+    urlencoded.append("code", parms.code);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: "follow",
+    };
+    const response = await fetch(
+      "https://stsstg.nih.gov/openid/connect/v1/userinfo",
+      requestOptions
+    );
+    if (response.status === 400) {
+      window.history.replaceState({}, "", "./#home");
+    }
+    if (response.status && response.status === 200) {
+      let testing = await response.json();
+      console.log(testing);
+      localStorage.parmsERa = JSON.stringify(await response.json());
+      window.history.replaceState({}, "", "./#home");
+      confluence();
+    }
+  } else {
+    if (localStorage.parms) {
+      confluence.parms = JSON.parse(localStorage.parms);
+      if (confluence.parms.access_token === undefined) {
+        localStorage.clear();
+        alert("access token not found, please contact system administrator");
+      }
+    }
+  }
+};
+
 export const refreshToken = async () => {
   if (!localStorage.parms) return;
   const parms = JSON.parse(localStorage.parms);
