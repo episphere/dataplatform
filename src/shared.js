@@ -267,7 +267,7 @@ export const storeAccessTokenERa = async () => {
     urlencoded.append("client_secret", clt.server_id);
     urlencoded.append("grant_type", "authorization_code");
     urlencoded.append("redirect_uri", "https://episphere.github.io/dataplatform/")
-    urlencoded.append("scope", "openid profile email");
+    urlencoded.append("scope", "openid+profile+email");
     urlencoded.append("code", parms.code);
 
     var requestOptions = {
