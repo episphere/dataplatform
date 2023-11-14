@@ -1,3 +1,5 @@
+import { tsv2Json } from "./../shared.js";
+
 export const testPage2 = () => {
   // let template = `
   //     <div class="general-bg padding-bottom-1rem">
@@ -45,8 +47,33 @@ export const testPage2 = () => {
       </div>
     </div>
 `
+  getStudies();
   return template;
 };
+
+const getStudies = async () => {
+  const data = await (await fetch("./DCEGcohortswithplatforms.txt")).text();
+  const tsv2json = tsv2Json(data);
+  console.log(tsv2json);
+  const json = tsv2json.data;
+  const headers = tsv2json.headers;
+  console.log(headers);
+  console.log(json);
+
+  let template = "";
+  if (json.length > 0) {
+    template += `
+      <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
+        <div class="col-md-12 font-bold ws-nowrap pl-2">Studies <button class="transparent-btn sort-column" data-column-name="study"><i class="fas fa-sort"></i></button></div>
+      </div>;
+    `
+  }
+  json.forEach(obj => {
+    template += `
+    
+    `
+  })
+}
 
 //   return `
 //   <div class="general-bg padding-bottom-1rem">
