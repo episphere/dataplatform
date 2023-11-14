@@ -292,7 +292,7 @@ export const confluence = async () => {
           //   .getElementById("amendmentno")
           //   .addEventListener("click", amendFormSelect);
           document.getElementById("loginERa").addEventListener("click", async function () {
-            location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/#data_access/form&state=${config.iniAppLocal.stateIni}`
+            location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/#data_access/form&scope=openid+company+email+profile`
           });
           await dataForm();
         } else {
