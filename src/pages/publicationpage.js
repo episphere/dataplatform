@@ -220,11 +220,8 @@ const getDescription = async () => {
 const renderStudyDescription = (descriptions, pageSize, headers) => {
   let template = "";
   const newDesc = descriptions.map(selectProps("title", "date", "author", "journal_name", "journal_acro"));
-  console.log(newDesc);
-  console.log(descriptions);
 	
   let uniqueTitles = [...new Map(newDesc.map((item) => [item["title"], item])).values()];
-  console.log(uniqueTitles);
   // const allTitles = Object.values(newDesc).map((dt) => [dt["title"], dt["date"], dt["author"], dt["journal_name"], dt["journal_acro"]]);
   // console.log(allTitles);
   // let set = new Set(allTitles.map(JSON.stringify));
