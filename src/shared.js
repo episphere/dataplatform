@@ -275,7 +275,7 @@ export const storeAccessTokenERa = async () => {
       redirect: "follow",
     };
     const response = await fetch(
-      "https://stsstg.nih.gov/openid/connect/v1/userinfo",
+      "https://stsstg.nih.gov/auth/oauth/v2/token",
       requestOptions
     );
     if (response.status === 400) {
