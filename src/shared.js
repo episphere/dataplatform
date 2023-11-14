@@ -280,7 +280,8 @@ export const storeAccessTokenERa = async () => {
       requestOptions
     );
     if (response.status === 400) {
-      console.log(response);
+      let testing = await response.json();
+      console.log(testing);
       //window.history.replaceState({}, "", "./#home");
     }
     if (response.status && response.status === 200) {
