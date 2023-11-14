@@ -856,11 +856,7 @@ export const getCurrentUser = async () => {
 export const getCurrentUserERa = async () => {
   try{
     const access_token = JSON.parse(localStorage.parmsERa).access_token;
-    const response = await fetch(`https://stsstg.nih.gov/openid/connect/v1/userinfo`, {
-      headers: {
-        Authorization: "Bearer " + access_token,
-      }
-    });
+    const response = await fetch(`https://stsstg.nih.gov/openid/connect/v1/userinfo?access_token=${access_token}`);
     if (response.status === 200) {
       return response.json();
     } else {

@@ -26,20 +26,24 @@ export const testPage2 = () => {
 
   // return template;
   let template = `
-  <div class="main-summary-row">
-    <div class="align-left">
-      <h1 class="page-header">Data Platforms for DCEG Research Studies</h1>
-    </div>
-  </div>
+  <div class="general-bg padding-bottom-1rem">
+    <div class="container body-min-height">
       <div class="main-summary-row">
-        <div class="col-xl-10 padding-right-zero font-size-16" id="summaryStatsCharts">
-            <div class="main-summary-row pl-2">
-                <div class="col-xl-12 pb-2 pl-0 pr-0 white-bg div-border">
-                    <div class="pt-0 pl-2 pb-2 pr-2 allow-overflow" style="height: calc(100vh - 190px) !important;min-height: 500px;" id="descriptionBody"></div>
-                </div>
+        <div class="align-left">
+          <h1 class="page-header">Data Platforms for DCEG Research Studies</h1>
+        </div>
+          <div class="main-summary-row">
+            <div class="col-xl-12 padding-right-zero font-size-16" id="summaryStatsCharts">
+              <div class="main-summary-row pl-2">
+                  <div class="col-xl-12 pb-2 pl-0 pr-0 white-bg div-border">
+                      <div class="pt-0 pl-2 pb-2 pr-2 allow-overflow" style="height: calc(100vh - 190px) !important;min-height: 500px;" id="descriptionBody"></div>
+                  </div>
+              </div>
             </div>
+          </div>
         </div>
       </div>
+    </div>
 `
   return template;
 };
