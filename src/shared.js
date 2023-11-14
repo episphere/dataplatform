@@ -263,10 +263,10 @@ export const storeAccessTokenERa = async () => {
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
     var urlencoded = new URLSearchParams();
-    urlencoded.append("grant_type", "authorization_code");
     urlencoded.append("client_id", clt.client_id);
     urlencoded.append("client_secret", clt.server_id);
-    urlencoded.append("redirect_uri", "https://episphere.github.io/dataplatform/#data_access/form")
+    urlencoded.append("grant_type", "authorization_code");
+    urlencoded.append("redirect_uri", "https://episphere.github.io/dataplatform/")
     urlencoded.append("code", parms.code);
 
     var requestOptions = {
