@@ -141,17 +141,17 @@ export const confluence = async () => {
         ...response,
       });
     }
-    if (localStorage.parmsERa && JSON.parse(localStorage.parmsERa).access_token) {
-      const responseERa = await getCurrentUserERa();
-      showAnimation();
-      if (responseERa) {
-        const lclStrERa = JSON.parse(localStorage.parmsERa);
-        locatStorage.parmsERa = JSON.stringify({
-          ...lclStrERa,
-          ...responseERa,
-        });
-      }
-    }
+    // if (localStorage.parmsERa && JSON.parse(localStorage.parmsERa).access_token) {
+    //   const responseERa = await getCurrentUserERa();
+    //   showAnimation();
+    //   if (responseERa) {
+    //     const lclStrERa = JSON.parse(localStorage.parmsERa);
+    //     locatStorage.parmsERa = JSON.stringify({
+    //       ...lclStrERa,
+    //       ...responseERa,
+    //     });
+    //   }
+    // }
     navBarOptions.innerHTML = navBarMenutemplate();
     document.getElementById("logOutBtn").addEventListener("click", logOut);
     const viewUserSubmissionElement =
