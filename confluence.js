@@ -126,11 +126,11 @@ export const confluence = async () => {
     await storeAccessToken();
     manageRouter();
   }
-  if (localStorage.parmsERa === undefined) {
-    console.log("No ERa");
-    await storeAccessTokenERa();
-    manageRouter();
-  }
+  // if (localStorage.parmsERa === undefined) {
+  //   console.log("No ERa");
+  //   await storeAccessTokenERa();
+  //   manageRouter();
+  // }
   if (localStorage.parms && JSON.parse(localStorage.parms).access_token) {
     const response = await getCurrentUser();
     showAnimation();
