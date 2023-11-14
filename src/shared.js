@@ -864,6 +864,8 @@ export const getCurrentUserERa = async () => {
     if (response.status === 200) {
       return response.json();
     } else {
+      let test = await response.json();
+      console.log(test);
       return null;
     }
   } catch (err) {
