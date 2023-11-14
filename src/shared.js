@@ -271,7 +271,7 @@ export const storeAccessTokenERa = async () => {
 
     var requestOptions = {
       method: "POST",
-      //headers: myHeaders,
+      headers: myHeaders,
       body: urlencoded,
       redirect: "follow",
     };
