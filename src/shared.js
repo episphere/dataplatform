@@ -285,8 +285,6 @@ export const storeAccessTokenERa = async () => {
       //window.history.replaceState({}, "", "./#home");
     }
     if (response.status && response.status === 200) {
-      let testing = await response.json();
-      console.log(testing);
       localStorage.parmsERa = JSON.stringify(await response.json());
       window.history.replaceState({}, "", "./#home");
       confluence();
