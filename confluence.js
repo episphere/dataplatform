@@ -146,7 +146,7 @@ export const confluence = async () => {
       showAnimation();
       if (responseERa) {
         const lclStrERa = JSON.parse(localStorage.parmsERa);
-        locatStorage.parmsERa = JSON.stringify({
+        localStorage.parmsERa = JSON.stringify({
           ...lclStrERa,
           ...responseERa,
         });
