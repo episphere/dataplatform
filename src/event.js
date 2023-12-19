@@ -714,6 +714,9 @@ const updatePermissionsOptions = (userPermission, role) => {
   if (userPermission === "owner")
     return `
     <option ${
+      role === "previewer" ? `selected` : ``
+    } value="previewer">previewer</option>
+    <option ${
       role === "co-owner" ? `selected` : ``
     } value="co-owner">co-owner</option>
     <option ${
@@ -735,6 +738,9 @@ const updatePermissionsOptions = (userPermission, role) => {
     ;
   else if (userPermission === "co-owner")
     return `
+    <option ${
+      role === "previewer" ? `selected` : ``
+    } value="previewer">previewer</option>
     <option ${
       role === "co-owner" ? `selected` : ``
     } value="co-owner">co-owner</option>
@@ -758,7 +764,10 @@ const updatePermissionsOptions = (userPermission, role) => {
     role !== "co-owner" &&
     role !== "owner"
   )
-    return `<option ${
+    return `
+    <option ${
+      role === "previewer" ? `selected` : ``
+    } value="previewer">previewer</option><option ${
       role === "editor" ? `selected` : ``
     } value="editor">editor</option><option ${
       role === "viewer" ? `selected` : ``
