@@ -712,25 +712,47 @@ const addEventSearchCollaborators = (allEntries, userPermission) => {
 
 const updatePermissionsOptions = (userPermission, role) => {
   if (userPermission === "owner")
-    return `<option ${
+    return `
+    <option ${
       role === "co-owner" ? `selected` : ``
-    } value="co-owner">co-owner</option><option ${
+    } value="co-owner">co-owner</option>
+    <option ${
       role === "editor" ? `selected` : ``
-    } value="editor">editor</option><option ${
+    } value="editor">editor</option>
+    <option ${
       role === "viewer" ? `selected` : ``
-    } value="viewer">viewer</option><option ${
+    } value="viewer">viewer</option>
+    <option ${
       role === "uploader" ? `selected` : ``
-    } value="uploader">uploader</option>`;
+    } value="uploader">uploader</option>
+    <option ${
+      role === "previewer uploader" ? `selected` : ``
+    } value="previewer uploader">previewer uploader</option>
+    <option ${
+      role === "viewer uploader" ? `selected` : ``
+    } value="viewer uploader">viewer uploader</option>
+    `
+    ;
   else if (userPermission === "co-owner")
-    return `<option ${
+    return `
+    <option ${
       role === "co-owner" ? `selected` : ``
-    } value="co-owner">co-owner</option><option ${
+    } value="co-owner">co-owner</option>
+    <option ${
       role === "editor" ? `selected` : ``
-    } value="editor">editor</option><option ${
+    } value="editor">editor</option>
+    <option ${
       role === "viewer" ? `selected` : ``
-    } value="viewer">viewer</option><option ${
+    } value="viewer">viewer</option>
+    <option ${
       role === "uploader" ? `selected` : ``
-    } value="uploader">uploader</option>`;
+    } value="uploader">uploader</option>
+    <option ${
+      role === "previewer uploader" ? `selected` : ``
+    } value="previewer uploader">previewer uploader</option>
+    <option ${
+      role === "viewer uploader" ? `selected` : ``
+    } value="viewer uploader">viewer uploader</option>`;
   else if (
     userPermission === "editor" &&
     role !== "co-owner" &&
@@ -742,7 +764,13 @@ const updatePermissionsOptions = (userPermission, role) => {
       role === "viewer" ? `selected` : ``
     } value="viewer">viewer</option><option ${
       role === "uploader" ? `selected` : ``
-    } value="uploader">uploader</option>`;
+    } value="uploader">uploader</option>
+    <option ${
+      role === "previewer uploader" ? `selected` : ``
+    } value="previewer uploader">previewer uploader</option>
+    <option ${
+      role === "viewer uploader" ? `selected` : ``
+    } value="viewer uploader">viewer uploader</option>`;
   else return null;
 };
 const addEventUpdateCollaborator = () => {
