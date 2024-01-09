@@ -433,16 +433,16 @@ template += `
             </div>
             <div class="input-group">
               <label for="investigators"><b>Contact Investigator(s)</b> <span class='required-label'>*</span></label>
-              <input id="investigators" name="investigators" type="text" value="${JSON.parse(localStorage.parmsERa).name}" required/>
+              <input id="investigators" name="investigators" type="text" value="${JSON.parse(localStorage.parmsERa).name}" readonly/>
             </div>
             <div class="input-group">
               <label for="institution"><b>Institution(s)</b><span class='required-label'>*</span></label>
-              <input id="institution" name="institution" type="text" value="${JSON.parse(localStorage.parmsERa).company}" required/>
+              <input id="institution" name="institution" type="text" value="${JSON.parse(localStorage.parmsERa).company}" readonly/>
             </div>
               
             <div class="input-group">
               <label for="email"><b>Contact Email</b><span class='required-label'>*</span></label>
-              <input id="email" name="email" type="email" value="${JSON.parse(localStorage.parmsERa).email}" required/>
+              <input id="email" name="email" type="email" value="${JSON.parse(localStorage.parmsERa).email}" readonly/>
             </div>
             <!---<div class="input-group">
               <label for="member"> <b>Are you a member of DCEG?</b> <span class='required-label'>*</span></label>
