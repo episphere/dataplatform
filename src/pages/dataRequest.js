@@ -314,8 +314,6 @@ export const formSection = async (activeTab, showDescripton) => {
     return template;
   }
 
-console.log("did it stop?")
-
 const dictionaryVars = localStorage.getItem("dictionaryVars");
 template += ` 
   <div class="general-bg padding-bottom-1rem">

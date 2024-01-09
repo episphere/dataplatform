@@ -1868,7 +1868,6 @@ export const csvJSON = (csv) => {
 };
 
 export const tsv2Json = (tsv) => {
-  console.log(tsv);
   const lines = tsv
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")

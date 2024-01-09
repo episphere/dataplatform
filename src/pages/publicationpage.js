@@ -149,11 +149,9 @@ export const publication = (modified_at) => {
 
 const getDescription = async (signedIn) => {
   const data = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/production/imports/DCEG_Publications.tsv")).text();
-  console.log(data);
   const tsv = tsv2Json2(data);
   const json = tsv.data;
   const headers = tsv.headers;
-  console.log(json);
   json.forEach((obj) => {
     if (obj["nores"] === "true") obj["nores"] = "No Restrictions";
     if (obj["hmb"] === "true") obj["hmb"] = "Health/Medical/Biomedical";
@@ -162,7 +160,6 @@ const getDescription = async (signedIn) => {
     if (obj["gru"] === "true") obj["gru"] = "General Research Use";
     if (obj["dsr"] === "true") obj["dsr"] = "Disease-Specific Research";
     if (obj["dsr_value"] === undefined) obj["dsr_value"] = "False";
-    console.log(obj["dsr_value"]);
   });
   // json.forEach((obj) => {
   //   if (obj["Cohort name"]) obj["Cohort name"] = obj["Cohort name"].trim();
@@ -186,11 +183,9 @@ const getDescription = async (signedIn) => {
     });
   });
 
-  //console.log(allJournals);
   const uniqueJournals = allJournals
     .filter((d, i) => d && allJournals.indexOf(d.trim()) === i)
     .sort();
-  //console.log(uniqueJournals);
   const allTitles = Object.values(json).map((dt) => dt["title"]);
 
   // const countries = allCountries
@@ -199,9 +194,6 @@ const getDescription = async (signedIn) => {
   const uniqueTitles = allTitles
     .filter((d, i) => d && allTitles.indexOf(d.trim()) === i)
     .sort();
-
-  //console.log(uniqueTitles);
-  //console.log(json.filter((dt) => dt['title'] === uniqueTitles[0]));
 
   let filterTemplate = `
         <div class="main-summary-row">
@@ -264,7 +256,6 @@ const getDescription = async (signedIn) => {
     `;
   document.getElementById("filterDataCatalogue").innerHTML = filterTemplate;
   // const descriptions = Object.values(json);
-  // console.log(descriptions);
   document.getElementById("searchContainer").innerHTML = `
     <div class="input-group">
         <input type="search" class="form-control rounded" autocomplete="off" placeholder="Search min. 3 characters" aria-label="Search" id="searchDataCatalog" aria-describedby="search-addon" />
@@ -291,10 +282,8 @@ const renderStudyDescription = (descriptions, pageSize, headers, signedIn) => {
 	
   let uniqueTitles = [...new Map(newDesc.map((item) => [item["title"], item])).values()];
   // const allTitles = Object.values(newDesc).map((dt) => [dt["title"], dt["date"], dt["author"], dt["journal_name"], dt["journal_acro"]]);
-  // console.log(allTitles);
   // let set = new Set(allTitles.map(JSON.stringify));
   // let uniqueTitles = Array.from(set).map(JSON.parse);
-  // console.log(uniqueTitles);
   // const countries = allCountries
   //   .filter((d, i) => allCountries.indexOf(d) === i)
   //   .sort();
@@ -313,9 +302,6 @@ const renderStudyDescription = (descriptions, pageSize, headers, signedIn) => {
     uniqueTitles.forEach((desc, index) => {
       if (index > pageSize) return;
       var desc2 = descriptions.filter((dt) => dt['title'] === desc["title"]);
-      console.log(desc2);
-      //descTitle.forEach(desc => {
-        console.log(desc);
         template += `
               <div class="card mt-1 mb-1 align-left">
                   <div style="padding: 10px" aria-expanded="false" id="heading${desc["title"].replace(/\s+/g,"").replace(/[^a-zA-Z ]/g, "")}">
@@ -440,14 +426,11 @@ const renderStudyDescription = (descriptions, pageSize, headers, signedIn) => {
 // };
 
 const addEventSortColumn = (descriptions, pageSize, headers) => {
-  console.log(descriptions);
-  console.log(headers);
   const btns = document.getElementsByClassName("sort-column");
   Array.from(btns).forEach((btn) => {
     btn.addEventListener("click", () => {
       const sortDirection = !btn.classList.contains("sort-column-asc") ? 1 : -1;
       const columnName = btn.dataset.columnName;
-      console.log(columnName);
       descriptions = descriptions.sort((a, b) =>
         a[columnName] > b[columnName]
           ? 1 * sortDirection
@@ -455,7 +438,6 @@ const addEventSortColumn = (descriptions, pageSize, headers) => {
           ? -1 * sortDirection
           : 0
       );
-      console.log(descriptions);
       btn.classList.remove("sort-column-asc", "sort-column-desc");
 
       renderStudyDescription(descriptions, pageSize, headers);
@@ -544,23 +526,14 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
   )
     .filter((dt) => dt.checked)
     .map((dt) => dt.dataset.journal);
-  //console.log(journalSelected);
 
   const restrictionsSelected = Array.from(
     document.getElementsByClassName("select-restrictions")
   )
     .filter((dt) => dt.checked)
     .map((dt) => dt.dataset.restrictions);
-  console.log(restrictionsSelected);
 
   let filteredData = descriptions;
-  console.log(filteredData);
-
-  // if (consortiumSelected.length > 0) {
-  //   filteredData = filteredData.filter(
-  //     (dt) => consortiumSelected.indexOf(dt["Acronym"]) !== -1
-  //   );
-  // }
 
   if (journalSelected.length > 0) {
     filteredData = filteredData.filter(
@@ -578,12 +551,9 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
       if (restrictionsSelected.includes("gru") && dt["gru"] !== "false") found = true;
       if (restrictionsSelected.includes("dsr") && dt["dsr"] !== "false") found = true;
       if (restrictionsSelected.includes("dsr_value") && dt["dsr_value"] !== "false") found = true;
-      console.log(found);
       if (found) return dt;
     });
   }
-
-  console.log(filteredData);
 
   if (journalSelected.length === 0 && restrictionsSelected === 0) filteredData = descriptions;
   const input = document.getElementById("searchDataCatalog");

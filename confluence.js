@@ -688,7 +688,6 @@ const manageHash = async () => {
   if(localStorage.lastURL){
     hash = localStorage.lastURL;
   }
-  console.log(hash);
   if (
     !document.getElementById("navBarBtn").classList.contains("collapsed") &&
     document.getElementById("navbarToggler").classList.contains("show")
