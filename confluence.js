@@ -127,7 +127,6 @@ export const confluence = async () => {
     manageRouter();
   }
   if (localStorage.parmsERa === undefined) {
-    console.log("No ERa");
     await storeAccessTokenERa();
     manageRouter();
   }
@@ -314,6 +313,7 @@ export const confluence = async () => {
             await dataForm();
           } else {
             document.getElementById("loginERa").addEventListener("click", async function () {
+              localStorage.setItem('lastURL', '#data_access/form');
               location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/&scope=openid+company+email+profile`
             });
           }
@@ -684,7 +684,11 @@ const manageRouter = async () => {
 const manageHash = async () => {
   document.querySelector("[role='contentinfo']").innerHTML = footerTemplate();
   if (localStorage.parms === undefined) return;
-  const hash = decodeURIComponent(window.location.hash);
+  let hash = decodeURIComponent(window.location.hash);
+  if(localStorage.lastURL){
+    hash = localStorage.lastURL;
+  }
+  console.log(hash);
   if (
     !document.getElementById("navBarBtn").classList.contains("collapsed") &&
     document.getElementById("navbarToggler").classList.contains("show")
@@ -729,6 +733,9 @@ const manageHash = async () => {
     element.click();
   } else if (hash === "#data_access/form") {
     const element = document.getElementById("dataForm");
+    if(localStorage.lastURL){
+      localStorage.removeItem('lastURL');
+    }
     if (!element) return;
     element.click();
   } else if (hash === "#data_access/acceptedStudies") {
