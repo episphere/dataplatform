@@ -403,21 +403,24 @@ export const addEventShowAllCollaborator = () => {
         const id = entry.id;
         //const userid = entry.accessible_by.id;
         //const folderName = entry.item.name;
+        const subFolderName = entry.item ? entry.item.name : ""; 
         const addedBy = `${entry.created_by.name}`;
         const addedAt = new Date(entry.added_at).toLocaleString();
         const expiresAt = new Date(entry.expires_at).toLocaleString();
-        allEntries.push({
-          name,
-          email,
-          role,
-          status,
-          addedBy,
-          addedAt,
-          id,
-          folderName,
-          expiresAt
-          //userid
-        });
+        if (email.includes("@nih.gov")){
+          allEntries.push({
+            name,
+            email,
+            role,
+            status,
+            addedBy,
+            addedAt,
+            id,
+            subFolderName,
+            expiresAt
+            //userid
+          });
+        };
       });
 
       allEntries = allEntries.sort((a, b) =>
@@ -522,9 +525,11 @@ export const addEventShowExtCollaborator = () => {
         //console.log(email);
         //const email = !entry.invite_email ? entry.accessible_by.login : entry.invite_email;
         // email = email == null ? "null" : email;
+        console.log(entry);
         const role = entry.role;
         const status = entry.status;
         const id = entry.id;
+        const subFolderName = entry.item ? entry.item.name : ""; 
         const addedBy = entry.created_by ? entry.created_by.name : "";
         const addedAt = new Date(entry.added_at).toLocaleString();
         const expiresAt = entry.expires_at !== null ? new Date(entry.expires_at).toDateString() : "None";
@@ -537,7 +542,7 @@ export const addEventShowExtCollaborator = () => {
             addedBy,
             addedAt,
             id,
-            folderName,
+            subFolderName,
             expiresAt
           });
         };
@@ -603,6 +608,7 @@ const renderCollaboratorsList = (allEntries, userPermission) => {
       table += document.getElementById("listExtCollaborators").classList.contains("active-tab") ? `<th>Check </th>` : ``;
       table += `<th>Name <button class="transparent-btn sort-column" data-column-name="name" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
               <th>Email <button class="transparent-btn sort-column" data-column-name="email" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
+              <th>Folder <button class="transparent-btn sort-solumn" data-column-name="folder" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
               <th>Role <button class="transparent-btn sort-column" data-column-name="role" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
               <th>Added by <button class="transparent-btn sort-column" data-column-name="addedBy" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
               <th>Expires at <button class="transparent-btn sort-column" data-column-name="expiresAt" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
@@ -619,16 +625,17 @@ const renderCollaboratorsList = (allEntries, userPermission) => {
 const renderCollaboratorListTBody = (allEntries, userPermission) => {
   let tbody = "";
   allEntries.forEach((entry) => {
-    const { name, email, role, addedBy, expiresAt, id, folderName } = entry;
+    const { name, email, role, addedBy, expiresAt, id, subFolderName } = entry;
     const userName = JSON.parse(localStorage.parms).name;
     tbody += `<tr>`
     tbody += document.getElementById("listExtCollaborators").classList.contains("active-tab") ? `<td title="${id}"><input type="checkbox" id="${id}" name="extendCollab" value="${role}" checked></td>` : ``;
     tbody += `  <td title="${name}">${name.length > 20 ? `${name.slice(0, 20)}...` : `${name}`}</td>
                 <td title="${email}">${email.length > 20 ? `${email.slice(0, 20)}...` : `${email}`}</td>
+                <td title="${subFolderName}">${subFolderName.length > 35 ? `${subFolderName.slice(0, 35)}...` : `${subFolderName}`}</td>
                 <td>${email !== JSON.parse(localStorage.parms).login && userPermission && updatePermissionsOptions(userPermission, role) && userName === addedBy? `<select title="Update permission" data-collaborator-id="${id}" data-previous-permission="${role}" data-collaborator-name="${name}" data-collaborator-login="${email}" class="form-control updateCollaboratorRole">${updatePermissionsOptions(userPermission,role)}</select>`: `${role}`}</td>
                 <td title="${addedBy}">${addedBy.length > 20 ? `${addedBy.slice(0, 20)}...` : `${addedBy}`}</td>
                 <td title="${expiresAt}">${expiresAt}</td>
-                <td>${addedBy === userName? `<button class="removeCollaborator" title="Remove collaborator" data-collaborator-id="${id}" data-email="${email}" data-collaborator-name="${name}" data-folder-name="${folderName}"><i class="fas fa-user-minus"></i></button>`: ``}</td>
+                <td>${addedBy === userName? `<button class="removeCollaborator" title="Remove collaborator" data-collaborator-id="${id}" data-email="${email}" data-collaborator-name="${name}" data-folder-name="${subFolderName}"><i class="fas fa-user-minus"></i></button>`: ``}</td>
               </tr>`;
   });
   document.getElementById("tBodyCollaboratorList").innerHTML = tbody;
