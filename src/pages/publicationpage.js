@@ -337,9 +337,15 @@ const renderStudyDescription = (descriptions, pageSize, headers, signedIn) => {
       if(signedIn) {
         template += `
                           <div class-"col-md-1">
-                            <button title="LinkToAccess" class="buttonsubmit"  onclick="window.location.href = '#data_access/form'"><span class="buttonsubmit__text"> Request Data </span></button>
+                            <button title="Link To Data Access" class="buttonsubmit"  onclick="window.location.href = '#data_access/form'"><span class="buttonsubmit__text"> Request Data </span></button>
                           </div>
                           `
+      } else {
+        template += `
+        <div class-"col-md-1">
+          <button title="Please Log In" class="buttonsubmit"  disabled><span class="buttonsubmit__text"> Log In To Request </span></button>
+        </div>
+        `
       }
         template += `
                       </div>

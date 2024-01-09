@@ -2181,6 +2181,12 @@ p {
   background-color: #1c4f74 !important;
 }
 
+.buttonsubmit:disabled {
+  background-color: #2a72a5 !important;
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
 .buttonsubmit__text {
   color: #ffffff;
   transition: all 0.2s;

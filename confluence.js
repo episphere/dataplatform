@@ -1,7 +1,7 @@
 import { navBarMenutemplate } from "./src/components/navBarMenuItems.js";
 import { infoDeck, infoDeckAfterLoggedIn } from "./src/pages/homePage.js";
 import { testPage2 } from "./src/pages/researchStudies.js";
-import { publication } from "./src/pages/publicationpage.js";
+import { publication, publicationNoSign } from "./src/pages/publicationpage.js";
 import { myDCEGpublication } from "./src/pages/myDCEG.js";
 import { instruction } from "./src/pages/uploadinstruction.js";
 import { dataSubmissionTemplate,
@@ -384,11 +384,9 @@ export const confluence = async () => {
       document.title = "DCEG - Publication";
       assignNavbarActive(element);
       console.log('publication');
-      //confluenceDiv.innerHTML = publication();
       aboutConfluence("overview");
       publication();
       addEventUpdateSummaryStatsData();
-      //publicationPageTemplate();
       hideAnimation();
     });
     if (MyDCEGPageElement){
@@ -571,7 +569,7 @@ const manageRouter = async () => {
     document.title = "DCEG - publicationpage";
     assignNavbarActive(element);
     aboutConfluence("overview");
-    publication();
+    publicationNoSign();
   } else if (hash === "#myDCEG") {
     const element = document.getElementById("myDCEGID");
     if (!element) return;
