@@ -253,63 +253,68 @@ export const formSectionOther = async (activeTab, showDescripton) => {
 };
 
 export const formSection = async (activeTab, showDescripton) => {
-//   let authChair =
-//   emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
-// let authDacc =
-//   emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
-
-let navBarItems = "";
-// if (authDacc && authChair) {
-//   navBarItems = pageNavBar(
-//     "data_access",
-//     activeTab,
-//     "Overview",
-//     "Project Concept Form",
-//     "View Submissions",
-//     "Chair Menu",
-//     "DACC Menu"
-//   );
-// } else if (authChair) {
-//   navBarItems = pageNavBar(
-//     "data_access",
-//     activeTab,
-//     "Overview",
-//     "Project Concept Form",
-//     "View Submissions",
-//     "Chair Menu"
-//   );
-// } else if (authDacc) {
-//   navBarItems = pageNavBar(
-//     "data_access",
-//     activeTab,
-//     "Overview",
-//     "Project Concept Form",
-//     "View Submissions",
-//     "DACC Menu"
-//   );
-// } else {
-//   navBarItems = pageNavBar(
-//     "data_access",
-//     activeTab,
-//     "Overview",
-//     "Project Concept Form",
-//     "View Submissions"
-//   );
-// }
-let template = `
+  let eraLogin = localStorage.parmsERa;
+  let boxLogin = localStorage.parms;
+  let navBarItems = "";
+  let template = `
     <div class="general-bg body-min-height padding-bottom-1rem">
         <div class="container">
-          <!---${navBarItems}--->
-        
     </div>
     `;
-const date = new Date();
-const today =
-  date.getFullYear() +
-  "-" +
-  ("0" + (date.getMonth() + 1)).slice(-2) +
-  "-" +
-  ("0" + date.getDate()).slice(-2);
+  const date = new Date();
+  const today =
+    date.getFullYear() +
+    "-" +
+    ("0" + (date.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + date.getDate()).slice(-2);
+
+  if (boxLogin === undefined){
+    template += ` 
+      <div class="general-bg padding-bottom-1rem">
+        <div class="container body-min-height">
+          <div class="main-summary-row">
+              <div class="align-left">
+                  <h1 class="page-header">Data Access Proposal Form</h1>
+                  <button id='autofillJson' class='d-none'>AutoFill JSON</button>
+              </div>
+          </div>
+          <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
+            <div class="input-group input-group2">
+              To access data proposal form, please first log in.
+            </div>
+          </div>
+        </div>
+      </div>     
+      `;
+    return template;
+  }
+
+  if (eraLogin == undefined) {
+    console.log(eraLogin);
+    template += ` 
+      <div class="general-bg padding-bottom-1rem">
+        <div class="container body-min-height">
+          <div class="main-summary-row">
+              <div class="align-left">
+                  <h1 class="page-header">Data Access Proposal Form</h1>
+                  <button id='autofillJson' class='d-none'>AutoFill JSON</button>
+              </div>
+          </div>
+          <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
+            <div class="input-group input-group2">
+              <button class="nav-link nav-menu-links custom-btn" title="Login ERa" id="loginERa">
+                <img src="./static/images/era.png"> Login ERa
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>     
+      `;
+    return template;
+  }
+
+console.log("did it stop?")
 
 const dictionaryVars = localStorage.getItem("dictionaryVars");
 template += ` 
@@ -321,12 +326,7 @@ template += `
               <button id='autofillJson' class='d-none'>AutoFill JSON</button>
           </div>
       </div>
-      <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
-        <div class="input-group input-group2">
-          <button class="nav-link nav-menu-links custom-btn" title="Login ERa" id="loginERa">
-            <img src="./static/images/era.png"> Login ERa
-          </button>
-        </div>           
+      <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">          
         <section class="contact-form">
           <p style="color:red;"><b>This form is a work in progress and will change dependent on feedback. Current plans include:</b></p>
           <ul>
