@@ -463,7 +463,7 @@ template += `
             <br>
             <p><u><b>Project Description</b></u></p>
             <div class="input-group">
-            <p>Please provide a concise description of Background, Aims, and Analysis Plan. Provide enough detail so contributing cohorts can assess whether Aims (i) align with participant consents and (ii) overlap with other cohort projects. Please list all planned analyses.</p>
+            <p>Please provide a concise description of Background, Aims, and Analysis Plan.</p>
           </div>
             <div class="input-group">
               <label for="background"><b>Background</b><span class='required-label'>*</span></label>
@@ -675,25 +675,6 @@ template += `
                 </div>
               </ul>
             </div>--->
-            <br>
-            <p><u><b>Timeline</b></u><span class='required-label'>*</span></p>
-              <div class="input-group">
-                <p style="color:red;"><b>TBD</b></p>
-              <!---<label for="timeline">Please indicate estimated time from receipt of data to completion of analyses and submission of paper; 
-                the expectation is that results will be published within one year after completion</label>
-                <textarea id="timeline" name="timeline" rows="4" cols="65" required></textarea>--->
-              </div>
-            <br>
-            <p><u><b>Authorship</b></u><span class='required-label'>*</span></p>
-              <div class="input-group">
-                <p style="color:red;"><b>TBD</b></p>
-                <!---<label for="authconf"><input id="authconf" name="authconf" type="checkbox" value="Yes" required/> Please confirm that you acknowledge the intention to include representatives of the 
-                contributing cohorts as co-authors and that you will provide contributing cohorts 30 days to review the draft manuscript 
-                before submission. </label>
-                
-                <label for="Authorship"><i>Please include any special considerations you would like to bring to the DACC’s attention.</i></label>
-                <textarea id="authorship" name="authorship" rows="4" cols="65"></textarea>--->
-              </div>
               
               <button type="submit" id="submitFormButton" class="buttonsubmit"> 
                 <span class="buttonsubmit__text"> Send Form </span>
