@@ -1,6 +1,6 @@
 import { applicationURLs, emailforChair, emailforDACC } from "./../shared.js";
 const showProjectConceptForm = true;
-const viewSubmissionsShow = true;
+const viewAcceptedShow = true;
 export const navBarMenutemplate = () => {
   return `
         <div class="grid-elements">
@@ -51,40 +51,18 @@ export const navBarMenutemplate = () => {
           </div>`
           :``
         }
-        <!---<div class="grid-elements">
-          <a class="nav-link nav-menu-links white-font" href="#myDCEG/upload" title="My DCEG Publication Data - Upload" id="myDCEGID_upload">
-            Upload
-          </a>
-        </div>--->
-        <div class="grid-elements">
-            <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/dataplatform/issues" title="Dataplatform github issues">
-                Report issue
-            </a>
-        </div>
-
-                <!---<div class='grid-elements dropdown'>
+          ${emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1
+               ? `<div class='grid-elements dropdown'>
                     <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Consortia
+                        DACC
                     </button>
                     <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/overview" title="Consortia" id="dataRequest"> Consortia </a>
-                    ${
-                      showProjectConceptForm
-                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/form" title="Data Form" id="dataForm"> </a>
-                    `
-                        : ""
-                    }
-                    ${
-                      viewSubmissionsShow
-                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#userSubmissions" title='View Your Submissions' id="userSubmissions"> </a>`
-                        : ""
-                    }--->
-                    <!---a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/accepted" title="Accepted Studies" id="dataAccepted"> Accepted </a--->
+                    <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/accepted" title="Accepted Studies" id="dataAccepted"> Accepted </a>
                     ${
                       emailforChair.indexOf(
                         JSON.parse(localStorage.parms).login
                       ) !== -1
-                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/chairView" title="Chair File View" id="chairView">  </a>`
+                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/chairView" title="Chair File View" id="chairView"> Chair Menu  </a>`
                         : ``
                     }
                     ${
@@ -95,6 +73,14 @@ export const navBarMenutemplate = () => {
                         : ``
                     }
             </div>
+          </div>`
+          : ``
+          }
+          <div class="grid-elements">
+              <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/dataplatform/issues" title="Dataplatform github issues">
+                  Report issue
+              </a>
+          </div>
 
 
         <div class="navbar-nav ml-auto">

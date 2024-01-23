@@ -824,9 +824,6 @@ export const acceptedStudiesSection = (activeTab) => {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
       "Chair Menu",
       "DACC Menu"
     );
@@ -834,26 +831,18 @@ export const acceptedStudiesSection = (activeTab) => {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
       "Chair Menu"
     );
   } else if (authDacc) {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
       "DACC Menu"
     );
   } else {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
       "View Submissions"
     );
   }
@@ -934,9 +923,6 @@ export const chairSection = (activeTab) => {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
       "Chair Menu",
       "DACC Menu"
     );
@@ -944,26 +930,18 @@ export const chairSection = (activeTab) => {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
       "Chair Menu"
     );
   } else if (authDacc) {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
       "DACC Menu"
     );
   } else {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
       "View Submissions"
     );
   }
@@ -1453,9 +1431,6 @@ export const daccSection = (activeTab) => {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
       "Chair Menu",
       "DACC Menu"
     );
@@ -1463,26 +1438,18 @@ export const daccSection = (activeTab) => {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
       "Chair Menu"
     );
   } else if (authDacc) {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
       "DACC Menu"
     );
   } else {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
       "View Submissions"
     );
   }
@@ -1709,11 +1676,9 @@ export const daccFileView = async () => {
       <form>  
         <label for="grade">Select recommendation: </label>
           <select name="grade" id="grade"></option>
-            <option value = "1"> 1 - Approved as submitted</option>
-            <option value = "2"> 2 - Approved, pending conditions/clarification of some issues </option>
-            <option value = "3"> 3 - Approved, but data release will be delayed </option>
-            <option value = "4"> 4 - Not approved </option>
-            <option value = "6"> 6 - Decision pending clarification of several issues</option>
+            <option value = "1"> 1 - Approve</option>
+            <option value = "2"> 2 - Approve, pending additional information </option>
+            <option value = "3"> 3 - Reject </option>
             <option value = "777"> 777 - Duplicate Proposal</option>
             </select>
           <br>
