@@ -303,8 +303,8 @@ export const formSection = async (activeTab, showDescripton) => {
           </div>
           <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
             <div class="input-group input-group2">
-              <button class="nav-link nav-menu-links custom-btn" title="Login ERa" id="loginERa">
-                <img src="./static/images/era.png"> Login ERa
+              <button class="nav-link nav-menu-links custom-btn" title="Login eRA" id="logineRA">
+                <img src="./static/images/era.png"> Login eRA
               </button>
             </div>
           </div>
@@ -460,6 +460,24 @@ template += `
             <div class="input-group">
               <label><input id="confirmation" name="confirmation" type="checkbox" value="Yes" required/><b> Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b><span class='required-label'>*</span></label>
             </div>
+            <br>
+            <p><u><b>Data Selected</b></u></p>
+              <div class="input-group">
+                <label for="datatitle"><b>Title</b></label>
+                <input id="datatitle" name="datatitle" type="text" value="${JSON.parse(localStorage.dataSelected).title}" readonly/>
+              </div>
+              <div class="input-group">
+                <label for="datajournal"><b>Journal</b></label>
+                <input id="datajournal" name="datajournal" type="text" value="${JSON.parse(localStorage.dataSelected).journal}" readonly/>
+              </div>
+              <div class="input-group">
+                <label for="dataauthor"><b>Author of Article</b></label>
+                <input id="dataauthor" name="dataauthor" type="text" value="${JSON.parse(localStorage.dataSelected).author}" readonly/>
+              </div>
+              <div class="input-group">
+                <label for="datadate"><b>Article Date</b></label>
+                <input id="datadate" name="datadate" type="text" value="${JSON.parse(localStorage.dataSelected).date}" readonly/>
+              </div>
             <br>
             <p><u><b>Project Description</b></u></p>
             <div class="input-group">

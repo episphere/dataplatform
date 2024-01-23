@@ -323,7 +323,7 @@ const renderStudyDescription = (descriptions, pageSize, headers, signedIn) => {
       if(signedIn) {
         template += `
                           <div class-"col-md-1">
-                            <button title="Link To Data Access" class="buttonsubmit"  onclick="window.location.href = '#data_access/form'"><span class="buttonsubmit__text"> Request Data </span></button>
+                            <button title="Link To Data Access" class="buttonsubmit" data-id='{"title": "${desc["title"]}", "author": "${desc["author"]}", "date": "${desc["date"]}", "journal": "${desc["journal_name"]}"}' onClick="localStorage.setItem('dataSelected', JSON.stringify($(this).data('id'))); window.location.href = '#data_access/form'"><span class="buttonsubmit__text"> Request Data </span></button>
                           </div>
                           `
       } else {

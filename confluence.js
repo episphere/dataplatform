@@ -305,14 +305,14 @@ export const confluence = async () => {
           //   .getElementById("amendmentno")
           //   .addEventListener("click", amendFormSelect);
           // if (!eraLogin) {
-          //   document.getElementById("loginERa").addEventListener("click", async function () {
+          //   document.getElementById("logineRA").addEventListener("click", async function () {
           //     location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/&scope=openid+company+email+profile`
           //   });
           // }
           if (eraLogin) {
             await dataForm();
           } else {
-            document.getElementById("loginERa").addEventListener("click", async function () {
+            document.getElementById("logineRA").addEventListener("click", async function () {
               localStorage.setItem('lastURL', '#data_access/form');
               location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/&scope=openid+company+email+profile`
             });
