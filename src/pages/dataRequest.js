@@ -429,12 +429,14 @@ template += `
                   <textarea id="otherresinput" name="typeofres" rows="2" cols="65" required></textarea>
                 </div>
             </div>
+          <div id="investigators">
+            <div class="input-group author_name">
+              <label for="investigators"><b>Contact Investigator</b> <span class='required-label'>*</span></label>
+              <input id="author_first" name="author_info" type="text" value="${JSON.parse(localStorage.parmsERa).first_name}" style="width: 33%" readonly/>
+              <input id="author_last" name="author_info" type="text" value="${JSON.parse(localStorage.parmsERa).last_name}" style="width: 33%" readonly/>
+            
             <div class="input-group">
-              <label for="investigators"><b>Contact Investigator(s)</b> <span class='required-label'>*</span></label>
-              <input id="investigators" name="investigators" type="text" value="${JSON.parse(localStorage.parmsERa).name}" readonly/>
-            </div>
-            <div class="input-group">
-              <label for="institution"><b>Institution(s)</b><span class='required-label'>*</span></label>
+              <label for="institution"><b>Institution</b><span class='required-label'>*</span></label>
               <input id="institution" name="institution" type="text" value="${JSON.parse(localStorage.parmsERa).company}" readonly/>
             </div>
               
@@ -442,20 +444,15 @@ template += `
               <label for="email"><b>Contact Email</b><span class='required-label'>*</span></label>
               <input id="email" name="email" type="email" value="${JSON.parse(localStorage.parmsERa).email}" readonly/>
             </div>
-            <!---<div class="input-group">
-              <label for="member"> <b>Are you a member of DCEG?</b> <span class='required-label'>*</span></label>
-                <input id="memberyes" name="member" type="radio" value="Yes" required/>
-                  <label class="inline" for="memberyes"> Yes </label>
-                <input id="memberno" name="member" type="radio" value="No" required/>
-                  <label class="inline" for="memberno"> No </label>
-            </div>--->
-            <!---<div class="input-group">
-              <label for="acro"><b>BCRPP Study Acronym(s) for the Contact Investigator</b></span></label>
-              <textarea id="acro" name="acro" rows="2" cols="65"></textarea>
-            </div>--->
-            <div class="input-group">
-              <label for="allinvest"><b>ALL Investigators (and their institutions) who will require access to the data requested</b><span class='required-label'>*</span></label>
-              <textarea id="allinvest" name="allinvest" rows="2" cols="65" required></textarea>
+            </div>
+          </div>
+            <div style="overflow:auto;">
+              <div style="float:left;">
+                <button type="button" id="addDataBtn" class="buttonsubmit2"><i class="fa fa-plus" aria-hidden="true"></i> Requestor</button>
+              </div>
+              <div style="display: none; float:left;">
+                <button type="button" id="remDataBtn" class="buttonsubmit2"><i class="fa fa-trash-can" aria-hidden="true"></i> Requestor</button>
+              </div>
             </div>
             <div class="input-group">
               <label><input id="confirmation" name="confirmation" type="checkbox" value="Yes" required/><b> Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b><span class='required-label'>*</span></label>
@@ -1844,6 +1841,59 @@ export const dataApproval = () => {
 };
 
 export const dataForm = async () => {
+  let addDataBtns = document.querySelectorAll('[id$=addDataBtn]');
+  let remDataBtns = document.querySelectorAll('[id$=remDataBtn]');
+  const clickEvent = e => {
+    let parent = e.target.parentElement.parentElement.parentElement;
+    //const ele = document.getElementById(parent);
+    console.log(parent);
+    const eleAll = parent.getElementsByClassName('author_name');
+    // let id = parent.id.slice(0,-4); //Remove 'Form' from id
+    // //console.log(id);
+    let num = eleAll.length + 1
+    // if (num > 0 && document.getElementById(`${id}data_upload${num-1}`).value===''){
+    //   return alert("Please attach file to additional data before adding more data");
+    // }
+    let idaddAttachment = document.getElementById(`investigators`)
+    var newInput = document.createElement('div');
+    newInput.className = 'input-group author_name'
+
+    newInput.innerHTML = `
+      <label for="investigators"><b>Contact Investigator ${num}</b> <span class='required-label'>*</span></label>
+        <input id="author_first${num}" name="author_info${num}" type="text" placeholder="First Name" style="width: 33%"/>
+        <input id="author_last${num}" name="author_info${num}" type="text" placeholder="Last Name" style="width: 33%"/>
+      <div class="input-group">
+        <label for="institution${num}"><b>Institution Investigator ${num}</b><span class='required-label'>*</span></label>
+        <input id="institution${num}" name="institution${num}" type="text" placeholder="Institution"/>
+      </div>
+      <div class="input-group">
+        <label for="email${num}"><b>Contact Email Investigator ${num}</b><span class='required-label'>*</span></label>
+        <input id="email${num}" name="email${num}" type="email" placeholder="Email"/>
+      </div>
+    `
+    idaddAttachment.appendChild(newInput);
+    idaddAttachment.classList.toggle("d-none", false);
+    var remBtn = document.getElementById(`remDataBtn`);
+    remBtn.parentElement.style.display = "inline";
+  }
+  const clickEventRem = e => {
+    //console.log(e.target.id);
+    var parId = e.target.id.replace('remDataBtn','investigators');
+    //console.log(parId);
+    var parDiv = document.getElementById(parId);
+    //console.log(parDiv);
+    parDiv.removeChild(parDiv.lastChild);
+    if (parDiv.childElementCount < 2) {
+      e.target.parentElement.style.display = "none";
+    }
+  }
+  addDataBtns.forEach((item) => {
+    item.addEventListener('click', clickEvent);
+  })
+  remDataBtns.forEach((item) => {
+    item.addEventListener('click', clickEventRem);
+  })
+
   let files = await getFolderItems(uploadFormFolder);
   const d = new Date();
   let filename =

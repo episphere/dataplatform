@@ -704,17 +704,6 @@ export async function nextPrev(n, currentTab) {
       idaddAttachment.classList.toggle("d-none", false);
       var remBtn = document.getElementById(`${id}remDataBtn`);
       remBtn.parentElement.style.display = "inline";
-
-      // remBtn.addEventListener('click', function(e) {
-      //   console.log(e.target.id);
-      //   var parId = e.target.id.replace('removeDataBtn','addAttachment');
-      //   var parDiv = document.getElementById(parId);
-      //   console.log(parDiv.lastChild);
-      //   parDiv.removeChild(parDiv.lastChild);
-      //   if (parDiv.childElementCount < 1) {
-      //     remBtn.parentElement.style.display = "none";
-      //   }
-      // })
     }
     const clickEventRem = e => {
       var parId = e.target.id.replace('remDataBtn','addAttachment');

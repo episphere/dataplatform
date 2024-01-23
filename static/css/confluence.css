@@ -2410,3 +2410,24 @@ button.previous-btn {
   display: flex;
   justify-content: center;
 }
+
+/* .author_name {
+  clear: both;
+  float: left;
+}
+
+.author_name label {
+  float: right;
+}
+
+.author_name input {
+  display: block;
+} */
+
+#investigators label {
+    float: right;
+}
+
+#investigators input {
+    display:block;
+}
