@@ -329,7 +329,7 @@ const renderStudyDescription = (descriptions, pageSize, headers, signedIn) => {
       } else {
         template += `
         <div class-"col-md-1">
-          <button title="Please Log In" class="buttonsubmit" onclick="document.getElementById('loginBoxAppDev').click()"><span class="buttonsubmit__text"> Log In To Request </span></button>
+          <button title="Please Log In" class="buttonsubmit" onclick="document.getElementById('loginBoxAppProd').click()"><span class="buttonsubmit__text"> Log In To Request </span></button>
         </div>
         `
       }
