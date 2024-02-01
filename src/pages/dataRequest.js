@@ -327,10 +327,6 @@ template += `
       <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">          
         <section class="contact-form">
           <p style="color:red;"><b>This form is a work in progress and will change dependent on feedback. Current plans include:</b></p>
-          <ul>
-            <li style="color:red;">Auto completing the parts of the form depending on publication selected</li>
-            <li style="color:red;">Checks that data requested matches research aims based on data use limitations</li>
-          </ul>
           <p>Please fill out the form below. This will be reviewed by the DCEG and the necessary DAC(s)</p>
           <form>
             <!---<div class='col-3 mb-3 input-group'>
