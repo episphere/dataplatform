@@ -483,10 +483,6 @@ template += `
               <label for="aims"><b>Study Aims</b><span class='required-label'>*</span></label>
               <textarea id="aims" name="aims" placeholder="Please provide a brief description of your study aims (200 word limit)" rows="4" cols="65" required> </textarea>
             </div>
-            <div class="input-group">
-              <label for="analyplan"><b>Analysis Plan</b><span class='required-label'>*</span></label>
-              <textarea id="analyplan" name="analyplan" rows="4" cols="65" required> </textarea>
-            </div>
             <br>
             <!---<p><u><b>Core Covariate, Mammography and Incident Breast Cancer Data Requested</b></u></p>
               <button class='btn btn-primary btn-sm' type='button' id='importDictvars'>Import Variables</button>--->
@@ -719,9 +715,9 @@ template += `
             </div>
           </div>
         </div>
-          <div class="results">
+          <!--<div class="results">
           <h2>Form Data</h2>
-          <pre></pre>
+          <pre></pre>-->
           </div>
         </div>
       </div>
