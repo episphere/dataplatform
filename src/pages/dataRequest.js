@@ -404,29 +404,12 @@ template += `
               <select class='form-select' id='amendmentSelect'></select>
             </div>--->
             <div class="input-group">
-              <label for="typeofres"><b>Type of Research</b><span class='required-label'>*</span></label>
+              <label for="typeofres"><b>Data Use Limitations</b><span class='required-label'>*</span></label>
             </div>
             <div class="input-group">
                 <div class="inline-field">
-                  <input id="disres" name="typeofres" type="checkbox" value="Disease-related studies"/>
-                  <label class="container-ul" for="disres"><b>Disease-related studies:</b> The primary purpose of the research is to learn more about a particular disease or disorder.</label>
-                </div>
-                <div class="inline-field">
-                  <input id="devres" name="typeofres" type="checkbox" value="Methods development and validation studies"/>
-                  <label class="container-ul" for="devres"><b>Methods development and validation studies:</b> The primary purpose fo the research is to develop and/or validate new methods for analyzing or interpreting data...</label>
-                </div>
-                <div class="inline-field">
-                  <input id="conres" name="typeofres" type="checkbox" value="Controls"/>
-                  <label class="container-ul" for="conres"><b>Controls:</b> The reason for this request is to increase the number of controls available for a comparison group.</label>
-                </div>
-                <div class="inline-field">
-                  <input id="popres" name="typeofres" type="checkbox" value="Population structure or normal variation studies"/>
-                  <label class="container-ul" for="popres"><b>Population structure or normal variation studies:</b> The primary purpose of the research is to understand variation in the general population</label>
-                </div>
-                <div class="inline-field">
-                  <input id="otherres" name="typeofres" type="checkbox" value="Other"/>
-                  <label class="container-ul" for="otherres"><b>Other</b> (please specify below):</label>
-                  <textarea id="otherresinput" name="typeofres" rows="2" cols="65" required></textarea>
+                  <input id="disres" name="typeofres" type="checkbox" value="placeholder" checked/>
+                  <label class="container-ul" for="disres"><b>Placeholder</b> </label>
                 </div>
             </div>
           <div id="investigators">
@@ -477,11 +460,11 @@ template += `
           </div>
             <div class="input-group">
               <label for="background"><b>Planned use of data</b><span class='required-label'>*</span></label>
-              <textarea id="background" name="background" placeholder="Please provide a brief description of your planned use of the data (250 word limit)" rows="4" cols="65" required></textarea>
+              <textarea maxlength="1500" id="background" name="background" placeholder="Please provide a brief description of your planned use of the data (1500 character limit)" rows="4" cols="65" required></textarea>
             </div>
             <div class="input-group">
               <label for="aims"><b>Study Aims</b><span class='required-label'>*</span></label>
-              <textarea id="aims" name="aims" placeholder="Please provide a brief description of your study aims (200 word limit)" rows="4" cols="65" required> </textarea>
+              <textarea maxlength="1000" id="aims" name="aims" placeholder="Please provide a brief description of your study aims (1000 character limit)" rows="4" cols="65" required> </textarea>
             </div>
             <br>
             <!---<p><u><b>Core Covariate, Mammography and Incident Breast Cancer Data Requested</b></u></p>
