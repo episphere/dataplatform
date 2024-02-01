@@ -1274,7 +1274,7 @@ export const commentApproveReject = () => {
       let grade = e.target[0].value;
       let comment = e.target[1].value;
 
-      let message = "Rating: " + grade + "\nComment: " + comment;
+      let message = "Scoring: " + grade + "\nComment: " + comment;
       if (decision !== "daccReview") {
         await updateTaskAssignment(taskId, decision, message);
       }
