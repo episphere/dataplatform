@@ -431,7 +431,7 @@ template += `
             </div>
           <div id="investigators">
             <div class="input-group author_name">
-              <label for="investigators"><b>Contact Investigator</b> <span class='required-label'>*</span></label>
+              <label for="investigators"><b>Primary Requestor</b> <span class='required-label'>*</span></label>
               <input id="author_first" name="author_info" type="text" value="${JSON.parse(localStorage.parmsERa).first_name}" style="width: 33%" readonly/>
               <input id="author_last" name="author_info" type="text" value="${JSON.parse(localStorage.parmsERa).last_name}" style="width: 33%" readonly/>
             
@@ -471,22 +471,17 @@ template += `
                 <label for="dataauthor"><b>Author of Article</b></label>
                 <input id="dataauthor" name="dataauthor" type="text" value="${JSON.parse(localStorage.dataSelected).author}" readonly/>
               </div>
-              <div class="input-group">
-                <label for="datadate"><b>Article Date</b></label>
-                <input id="datadate" name="datadate" type="text" value="${JSON.parse(localStorage.dataSelected).date}" readonly/>
-              </div>
             <br>
             <p><u><b>Project Description</b></u></p>
             <div class="input-group">
-            <p>Please provide a concise description of Background, Aims, and Analysis Plan.</p>
           </div>
             <div class="input-group">
-              <label for="background"><b>Background</b><span class='required-label'>*</span></label>
-              <textarea id="background" name="background" rows="4" cols="65" required></textarea>
+              <label for="background"><b>Planned use of data</b><span class='required-label'>*</span></label>
+              <textarea id="background" name="background" placeholder="Please provide a brief description of your planned use of the data (250 word limit)" rows="4" cols="65" required></textarea>
             </div>
             <div class="input-group">
-              <label for="aims"><b>Aims</b><span class='required-label'>*</span></label>
-              <textarea id="aims" name="aims" rows="4" cols="65" required> </textarea>
+              <label for="aims"><b>Study Aims</b><span class='required-label'>*</span></label>
+              <textarea id="aims" name="aims" placeholder="Please provide a brief description of your study aims (200 word limit)" rows="4" cols="65" required> </textarea>
             </div>
             <div class="input-group">
               <label for="analyplan"><b>Analysis Plan</b><span class='required-label'>*</span></label>
@@ -1679,7 +1674,6 @@ export const daccFileView = async () => {
             <option value = "1"> 1 - Approve</option>
             <option value = "2"> 2 - Approve, pending additional information </option>
             <option value = "3"> 3 - Reject </option>
-            <option value = "777"> 777 - Duplicate Proposal</option>
             </select>
           <br>
             <label for"message">Submit Comment:</label>
@@ -1824,7 +1818,7 @@ export const dataForm = async () => {
     newInput.className = 'input-group author_name'
 
     newInput.innerHTML = `
-      <label for="investigators"><b>Contact Investigator ${num}</b> <span class='required-label'>*</span></label>
+      <label for="investigators"><b>Requestor ${num}</b> <span class='required-label'>*</span></label>
         <input id="author_first${num}" name="author_info${num}" type="text" placeholder="First Name" style="width: 33%"/>
         <input id="author_last${num}" name="author_info${num}" type="text" placeholder="Last Name" style="width: 33%"/>
       <div class="input-group">
