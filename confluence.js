@@ -507,12 +507,14 @@ export const confluence = async () => {
     // //         `;
     // //   addEventDataGovernanceNavBar(true);
     // }
+    if (JSON.parse(localStorage.parms).login.split('@')[1].includes('deloitte.com') || JSON.parse(localStorage.parms).login.split('@')[1].includes('nih.gov')){
     document.getElementById("governanceNav").innerHTML = `
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links navbar-active" href="#data_governance" title="Data Governance" id="dataGovernance">
                     Data Governance
                 </a>
             `;
     addEventDataGovernanceNavBar(true);
+    }
     manageHash();
   }
 };
