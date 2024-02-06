@@ -437,7 +437,7 @@ template += `
               <label><input id="confirmation" name="confirmation" type="checkbox" value="Yes" required/><b> Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b><span class='required-label'>*</span></label>
             </div>
             <br>
-            <p><u><b>Data Selected</b></u></p>
+            <p><u><b>Publication Data Being Requested</b></u></p>
               <div class="input-group">
                 <label for="datatitle"><b>Title</b></label>
                 <input id="datatitle" name="datatitle" type="text" value="${JSON.parse(localStorage.dataSelected).title}" readonly/>
@@ -447,11 +447,11 @@ template += `
                 <input id="datajournal" name="datajournal" type="text" value="${JSON.parse(localStorage.dataSelected).journal}" readonly/>
               </div>
               <div class="input-group">
-                <label for="dataauthor"><b>Author of Article</b></label>
+                <label for="dataauthor"><b>First Listed Author of Article</b></label>
                 <input id="dataauthor" name="dataauthor" type="text" value="${JSON.parse(localStorage.dataSelected).author}" readonly/>
               </div>
             <br>
-            <p><u><b>Project Description</b></u></p>
+            <p><u><b>Description of Proposed Project/b></u></p>
             <div class="input-group">
           </div>
             <div class="input-group">
@@ -460,12 +460,9 @@ template += `
             </div>
             <div class="input-group">
               <label for="aims"><b>Study Aims</b><span class='required-label'>*</span></label>
-              <textarea maxlength="1000" id="aims" name="aims" placeholder="Please provide a brief description of your study aims (1000 character limit)" rows="4" cols="65" required> </textarea>
+              <textarea maxlength="1000" id="aims" name="aims" placeholder="Please provide a brief description of your study aims (1000 character limit)" rows="4" cols="65" required></textarea>
             </div>
             <br>
-            <!---<p><u><b>Core Covariate, Mammography and Incident Breast Cancer Data Requested</b></u></p>
-              <button class='btn btn-primary btn-sm' type='button' id='importDictvars'>Import Variables</button>--->
-            <!---<div class="input-group">
               <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables shared by cohorts participating in the BCRPP. 
               Data availability and descriptive statistics can be explored via the <a href="#data_exploration/summary">Explore Data</a> tool. If data from a particular category is requested,
               all variables from that category will be provided.</p>

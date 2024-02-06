@@ -1876,11 +1876,11 @@ export const tsv2Json = (tsv) => {
     .split(/[\r]+/g);
   const result = [];
   const headers = lines[0].replace(/"/g, "").split(/[\t]/g);
-  console.log(lines);
+  //console.log(lines);
   for (let i = 1; i < lines.length; i++) {
     const obj = {};
     const currentline = lines[i].split(/[\t]/g);
-    console.log(currentline);
+    //console.log(currentline);
     for (let j = 0; j < headers.length; j++) {
       if (currentline[j]) {
         let value = headers[j];
