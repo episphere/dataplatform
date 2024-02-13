@@ -366,27 +366,30 @@ export const confluence = async () => {
         daccFileView();
       });
     }
-
-    dataRequestElement.addEventListener("click", () => {
-      if (dataRequestElement.classList.contains("navbar-active")) return;
-      const element = document.getElementById("dataRequest");
-      if (!element) return;
-      if (element.classList.contains("navbar-active")) return;
-      document.title = "DCEG - Consortia";
-      assignNavbarActive(element);
-      confluenceDiv.innerHTML = dataRequestTemplate("overview");
-      hideAnimation();
-    });
-    ConsortiaPageElement.addEventListener("click", () => {
-      if (ConsortiaPageElement.classList.contains("navbar-active")) return;
-      const element = document.getElementById("data2");
-      if (!element) return;
-      if (element.classList.contains("navbar-active")) return;
-      document.title = "DCEG Cohorts";
-      assignNavbarActive(element);
-      confluenceDiv.innerHTML = testPage2();
-      hideAnimation();
-    });
+    if (dataRequestElement) {
+      dataRequestElement.addEventListener("click", () => {
+        if (dataRequestElement.classList.contains("navbar-active")) return;
+        const element = document.getElementById("dataRequest");
+        if (!element) return;
+        if (element.classList.contains("navbar-active")) return;
+        document.title = "DCEG - Consortia";
+        assignNavbarActive(element);
+        confluenceDiv.innerHTML = dataRequestTemplate("overview");
+        hideAnimation();
+      });
+    }
+    if (ConsortiaPageElement) {
+      ConsortiaPageElement.addEventListener("click", () => {
+        if (ConsortiaPageElement.classList.contains("navbar-active")) return;
+        const element = document.getElementById("data2");
+        if (!element) return;
+        if (element.classList.contains("navbar-active")) return;
+        document.title = "DCEG Cohorts";
+        assignNavbarActive(element);
+        confluenceDiv.innerHTML = testPage2();
+        hideAnimation();
+      });
+    }
     PublicationPageElement.addEventListener("click", () => {
       if (PublicationPageElement.classList.contains("navbar-active")) return;
       const element = document.getElementById("publicationID");

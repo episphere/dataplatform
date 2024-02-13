@@ -13,7 +13,8 @@ export const navBarMenutemplate = () => {
             About
             </a>            
         </div>
-        <div class="grid-elements">
+      ${!localStorage.parms && !JSON.parse(localStorage.parms).name
+        ?`<div class="grid-elements">
             <a class="nav-link nav-menu-links white-font" href="#data_access/overview" title="Consortia" id="dataRequest">
                 Consortia
             </a>
@@ -22,8 +23,9 @@ export const navBarMenutemplate = () => {
           <a class="nav-link nav-menu-links white-font" href="#researchStudies" title="DCEG Cohorts" id="data2">
           DCEG Cohorts
           </a>
-        </div>
-
+        </div>`
+        :``
+      }
         <div class="grid-elements" style="display: none;">
           <a class="nav-link nav-menu-links white-font" href="#data_access/form" title="Data Form" id="dataForm"> 
             Data Form

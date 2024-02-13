@@ -89,7 +89,7 @@ export const infoDeckAfterLoggedIn = async () => {
                 <div class="banner-logo">
                     <div class="banner-overlay-text row justify-content-center text-center">
                         <div class="col-md-12">
-                            <h1 class="banner-overlay-h1">DCEG Epidemiology Data Platforms
+                            <h1 class="banner-overlay-h1">DCEG Publication Data Repository (PDR)
                             </h1>
                             <div class="banner-overlay-line"></div>
                             <h2 class="banner-overlay-h3" style="font-size:1.7vw;"> Following FAIR principles in Support of Epidemiological Research
@@ -109,33 +109,33 @@ export const infoDeckAfterLoggedIn = async () => {
   //       explanation: "",
   //     });
   template += cardContents({
-    header: "Consortia Projects",
-    button: "Data Platforms for Consortia Projects",
+    header: "About PDR",
+    button: "Learn about the PDR and how to request access to data",
     href: "#data_access/overview",
     icon: "fa-folder-open",
     explanation: "",
   });
+//   template += cardContents({
+//     header: "Research Studies",
+//     button: "Data Platforms for DCEG studies",
+//     href: "#researchStudies",
+//     icon: "fa-layer-group",
+//     explanation: "",
+//   });
   template += cardContents({
-    header: "Research Studies",
-    button: "Data Platforms for DCEG studies",
-    href: "#researchStudies",
-    icon: "fa-layer-group",
-    explanation: "",
-  });
-  template += cardContents({
-    header: "Datasets from DCEG Publications",
-    button: "Datasets from DCEG Publications available for request",
+    header: "DCEG PDR",
+    button: "Datasets available for request from the DCEG PDR",
     href: "#publicationpage",
     icon: "fa-database",
     explanation: "",
   });
-  template += cardContents({
-    header: "DCEG Investigators",
-    button: "Manage Publication Data",
-    href: "#myDCEG",
-    icon: "fa-user",
-    explanation: "",
-  });
+//   template += cardContents({
+//     header: "DCEG Investigators",
+//     button: "Manage Publication Data",
+//     href: "#myDCEG",
+//     icon: "fa-user",
+//     explanation: "",
+//   });
   template += `</div>
             </div>
         </div>

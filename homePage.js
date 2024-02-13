@@ -97,7 +97,7 @@ export const infoDeckAfterLoggedIn = async () => {
                 <!---<img src="./static/images/nci-vol-10623-150.jpg" class="banner-logo" style="min-height: 120px;  max-height=250px;" alt="Confluence logo">--->
                 <div class="banner-overlay-text row justify-content-center text-center">
                     <div class="col-md-12">
-                        <h1 class="banner-overlay-h1">DCEG Epidemiology Data Platforms
+                        <h1 class="banner-overlay-h1">DCEG Publication Data Repository (PDR)
                         </h1>
                         <div class="banner-overlay-line"></div>
                         <h2 class="banner-overlay-h3" style="font-size:2vw;">  Following FAIR principles in Support of Epidemiological Research
