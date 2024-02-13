@@ -19,8 +19,8 @@ export const navBarMenutemplate = () => {
             </a>
         </div>
         <div class="grid-elements">
-          <a class="nav-link nav-menu-links white-font" href="#researchStudies" title="Research Studies" id="data2">
-          Research Studies
+          <a class="nav-link nav-menu-links white-font" href="#researchStudies" title="DCEG Cohorts" id="data2">
+          DCEG Cohorts
           </a>
         </div>
 
@@ -31,8 +31,8 @@ export const navBarMenutemplate = () => {
         </div>
 
         <div class="grid-elements">
-          <a class="nav-link nav-menu-links white-font" href="#publicationpage" title="DCEG Publications" id="publicationID">
-          DCEG Publications
+          <a class="nav-link nav-menu-links white-font" href="#publicationpage" title="DCEG PDR" id="publicationID">
+          DCEG PDR
           </a>
         </div>
         ${JSON.parse(localStorage.parms).login.split('@')[1].includes('deloitte.com') || JSON.parse(localStorage.parms).login.split('@')[1].includes('nih.gov')

@@ -42,8 +42,8 @@ export const infoDeck = () => {
     explanation: "",
   });
   template += cardContents({
-    header: "Datasets from DCEG Publications",
-    button: "Datasets from DCEG Publications available for request",
+    header: "DCEG Publication Data Repository (PDR)",
+    button: "Datasets available for request from the DCEG PDR",
     href: "#publicationpage",
     icon: "fa-database",
     explanation: "",

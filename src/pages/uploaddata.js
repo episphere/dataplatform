@@ -253,7 +253,7 @@ export const dsmpSelected = async (csvData) => {
   let icData = csv2JsonTest(icoutput);
   console.log(icData);
   let template =`
-  <label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with the data based on the study's Institutional Certification (IC). If you have questions about your study's IC, please contact your <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Data Sharing Administrator (DSA)</a>.</b><span class='required-label'>*</span> </label>
+  <label for="duoSel"> <b>Below are the data use restrictions and requirements associated with the data based on the study's Institutional Certification (IC). If you have questions about your study's IC, please contact your <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Data Sharing Administrator (DSA)</a>.</b><span class='required-label'>*</span> </label>
     <div class='input-group input-group2 font-size-22'>`;
   const elePlan = document.getElementById('approvedDSMP')
   const checked = elePlan.querySelectorAll('input[type="checkbox"]:checked');
@@ -275,7 +275,6 @@ export const dsmpSelected = async (csvData) => {
       selectedData.cas = 'None'
     }
     var cas = selectedData.cas.split(";");
-    //console.log(studies);
     //console.log(cas);
     const duoEl = document.getElementById("duoSel");
     duoEl.classList.toggle("d-none", values === "");
@@ -287,7 +286,7 @@ export const dsmpSelected = async (csvData) => {
       <div class="input-group input-group2 font-size-22">
         <div class="inline-field field-br">
           <input id="${value}sel${i}" name="studySel" type="checkbox" value="${value}duo${i}" checked/> <!---${studies.length === 1 ? 'checked':''}--->
-          <label class="container-ul" for="${value}sel${i}"><h4><b>cas: ${cas[i]}</b>, ${studies[i]}</h4></label>
+          <label class="container-ul" for="${value}sel${i}"><h4> ${studies[i]}</h4></label>
         </div>
         <div class="input-group input-group2">
           <ul class="form2" id='${value}duo${i}' cas='${cas[i]}' study='${studies[i]}'>
@@ -344,6 +343,7 @@ export const dsmpSelected = async (csvData) => {
             `
             }
     }
+    template += `</div>`
   }
   template +=`
             </div>`
@@ -447,15 +447,15 @@ export const populateApprovedSelect = async (dsmpdataPDR, dsmpheaders) => { //Pu
                   desc["planID"] ? desc["planID"] : ""
                 }</div>
                 <div class="col-md-3">${
-                  desc["contact_displayName"] ? desc["contact_displayName"] : ""
+                  desc["contact_displayName"] ? desc["contact_displayName"].replace(/ *\([^)]*\) */g, "").replace(/\[.+?\]/, "") : ""
                 }</div>
                 <div class="col-md-5">${
                   desc["studyName"] ? desc["studyName"] : ""
                 }</div>
                 <div class="col-md-1">
-                    <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${index}">
+                    <!--<button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${index}">
                         <i class="fas fa-caret-down fa-2x"></i>
-                    </button>
+                    </button>-->
                 </div>
             </div>
         </div>
