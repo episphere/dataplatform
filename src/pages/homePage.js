@@ -24,7 +24,7 @@ export const infoDeck = () => {
     header: "About DCEG Data",
     button: "Information on Accessing DCEG Data",
     href: "#about/overview",
-    icon: "fa-info",
+    icon: "fa-book",
     explanation: "",
   });
   template += cardContents({
@@ -112,7 +112,7 @@ export const infoDeckAfterLoggedIn = async () => {
     header: "About PDR",
     button: "Learn about the PDR and how to request access to data",
     href: "#data_access/overview",
-    icon: "fa-folder-open",
+    icon: "fa-book",
     explanation: "",
   });
 //   template += cardContents({
