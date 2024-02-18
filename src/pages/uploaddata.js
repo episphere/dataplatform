@@ -159,9 +159,11 @@ export const dataUploadForm = async () => {
   showTab(currentTab);
   //console.log(currentTab);
   const dsmp = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/main/imports/dmsp_output.csv")).text();//await (await fetch("./imports/dsmp_output.csv")).text();
-  // const icoutput = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/main/imports/ic_output.csv")).text();
-  // console.log(icoutput);
+  const icoutput = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/main/imports/ic_output.csv")).text();
+  let icData = csv2JsonTest(icoutput);
   let csvData = csv2JsonTest(dsmp);
+  console.log(csvData)
+  console.log(icData);
   //await populateApprovedSelect(csvData);
   document.getElementById("approvedyes").addEventListener("click", approvedFormSelect);
   document.getElementById("approvedno").addEventListener("click", approvedFormSelect);
@@ -227,7 +229,13 @@ export const approvedFormSelect = async (csvData) => { //Is there a DSMP functio
     // const dsmpdata = csvData.data;
     // const dsmpdataHeaders = csvData.headers;
     const dsmpdataPDR = dsmpdata.filter((df) => ((df['repositories'] || []).includes('PDR')) && (df['dmsPlanType']).includes('Publication/Presentation'));
-    console.log(dsmpdataPDR);
+    let dsmpdataPDR2 = [];
+    for(let item of dsmpdataPDR){
+      if (item.cas) {
+        dsmpdataPDR2.push(item);
+      };
+    };
+    console.log(dsmpdataPDR2);
     createFilter(dsmpdataPDR, dsmpdataHeaders);
     await populateApprovedSelect(dsmpdataPDR, dsmpdataHeaders);
 

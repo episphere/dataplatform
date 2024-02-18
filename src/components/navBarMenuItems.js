@@ -32,10 +32,42 @@ export const navBarMenutemplate = () => {
           </a>
         </div>
 
-        <div class="grid-elements">
+        <!--<div class="grid-elements">
           <a class="nav-link nav-menu-links white-font" href="#publicationpage" title="DCEG PDR" id="publicationID">
           DCEG PDR
           </a>
+        </div>-->
+        <div class="grid-elements dropdown">
+          <button
+            class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font"
+            role="button"
+            title="DCEG Publications"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            >
+            DCEG Publications
+          </button>
+          <div class="dropdown-menu navbar-dropdown">
+            <a
+              class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
+              href="#dataAccess"
+              id="dataAccess"
+            >Data Access Process
+            </a>
+            <a
+              class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
+              href="#publicationpage"
+              id="publicationID"
+              >DCEG Publication Datasets
+            </a>
+            <a
+              class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
+              href="#approvedData"
+              id="approvedData"
+              >Approved Data Requests to the PDR
+            </a>
+          </div>
         </div>
         ${JSON.parse(localStorage.parms).login.split('@')[1].includes('deloitte.com') || JSON.parse(localStorage.parms).login.split('@')[1].includes('nih.gov')
           ?`<div class="grid-elements dropdown">

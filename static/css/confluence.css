@@ -1092,6 +1092,10 @@ label {
   font-weight: bold !important;
 }
 
+.dropdown-menu-links:hover {
+  background-color: #e4e4e4 !important;
+}
+
 .banner-overlay-line {
   box-sizing: border-box;
   border-bottom: 2.5px solid #ffffff;
