@@ -51,8 +51,8 @@ export const navBarMenutemplate = () => {
           <div class="dropdown-menu navbar-dropdown">
             <a
               class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
-              href="#dataAccess"
-              id="dataAccess"
+              href="#dataAccessHowTo"
+              id="dataAccessHowTo"
             >Data Access Process
             </a>
             <a

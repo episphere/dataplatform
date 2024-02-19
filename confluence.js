@@ -32,6 +32,10 @@ import {
   populateAmendSelect,
 } from "./src/pages/dataRequest.js";
 import {
+  dataAccessHowTo,
+  approvedData
+} from "./src/pages/dataAccess.js";
+import {
   checkAccessTokenValidity,
   loginAppDev,
   loginObs,
@@ -166,6 +170,8 @@ export const confluence = async () => {
     const chairViewElement = document.getElementById("chairView");
     const daccViewElement = document.getElementById("daccView");
     const ConsortiaPageElement = document.getElementById("data2");
+    const dataAccessElement = document.getElementById("dataAccessHowTo");
+    const dataApprovedElement = document.getElementById("approvedData");
     const PublicationPageElement = document.getElementById("publicationID");
     const MyDCEGPageElement = document.getElementById("myDCEGID");
     const MyDCEGPageElement_upload = document.getElementById("myDCEGID_upload");
@@ -378,6 +384,30 @@ export const confluence = async () => {
         hideAnimation();
       });
     }
+    if (dataAccessElement) {
+      dataAccessElement.addEventListener("click", () => {
+        if (dataAccessElement.classList.contains("navbar-active")) return;
+        const element = document.getElementById("dataAccessHowTo");
+        if (!element) return;
+        if (element.classList.contains("navbar-active")) return;
+        document.title = "Data Access How To";
+        assignNavbarActive(element);
+        confluenceDiv.innerHTML = dataAccessHowTo();
+        hideAnimation();
+      });
+    }
+    if (dataApprovedElement) {
+      dataApprovedElement.addEventListener("click", () => {
+        if (dataApprovedElement.classList.contains("navbar-active")) return;
+        const element = document.getElementById("approvedData");
+        if (!element) return;
+        if (element.classList.contains("navbar-active")) return;
+        document.title = "Approved Data Requests";
+        assignNavbarActive(element);
+        confluenceDiv.innerHTML = approvedData();
+        hideAnimation();
+      })
+    }
     if (ConsortiaPageElement) {
       ConsortiaPageElement.addEventListener("click", () => {
         if (ConsortiaPageElement.classList.contains("navbar-active")) return;
@@ -578,6 +608,20 @@ const manageRouter = async () => {
     document.title = "DCEG - researchStudies";
     assignNavbarActive(element);
     confluenceDiv.innerHTML = testPage2();
+  } else if(hash === "#dataAccessHowTo") {
+    const element = document.getElementById("dataAccessHowTo");
+    if (!element) return;
+    if (element.classList.contains("navbar-active")) return;
+    document.title = "Data Access How To";
+    assignNavbarActive(element);
+    confluenceDiv.innerHTML = dataAccessHowTo();
+  } else if(hash === "#approvedData") {
+    const element = document.getElementById("approvedData");
+    if (!element) return;
+    if (element.classList.contains("navbar-active")) return;
+    document.title = "Approved Data Requests";
+    assignNavbarActive(element);
+    confluenceDiv.innerHTML = approvedData();
   } else if (hash === "#publicationpage") {
     const element = document.getElementById("publicationID");
     if (!element) return;
@@ -723,6 +767,12 @@ const manageHash = async () => {
     element.click();
   } else if (hash === "#researchStudies") {
     const element = document.getElementById("data2");
+    element.click();
+  } else if (hash ==="#dataAccessHowTo") {
+    const element = document.getElementById("dataAccessHowTo");
+    element.click();
+  } else if (hash === "#approvedData") {
+    const element = document.getElementById("approvedData");
     element.click();
   } else if (hash === "#publicationpage") {
     const element = document.getElementById("publicationID");
