@@ -2176,6 +2176,7 @@ p {
   outline: none;
   border-radius: 2px;
   cursor: pointer;
+  border-radius: 10px;
 }
 .buttonsubmit:active {
   background-color: #2a72a5ab !important;
@@ -2434,4 +2435,20 @@ button.previous-btn {
 
 #investigators input {
     display:block;
+}
+
+.badge-1 {
+  background-color: green;
+  font-weight: bold;
+  color: white;
+}
+.badge-2 {
+  background-color: #fff200;
+  font-weight: bold;
+  color: black;
+}
+.badge-3 {
+  background-color: #ff0000;
+  font-weight: bold;
+  color: white;
 }

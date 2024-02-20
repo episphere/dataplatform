@@ -93,13 +93,6 @@ export const navBarMenutemplate = () => {
                     <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/accepted" title="Accepted Studies" id="dataAccepted"> Accepted </a>
                     ${
-                      emailforChair.indexOf(
-                        JSON.parse(localStorage.parms).login
-                      ) !== -1
-                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/chairView" title="Chair File View" id="chairView"> Chair Menu  </a>`
-                        : ``
-                    }
-                    ${
                       emailforDACC.indexOf(
                         JSON.parse(localStorage.parms).login
                       ) !== -1
@@ -185,10 +178,10 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
     //   );
     //   if (activeTab === "User Submissions") link.classList.add("active");
     // }
-    if (header === "Chair Menu") {
-      link.href = `#${page}/chairView`;
-      if (activeTab === "chairView") link.classList.add("active");
-    }
+    // if (header === "Chair Menu") {
+    //   link.href = `#${page}/chairView`;
+    //   if (activeTab === "chairView") link.classList.add("active");
+    // }
     if (header === "Accepted") {
       link.href = `#${page}/acceptedStudies`;
       if (activeTab === "acceptedStudies") link.classList.add("active");

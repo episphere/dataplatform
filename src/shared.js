@@ -6,7 +6,7 @@ export const emailsAllowedToUpdateData = [
   "ahearntu@nih.gov", "kopchickbp@nih.gov"
 ];
 
-export const emailforChair = ['kopchickbp@nih.gov']//['Roger.Milne@cancervic.org.au','ahearntu@nih.gov', 'garciacm@nih.gov', 'sbehpour@deloitte.com','kopchickbp@nih.gov'];
+export const emailforChair = ['kopchickbp@nih.gov']
 //  [
 // "Roger.Milne@cancervic.org.au",
 // "ahearntu@nih.gov",
@@ -15,14 +15,7 @@ export const emailforChair = ['kopchickbp@nih.gov']//['Roger.Milne@cancervic.org
 // "kopchickbp@nih.gov",
 // ];
 
-export const emailforDACC = ['kopchickbp@nih.gov']//['pkraft@hsph.harvard.edu', 'garciacm@nih.gov', 'ahearntu@nih.gov',  'mukopadhyays2@nih.gov'];;
-
-// [
-//   "pkraft@hsph.harvard.edu",
-//   "garciacm@nih.gov",
-//   "ahearntu@nih.gov",
-//   "mukopadhyays2@nih.gov",
-// ]; // , 'mia.gaudet@nih.gov', 'troisir@nih.gov', 'mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
+export const emailforDACC = ['kopchickbp@nih.gov']
 
 export const publicDataFileId = 697309514903; //Unknown
 
@@ -34,19 +27,19 @@ export const missingnessStatsFileId = 1043323929905; //653087731560; //Unknown, 
 // export const missingnessStatsFileId = 653087731560;
 export const cps2StatsFileId = 908522264695;
 
-export const uploadFormFolder = 155292358576;
+export const uploadFormFolder = 249771633109//155292358576;
 
-export const daccReviewFolder = 161192245846;
+export const daccReviewFolder = 249773817149;
 
-export const daccReviewChairFolder = 165542319674;
+export const daccReviewChairFolder = 249772406122;//165542319674;
 
 export const chairReviewFolder = 161191639493;
 
 //export const finalFolder = 162221886155 //Currently using Temp Folder. Final Folder:161192097034;
 
-export const acceptedFolder = 162222239448;
+export const acceptedFolder = 249770507203;
 
-export const deniedFolder = 162221803333;
+export const deniedFolder = 249771671306;
 
 export const submitterFolder = 162222418449;
 
@@ -1088,7 +1081,7 @@ export const createFileTask = async (fileId) => {
     if (response.status === 401) {
       if ((await refreshToken()) === true) return await createFileTask(fileId);
     } else {
-      return response;
+      return await response.json();
     }
   } catch (err) {
     if ((await refreshToken()) === true) return await createFileTask(fileId);
@@ -1457,6 +1450,68 @@ export async function showCommentsDropDown(id) {
 
   commentSection.innerHTML = template;
 
+  return;
+}
+
+export async function showCommentsDCEG(id) {
+  const commentSection = document.getElementById(`file${id}Comments`);
+  const response = await listComments(id);
+  //console.log(response);
+  let comments = JSON.parse(response).entries;
+  if (comments.length === 0) {
+    const dropdownSection = document.getElementById(`file${id}Comments`);
+    dropdownSection.innerHTML = `
+              
+                    No Comments to show.
+        `;
+
+    return;
+  }
+  let template = ` 
+    <div class='container-fluid'>`;
+  const user = JSON.parse(localStorage.parms).login;
+  const uniqueUsers = [...new Set(comments.map((item) => item.created_by.login))]
+  //for (const user of uniqueUsers){
+      //const userComments = comments.filter(element => element.created_by.login === user);
+      let newDate = new Date(0);
+    for (const comment of comments) {
+      const comment_date = new Date(comment.created_at);
+      const date = comment_date.toLocaleDateString();
+      const time = comment_date.toLocaleTimeString();
+      //if (comment_date > newDate) {
+          newDate = comment_date;
+          const ifcons = emailforDACC.includes(comment.created_by.login);
+          if (ifcons){
+              const cons = emailforDACC.indexOf(comment.created_by.login);
+              console.log(cons);
+              const score = comment.message[8];
+              const inputScore = document.getElementById(`review${cons}${id}`);
+              inputScore.innerHTML = `<h6 class="badge badge-pill badge-${score}">${score}</h6>`; 
+          }
+      //}           
+
+      template += `
+        <div>
+            <div class='row'>
+                <div class='col-8 p-0'>
+                    <p class='text-primary small mb-0 align-left'>${comment.created_by.name}</p>
+                </div>
+            `;
+
+      template += `    
+            </div>
+            <div class='row'>
+                    <p class='my-0' id='comment${comment.id}'>${comment.message}</p>
+            </div>
+            <div class='row'>
+                <p class='small mb-0 font-weight-light'>${date} at ${time}</p>
+            </div>
+            <hr class='my-1'>
+        </div>
+        `;
+      }
+  //}
+  commentSection.innerHTML = template;
   return;
 }
 

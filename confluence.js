@@ -22,8 +22,6 @@ import {
   formSection,
   approveRejectSection,
   daccSection,
-  chairSection,
-  chairFileView,
   daccFileView,
   formSectionOther,
   formFunctions,
@@ -346,19 +344,6 @@ export const confluence = async () => {
         hideAnimation();
       });
     }
-    if (chairViewElement) {
-      chairViewElement.addEventListener("click", () => {
-        if (chairViewElement.classList.contains("navbar-active")) return;
-        const element = document.getElementById("chairView");
-        showAnimation();
-        if (!element) return;
-        if (element.classList.contains("navbar-active")) return;
-        document.title = "DCEG - Chair View";
-        assignNavbarActive(element);
-        confluenceDiv.innerHTML = chairSection("chairView");
-        chairFileView();
-      });
-    }
     if (daccViewElement) {
       daccViewElement.addEventListener("click", () => {
         if (daccViewElement.classList.contains("navbar-active")) return;
@@ -674,15 +659,6 @@ const manageRouter = async () => {
     assignNavbarActive(acceptedStudiesElement);
     document.title = "DCEG - Accepted Studies";
     confluenceDiv.innerHTML = acceptedStudiesSection();
-    removeActiveClass("nav-link", "active");
-  } else if (hash === "#data_access/chairView") {
-    const chairViewElement = document.getElementById("chairView");
-    if (!chairViewElement) return;
-    if (chairViewElement.classList.contains("navbar-active")) return;
-    showAnimation();
-    assignNavbarActive(chairViewElement);
-    document.title = "DCEG - Chair View";
-    confluenceDiv.innerHTML = chairSection();
     removeActiveClass("nav-link", "active");
   } else if (hash === "#data_access/daccView") {
     const daccViewElement = document.getElementById("daccView");

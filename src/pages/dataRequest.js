@@ -38,6 +38,7 @@ import {
   showCommentsDropDown,
   getChairApprovalDate,
   uploadFile,
+  showCommentsDCEG
 } from "../shared.js";
 import { addEventToggleCollapsePanelBtn } from "./description.js";
 import { showPreview } from "../components/boxPreview.js";
@@ -180,13 +181,11 @@ export const dataAccess = (activeTab, showDescripton) => {
   return template;
 };
 export const formSectionOther = async (activeTab, showDescripton) => {
-  let authChair =
-    emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let authDacc =
     emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
 
   let navBarItems = "";
-  if (authDacc && authChair) {
+  if (authDacc) {
     navBarItems = pageNavBar(
       "data_access",
       activeTab
@@ -194,24 +193,6 @@ export const formSectionOther = async (activeTab, showDescripton) => {
       // "Project Concept Form",
       // "View Submissions",
       // "Chair Menu",
-      // "DACC Menu"
-    );
-  } else if (authChair) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab
-      // "Overview",
-      // "Project Concept Form",
-      // "View Submissions",
-      // "Chair Menu"
-    );
-  } else if (authDacc) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab
-      // "Overview",
-      // "Project Concept Form",
-      // "View Submissions",
       // "DACC Menu"
     );
   } else {
@@ -782,25 +763,10 @@ export const populateAmendSelect = async () => {
   });
 };
 export const acceptedStudiesSection = (activeTab) => {
-  let authChair =
-    emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let authDacc =
     emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = "";
-  if (authDacc && authChair) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab,
-      "Chair Menu",
-      "DACC Menu"
-    );
-  } else if (authChair) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab,
-      "Chair Menu"
-    );
-  } else if (authDacc) {
+  if (authDacc) {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
@@ -880,481 +846,434 @@ export const acceptedStudiesView = async () => {
   document.getElementById("acceptedStudiesView").innerHTML = template;
 };
 
-export const chairSection = (activeTab) => {
-  let authChair =
-    emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
-  let authDacc =
-    emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
-  let navBarItems = "";
-  if (authDacc && authChair) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab,
-      "Chair Menu",
-      "DACC Menu"
-    );
-  } else if (authChair) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab,
-      "Chair Menu"
-    );
-  } else if (authDacc) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab,
-      "DACC Menu"
-    );
-  } else {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab,
-      "View Submissions"
-    );
-  }
-  let template = `
-      <div class="general-bg body-min-height padding-bottom-1rem">
-          <div class="container">
-            ${navBarItems}
-          
-      </div>
-      `;
-  template += `
-    <div id="chairFileView" class="align-left"></div>
-  </div>
-  `;
+// export const chairFileView = async () => {
+//   const responseUpload = await getFolderItems(uploadFormFolder);
+//   let filearrayUpload = responseUpload.entries;
 
-  return template;
-};
+//   const responseDACC = await getFolderItems(daccReviewFolder);
+//   let filearrayDACC = responseDACC.entries;
 
-export const chairFileView = async () => {
-  const responseUpload = await getFolderItems(uploadFormFolder);
-  let filearrayUpload = responseUpload.entries;
+//   const responseDACCChairReview = await getFolderItems(daccReviewChairFolder);
+//   let filearrayDACCChairReview = responseDACCChairReview.entries;
 
-  const responseDACC = await getFolderItems(daccReviewFolder);
-  let filearrayDACC = responseDACC.entries;
+//   const responseChair = await getFolderItems(chairReviewFolder);
+//   let filearrayChair = responseChair.entries;
 
-  const responseDACCChairReview = await getFolderItems(daccReviewChairFolder);
-  let filearrayDACCChairReview = responseDACCChairReview.entries;
+//   const responseAccepted = await getFolderItems(acceptedFolder);
+//   let filearrayAccepted = responseAccepted.entries;
 
-  const responseChair = await getFolderItems(chairReviewFolder);
-  let filearrayChair = responseChair.entries;
+//   const responseDenied = await getFolderItems(deniedFolder);
+//   let filearrayDenied = responseDenied.entries;
 
-  const responseAccepted = await getFolderItems(acceptedFolder);
-  let filearrayAccepted = responseAccepted.entries;
-
-  const responseDenied = await getFolderItems(deniedFolder);
-  let filearrayDenied = responseDenied.entries;
-
-  var template = `
-    <div class="general-bg padding-bottom-1rem">
-      <div class="container body-min-height">
-        <div class="main-summary-row">
-            <div class="align-left">
-                <h1 class="page-header">Chair Access Only</h1>
-            </div>
-        </div>
+//   var template = `
+//     <div class="general-bg padding-bottom-1rem">
+//       <div class="container body-min-height">
+//         <div class="main-summary-row">
+//             <div class="align-left">
+//                 <h1 class="page-header">Chair Access Only</h1>
+//             </div>
+//         </div>
 
   
-    <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
-    <ul class='nav nav-tabs mb-3' role='tablist'>
-      <li class='nav-item' role='presentation'>
-        <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> New Concepts </a>
-      </li>
-      <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='inProgressTab' href='#inProgress' data-mdb-toggle="tab" role='tab' aria-controls='inProgress' aria-selected='true'> Under Review </a>
-      </li>
-      <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'> Review Completed </a>
-      </li>
-      <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='decidedTab' href='#decided' data-mdb-toggle="tab" role='tab' aria-controls='decided' aria-selected='true'> DACC Decision </a>
-      </li>
-      <!--li class='nav-item' role='presentation'>
-         <a class='nav-link' id='deniedTab' href='#denied' data-mdb-toggle="tab" role='tab' aria-controls='denied' aria-selected='true'> Denied </a>
-      </li-->
-    </ul>`;
+//     <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
+//     <ul class='nav nav-tabs mb-3' role='tablist'>
+//       <li class='nav-item' role='presentation'>
+//         <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> New Concepts </a>
+//       </li>
+//       <li class='nav-item' role='presentation'>
+//          <a class='nav-link' id='inProgressTab' href='#inProgress' data-mdb-toggle="tab" role='tab' aria-controls='inProgress' aria-selected='true'> Under Review </a>
+//       </li>
+//       <li class='nav-item' role='presentation'>
+//          <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'> Review Completed </a>
+//       </li>
+//       <li class='nav-item' role='presentation'>
+//          <a class='nav-link' id='decidedTab' href='#decided' data-mdb-toggle="tab" role='tab' aria-controls='decided' aria-selected='true'> DACC Decision </a>
+//       </li>
+//       <!--li class='nav-item' role='presentation'>
+//          <a class='nav-link' id='deniedTab' href='#denied' data-mdb-toggle="tab" role='tab' aria-controls='denied' aria-selected='true'> Denied </a>
+//       </li-->
+//     </ul>`;
 
-  const filesincomplete = [];
-  const filesinprogress = [];
-  const filescompleted = [];
-  const filesdecided = [];
+//   const filesincomplete = [];
+//   const filesinprogress = [];
+//   const filescompleted = [];
+//   const filesdecided = [];
 
-  for (let obj of filearrayUpload) {
-    filesincomplete.push(obj);
-  }
+//   for (let obj of filearrayUpload) {
+//     filesincomplete.push(obj);
+//   }
 
-  for (let obj of filearrayDACC) {
-    filesinprogress.push(obj);
-  }
+//   for (let obj of filearrayDACC) {
+//     filesinprogress.push(obj);
+//   }
 
-  for (let obj of filearrayDACCChairReview) {
-    filesinprogress.push(obj);
-  }
+//   for (let obj of filearrayDACCChairReview) {
+//     filesinprogress.push(obj);
+//   }
 
-  for (let obj of filearrayChair) {
-    filescompleted.push(obj);
-  }
+//   for (let obj of filearrayChair) {
+//     filescompleted.push(obj);
+//   }
 
-  for (let obj of filearrayAccepted) {
-    filesdecided.push(obj);
-  }
+//   for (let obj of filearrayAccepted) {
+//     filesdecided.push(obj);
+//   }
 
-  for (let obj of filearrayDenied) {
-    filesdecided.push(obj);
-  }
+//   for (let obj of filearrayDenied) {
+//     filesdecided.push(obj);
+//   }
 
-  template += "<div class='tab-content' id='selectedTab'>";
+//   template += "<div class='tab-content' id='selectedTab'>";
 
-  template += `<div class='tab-pane fade show active' 
-                  id='toBeCompleted' role='tabpanel' 
-                  aria-labeledby='toBeCompletedTab'> `;
-  template += renderFilePreviewDropdown(filesincomplete, "toBeCompleted");
+//   template += `<div class='tab-pane fade show active' 
+//                   id='toBeCompleted' role='tabpanel' 
+//                   aria-labeledby='toBeCompletedTab'> `;
+//   template += renderFilePreviewDropdown(filesincomplete, "toBeCompleted");
 
-  template += `<div class='tab-pane fade'
-                 id='inProgress' role='tabpanel'
-                 aria-labeledby='inProgressTab' style="vertical-align:top">
-                 <a href="mailto:${emailforDACC.join(
-                   "; "
-                 )}" id='email' class='btn btn-dark'>Send Email to DACC</a>`;
-  template += renderFilePreviewDropdown(filesinprogress, "inProgress");
+//   template += `<div class='tab-pane fade'
+//                  id='inProgress' role='tabpanel'
+//                  aria-labeledby='inProgressTab' style="vertical-align:top">
+//                  <a href="mailto:${emailforDACC.join(
+//                    "; "
+//                  )}" id='email' class='btn btn-dark'>Send Email to DACC</a>`;
+//   template += renderFilePreviewDropdown(filesinprogress, "inProgress");
 
-  template += `<div class='tab-pane fade'
-                id='daccCompleted' role='tabpanel'
-                aria-labelledby='daccCompletedTab'>
-               <a href="mailto:${emailforDACC.join(
-                 "; "
-               )}" id='email' class='btn btn-dark'>Send Email to DACC</a>`;
-  template += renderFilePreviewDropdown(filescompleted, "daccCompleted");
+//   template += `<div class='tab-pane fade'
+//                 id='daccCompleted' role='tabpanel'
+//                 aria-labelledby='daccCompletedTab'>
+//                <a href="mailto:${emailforDACC.join(
+//                  "; "
+//                )}" id='email' class='btn btn-dark'>Send Email to DACC</a>`;
+//   template += renderFilePreviewDropdown(filescompleted, "daccCompleted");
 
-  template += `<div class='tab-pane fade' 
-                id='decided' role='tabpanel'
-                aria-labelledby='decidedTab'>
+//   template += `<div class='tab-pane fade' 
+//                 id='decided' role='tabpanel'
+//                 aria-labelledby='decidedTab'>
                 
-                </div>`;
+//                 </div>`;
 
-  template += `<div id='filePreview'>`;
-  if (
-    filescompleted.length !== 0 ||
-    filesinprogress.length !== 0 ||
-    filesincomplete.length !== 0 ||
-    filesdecided !== 0
-  ) {
-    template += `
-        <div class='row'>
-          <div id='boxFilePreview' class="col-8 preview-container"></div>
-          <div id='fileComments' class='col-4 mt-2'></div>
-        </div>
+//   template += `<div id='filePreview'>`;
+//   if (
+//     filescompleted.length !== 0 ||
+//     filesinprogress.length !== 0 ||
+//     filesincomplete.length !== 0 ||
+//     filesdecided !== 0
+//   ) {
+//     template += `
+//         <div class='row'>
+//           <div id='boxFilePreview' class="col-8 preview-container"></div>
+//           <div id='fileComments' class='col-4 mt-2'></div>
+//         </div>
 
-        <div class='row card-body dacc-submit' id='sendtodaccButton' class="col-8" style="background-color:#f6f6f6; display:block">
-            <form>
-              <label for"message">Send to DACC</label>
-              <div class="input-group">
-                <textarea id="message" name="message" rows="6" cols="50"></textarea>
-              </div>
-              <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
-                <span class="buttonsubmit__text"> Send </span> </button>
-            </form>
-        </div>
+//         <div class='row card-body dacc-submit' id='sendtodaccButton' class="col-8" style="background-color:#f6f6f6; display:block">
+//             <form>
+//               <label for"message">Send to DACC</label>
+//               <div class="input-group">
+//                 <textarea id="message" name="message" rows="6" cols="50"></textarea>
+//               </div>
+//               <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+//                 <span class="buttonsubmit__text"> Send </span> </button>
+//             </form>
+//         </div>
 
-        <div class='row card-body dacc-override' id='daccOverride' class="col-6" style='display:none'>
-          <form>
-              <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
-                <span class="buttonsubmit__text"> Move To Review Complete </span> 
-              </button>
-          </form>
-        </div>
+//         <div class='row card-body dacc-override' id='daccOverride' class="col-6" style='display:none'>
+//           <form>
+//               <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+//                 <span class="buttonsubmit__text"> Move To Review Complete </span> 
+//               </button>
+//           </form>
+//         </div>
 
-        <div id='finalChairDecision' class="card-body approvedeny" style="background-color:#f6f6f6; display:none">
-          <form>
-            <label for="message">Enter Message for submitter or the DACC</label>
-            <div class='text-muted small'>Submitter will only see the below comment after approve or deny. </div>
-            <label for="grade">Select recommendation: </label>
-          <select name="grade" id="grade2"></option>
-            <option value = "1"> 1 - Approved as submitted</option>
-            <option value = "2"> 2 - Approved, pending conditions/clarification of some issues </option>
-            <option value = "3"> 3 - Approved, but data release will be delayed </option>
-            <option value = "4"> 4 - Not approved </option>
-            <option value = "6"> 6 - Decision pending clarification of several issues</option>
-            <option value = "777"> 777 - Duplicate Proposal</option>
-            </select>
-          <br>
-            <div class="input-group">
-                <textarea id="message" name="message" rows="6" cols="65"></textarea>
-            </div>
-            <button type="submit" class="buttonsubmit" value="approved" onclick="this.classList.toggle('buttonsubmit--loading')">
-              <span class="buttonsubmit__text"> Approve </span></button>
-            <button type="submit" class="buttonsubmit" value="rejected" onclick="this.classList.toggle('buttonsubmit--loading')">
-              <span class="buttonsubmit__text"> Deny </span></button>
-            <button type="submit" class="buttonsubmit" value="daccReview" onclick="this.classList.toggle('buttonsubmit--loading')">
-              <span class="buttonsubmit__text"> Return to DACC </span></button>  
-          </form>
-        </div>
-        `;
-  }
-  template += `
-      </div>
-    </div>
-    `;
-  //};
+//         <div id='finalChairDecision' class="card-body approvedeny" style="background-color:#f6f6f6; display:none">
+//           <form>
+//             <label for="message">Enter Message for submitter or the DACC</label>
+//             <div class='text-muted small'>Submitter will only see the below comment after approve or deny. </div>
+//             <label for="grade">Select recommendation: </label>
+//           <select name="grade" id="grade2"></option>
+//             <option value = "1"> 1 - Approved as submitted</option>
+//             <option value = "2"> 2 - Approved, pending conditions/clarification of some issues </option>
+//             <option value = "3"> 3 - Approved, but data release will be delayed </option>
+//             <option value = "4"> 4 - Not approved </option>
+//             <option value = "6"> 6 - Decision pending clarification of several issues</option>
+//             <option value = "777"> 777 - Duplicate Proposal</option>
+//             </select>
+//           <br>
+//             <div class="input-group">
+//                 <textarea id="message" name="message" rows="6" cols="65"></textarea>
+//             </div>
+//             <button type="submit" class="buttonsubmit" value="approved" onclick="this.classList.toggle('buttonsubmit--loading')">
+//               <span class="buttonsubmit__text"> Approve </span></button>
+//             <button type="submit" class="buttonsubmit" value="rejected" onclick="this.classList.toggle('buttonsubmit--loading')">
+//               <span class="buttonsubmit__text"> Deny </span></button>
+//             <button type="submit" class="buttonsubmit" value="daccReview" onclick="this.classList.toggle('buttonsubmit--loading')">
+//               <span class="buttonsubmit__text"> Return to DACC </span></button>  
+//           </form>
+//         </div>
+//         `;
+//   }
+//   template += `
+//       </div>
+//     </div>
+//     `;
+//   //};
 
-  document.getElementById("chairFileView").innerHTML = template;
-  viewFinalDecisionFilesTemplate(filesdecided);
-  submitToDacc();
-  daccOverride();
-  commentApproveReject();
-  if (filesincomplete.length != 0) {
-    switchFiles("toBeCompleted");
-    showPreview(filesincomplete[0].id);
-    document.getElementById(
-      "toBeCompletedselectedDoc"
-    ).children[0].selected = true;
-    document.getElementById("boxFilePreview").classList.remove("col-8");
-    document.getElementById("fileComments").style.display = "none";
-  } else {
-    document.getElementById("filePreview").classList.remove("d-block");
-    document.getElementById("filePreview").classList.add("d-none");
-  }
+//   document.getElementById("chairFileView").innerHTML = template;
+//   viewFinalDecisionFilesTemplate(filesdecided);
+//   submitToDacc();
+//   daccOverride();
+//   commentApproveReject();
+//   if (filesincomplete.length != 0) {
+//     switchFiles("toBeCompleted");
+//     showPreview(filesincomplete[0].id);
+//     document.getElementById(
+//       "toBeCompletedselectedDoc"
+//     ).children[0].selected = true;
+//     document.getElementById("boxFilePreview").classList.remove("col-8");
+//     document.getElementById("fileComments").style.display = "none";
+//   } else {
+//     document.getElementById("filePreview").classList.remove("d-block");
+//     document.getElementById("filePreview").classList.add("d-none");
+//   }
 
-  //Switch Tabs
-  switchTabs(
-    "toBeCompleted",
-    ["inProgress", "daccCompleted", "decided"],
-    filesincomplete
-  );
-  switchTabs(
-    "inProgress",
-    ["toBeCompleted", "daccCompleted", "decided"],
-    filesinprogress
-  );
-  switchTabs(
-    "daccCompleted",
-    ["inProgress", "toBeCompleted", "decided"],
-    filescompleted
-  );
-  switchTabs(
-    "decided",
-    ["inProgress", "daccCompleted", "toBeCompleted"],
-    filesdecided
-  );
+//   //Switch Tabs
+//   switchTabs(
+//     "toBeCompleted",
+//     ["inProgress", "daccCompleted", "decided"],
+//     filesincomplete
+//   );
+//   switchTabs(
+//     "inProgress",
+//     ["toBeCompleted", "daccCompleted", "decided"],
+//     filesinprogress
+//   );
+//   switchTabs(
+//     "daccCompleted",
+//     ["inProgress", "toBeCompleted", "decided"],
+//     filescompleted
+//   );
+//   switchTabs(
+//     "decided",
+//     ["inProgress", "daccCompleted", "toBeCompleted"],
+//     filesdecided
+//   );
 
-  if (localStorage.getItem("currentTab")) {
-    const currTab = localStorage.getItem("currentTab");
-    if (document.getElementById(currTab) != null) {
-      document.getElementById(currTab).click();
-    }
-  }
+//   if (localStorage.getItem("currentTab")) {
+//     const currTab = localStorage.getItem("currentTab");
+//     if (document.getElementById(currTab) != null) {
+//       document.getElementById(currTab).click();
+//     }
+//   }
 
-  hideAnimation();
-};
+//   hideAnimation();
+// };
 
-export const submitToDacc = () => {
-  let submitDacc = async (e) => {
-    const btn = document.activeElement;
-    btn.disabled = true;
-    e.preventDefault();
-    let message = e.target[0].value;
-    //Send multiple files
-    const filesToSend = [];
-    const elements = document.querySelectorAll(
-      ".tab-content .active #toBeCompletedselectedDoc option"
-    );
-    for (let i = 0; i < elements.length; i++) {
-      if (elements[i].selected) {
-        filesToSend.push(elements[i].value);
-      }
-    }
-    for (const fileId of filesToSend) {
-      await createCompleteTask(fileId, message);
-      let tasklist = await getTaskList(fileId);
-      let tasktodacc = tasklist.entries[0].id;
-      for (
-        let i = 0, daccemaillength = emailforDACC.length;
-        i < daccemaillength;
-        i++
-      ) {
-        await assignTask(tasktodacc, emailforDACC[i]);
-      }
-      await createComment(fileId, message);
-      await moveFile(fileId, daccReviewFolder);
-    }
+// export const submitToDacc = () => {
+//   let submitDacc = async (e) => {
+//     const btn = document.activeElement;
+//     btn.disabled = true;
+//     e.preventDefault();
+//     let message = e.target[0].value;
+//     //Send multiple files
+//     const filesToSend = [];
+//     const elements = document.querySelectorAll(
+//       ".tab-content .active #toBeCompletedselectedDoc option"
+//     );
+//     for (let i = 0; i < elements.length; i++) {
+//       if (elements[i].selected) {
+//         filesToSend.push(elements[i].value);
+//       }
+//     }
+//     for (const fileId of filesToSend) {
+//       await createCompleteTask(fileId, message);
+//       let tasklist = await getTaskList(fileId);
+//       let tasktodacc = tasklist.entries[0].id;
+//       for (
+//         let i = 0, daccemaillength = emailforDACC.length;
+//         i < daccemaillength;
+//         i++
+//       ) {
+//         await assignTask(tasktodacc, emailforDACC[i]);
+//       }
+//       await createComment(fileId, message);
+//       await moveFile(fileId, daccReviewFolder);
+//     }
 
-    document.location.reload(true);
-  };
-  const sdform = document.querySelector(".dacc-submit");
-  if (sdform) {
-    sdform.addEventListener("submit", submitDacc);
-  }
-};
-export const daccOverride = () => {
-  let override = async (e) => {
-    e.preventDefault();
-    const btn = document.activeElement;
-    btn.disabled = true;
+//     document.location.reload(true);
+//   };
+//   const sdform = document.querySelector(".dacc-submit");
+//   if (sdform) {
+//     sdform.addEventListener("submit", submitDacc);
+//   }
+// };
+// export const daccOverride = () => {
+//   let override = async (e) => {
+//     e.preventDefault();
+//     const btn = document.activeElement;
+//     btn.disabled = true;
 
-    const filesToSend = [];
-    const elements = document.querySelectorAll(
-      ".tab-content .active #inProgressselectedDoc option"
-    );
-    for (let i = 0; i < elements.length; i++) {
-      if (elements[i].selected) {
-        filesToSend.push(elements[i].value);
-      }
-    }
-    for (const fileId of filesToSend) {
-      let tasklist = await getTaskList(fileId);
-      let entries = tasklist.entries;
+//     const filesToSend = [];
+//     const elements = document.querySelectorAll(
+//       ".tab-content .active #inProgressselectedDoc option"
+//     );
+//     for (let i = 0; i < elements.length; i++) {
+//       if (elements[i].selected) {
+//         filesToSend.push(elements[i].value);
+//       }
+//     }
+//     for (const fileId of filesToSend) {
+//       let tasklist = await getTaskList(fileId);
+//       let entries = tasklist.entries;
 
-      if (entries.length !== 0) {
-        for (let item of entries) {
-          if (item.is_completed == false && item.action == "complete") {
-            deleteTask(item.id);
-          }
-        }
-        await moveFile(fileId, chairReviewFolder);
-        await createFileTask(fileId);
-        tasklist = await getTaskList(fileId);
-        entries = tasklist.entries;
-        for (let item of entries) {
-          if (item.is_completed == false) {
-            await assignTask(item.id, emailforChair[0]);
-          }
-        }
-      }
-    }
-    document.location.reload(true);
-  };
-  const overrideform = document.querySelector(".dacc-override");
-  if (overrideform) {
-    overrideform.addEventListener("submit", override);
-  }
-};
+//       if (entries.length !== 0) {
+//         for (let item of entries) {
+//           if (item.is_completed == false && item.action == "complete") {
+//             deleteTask(item.id);
+//           }
+//         }
+//         await moveFile(fileId, chairReviewFolder);
+//         await createFileTask(fileId);
+//         tasklist = await getTaskList(fileId);
+//         entries = tasklist.entries;
+//         for (let item of entries) {
+//           if (item.is_completed == false) {
+//             await assignTask(item.id, emailforChair[0]);
+//           }
+//         }
+//       }
+//     }
+//     document.location.reload(true);
+//   };
+//   const overrideform = document.querySelector(".dacc-override");
+//   if (overrideform) {
+//     overrideform.addEventListener("submit", override);
+//   }
+// };
 
-export const commentApproveReject = () => {
-  let approveComment = async (e) => {
-    e.preventDefault();
-    const btn = document.activeElement;
-    btn.disabled = true;
-    // let taskId = btn.name;
-    let fileId = document.querySelector(
-      ".tab-content .active #daccCompletedselectedDoc"
-    ).value; //document.getElementById('selectedDoc').value;
-    // Send multiple files
-    const filesToSend = [];
-    const elements = document.querySelectorAll(
-      ".tab-content .active #daccCompletedselectedDoc option"
-    );
-    for (let i = 0; i < elements.length; i++) {
-      if (elements[i].selected) {
-        filesToSend.push(elements[i].value);
-      }
-    }
-    for (const fileId of filesToSend) {
-      let tasklist = await getTaskList(fileId);
-      let entries = tasklist.entries;
-      if (entries.length !== 0) {
-        for (let item of entries) {
-          if (item.is_completed == false && item.action == "review") {
-            for (let taskassignment of item.task_assignment_collection
-              .entries) {
-              if (
-                taskassignment.assigned_to.login ==
-                JSON.parse(localStorage.parms).login
-              ) {
-                var taskId = taskassignment.id;
-              }
-            }
-          }
-        }
-      }
-      let decision = e.submitter.value;
-      let grade = e.target[0].value;
-      let comment = e.target[1].value;
+// export const commentApproveReject = () => {
+//   let approveComment = async (e) => {
+//     e.preventDefault();
+//     const btn = document.activeElement;
+//     btn.disabled = true;
+//     // let taskId = btn.name;
+//     let fileId = document.querySelector(
+//       ".tab-content .active #daccCompletedselectedDoc"
+//     ).value; //document.getElementById('selectedDoc').value;
+//     // Send multiple files
+//     const filesToSend = [];
+//     const elements = document.querySelectorAll(
+//       ".tab-content .active #daccCompletedselectedDoc option"
+//     );
+//     for (let i = 0; i < elements.length; i++) {
+//       if (elements[i].selected) {
+//         filesToSend.push(elements[i].value);
+//       }
+//     }
+//     for (const fileId of filesToSend) {
+//       let tasklist = await getTaskList(fileId);
+//       let entries = tasklist.entries;
+//       if (entries.length !== 0) {
+//         for (let item of entries) {
+//           if (item.is_completed == false && item.action == "review") {
+//             for (let taskassignment of item.task_assignment_collection
+//               .entries) {
+//               if (
+//                 taskassignment.assigned_to.login ==
+//                 JSON.parse(localStorage.parms).login
+//               ) {
+//                 var taskId = taskassignment.id;
+//               }
+//             }
+//           }
+//         }
+//       }
+//       let decision = e.submitter.value;
+//       let grade = e.target[0].value;
+//       let comment = e.target[1].value;
 
-      let message = "Scoring: " + grade + "\nComment: " + comment;
-      if (decision !== "daccReview") {
-        await updateTaskAssignment(taskId, decision, message);
-      }
-      await createComment(fileId, message);
-      let fileInfo = await getFileInfo(fileId);
-      let uploaderName = fileInfo.created_by.login;
-      if (decision == "approved") {
-        await moveFile(fileId, acceptedFolder);
-      } else if (decision == "rejected") {
-        await moveFile(fileId, deniedFolder);
-      } else if (decision == "daccReview") {
-        // Delete review task assigned to chair
-        let tasklist = await getTaskList(fileId);
-        const taskEntries = tasklist.entries;
-        if (taskEntries.length !== 0) {
-          for (let entry of entries) {
-            if (entry.action === "review") {
-              if (entry.is_completed == false) {
-                await deleteTask(entry.id);
-              }
-            }
-          }
-        }
+//       let message = "Scoring: " + grade + "\nComment: " + comment;
+//       if (decision !== "daccReview") {
+//         await updateTaskAssignment(taskId, decision, message);
+//       }
+//       await createComment(fileId, message);
+//       let fileInfo = await getFileInfo(fileId);
+//       let uploaderName = fileInfo.created_by.login;
+//       if (decision == "approved") {
+//         await moveFile(fileId, acceptedFolder);
+//       } else if (decision == "rejected") {
+//         await moveFile(fileId, deniedFolder);
+//       } else if (decision == "daccReview") {
+//         // Delete review task assigned to chair
+//         let tasklist = await getTaskList(fileId);
+//         const taskEntries = tasklist.entries;
+//         if (taskEntries.length !== 0) {
+//           for (let entry of entries) {
+//             if (entry.action === "review") {
+//               if (entry.is_completed == false) {
+//                 await deleteTask(entry.id);
+//               }
+//             }
+//           }
+//         }
 
-        //Create complete tasks for DACC
-        await createCompleteTask(fileId, message);
-        tasklist = await getTaskList(fileId);
-        let tasktodacc;
-        for (const entry of tasklist.entries) {
-          if (entry.is_completed == false) {
-            if (entry.action === "complete") {
-              tasktodacc = entry.id;
-            }
-          }
-        }
-        for (
-          let i = 0, daccemaillength = emailforDACC.length;
-          i < daccemaillength;
-          i++
-        ) {
-          await assignTask(tasktodacc, emailforDACC[i]);
-        }
+//         //Create complete tasks for DACC
+//         await createCompleteTask(fileId, message);
+//         tasklist = await getTaskList(fileId);
+//         let tasktodacc;
+//         for (const entry of tasklist.entries) {
+//           if (entry.is_completed == false) {
+//             if (entry.action === "complete") {
+//               tasktodacc = entry.id;
+//             }
+//           }
+//         }
+//         for (
+//           let i = 0, daccemaillength = emailforDACC.length;
+//           i < daccemaillength;
+//           i++
+//         ) {
+//           await assignTask(tasktodacc, emailforDACC[i]);
+//         }
 
-        //Move file to DACC Review (Resubmit) folder
-        await moveFile(fileId, daccReviewChairFolder);
-      }
+//         //Move file to DACC Review (Resubmit) folder
+//         await moveFile(fileId, daccReviewChairFolder);
+//       }
 
-      if (decision != "daccReview") {
-        let folderItems = await getFolderItems(submitterFolder);
-        let folderEntries = folderItems.entries;
-        let folderID = "none";
-        for (let obj of folderEntries) {
-          if (obj.name == uploaderName) {
-            folderID = obj.id;
-          }
-        }
-        let cpFileId = "";
-        if (folderID == "none") {
-          const newFolder = await createFolder(submitterFolder, uploaderName);
-          await addNewCollaborator(
-            newFolder.id,
-            "folder",
-            uploaderName,
-            "viewer"
-          );
-          const cpFile = await copyFile(fileId, newFolder.id);
-          cpFileId = cpFile.id;
-        } else {
-          const cpFile = await copyFile(fileId, folderID);
-          cpFileId = cpFile.id;
-        }
-        await createComment(cpFileId, "This file was " + decision);
-        await createComment(cpFileId, message);
-      }
-    }
-    document.location.reload(true);
-  };
+//       if (decision != "daccReview") {
+//         let folderItems = await getFolderItems(submitterFolder);
+//         let folderEntries = folderItems.entries;
+//         let folderID = "none";
+//         for (let obj of folderEntries) {
+//           if (obj.name == uploaderName) {
+//             folderID = obj.id;
+//           }
+//         }
+//         let cpFileId = "";
+//         if (folderID == "none") {
+//           const newFolder = await createFolder(submitterFolder, uploaderName);
+//           await addNewCollaborator(
+//             newFolder.id,
+//             "folder",
+//             uploaderName,
+//             "viewer"
+//           );
+//           const cpFile = await copyFile(fileId, newFolder.id);
+//           cpFileId = cpFile.id;
+//         } else {
+//           const cpFile = await copyFile(fileId, folderID);
+//           cpFileId = cpFile.id;
+//         }
+//         await createComment(cpFileId, "This file was " + decision);
+//         await createComment(cpFileId, message);
+//       }
+//     }
+//     document.location.reload(true);
+//   };
 
-  const form = document.querySelector(".approvedeny");
-  if (form) {
-    form.addEventListener("submit", approveComment);
-  }
-};
+//   const form = document.querySelector(".approvedeny");
+//   if (form) {
+//     form.addEventListener("submit", approveComment);
+//   }
+// };
 
 const viewFile = () => {
   var preview = new Box.Preview();
@@ -1398,14 +1317,14 @@ export const daccSection = (activeTab) => {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Chair Menu",
+      //"Chair Menu",
       "DACC Menu"
     );
   } else if (authChair) {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Chair Menu"
+      //"Chair Menu"
     );
   } else if (authDacc) {
     navBarItems = pageNavBar(
@@ -1441,8 +1360,8 @@ export const daccFileView = async () => {
   const responseDACCChairReview = await getFolderItems(daccReviewChairFolder);
   let filearrayDACCChairReview = responseDACCChairReview.entries;
 
-  const responseChair = await getFolderItems(chairReviewFolder);
-  let filearrayChair = responseChair.entries;
+  // const responseChair = await getFolderItems(chairReviewFolder);
+  // let filearrayChair = responseChair.entries;
   const responseAccepted = await getFolderItems(acceptedFolder);
   let filearrayAccepted = responseAccepted.entries;
   const responseDenied = await getFolderItems(deniedFolder);
@@ -1475,6 +1394,8 @@ export const daccFileView = async () => {
   const filesincomplete = [];
   const filesreviewed = [];
   let filescompleted = [];
+
+//All For loops can be changed to forEach to parallelize the process
   for (let obj of filearrayDACC) {
     let id = obj.id;
     let tasks = await getTaskList(id);
@@ -1506,25 +1427,6 @@ export const daccFileView = async () => {
               if (!filescompleted.includes(obj)) {
                 filescompleted.push(obj);
               }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  for (let obj of filearrayChair) {
-    let id = obj.id;
-    let tasks = await getTaskList(id);
-
-    if (tasks.entries.length != 0) {
-      for (let items of tasks.entries) {
-        for (let itemtasks of items.task_assignment_collection.entries) {
-          if (
-            itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login
-          ) {
-            if (!filescompleted.includes(obj)) {
-              filescompleted.push(obj);
             }
           }
         }
@@ -1607,18 +1509,19 @@ export const daccFileView = async () => {
       }
     }
   }
+
   template += "<div class='tab-content' id='selectedTab'>";
 
   template += `<div class='tab-pane fade show active'
                 id='dacctoBeCompleted' role='tabpanel'
               aria-labeledby='dacctoBeCompletedTab'>
-              <a href="mailto:${emailforChair[0]}" id='email' class='btn btn-dark'>Send Email to Chair</a>`;
+              <!--<a href="mailto:${emailforChair[0]}" id='email' class='btn btn-dark'>Send Email to Chair</a>-->`;
   template += renderFilePreviewDropdown(filesincomplete, "dacctoBeCompleted");
 
   template += `<div class='tab-pane fade'
                 id='daccReview' role='tabpanel'
                 aria-labeledby='daccReviewTab'>
-                <a href="mailto:${emailforChair[0]}" id='email' class='btn btn-dark'>Send Email to Chair</a> `;
+                <!--<a href="mailto:${emailforChair[0]}" id='email' class='btn btn-dark'>Send Email to Chair</a>-->`;
   template += renderFilePreviewDropdown(filesreviewed, "daccReview");
 
   template += `<div class='tab-pane fade' 
@@ -1658,9 +1561,8 @@ export const daccFileView = async () => {
       </div>`;
   }
   template += `
-      </div>
+      <!--</div>-->
     </div>`;
-  //}
   document.getElementById("daccFileView").innerHTML = template;
 
   filescompleted = [...filearrayAccepted, ...filearrayDenied];
@@ -1672,7 +1574,6 @@ export const daccFileView = async () => {
   } else {
     document.getElementById("filePreview").classList.remove("d-block");
     document.getElementById("filePreview").classList.add("d-none");
-    //}
   }
 
   submitToComment();
@@ -1719,13 +1620,12 @@ export const submitToComment = () => {
             ) {
               var taskId = taskassignment.id;
               await updateTaskAssignment(taskId, "completed");
+              item.is_completed = true;
             }
           }
         }
       }
     }
-    tasklist = await getTaskList(fileId);
-    entries = tasklist.entries;
     var numCompletedTasks = 0;
     if (entries.length !== 0) {
       for (let item of entries) {
@@ -1734,13 +1634,28 @@ export const submitToComment = () => {
         }
       }
       if (numCompletedTasks == entries.length) {
-        await moveFile(fileId, chairReviewFolder);
-        await createFileTask(fileId);
-        tasklist = await getTaskList(fileId);
-        entries = tasklist.entries;
-        for (let item of entries) {
-          if (item.is_completed == false) {
-            await assignTask(item.id, emailforChair[0]);
+        let comments = await listComments(fileId);
+        let commentsResponse = JSON.parse(comments).entries;
+        let scorelist = [];
+        for (let comment of commentsResponse) {
+          scorelist.push(comment.message[8]);
+        }
+        console.log(scorelist);
+        const allEqual = scorelist => scorelist.every(val => val === scorelist[0]);
+        if (allEqual && scorelist[0]==='1'){
+          await moveFile(fileId, acceptedFolder);
+          console.log("all equal 1");
+        } else if (allEqual && scorelist[0]==='3') {
+          await moveFile(fileId, deniedFolder);
+          console.log("all equal 3");
+        } else {
+          await moveFile(fileId, daccReviewChairFolder)
+          console.log("not equal 2");
+          for (let dacc of emailforDACC) {
+            let item = await createFileTask(fileId);
+            console.log(item);
+            await createCompleteTask(item.id, dacc);
+            console.log("moved and assigned");
           }
         }
       }
@@ -2789,8 +2704,7 @@ const viewDACCFiles = async (files, taskids) => {
   }
   return template;
 };
-// const chairFileViews = async () => {
-// }
+
 export async function viewFinalDecisionFilesTemplate(files) {
   let template = "";
   let filesInfo = [];
@@ -2798,6 +2712,7 @@ export async function viewFinalDecisionFilesTemplate(files) {
     const fileInfo = await getFileInfo(file.id);
     filesInfo.push(fileInfo);
   }
+  console.log(filesInfo);
   if (filesInfo.length > 0) {
     template += `
     <div id='decidedFiles'>
@@ -2809,12 +2724,15 @@ export async function viewFinalDecisionFilesTemplate(files) {
                       <span class="font-size-17 font-bold">Filter</span>
                       <div id="filterData" class="align-left"></div>
                   </div>
+                  <div class="col-xl-12 pl-1 pr-0">
+                      <span class="font-size-10"> <h6 class="badge badge-pill badge-1">1</h6>: Approved as submitted 
+                                                  <h6 class="badge badge-pill badge-2">2</h6>: Approved, pending conditions 
+                                                  <h6 class="badge badge-pill badge-3">3</h6>: Not Approved </span>
+                  </div>
               </div>
           </div>
       </div>
       </div>
-      <!--div class='table-responsive'>
-      <table class='table'-->
       
       <div class='col-xl-12 pr-0'>`;
 
@@ -2822,7 +2740,6 @@ export async function viewFinalDecisionFilesTemplate(files) {
 
     template += '<div id="files"> </div>';
 
-    template += '<!--tbody id="files"-->';
   } else {
     template += `
               No files to show.            
@@ -2837,7 +2754,7 @@ export async function viewFinalDecisionFilesTemplate(files) {
     for (const file of filesInfo) {
       document
         .getElementById(`study${file.id}`)
-        .addEventListener("click", showCommentsDropDown(file.id));
+        .addEventListener("click", showCommentsDCEG(file.id));
     }
 
     let btns = Array.from(document.querySelectorAll(".preview-file"));
@@ -2885,12 +2802,15 @@ export async function viewFinalDecisionFilesTemplate(files) {
 }
 
 export function viewFinalDecisionFilesColumns() {
-  return `<div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
-    <div class="col-lg-3 text-left font-bold ws-nowrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept Name"><i class="fas fa-sort"></i></button></div>
-    <div class="col-lg-2 text-left font-bold ws-nowrap header-sortable">Submitted By <button class="transparent-btn sort-column" data-column-name="Submitted By"><i class="fas fa-sort"></i></button></div>
-    <div class="col-lg-3 text-left font-bold ws-nowrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Submission Date"><i class="fas fa-sort"></i></button></div>
-    <div class="col-lg-2 text-left font-bold ws-nowrap header-sortable">Decision<button class="transparent-btn sort-column" data-column-name="Decision"><i class="fas fa-sort"></i></button></div>
-    <div class="col-lg-2 text-left font-bold ws-nowrap header-sortable">Decided On<button class="transparent-btn sort-column" data-column-name="Decision Date"><i class="fas fa-sort"></i></button></div>
+  return `<div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1); font-size: .8em">
+    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Share Data</div>
+    <div class="col-lg-3 text-left font-bold ws-nowrap text-wrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept Name"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-2 text-left font-bold ws-nowrap text-wrap header-sortable">Author <button class="transparent-btn sort-column" data-column-name="Author"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-2 text-center font-bold ws-nowrap text-wrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Submission Date"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Status <button class="transparent-btn sort-column" data-column-name="Status"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Reviewer 1<button class="transparent-btn sort-column" data-column-name="review0"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Reviewer 2<button class="transparent-btn sort-column" data-column-name="review1"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-1 text-right font-bold ws-nowrap text-wrap header-sortable"></div>
   </div>`;
 }
 
@@ -2898,29 +2818,29 @@ export async function viewFinalDecisionFiles(files) {
   let template = "";
 
   for (const fileInfo of files) {
+    console.log(fileInfo);
     const fileId = fileInfo.id;
-    let filename = fileInfo.name.split("_").slice(0, -4).join(" ");
+    let filename = fileInfo.name//.split("_").slice(0, -4).join(" ");
     const shortfilename =
-      filename.length > 21 ? filename.substring(0, 20) + "..." : filename;
-
-    let completion_date = await getChairApprovalDate(fileId);
+      filename.length > 25 ? filename.substring(0, 24) + "..." : filename;
+    //let completion_date = await getChairApprovalDate(fileId);
     template += `
 <div class="card mt-1 mb-1 align-left" >
     <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
         <div class="row">
+            <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable"><button type="button"><i class="fa-solid fa-user-plus"></i></button></div>
             <div class="col-lg-3 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
             <div class="col-lg-2 text-left">${fileInfo.created_by.name}</div>
-            <div class="col-lg-2 text-center">${new Date(fileInfo.created_at)
-              .toDateString()
-              .substring(4)}</div>
-            <div class="col-lg-2 pl-6 text-right">${
-              fileInfo.parent.name === "Accepted"
+            <div class="col-lg-2 text-center">${new Date(fileInfo.created_at).toDateString().substring(4)}</div>
+            <div class="col-lg-1 pl-6 text-center">${
+              fileInfo.parent.name.includes("Accepted")
                 ? '<h6 class="badge badge-pill badge-success">Accepted</h6>'
-                : fileInfo.parent.name === "Denied"
+                : fileInfo.parent.name.includes("Denied")
                 ? '<h6 class="badge badge-pill badge-danger">Denied</h6>'
-                : '<h6 class="badge badge-pill badge-warning">Under Review</h6>'
+                : '<h6 class="badge badge-pill badge-warning">In Review</h6>'
             }</div>
-            <div class="col-lg-2 pl-6 text-right">${completion_date}</div>
+            <div class="col-lg-1 pl-6 text-center" id="review0${fileId}">--</div>
+            <div class="col-lg-1 pl-6 text-center" id="review1${fileId}">--</div>
             <div class="col-lg-1 text-right">
                 <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
                     <i class="fas fa-caret-down fa-2x"></i>
