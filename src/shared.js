@@ -15,7 +15,7 @@ export const emailforChair = ['kopchickbp@nih.gov']
 // "kopchickbp@nih.gov",
 // ];
 
-export const emailforDACC = ['kopchickbp@nih.gov']
+export const emailforDACC = ['kopchickbp@nih.gov', 'ahearntu@nih.gov']
 
 export const publicDataFileId = 697309514903; //Unknown
 
