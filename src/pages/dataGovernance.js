@@ -103,7 +103,8 @@ export const testingDataGov = async () => {
 
 export const dataGovTest = async () => {
   console.log("testing data gov test function");
-  let val = document.getElementById('folderID').value
+  //let val = document.getElementById('folderID').value
+  let val = '239899508915'
   if (val === '') val = '0';
   console.log(val);
   const array = await getFolderInfo(val); //DCEG: 196554876811 BCRP: 145995765326, Confluence: 137304373658
@@ -203,6 +204,7 @@ export const dataGovernanceLazyLoad = (element) => {
       const bool = await checkMyPermissionLevel(await getCollaboration(id, `${type}s`), JSON.parse(localStorage.parms).login, id, type);
       if (bool === true) {
         const button = document.createElement("button");
+        button.dataset.dismiss = "modal";
         button.dataset.toggle = "modal";
         button.dataset.target = "#modalShareFolder";
         button.classList = ["share-folder"];
@@ -254,6 +256,7 @@ export const dataGovernanceLazyLoad = (element) => {
 
         if (!element.dataset.sharable) {
           const button = document.createElement("button");
+          button.dataset.dismiss = "modal";
           button.dataset.toggle = "modal";
           button.dataset.target = "#modalShareFolder";
           button.classList = ["share-folder"];

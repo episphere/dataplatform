@@ -65,7 +65,7 @@ export const renderOverView = async () => {
                 </br>
                 <div style="margin-left: 40px">
                 <ul> 
-                <li> DCEG Research Studies
+                <li> DCEG Cohorts
                 </li> 
                 </ul>
                 </i></div>

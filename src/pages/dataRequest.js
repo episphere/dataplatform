@@ -38,7 +38,8 @@ import {
   showCommentsDropDown,
   getChairApprovalDate,
   uploadFile,
-  showCommentsDCEG
+  showCommentsDCEG,
+  nameofDACC
 } from "../shared.js";
 import { addEventToggleCollapsePanelBtn } from "./description.js";
 import { showPreview } from "../components/boxPreview.js";
@@ -50,7 +51,7 @@ import {
   sortTableByColumn,
   filterCheckBox,
 } from "../event.js";
-import { template } from "./dataGovernance.js";
+import { template, testingDataGov, dataGovTest } from "./dataGovernance.js";
 
 export const dataAccessNotSignedIn = () => {
   let template = `
@@ -432,9 +433,9 @@ template += `
                 <input id="dataauthor" name="dataauthor" type="text" value="${JSON.parse(localStorage.dataSelected).author}" readonly/>
               </div>
             <br>
-            <p><u><b>Description of Proposed Project/b></u></p>
+            <p><u><b>Description of Proposed Project</b></u></p>
             <div class="input-group">
-          </div>
+            </div>
             <div class="input-group">
               <label for="background"><b>Planned use of data</b><span class='required-label'>*</span></label>
               <textarea maxlength="1500" id="background" name="background" placeholder="Please provide a brief description of your planned use of the data (1500 character limit)" rows="4" cols="65" required></textarea>
@@ -443,201 +444,7 @@ template += `
               <label for="aims"><b>Study Aims</b><span class='required-label'>*</span></label>
               <textarea maxlength="1000" id="aims" name="aims" placeholder="Please provide a brief description of your study aims (1000 character limit)" rows="4" cols="65" required></textarea>
             </div>
-            <br>
-              <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables shared by cohorts participating in the BCRPP. 
-              Data availability and descriptive statistics can be explored via the <a href="#data_exploration/summary">Explore Data</a> tool. If data from a particular category is requested,
-              all variables from that category will be provided.</p>
-            </div>
-            
-            <div class="input-group">
-              <label for="basevar"><b>Baseline</b><span class='required-label'>*</span></label>
-              <label>
-                <input id="basevarv" name="basevarv" type="checkbox" value="basevarv"/>
-                Check All
-              </label>
-            </div>
-            
-            <div class="input-group">
-              <ul class="form" id='basevarlist'>
-                <div class="inline-field">
-                  <input id="alctob" name="basevar" type="checkbox" value="Alcohol and Tobacco"/>
-                  <label class="container-ul" for="alctob">Alcohol and Tobacco</label>
-                </div>
-                <div class="inline-field">
-                  <input id="anthros" name="basevar" type="checkbox" value="Anthropometry"/>
-                  <label class="container-ul" for="anthros">Anthropometry</label>
-                </div>
-                <div class="inline-field">
-                  <input id="demos" name="basevar" type="checkbox" value="Demographics"/>
-                  <label class="container-ul" for="demos">Demographics</label>
-                </div>
-                <div class="inline-field">
-                  <input id="identdates" name="basevar" type="checkbox" value="Identification/Dates"/>
-                  <label class="container-ul" for="identdates">Identification/Dates</label>
-                </div>
-                <div class="inline-field">
-                  <input id="pershist" name="basevar" type="checkbox" value="Personal and Family Health History"/>
-                  <label class="container-ul" for="pershist">Personal and Family Health History</label>
-                </div>
-                <div class="inline-field">
-                  <input id="physact" name="basevar" type="checkbox" value="Physical Activity"/>
-                  <label class="container-ul" for="physact">Physical Activity</label>
-                </div>
-                <div class="inline-field">
-                  <input id="reprohist" name="basevar" type="checkbox" value="Reproductive History"/>
-                  <label class="container-ul" for="reprohist">Reproductive History</label>
-                </div>
-                <div class="inline-field">
-                  <input id="scrhist" name="basevar" type="checkbox" value="Screening History"/>
-                  <label class="container-ul" for="scrhist">Screening History</label>
-                </div>
-              </ul>
-            </div>
-            <div class="input-group">
-              <label for="ibcvar"><b>Incident Breast Cancer</b><span class='required-label'>*</span></label>
-              <label>
-                <input id="ibcvarv" name="ibcvarv" type="checkbox" value="ibcvarv"/>
-                Check All
-              </label>
-            </div>
-            <div class="input-group">
-              <ul class="form" id='ibcvarlist'>
-                <div class="inline-field">
-                  <input id="diag" name="ibcvar" type="checkbox" value="Diagnostic"/>
-                  <label class="container-ul" for="diag">Diagnostic</label>
-                </div>
-                <div class="inline-field">
-                  <input id="path" name="ibcvar" type="checkbox" value="Pathology"/>
-                  <label class="container-ul" for="path">Pathology</label>
-                </div>
-              </ul>
-            </div>
-            <div class="input-group">
-              <label for="mmdvar"><b>Mammographic Density</b><span class='required-label'>*</span></label>
-              <label>
-                <input id="mmdvarv" name="mmdvarv" type="checkbox" value="Mammographic Density"/>
-              </label>
-            </div>
-            <div class="input-group">
-              <p>Select cohorts from which data is being requested. Proposals only requesting data from a single cohort will not be approved. If you are interested in only analyzing data from a particular cohort, please contact that cohort directly. Information on cohorts can be found <a href="#about/description">here</a>.</p>
-              <label for="reqcoh"><b>Requested Cohorts</b><span class='required-label'>*</span></label>
-              <label>
-                <input id="reqcohv" name="reqcohv" type="checkbox" value="reqcohv"/>
-                Check All
-              </label>
-            </div>
-            <div class="input-group">
-              <ul class="form" id='reqcohlist'>
-                <div class="inline-field">
-                  <input id="CSDLH" name="reqcoh" type="checkbox" value="CSDLH"/>
-                  <label class="container-ul" for="CSDLH">CSDLH</label>
-                </div>
-                <div class="inline-field">
-                  <input id="BCFR" name="reqcoh" type="checkbox" value="BCFR"/>
-                  <label class="container-ul" for="BCFR">BCFR</label>
-                </div>
-                <div class="inline-field">
-                  <input id="BWHS" name="reqcoh" type="checkbox" value="BWHS"/>
-                  <label class="container-ul" for="BWHS">BWHS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="CARET" name="reqcoh" type="checkbox" value="CARET"/>
-                  <label class="container-ul" for="CARET">CARET</label>
-                </div>
-                <div class="inline-field">
-                  <input id="CLUE-II" name="reqcoh" type="checkbox" value="CLUE-II"/>
-                  <label class="container-ul" for="CLUE-II">CLUE-II</label>
-                </div>
-                <div class="inline-field">
-                  <input id="Connect" name="reqcoh" type="checkbox" value="Connect"/>
-                  <label class="container-ul" for="Connect">Connect</label>
-                </div>
-                <div class="inline-field">
-                  <input id="CPS-2" name="reqcoh" type="checkbox" value="CPS-2"/>
-                  <label class="container-ul" for="CPS-2">CPS-2</label>
-                </div>
-                <div class="inline-field">
-                  <input id="CPS-3" name="reqcoh" type="checkbox" value="CPS-3"/>
-                  <label class="container-ul" for="CPS-3">CPS-3</label>
-                </div>
-                <div class="inline-field">
-                  <input id="CTS" name="reqcoh" type="checkbox" value="CTS"/>
-                  <label class="container-ul" for="CTS">CTS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="EPIC" name="reqcoh" type="checkbox" value="EPIC"/>
-                  <label class="container-ul" for="EPIC">EPIC</label>
-                </div>
-                <div class="inline-field">
-                  <input id="GS" name="reqcoh" type="checkbox" value="GS"/>
-                  <label class="container-ul" for="GS">GS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="JANUS" name="reqcoh" type="checkbox" value="JANUS"/>
-                  <label class="container-ul" for="JANUS">JANUS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="MAC" name="reqcoh" type="checkbox" value="MAC"/>
-                  <label class="container-ul" for="MAC">MAC</label>
-                </div>
-                <div class="inline-field">
-                  <input id="MCCS" name="reqcoh" type="checkbox" value="MCCS"/>
-                  <label class="container-ul" for="MCCS">MCCS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="MEC" name="reqcoh" type="checkbox" value="MEC"/>
-                  <label class="container-ul" for="MEC">MEC</label>
-                </div>
-                <div class="inline-field">
-                  <input id="MMHS" name="reqcoh" type="checkbox" value="MMHS"/>
-                  <label class="container-ul" for="MMHS">MMHS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="NHS" name="reqcoh" type="checkbox" value="NHS"/>
-                  <label class="container-ul" for="NHS">NHS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="NHS-2" name="reqcoh" type="checkbox" value="NHS-2"/>
-                  <label class="container-ul" for="NHS-2">NHS-2</label>
-                </div>
-                <div class="inline-field">
-                  <input id="NYUWHS" name="reqcoh" type="checkbox" value="NYUWHS"/>
-                  <label class="container-ul" for="NYUWHS">NYUWHS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="PLCO" name="reqcoh" type="checkbox" value="PLCO"/>
-                  <label class="container-ul" for="PLCO">PLCO</label>
-                </div>
-                <div class="inline-field">
-                  <input id="SISTER" name="reqcoh" type="checkbox" value="SISTER"/>
-                  <label class="container-ul" for="SISTER">SISTER</label>
-                </div>
-                <div class="inline-field">
-                  <input id="SNM" name="reqcoh" type="checkbox" value="SNM"/>
-                  <label class="container-ul" for="SNM">SNM</label>
-                </div>
-                <div class="inline-field">
-                  <input id="VITAL" name="reqcoh" type="checkbox" value="VITAL"/>
-                  <label class="container-ul" for="VITAL">VITAL</label>
-                </div>
-                <div class="inline-field">
-                  <input id="WHI" name="reqcoh" type="checkbox" value="WHI"/>
-                  <label class="container-ul" for="WHI">WHI</label>
-                </div>
-                <div class="inline-field">
-                  <input id="WHS" name="reqcoh" type="checkbox" value="WHS"/>
-                  <label class="container-ul" for="WHS">WHS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="WISDOM" name="reqcoh" type="checkbox" value="WISDOM"/>
-                  <label class="container-ul" for="WISDOM">WISDOM</label>
-                </div>
-                <div class="inline-field">
-                  <input id="WLH" name="reqcoh" type="checkbox" value="WLH"/>
-                  <label class="container-ul" for="WLH">WLH</label>
-                </div>
-              </ul>
-            </div>--->
+          </div>
               
               <button type="submit" id="submitFormButton" class="buttonsubmit"> 
                 <span class="buttonsubmit__text"> Send Form </span>
@@ -645,6 +452,7 @@ template += `
               <button type="button" id="downloadJSON" class="buttonsubmit"> 
                 <span class="buttonsubmit__text"> Download JSON </span>
               </button>
+              
               <!--button type="button" id="downloadWord" class="buttonsubmit d-none"> 
                 <span class="buttonsubmit__text"> Download Word </span>
               </button>
@@ -655,13 +463,13 @@ template += `
             </form>
           </section>
           <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
               <div class="modal-body" id='modalBody'>
                 
               </div>
@@ -2740,6 +2548,28 @@ export async function viewFinalDecisionFilesTemplate(files) {
 
     template += '<div id="files"> </div>';
 
+    template += `
+    <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id='modalBody'>
+            <div id="folderInput">
+            </div>
+          </div>
+          <div class="modal-footer">
+        
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    `;
+
   } else {
     template += `
               No files to show.            
@@ -2805,11 +2635,11 @@ export function viewFinalDecisionFilesColumns() {
   return `<div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1); font-size: .8em">
     <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Share Data</div>
     <div class="col-lg-3 text-left font-bold ws-nowrap text-wrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept Name"><i class="fas fa-sort"></i></button></div>
-    <div class="col-lg-2 text-left font-bold ws-nowrap text-wrap header-sortable">Author <button class="transparent-btn sort-column" data-column-name="Author"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-2 text-left font-bold ws-nowrap text-wrap header-sortable">Primary Requestor <button class="transparent-btn sort-column" data-column-name="Author"><i class="fas fa-sort"></i></button></div>
     <div class="col-lg-2 text-center font-bold ws-nowrap text-wrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Submission Date"><i class="fas fa-sort"></i></button></div>
     <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Status <button class="transparent-btn sort-column" data-column-name="Status"><i class="fas fa-sort"></i></button></div>
-    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Reviewer 1<button class="transparent-btn sort-column" data-column-name="review0"><i class="fas fa-sort"></i></button></div>
-    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Reviewer 2<button class="transparent-btn sort-column" data-column-name="review1"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">${nameofDACC[0]}<button class="transparent-btn sort-column" data-column-name="review0"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">${nameofDACC[1]}<button class="transparent-btn sort-column" data-column-name="review1"><i class="fas fa-sort"></i></button></div>
     <div class="col-lg-1 text-right font-bold ws-nowrap text-wrap header-sortable"></div>
   </div>`;
 }
@@ -2828,7 +2658,7 @@ export async function viewFinalDecisionFiles(files) {
 <div class="card mt-1 mb-1 align-left" >
     <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
         <div class="row">
-            <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable"><button type="button"><i class="fa-solid fa-user-plus"></i></button></div>
+            <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable"><button class="shareBoxData" type="button" name="${shortfilename}" value="${fileInfo.created_by.login}"><i class="fa-solid fa-user-plus"></i></button></div>
             <div class="col-lg-3 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
             <div class="col-lg-2 text-left">${fileInfo.created_by.name}</div>
             <div class="col-lg-2 text-center">${new Date(fileInfo.created_at).toDateString().substring(4)}</div>
@@ -2866,6 +2696,7 @@ export async function viewFinalDecisionFiles(files) {
   template += `</div></div></div></div>`;
   if (document.getElementById("files") != null)
     document.getElementById("files").innerHTML = template;
+    shareBoxDataFunction();
 }
 
 function filterSection(files) {
@@ -2958,5 +2789,25 @@ export const formFunctions = () => {
         element.checked = false;
       }
     }
+  });
+};
+
+const shareBoxDataFunction = () => {
+  const btns = Array.from(document.querySelectorAll(".shareBoxData"));
+  btns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      console.log(btn.value);
+      console.log(btn.name);
+      $("#popUpModal").modal("show");
+      dataGovTest();
+      // const header = document.getElementById("confluencePreviewerModalHeader");
+      // const body = document.getElementById("confluencePreviewerModalBody");
+      // header.innerHTML = `<h5 class="modal-title">File preview</h5>
+      //                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      //                            <span aria-hidden="true">&times;</span>
+      //                        </button>`;
+      // const fileId = btn.dataset.fileId;
+      // filePreviewer(fileId, "#confluencePreviewerModalBody");
+    });
   });
 };

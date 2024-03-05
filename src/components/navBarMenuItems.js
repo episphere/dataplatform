@@ -9,9 +9,15 @@ export const navBarMenutemplate = () => {
             </a>
         </div>
         <div class="grid-elements">
-            <a class="nav-link nav-menu-links white-font" href="#about/overview" id="aboutDCEG">
+          <a
+            class="nav-link nav-menu-links white-font"
+            href="#dataAccessHowTo"
+            id="dataAccessHowTo"
+          >Data Access Process
+          </a>
+            <!--<a class="nav-link nav-menu-links white-font" href="#about/overview" id="aboutDCEG">
             About
-            </a>            
+            </a>-->            
         </div>
       ${!localStorage.parms && !JSON.parse(localStorage.parms).name
         ?`<div class="grid-elements">
@@ -49,17 +55,17 @@ export const navBarMenutemplate = () => {
             DCEG Publications
           </button>
           <div class="dropdown-menu navbar-dropdown">
-            <a
+            <!--<a
               class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
               href="#dataAccessHowTo"
               id="dataAccessHowTo"
             >Data Access Process
-            </a>
+            </a>-->
             <a
               class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
               href="#publicationpage"
               id="publicationID"
-              >DCEG Publication Datasets
+              >Browse and Request PDR Data
             </a>
             <a
               class="dropdown-item nav-link nav-menu-links dropdown-menu-links"

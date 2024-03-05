@@ -15,7 +15,9 @@ export const emailforChair = ['kopchickbp@nih.gov']
 // "kopchickbp@nih.gov",
 // ];
 
-export const emailforDACC = ['kopchickbp@nih.gov', 'ahearntu@nih.gov']
+export const emailforDACC = ['troisir@nih.gov', 'tobiasg@nih.gov', 'kopchickbp@nih.gov', 'ahearntu@nih.gov']
+
+export const nameofDACC = ['Rebecca Troisi', 'Geoffrey Tobias']
 
 export const publicDataFileId = 697309514903; //Unknown
 
@@ -1486,7 +1488,8 @@ export async function showCommentsDCEG(id) {
               console.log(cons);
               const score = comment.message[8];
               const inputScore = document.getElementById(`review${cons}${id}`);
-              inputScore.innerHTML = `<h6 class="badge badge-pill badge-${score}">${score}</h6>`; 
+              try {inputScore.innerHTML = `<h6 class="badge badge-pill badge-${score}">${score}</h6>`}
+              catch {console.log(inputScore)}; 
           }
       //}           
 
