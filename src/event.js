@@ -1064,6 +1064,9 @@ const addEventCollaboratorForm = (ID, type, name) => {
           );
           top = top + 2;
           if (response.status === 200 || response.status === 201) {
+            const { jsonData, headers } = csvJSON(await getFile(boxUpdateFile)); // Get summary level data
+            const lastModified = (await getFileInfo(boxUpdateFile)).modified_at;
+            console.log(jsonData)
             template += notificationTemplate(
               top,
               `<span class="successMsg">Added new collaborator</span>`,

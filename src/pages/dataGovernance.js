@@ -14,6 +14,10 @@ import {
   getCollaboration,
   checkMyPermissionLevel,
   getFolderInfo,
+  boxUpdateFile,
+  csv2Json,
+  getFile,
+  getFileInfo,
 } from "../shared.js";
 
 export const template = async () => {
@@ -103,8 +107,15 @@ export const testingDataGov = async () => {
 
 export const dataGovTest = async () => {
   console.log("testing data gov test function");
-  //let val = document.getElementById('folderID').value
-  let val = '239899508915'
+  ///
+  const { jsonData, headers } = csv2Json(await getFile(boxUpdateFile)); // Get summary level data
+  const lastModified = (await getFileInfo(boxUpdateFile)).modified_at;
+  console.log(jsonData);
+  console.log(headers);
+  console.log(lastModified);
+  ///
+  let val = document.getElementById('folderID').value
+  //let val = '239899508915'
   if (val === '') val = '0';
   console.log(val);
   const array = await getFolderInfo(val); //DCEG: 196554876811 BCRP: 145995765326, Confluence: 137304373658

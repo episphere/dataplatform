@@ -19,6 +19,8 @@ export const emailforDACC = ['troisir@nih.gov', 'tobiasg@nih.gov', 'kopchickbp@n
 
 export const nameofDACC = ['Rebecca Troisi', 'Geoffrey Tobias']
 
+export const boxUpdateFile = 1462786990973;
+
 export const publicDataFileId = 697309514903; //Unknown
 
 export const summaryStatsFileId = 956943662666; //861342561526;//908600664259; //Confluence Summary Statistics (691143057533) => Pilot - BCRP_Summary_Results_AllSubjects.csv (861342561526)
