@@ -64,6 +64,8 @@ import {
   getFile,
   storeAccessTokenERa,
   getCurrentUserERa,
+  getFolderInfo,
+  checkMyPermissionLevel
 } from "./src/shared.js";
 import {
   addEventConsortiaSelect,
@@ -92,10 +94,14 @@ import { config } from "./src/config.js";
  */
 
 export const confluence = async () => {
-  if ("serviceWorker" in navigator) {
-    try {
-      navigator.serviceWorker.register("./serviceWorker.js");
-    } catch (error) {}
+  if(window.navigator && navigator.serviceWorker) {
+    navigator.serviceWorker.getRegistrations()
+    .then(function(registrations) {
+      for(let registration of registrations) {
+        registration.unregister();
+        console.log("Service worker removed.")
+      }
+    });
   }
   const confluenceDiv = document.getElementById("confluenceDiv");
   const navBarOptions = document.getElementById("navBarOptions");
@@ -153,6 +159,45 @@ export const confluence = async () => {
         });
       }
     }
+
+    // Check if access to submit
+    let folderCheck = 249771633109//249771633108 //249771633109
+    try {
+      var accessFolderInfo = await getFolderInfo(folderCheck);
+    } catch (error) {
+      var accessFolderInfo = false;
+    };
+    if (accessFolderInfo === false) {
+      const header = document.getElementById("dcegPreviewerModalHeader");
+      const body = document.getElementById("dcegPreviewerModalBody");
+      header.innerHTML = `<h5 class="modal-title">Data Request Access Required</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>`;
+      body.innerHTML = `<div>
+                          Thank you for logging into the DCEG PDR. It appears you don't currently have access to request data. 
+                          To gain access, please send an email by using this 
+                          <a href = "mailto:nci_dceg_pdr@nih.gov?subject=PDR Request Access For ${JSON.parse(localStorage.parms).login}&body=Request to grant access to ${JSON.parse(localStorage.parms).login} allowing for request form submission.">
+                            link.
+                          </a>
+                          <br>
+                          Please do not change the subject line or body of the email or your request may be denied.
+                        </div>`
+      $("#dcegPreviewerModal").modal("show");
+    }
+    // const bool = await checkMyPermissionLevel(
+    //     await getCollaboration(
+    //       folderCheck,
+    //       `folders`
+    //     ),
+    //     JSON.parse(localStorage.parms).login
+    //   );
+
+    // const getCollaborators = await getCollaboration(
+    //   folderCheck,
+    //   "folders"
+    // );
+    //
     navBarOptions.innerHTML = navBarMenutemplate();
     document.getElementById("logOutBtn").addEventListener("click", logOut);
     const viewUserSubmissionElement =

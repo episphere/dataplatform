@@ -108,10 +108,10 @@ export const testingDataGov = async () => {
 export const dataGovTest = async () => {
   console.log("testing data gov test function");
   ///
-  const { jsonData, headers } = csv2Json(await getFile(boxUpdateFile)); // Get summary level data
+  const responseData = csv2Json(await getFile(boxUpdateFile)); // Get summary level data
   const lastModified = (await getFileInfo(boxUpdateFile)).modified_at;
-  console.log(jsonData);
-  console.log(headers);
+  console.log(responseData.headers);
+  console.log(responseData.data);
   console.log(lastModified);
   ///
   let val = '0';

@@ -1988,13 +1988,16 @@ export const csv2Json = (csv) => {
   for (let i = 1; i < lines.length; i++) {
     const obj = {};
     const currentline = lines[i].split(/[,\t]/g);
+    console.log(currentline);
     for (let j = 0; j < headers.length; j++) {
       if (currentline[j]) {
         let value = headers[j];
         obj[value] = currentline[j];
+        console.log(obj);
       }
     }
     if (Object.keys(obj).length > 0) result.push(obj);
+    console.log(result);
   }
   return {
     data: result,
