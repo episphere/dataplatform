@@ -114,9 +114,13 @@ export const dataGovTest = async () => {
   console.log(headers);
   console.log(lastModified);
   ///
-  let val = document.getElementById('folderID').value
+  let val = '0';
+  if(document.getElementById('folderID')) {
+    val = document.getElementById('folderID').value
+  } else {
+    val = '239899508915'
+  }
   //let val = '239899508915'
-  if (val === '') val = '0';
   console.log(val);
   const array = await getFolderInfo(val); //DCEG: 196554876811 BCRP: 145995765326, Confluence: 137304373658
   if (!array) {

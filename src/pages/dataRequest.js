@@ -273,7 +273,7 @@ export const formSection = async (activeTab, showDescripton) => {
   }
 
   if (eraLogin == undefined) {
-    console.log(eraLogin);
+    //console.log(eraLogin);
     template += ` 
       <div class="general-bg padding-bottom-1rem">
         <div class="container body-min-height">
@@ -452,7 +452,7 @@ template += `
               <button type="button" id="downloadJSON" class="buttonsubmit"> 
                 <span class="buttonsubmit__text"> Download JSON </span>
               </button>
-              
+
               <!--button type="button" id="downloadWord" class="buttonsubmit d-none"> 
                 <span class="buttonsubmit__text"> Download Word </span>
               </button>
