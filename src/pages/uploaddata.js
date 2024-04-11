@@ -79,7 +79,7 @@ export const dataUploadForm = async () => {
                   <button id="filterBarToggle"><i class="fas fa-lg fa-caret-left"></i></button>
                   <div class="main-summary-row pl-2">
                       <div class="col-xl-12 pb-2 pl-0 pr-0 white-bg div-border">
-                          <div class="pt-0 pl-2 pb-2 pr-2 allow-overflow" style="height: calc(100vh - 190px) !important;min-height: 500px;" id="descriptionBody">  
+                          <div class="pt-0 pl-2 pb-2 pr-2 allow-overflow" id="descriptionBody">  
                           </div>
                       </div>
                   </div>
@@ -249,7 +249,7 @@ export const approvedFormSelect = async (csvData) => { //Is there a DSMP functio
     //   console.log(value);
     // }
     // const dsmpdataHeaders = csvData.headers;
-    const dsmpdataPDR = dsmpdata.filter((df) => ((df['repositories'] || []).includes('PDR')) && (df['dmsPlanType']).includes('Study'));
+    const dsmpdataPDR = dsmpdata.filter((df) => ((df['repositories'] || []).includes('DCEG')) && (df['dmsPlanType']).includes('Study'));
     createFilter(dsmpdataPDR, dsmpdataHeaders);
     await populateApprovedSelect(dsmpdataPDR, dsmpdataHeaders);
   }
@@ -262,15 +262,19 @@ export const dsmpSelected = async (csvData) => {
   console.log(icData);
   let template =`
   <label for="duoSel"> <b>Below are the data use restrictions and requirements associated with the data based on the study's Institutional Certification (IC). If you have questions about your study's IC, please contact your <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Data Sharing Administrator (DSA)</a>.</b><span class='required-label'>*</span> </label>
-    <div class='input-group input-group2 font-size-22'>`;
+    `;
   const elePlan = document.getElementById('approvedDSMP')
   const checked = elePlan.querySelectorAll('input[type="checkbox"]:checked');
   const values = [...checked].map(c=>c.value);
   //var values = Array.from(ele.selectedOptions).map(({ value }) => value);//Array.from(ele.selectedOptions).map(v=>v.value);
   console.log(values);
   for (const value of values){
-    let dmspVal = value.split('.v')[0];
-    var dmspIC = icData.data.find(item => item.planID === dmspVal);
+    let dmspVal = value//.split('.v')[0];
+    console.log(dmspVal);
+    console.log(icData);
+    let casID = csvData.data.find(item => item.planID === dmspVal).cas;
+    console.log(casID);
+    var dmspIC = icData.data.find(item => item.cas === casID);
     if (dmspIC){
       console.log('yes');
     }
@@ -287,20 +291,32 @@ export const dsmpSelected = async (csvData) => {
     const duoEl = document.getElementById("duoSel");
     duoEl.classList.toggle("d-none", values === "");
     template +=`
-          <h3>DMSP: ${value}</h3>`;
+    <div class='input-group input-group2 font-size-22'>
+        <div class="selectionInfo">
+          <b>DMSP:</b> ${value}
+        </div>
+          `;
     if (dmspIC){
       for (let i=0; i <studies.length; i++) {
       template += `
       <div class="input-group input-group2 font-size-22">
         <div class="inline-field field-br">
           <input id="${value}sel${i}" name="studySel" type="checkbox" value="${value}duo${i}" checked/> <!---${studies.length === 1 ? 'checked':''}--->
-          <label class="container-ul" for="${value}sel${i}"><h4> ${studies[i]}</h4></label>
+          <label class="container-ul" for="${value}sel${i}"><b>Study Name:</b> ${studies[i]}</label>
         </div>
         <div class="input-group input-group2">
           <ul class="form2" id='${value}duo${i}' cas='${cas[i]}' study='${studies[i]}'>
             <div class="inline-field">
               <input id="${value}${dmspIC.dul}${i}" name="duoSel" type="checkbox" value="NR" checked disabled/>
-              <label class="container-ul" for="${value}nores${i}">${dmspIC.dul}: ${dmspIC.ds_dul}</label>
+              `
+          if (dmspIC.dul === 'Disease-specific'){
+          template += `
+              <label class="container-ul" for="${value}nores${i}">${dmspIC.dul}: ${dmspIC.ds_dul ? dmspIC.ds_dul : "Not-specified"}</label>`
+          } else {
+          template += `
+            <label class="container-ul" for="${value}nores${i}">${dmspIC.dul}</label>`
+          }
+        template += `
             </div>
           </ul>
           </div>
@@ -314,44 +330,19 @@ export const dsmpSelected = async (csvData) => {
             <div class="input-group input-group2 font-size-22">
               <div class="inline-field field-br">
                 <input id="${value}sel${i}" name="studySel" type="checkbox" value="${value}duo${i}" checked/> <!---${studies.length === 1 ? 'checked':''}--->
-                <label class="container-ul" for="${value}sel${i}"><h4><b>cas: ${cas[i]}</b>, ${studies[i]}</h4></label>
+                <label class="container-ul" for="${value}sel${i}"><b>Study:</b> ${studies[i]}</label>
               </div>
               <div class="input-group input-group2">
-                <ul class="form2" id='${value}duo${i}' cas='${cas[i]}' study='${studies[i]}'>
-                  <div class="inline-field">
-                    <input id="${value}nores${i}" name="duoSel" type="checkbox" value="NR"/>
-                    <label class="container-ul" for="${value}nores${i}">No Restrictions</label>
-                  </div>
-                  <div class="inline-field">
-                    <input id="${value}gru${i}" name="duoSel" type="checkbox" value="GRU"/>
-                    <label class="container-ul" for="${value}gru${i}">General Research Use</label>
-                  </div>
-                  <div class="inline-field">
-                    <input id="${value}hmb${i}" name="duoSel" type="checkbox" value="HMB"/>
-                    <label class="container-ul" for="${value}hmb${i}">Health/Medical/Biomedical</label>
-                  </div>
-                  <div class="inline-field">
-                    <input id="${value}ngm${i}" name="duoSel" type="checkbox" value="NGM"/>
-                    <label class="container-ul" for="${value}ngm${i}">No General Methods</label>
-                  </div>
-                  <div class="inline-field">
-                    <input id="${value}nfp${i}" name="duoSel" type="checkbox" value="NFP"/>
-                    <label class="container-ul" for="${value}nfp${i}">Not for Profit Use Only</label>
-                  </div>
-                  <div class="inline-field">
-                    <input id="${value}dsr${i}" name="duoSel" type="checkbox" value="DSR"/>
-                    <label class="container-ul" for="${value}dsr${i}">Disease-specific Research</label>
-                  </div>
-                  <div class="inline-field">
-                    <input id="${value}dsr${i}input" name="duoSel" type="text" placeholder="Name of specific disease" class='d-none'/>
-                  </div>
+                <ul class="form3" id='${value}duo${i}' cas='${cas[i]}' study='${studies[i]}'>
+               <!--<input id="${value}none${i}" name="duoSel" type="checkbox" value="NR" checked disabled/>-->
+               <label class="container-ul" for="${value}none${i}">No IC found. Please check your selection or contact your branch's Data Sharing Administrator. You will not be able to proceed uploading data to the PDR without an IC.</label>
                 </ul>
                 </div>
               </div>
             `
             }
     }
-    template += `</div>`
+    template += `</div></div>`
   }
   template +=`
             </div>`
@@ -382,9 +373,7 @@ export const createFilter = (dsmpdataPDR, dsmpdataHeaders) => {
           <div class="form-group" margin:0px>
               <div id="searchContainer">
                 <div class="input-group">
-                    <input type="search" class="form-control rounded" autocomplete="off" placeholder="Search min. 3 characters" aria-label="Search" id="searchDataCatalog" aria-describedby="search-addon" />
-                    <span class="input-group-text border-0 search-input">
-                        <i class="fas fa-search"></i>
+                    <input type="search" class="form-control rounded" autocomplete="off" placeholder="Search" aria-label="Search" id="searchDataCatalog" aria-describedby="search-addon" />
                     </span>
                 </div>
               </div>
@@ -675,10 +664,10 @@ export async function nextPrev(n, currentTab) {
             </div>
             <div style="overflow:auto;">
               <div style="float:left;">
-                <button type="button" id="${id}addDataBtn" class="buttonsubmit2"><i class="fa fa-plus" aria-hidden="true"></i> (Meta)Data</button>
+                <button type="button" id="${id}addDataBtn" class="buttonsubmit2"><i class="fa fa-plus" aria-hidden="true"></i> Metadata</button>
               </div>
               <div style="display: none; float:right;">
-                <button type="button" id="${id}remDataBtn" class="buttonsubmit2"><i class="fa fa-trash-can" aria-hidden="true"></i> Last (Meta)Data</button>
+                <button type="button" id="${id}remDataBtn" class="buttonsubmit2"><i class="fa fa-trash-can" aria-hidden="true"></i> Last Metadata</button>
               </div>
             </div>
           </div>

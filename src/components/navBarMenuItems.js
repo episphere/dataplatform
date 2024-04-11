@@ -115,8 +115,17 @@ export const navBarMenutemplate = () => {
               </a>
           </div>
 
-
         <div class="navbar-nav ml-auto">
+            ${localStorage.accessFolderInfo === 'false'
+                  ? `
+                  <div class="grid-elements">
+                    <button type="button" class="nav-link nav-menu-links dropdown-btn white-font" title="Pop-up for login" onclick=${`$("#dcegPreviewerModal").modal("show")`}>
+                        Pop-up
+                    </button>
+                </div>
+                  `
+            : ``
+            }
             ${
               localStorage.parms && JSON.parse(localStorage.parms).name
                 ? `

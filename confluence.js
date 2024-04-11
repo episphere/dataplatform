@@ -168,6 +168,7 @@ export const confluence = async () => {
       var accessFolderInfo = false;
     };
     if (accessFolderInfo === false) {
+      localStorage.setItem("accessFolderInfo", false);
       const header = document.getElementById("dcegPreviewerModalHeader");
       const body = document.getElementById("dcegPreviewerModalBody");
       header.innerHTML = `<h5 class="modal-title">Data Request Access Required</h5>
@@ -175,13 +176,14 @@ export const confluence = async () => {
                                         <span aria-hidden="true">&times;</span>
                                     </button>`;
       body.innerHTML = `<div>
-                          Thank you for logging into the DCEG PDR. It appears you don't currently have access to request data. 
+                          Welcome to the DCEG PDR. It appears you don't currently have access to request data. 
                           To gain access, please send an email by using this 
                           <a href = "mailto:nci_dceg_pdr@nih.gov?subject=PDR Request Access For ${JSON.parse(localStorage.parms).login}&body=Request to grant access to ${JSON.parse(localStorage.parms).login} allowing for request form submission.">
                             link.
                           </a>
                           <br>
-                          Please do not change the subject line or body of the email or your request may be denied.
+                          Please do not change the subject line or body of the email or your request may be denied. 
+                          You may close this box to explore the PDR and to continue with Data Request Access please go to the Data Access Process tab or refresh browser.
                         </div>`
       $("#dcegPreviewerModal").modal("show");
     }
