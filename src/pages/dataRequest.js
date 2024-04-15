@@ -2634,13 +2634,14 @@ export async function viewFinalDecisionFilesTemplate(files) {
 export function viewFinalDecisionFilesColumns() {
   return `<div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1); font-size: .8em">
     <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Share Data</div>
+    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">DTA</div>
     <div class="col-lg-3 text-left font-bold ws-nowrap text-wrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept Name"><i class="fas fa-sort"></i></button></div>
     <div class="col-lg-2 text-left font-bold ws-nowrap text-wrap header-sortable">Primary Requestor <button class="transparent-btn sort-column" data-column-name="Author"><i class="fas fa-sort"></i></button></div>
-    <div class="col-lg-2 text-center font-bold ws-nowrap text-wrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Submission Date"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Submission Date"><i class="fas fa-sort"></i></button></div>
     <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Status <button class="transparent-btn sort-column" data-column-name="Status"><i class="fas fa-sort"></i></button></div>
     <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">${nameofDACC[0]}<button class="transparent-btn sort-column" data-column-name="review0"><i class="fas fa-sort"></i></button></div>
     <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">${nameofDACC[1]}<button class="transparent-btn sort-column" data-column-name="review1"><i class="fas fa-sort"></i></button></div>
-    <div class="col-lg-1 text-right font-bold ws-nowrap text-wrap header-sortable"></div>
+    <div class="col-md-1 text-right font-bold ws-nowrap text-wrap header-sortable"></div>
   </div>`;
 }
 
@@ -2659,9 +2660,10 @@ export async function viewFinalDecisionFiles(files) {
     <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
         <div class="row">
             <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable"><button class="shareBoxData" type="button" name="${shortfilename}" value="${fileInfo.created_by.login}"><i class="fa-solid fa-user-plus"></i></button></div>
+            <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable"><button class="uploadDTA" type="button" name="${shortfilename}_DTAUpload" value="${fileInfo.created_by.login}"><i class="fa-solid fa-file-arrow-up"></i></button></div>
             <div class="col-lg-3 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
             <div class="col-lg-2 text-left">${fileInfo.created_by.name}</div>
-            <div class="col-lg-2 text-center">${new Date(fileInfo.created_at).toDateString().substring(4)}</div>
+            <div class="col-lg-1 text-center">${new Date(fileInfo.created_at).toDateString().substring(4)}</div>
             <div class="col-lg-1 pl-6 text-center">${
               fileInfo.parent.name.includes("Accepted")
                 ? '<h6 class="badge badge-pill badge-success">Accepted</h6>'
@@ -2671,7 +2673,7 @@ export async function viewFinalDecisionFiles(files) {
             }</div>
             <div class="col-lg-1 pl-6 text-center" id="review0${fileId}">--</div>
             <div class="col-lg-1 pl-6 text-center" id="review1${fileId}">--</div>
-            <div class="col-lg-1 text-right">
+            <div class="col-md-1 text-right">
                 <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
                     <i class="fas fa-caret-down fa-2x"></i>
                 </button>

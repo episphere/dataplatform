@@ -1,4 +1,4 @@
-import {csv2Json, csv2JsonTest, uploadFile, uploadFileAny, uploadWordFile, json2other, uploadTSV, createFolder, getFolderItems, descFolder, dataPlatformFolder, publicDataFolder, descFile, showAnimation, hideAnimation, selectProps} from "./../shared.js";
+import {csv2Json, csv2JsonTest, uploadFile, uploadFileAny, uploadWordFile, json2other, uploadTSV, createFolder, getFolderItems, descFolder, dataPlatformFolder, dataPlatformDataFolder, publicDataFolder, descFile, showAnimation, hideAnimation, selectProps} from "./../shared.js";
 import { config } from "./../config.js";
 import { addEventFilterBarToggle } from "../event.js";
 let previousValue = "";
@@ -79,8 +79,7 @@ export const dataUploadForm = async () => {
                   <button id="filterBarToggle"><i class="fas fa-lg fa-caret-left"></i></button>
                   <div class="main-summary-row pl-2">
                       <div class="col-xl-12 pb-2 pl-0 pr-0 white-bg div-border">
-                          <div class="pt-0 pl-2 pb-2 pr-2 allow-overflow" id="descriptionBody">  
-                          </div>
+                        <div class="allow-overflow" style="height: calc(100vh - 500px) !important;min-height: 300px;" id="descriptionBody"></div>
                       </div>
                   </div>
               </div>
@@ -185,7 +184,7 @@ export const dataUploadForm = async () => {
     for (var study of selStudies){
       var ele = document.getElementById(study);
       var eleCheck = ele.querySelectorAll('input[type="checkbox"]')
-      if (!Array.prototype.slice.call(eleCheck).some(x => x.checked)) return alert("Please select at least one data use restriction per study.")
+      if (!Array.prototype.slice.call(eleCheck).some(x => x.checked)) return alert("To continue, all studies require an Institutional Certification.")
     }
       // for (var ele of document.getElementsByClassName('form2')) {
       //   var eleCheck = ele.querySelectorAll('input[type="checkbox"]');
@@ -307,7 +306,7 @@ export const dsmpSelected = async (csvData) => {
         <div class="input-group input-group2">
           <ul class="form2" id='${value}duo${i}' cas='${cas[i]}' study='${studies[i]}'>
             <div class="inline-field">
-              <input id="${value}${dmspIC.dul}${i}" name="duoSel" type="checkbox" value="NR" checked disabled/>
+              <input id="${value}${dmspIC.dul}${i}" name="duoSel" type="checkbox" value="${dmspIC.dul}" checked disabled/>
               `
           if (dmspIC.dul === 'Disease-specific'){
           template += `
@@ -335,14 +334,14 @@ export const dsmpSelected = async (csvData) => {
               <div class="input-group input-group2">
                 <ul class="form3" id='${value}duo${i}' cas='${cas[i]}' study='${studies[i]}'>
                <!--<input id="${value}none${i}" name="duoSel" type="checkbox" value="NR" checked disabled/>-->
-               <label class="container-ul" for="${value}none${i}">No IC found. Please check your selection or contact your branch's Data Sharing Administrator. You will not be able to proceed uploading data to the PDR without an IC.</label>
+               <label class="container-ul" for="${value}none${i}">No IC found. Please complete the IC form <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank"> here</a>. If you have questions please contact your branch's Data Sharing Administrator.</label>
                 </ul>
                 </div>
               </div>
             `
             }
     }
-    template += `</div></div>`
+    template += `<hr width="100%" size="2"></div></div>`
   }
   template +=`
             </div>`
@@ -510,7 +509,7 @@ export async function subForm(eventtest) {
   const author_last = document.getElementById(`author_last`).value;
 
   const folderName = JSON.parse(localStorage.parms).login.split('@')[0];
-  const folderId = await folderStructure(dataPlatformFolder, folderName+'_DCEG_Data_Platform'); //create users parent folder //make Variable
+  const folderId = await folderStructure(dataPlatformDataFolder, folderName+'_DCEG_Data_Platform'); //create users parent folder //make Variable
   const folderName2 = journal_acro + '_' + date
   const folderId2 = await folderStructure(folderId, folderName+'_'+folderName2) //create per journal/year folder
   var studies = []
@@ -521,18 +520,12 @@ export async function subForm(eventtest) {
     const cas = form.getAttribute('cas');
     const study = form.getAttribute('study');
     studies.push(study);
-    const nores = document.getElementById(`${dsmp}nores${ver}`).checked;
-    const hmb = document.getElementById(`${dsmp}hmb${ver}`).checked;
-    const ngm = document.getElementById(`${dsmp}ngm${ver}`).checked;
-    const gru = document.getElementById(`${dsmp}gru${ver}`).checked;
-    const dsr = document.getElementById(`${dsmp}dsr${ver}`).checked;
-    const dsrinput = document.getElementById(`${dsmp}dsr${ver}input`).value==='' ? 'none' : document.getElementById(`${dsmp}dsr${ver}input`).value;
-    const nfp = document.getElementById(`${dsmp}nfp${ver}`).checked;
+    const restrictions = form.querySelectorAll('input[type="checkbox"]:checked')[0].value;
 
     const userval = {dsmp: dsmp, cas: cas, study: study, date: date, 
       journal_name: journal_name, journal_acro: journal_acro, title: manu_title, 
       author: author_first + ' ' + author_middle + ' ' + author_last, 
-      nores: nores, hmb: hmb, ngm: ngm, gru: gru, dsr: dsr, dsr_value: dsrinput, nfp: nfp};
+      res: restrictions};
     obj.push(userval);
     const studyName = study;
     const folderId3 = await folderStructure(folderId2, studyName);
@@ -547,21 +540,35 @@ export async function subForm(eventtest) {
         uploadStructure(val.files[0], folderId3, document.getElementById(val.id.replace('data_upload', 'data_upload_description')).value);
       }
     }
+    const headers = Object.keys(obj[0]);
+    const tsvValue = json2other(obj, headers, true).replace(/(<b>)|(<\/b>)/g, "");
+    let tsvContent =
+        "data:text/tsv;charset=utf-8," +
+        tsvValue;
+    const encodedUri = encodeURI(tsvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `test.tsv`);
+    await uploadTSV(tsvValue, folderName+"_"+folderName2+".tsv", publicDataFolder);
+    await uploadTSV(tsvValue, "details_"+folderName2+".tsv", folderId3);
+    link.click();
+    document.body.appendChild(link);
   }
   await descFolder(folderId2, manu_title + ', ' + studies);
   //console.log(obj);
-  const headers = Object.keys(obj[0]);
-  const tsvValue = json2other(obj, headers, true).replace(/(<b>)|(<\/b>)/g, "");
-  let tsvContent =
-      "data:text/tsv;charset=utf-8," +
-      tsvValue;
-  const encodedUri = encodeURI(tsvContent);
-  const link = document.createElement("a");
-  link.setAttribute("href", encodedUri);
-  link.setAttribute("download", `test.tsv`);
-  await uploadTSV(tsvValue, folderName+folderName2+".tsv", publicDataFolder);
-  link.click();
-  document.body.appendChild(link);
+  // const headers = Object.keys(obj[0]);
+  // const tsvValue = json2other(obj, headers, true).replace(/(<b>)|(<\/b>)/g, "");
+  // let tsvContent =
+  //     "data:text/tsv;charset=utf-8," +
+  //     tsvValue;
+  // const encodedUri = encodeURI(tsvContent);
+  // const link = document.createElement("a");
+  // link.setAttribute("href", encodedUri);
+  // link.setAttribute("download", `test.tsv`);
+  // await uploadTSV(tsvValue, folderName+"_"+folderName2+".tsv", publicDataFolder);
+  // await uploadTSV(tsvValue, folderName+"_"+folderName2+".tsv", folderId3);
+  // link.click();
+  // document.body.appendChild(link);
   document.getElementById("modalBody").innerHTML = `
           <p><b>Process complete.</b></p>
           <p><b>Please visit the below folders to check all files were properly uploaded.</b></p>
@@ -647,9 +654,9 @@ export async function nextPrev(n, currentTab) {
       const study = form.getAttribute('study');
       template +=
       `<div class="contact-form input-group input-group2 font-size-22" id="${id}Form">
-        <h3>DMSP: ${id.split('duo')[0]}</h3>
+        <b>DMSP: </b> ${id.split('duo')[0]}
         <div class="input-group input-group2 font-size-22">
-          <h4><b>cas: ${cas}</b>, ${study}</h4>
+          <b>Study Name: </b> ${study}
             <div class='input-group input-group2' >
               <label for="${id}data_upload"> <b>Upload data</b> </label>
               <input id="${id}data_files" name="${id}data_upload" type="file" single required/>
@@ -664,10 +671,10 @@ export async function nextPrev(n, currentTab) {
             </div>
             <div style="overflow:auto;">
               <div style="float:left;">
-                <button type="button" id="${id}addDataBtn" class="buttonsubmit2"><i class="fa fa-plus" aria-hidden="true"></i> Metadata</button>
+                <button type="button" id="${id}addDataBtn" class="buttonsubmit2"><i class="fa fa-plus" aria-hidden="true"></i> Other Data</button>
               </div>
               <div style="display: none; float:right;">
-                <button type="button" id="${id}remDataBtn" class="buttonsubmit2"><i class="fa fa-trash-can" aria-hidden="true"></i> Last Metadata</button>
+                <button type="button" id="${id}remDataBtn" class="buttonsubmit2"><i class="fa fa-trash-can" aria-hidden="true"></i> Last Data</button>
               </div>
             </div>
           </div>

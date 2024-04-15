@@ -2078,17 +2078,18 @@ p {
 .buttonsubmit2 {
   display: block;
   position: relative;
-  margin: 0.5rem 1rem 0;
-  padding: 0 1rem 0.125rem;
+  margin-top: 4px;
+  padding: 6px 25px;
   background-color: #2a72a5;
   border: 0;
   color: var(--color-lightest);
   font-family: lato, sans-serif;
-  font-size: 100%;
+  font-size: 18px;
   letter-spacing: 0.05em;
   line-height: 1.5;
   text-transform: uppercase;
   transition: 150ms all linear;
+  border-radius: 5px;
 }
 
 .buttonsubmit2:hover,
