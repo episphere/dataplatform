@@ -1162,6 +1162,19 @@ export const daccSection = (activeTab) => {
   return template;
 };
 
+// export const getAllSubFiles = async (folder) => {
+//   const response = await getFolderItems(folder);
+//   for (let item of response.entries) {
+//     if (item.type === "folder") {
+//       getAllSubFiles(item.id);
+//     }
+//     else if (item.type === "file") {
+//       outputarray.push(item.id)
+//       console.log(item.id);
+//     }
+//   }
+// }
+
 export const daccFileView = async () => {
   const responseDACC = await getFolderItems(daccReviewFolder);
   let filearrayDACC = responseDACC.entries;
@@ -1171,9 +1184,39 @@ export const daccFileView = async () => {
   // const responseChair = await getFolderItems(chairReviewFolder);
   // let filearrayChair = responseChair.entries;
   const responseAccepted = await getFolderItems(acceptedFolder);
-  let filearrayAccepted = responseAccepted.entries;
-  const responseDenied = await getFolderItems(deniedFolder);
-  let filearrayDenied = responseDenied.entries;
+  var filearrayAccepted = [];
+  var filearrayDenied = [];
+  const sortAllFiles = await getAllSubFiles(acceptedFolder, 'none');
+
+  async function getAllSubFiles(folder, acceptedCheck) {
+    const response = await getFolderItems(folder);
+    for (let item of response.entries) {
+      if (item.type === "folder") {
+        if(item.name === "Accepted") {
+          getAllSubFiles(item.id, true);
+          console.log(item);
+        }
+        else if(item.name === "Denied") {
+          getAllSubFiles(item.id, false);
+        }
+        else {
+          getAllSubFiles(item.id, acceptedCheck)
+        }
+      }
+      else if (item.type === "file") {
+        if (acceptedCheck === true) {
+          filearrayAccepted.push(item);
+        }
+        else if (acceptedCheck === false) {
+          filearrayDenied.push(item);
+        }
+      }
+    }
+  }
+
+  //let filearrayAccepted = responseAccepted.entries;
+  //const responseDenied = await getFolderItems(deniedFolder);
+  //let filearrayDenied = responseDenied.entries;
   let template = `
             <div class="general-bg padding-bottom-1rem">
             <div class="container body-min-height">
@@ -1373,8 +1416,8 @@ export const daccFileView = async () => {
     </div>`;
   document.getElementById("daccFileView").innerHTML = template;
 
-  filescompleted = [...filearrayAccepted, ...filearrayDenied];
-  viewFinalDecisionFilesTemplate(filescompleted);
+  //filescompleted = [...filearrayAccepted, ...filearrayDenied];
+  viewFinalDecisionFilesTemplate([...filearrayAccepted, ...filearrayDenied]);
   if (filesincomplete.length != 0) {
     switchFiles("dacctoBeCompleted");
     showPreview(filesincomplete[0].id);
@@ -2633,8 +2676,8 @@ export async function viewFinalDecisionFilesTemplate(files) {
 
 export function viewFinalDecisionFilesColumns() {
   return `<div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1); font-size: .8em">
-    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Share Data</div>
     <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">DTA</div>
+    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Share Data</div>
     <div class="col-lg-3 text-left font-bold ws-nowrap text-wrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept Name"><i class="fas fa-sort"></i></button></div>
     <div class="col-lg-2 text-left font-bold ws-nowrap text-wrap header-sortable">Primary Requestor <button class="transparent-btn sort-column" data-column-name="Author"><i class="fas fa-sort"></i></button></div>
     <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Submission Date"><i class="fas fa-sort"></i></button></div>
@@ -2659,15 +2702,15 @@ export async function viewFinalDecisionFiles(files) {
 <div class="card mt-1 mb-1 align-left" >
     <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
         <div class="row">
-            <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable"><button class="shareBoxData" type="button" name="${shortfilename}" value="${fileInfo.created_by.login}"><i class="fa-solid fa-user-plus"></i></button></div>
             <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable"><button class="uploadDTA" type="button" name="${shortfilename}_DTAUpload" value="${fileInfo.created_by.login}"><i class="fa-solid fa-file-arrow-up"></i></button></div>
+            <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable"><button class="shareBoxData" type="button" name="${shortfilename}" value="${fileInfo.created_by.login}"><i class="fa-solid fa-user-plus"></i></button></div>
             <div class="col-lg-3 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
             <div class="col-lg-2 text-left">${fileInfo.created_by.name}</div>
             <div class="col-lg-1 text-center">${new Date(fileInfo.created_at).toDateString().substring(4)}</div>
             <div class="col-lg-1 pl-6 text-center">${
-              fileInfo.parent.name.includes("Accepted")
+              fileInfo.description.includes("Accepted")
                 ? '<h6 class="badge badge-pill badge-success">Accepted</h6>'
-                : fileInfo.parent.name.includes("Denied")
+                : fileInfo.description.includes("Denied")
                 ? '<h6 class="badge badge-pill badge-danger">Denied</h6>'
                 : '<h6 class="badge badge-pill badge-warning">In Review</h6>'
             }</div>
@@ -2704,9 +2747,9 @@ export async function viewFinalDecisionFiles(files) {
 function filterSection(files) {
   //Get all possible values for filters (Submitted By and Decision)
   let template = "";
-  const decisionFilterButtons = [
-    ...new Set([...files.map((fileInfo) => fileInfo.parent.name)]),
-  ];
+  // const decisionFilterButtons = [
+  //   ...new Set([...files.map((fileInfo) => fileInfo.parent.name)]),
+  // ];
   template += `
   <div class='row'>
     <div class='col-lg-7'>
@@ -2725,24 +2768,24 @@ function filterSection(files) {
   <div class='col-lg-5'>
 
    `;
-  if (decisionFilterButtons.length !== 0) {
-    template += `
-    <label class="filter-label font-size-17 font-bold" for="variableTypeList">Decision</label>
-    <div class='row' id="decisionFilterList"></div>`;
-  }
-  let decisionFilterTemp = "";
-  decisionFilterButtons.forEach((decision, index) => {
-    if (decision === "Chair Final Review") {
-      decision = "Under Review";
-    }
-    decisionFilterTemp += `
-   <li class="filter-list-item">
-     <input type="checkbox" data-variable-type="${decision}" name='decision${decision}' id="decision${index}" value='${decision}' class="filter-var" style="margin-left: 1px !important;" data-variable-column='Decision'>
-     <label for="label${decision}" class="sub-category px-1" title="${decision}">${decision}</label>
-     `;
-  });
+  // if (decisionFilterButtons.length !== 0) {
+  //   template += `
+  //   <label class="filter-label font-size-17 font-bold" for="variableTypeList">Decision</label>
+  //   <div class='row' id="decisionFilterList"></div>`;
+  // }
+  // let decisionFilterTemp = "";
+  // decisionFilterButtons.forEach((decision, index) => {
+  //   if (decision === "Chair Final Review") {
+  //     decision = "Under Review";
+  //   }
+  //   decisionFilterTemp += `
+  //  <li class="filter-list-item">
+  //    <input type="checkbox" data-variable-type="${decision}" name='decision${decision}' id="decision${index}" value='${decision}' class="filter-var" style="margin-left: 1px !important;" data-variable-column='Decision'>
+  //    <label for="label${decision}" class="sub-category px-1" title="${decision}">${decision}</label>
+  //    `;
+  // });
   document.getElementById("filterData").innerHTML = template;
-  document.getElementById("decisionFilterList").innerHTML = decisionFilterTemp;
+  //document.getElementById("decisionFilterList").innerHTML = decisionFilterTemp;
 }
 
 export const formFunctions = () => {

@@ -178,7 +178,8 @@ export const confluence = async () => {
       body.innerHTML = `<div>
                           Welcome to the DCEG PDR. It appears you don't currently have access to request data. 
                           To gain access, please send an email by using this 
-                          <a href = "mailto:nci_dceg_pdr@nih.gov?subject=PDR Request Access For ${JSON.parse(localStorage.parms).login}&body=Request to grant access to ${JSON.parse(localStorage.parms).login} allowing for request form submission.">
+                          <a href = 
+                            "mailto:nci_dceg_pdr@nih.gov?subject=PDR Request Access For ${localStorage.parms ? JSON.parse(localStorage.parms).login : 'Unknown'}&body=**Please do not change the subject line or body of this email or your request may be denied.**%0D%0ARequest to grant access to ${localStorage.parms ? JSON.parse(localStorage.parms).login : 'Unknown'} allowing for request form submission.">
                             link.
                           </a>
                           <br>

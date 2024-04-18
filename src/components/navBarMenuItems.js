@@ -9,16 +9,35 @@ export const navBarMenutemplate = () => {
             </a>
         </div>
         <div class="grid-elements">
-          <a
-            class="nav-link nav-menu-links white-font"
-            href="#dataAccessHowTo"
-            id="dataAccessHowTo"
-          >Data Access Process
-          </a>
-            <!--<a class="nav-link nav-menu-links white-font" href="#about/overview" id="aboutDCEG">
-            About
-            </a>-->            
+          <div class="grid-elements dropdown">
+            <button
+              class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font"
+              role="button"
+              title="Data Access"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              >
+              Data Access
+            </button>
+          <div class="dropdown-menu navbar-dropdown">
+            <a
+              class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
+              href="#dataAccessHowTo"
+              id="dataAccessHowTo"
+            >Process
+            </a>
+          ${localStorage.accessFolderInfo === 'false'
+          ? `
+            <button type="button" class="dropdown-item nav-link nav-menu-links dropdown-menu-links" title="Pop-up for login" onclick=${`$("#dcegPreviewerModal").modal("show")`}>
+              How-To  
+            </button>
+          `
+          : ``
+          }          
         </div>
+      </div>
+      </div>
       ${!localStorage.parms && !JSON.parse(localStorage.parms).name
         ?`<div class="grid-elements">
             <a class="nav-link nav-menu-links white-font" href="#data_access/overview" title="Consortia" id="dataRequest">
@@ -116,16 +135,6 @@ export const navBarMenutemplate = () => {
           </div>
 
         <div class="navbar-nav ml-auto">
-            ${localStorage.accessFolderInfo === 'false'
-                  ? `
-                  <div class="grid-elements">
-                    <button type="button" class="nav-link nav-menu-links dropdown-btn white-font" title="Pop-up for login" onclick=${`$("#dcegPreviewerModal").modal("show")`}>
-                        Pop-up
-                    </button>
-                </div>
-                  `
-            : ``
-            }
             ${
               localStorage.parms && JSON.parse(localStorage.parms).name
                 ? `

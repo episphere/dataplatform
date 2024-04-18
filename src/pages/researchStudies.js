@@ -53,8 +53,10 @@ export const testPage2 = () => {
 };
 
 const getStudies = async () => {
-  const data = await (await fetch("./DCEGcohortswithplatforms.txt")).text();
+  const data = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/production/DCEGcohortswithplatforms.txt")).text();
+  //const data = await (await fetch("./DCEGcohortswithplatforms.txt")).text()
   const tsv2json = tsv2Json(data);
+  console.log(tsv2json);
   const json = tsv2json.data;
   const headers = tsv2json.headers;
   let newJsons = {};

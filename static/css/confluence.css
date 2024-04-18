@@ -2464,3 +2464,16 @@ button.previous-btn {
 #selectionInfo {
   font-family: "Noto Sans" !important;
 }
+
+.datatype-select {
+  display: block;
+  margin-top: 0.25rem;
+  /* margin:2px 0 20px 10px; */
+  padding: 0.5rem 0.75rem;
+  border: 1.25px solid var(--color-gray-dark);
+  width: 100%;
+  font-family: "Helvetica Neue"; /*"Open Sans", sans-serif;*/
+  font-size: 90%;
+  font-weight: bolder;
+  transition: 150ms border-color linear;
+}

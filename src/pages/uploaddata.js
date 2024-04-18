@@ -637,7 +637,10 @@ export async function nextPrev(n, currentTab) {
   if (currentTab === 1) {
     // var ele = document.getElementById("approvedDSMP");
     // var values = Array.from(ele.selectedOptions).map(v=>v.value);
-    let template =`<h3><b>Upload Manuscript Data, Data Dictionary, and Other Associated Metadata</b></h3>`
+    let template =`<h3><b>Upload Manuscript Data, Data Dictionary, and Other Associated Metadata</b></h3>
+    <div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+      <i>Please attempt to upload all data files and dictionaries in machine readable formats (e.g., csv, tsv, json).</i>
+    </div>`
     const ele = document.getElementsByName('studySel');
     const eleAll = Array.from(ele).filter((checkbox) => checkbox.checked).map((checkbox) => document.getElementById(checkbox.value));
     //const ele = document.getElementById("duoSel");
@@ -671,7 +674,7 @@ export async function nextPrev(n, currentTab) {
             </div>
             <div style="overflow:auto;">
               <div style="float:left;">
-                <button type="button" id="${id}addDataBtn" class="buttonsubmit2"><i class="fa fa-plus" aria-hidden="true"></i> Other Data</button>
+                <button type="button" id="${id}addDataBtn" class="buttonsubmit2"><i class="fa fa-plus" aria-hidden="true"></i> More Data</button>
               </div>
               <div style="display: none; float:right;">
                 <button type="button" id="${id}remDataBtn" class="buttonsubmit2"><i class="fa fa-trash-can" aria-hidden="true"></i> Last Data</button>
@@ -697,10 +700,15 @@ export async function nextPrev(n, currentTab) {
       }
       let idaddAttachment = document.getElementById(`${id}addAttachment`)
       var newInput = document.createElement('div');
+      const selection = ["Data", "Dictionary", "Other Metadata"];
       newInput.className = 'input-addedFiles input-group'
 
       newInput.innerHTML = `
-        <label for="${id}data${num}"> <b>Upload additional data/metadata</b> </label>
+        <select class="datatype-select" name="${id}data${num}">
+          <option value="Data">Data</option>
+          <option value="Dictionary">Dictionary</option>
+          <option value="MetaData">Other Metadata</option>
+        </select>
         <input id="${id}data_upload${num}" name="${id}data${num}" type="file" single required/>
         <input id="${id}data_upload_description${num}" name="${id}data${num}" type="text" placeholder="Provide description of uploaded data/metadata. Note, this will be viewable by users of the data" required/>
       `
