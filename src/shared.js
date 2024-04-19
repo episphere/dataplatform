@@ -55,6 +55,8 @@ export const publicDataFolder = 259664212144;
 
 export const liveUpdateFolder = 196819085811;
 
+export const livePublicationFile = 1506807971290;
+
 export const getFolderItems = async (id) => {
   try {
     const access_token = JSON.parse(localStorage.parms).access_token;
@@ -595,6 +597,51 @@ export const uploadTSV = async (data, fileName, folderId, html) => {
   } catch (err) {
     if ((await refreshToken()) === true)
       return await uploadFile(data, fileName, folderId, html);
+  }
+};
+
+export const uploadTSVVersion = async (data, fileName, folderId, fileId) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    const form = new FormData();
+    let blobData = "";
+    console.log('Using HTML');
+    blobData = new Blob([data], {
+      type: "text/html",
+    });
+    form.append("file", blobData);
+    form.append(
+      "attributes",
+      `{"name": "${fileName}", "parent": {"id": "${folderId}"}}`
+    );
+
+    let response = await fetch(`https://upload.box.com/api/2.0/files/${fileId}/content`, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      body: form,
+      contentType: false,
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await uploadTSVVersion(data, fileName, folderId, fileId);
+    } else if (response.status === 201) {
+      return response.json();
+    } else if (response.status === 409) {
+      return {
+        status: response.status,
+        json: await response.json(),
+      };
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await uploadTSVVersion(data, fileName, folderId, fileId);
   }
 };
 

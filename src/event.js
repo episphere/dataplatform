@@ -31,7 +31,11 @@ import {
   json2other,
   getUser,
   updateBoxCollaboratorTime,
-  publicDataFolder
+  publicDataFolder,
+  uploadTSV,
+  liveUpdateFolder,
+  livePublicationFile,
+  uploadTSVVersion
 } from "./shared.js";
 import { renderDataSummary } from "./pages/about.js";
 import { variables } from "./variables.js";
@@ -1655,6 +1659,7 @@ const addEventUpdateSummaryStatsForm = () => {
     link.setAttribute("href", encodedUri);
     link.setAttribute("download", `DCEG_Publications.tsv`);
     link.click();
+    await uploadTSVVersion(tsvContent, `DCEG_Publications.tsv`, liveUpdateFolder, livePublicationFile)
     form.innerHTML = `Complete: Please upload file to: </br> <a href="https://github.com/episphere/dataplatform/tree/production/imports" target="__blank">DCEG PDR GitHub</a>`
     return;
     // const folderIds = Array.from(selectedBtn).map((btn) =>

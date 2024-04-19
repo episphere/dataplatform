@@ -33,19 +33,6 @@ export const publicationNoSign = (modified_at) => {
                 </div>
             </div>
         </div>
-
-        ${
-          localStorage.parms &&
-          JSON.parse(localStorage.parms).login &&
-          emailsAllowedToUpdateData.indexOf(
-            JSON.parse(localStorage.parms).login
-          ) !== -1
-            ? `
-            <div class="main-summary-row"><button id="updateSummaryStatsData" class="btn btn-outline-dark" aria-label="Update publication data" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#confluenceMainModal">Update data</button></div>
-        `
-            : ``
-        }
-      
         <div class="main-summary-row">
             <div class="col-xl-2 filter-column div-border white-bg align-left p-2" id="summaryFilterSiderBar">
                 <div class="main-summary-row">
@@ -160,6 +147,9 @@ export const publicationAdmin = (modified_at) => {
         <div class="main-summary-row">
           <button id="updateSummaryStatsData" class="btn btn-outline-dark" aria-label="Update publication data" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#confluenceMainModal">Update data
           </button>
+
+          <a id="updateToGithub" href="https://github.com/episphere/dataplatform/tree/production/imports" target="__blank" class="btn btn-outline-dark" data-backdrop="static">Github Page
+          </a>
         </div>
         <div class="main-summary-row">
             <div class="col-xl-2 filter-column div-border white-bg align-left p-2" id="summaryFilterSiderBar">
@@ -197,6 +187,7 @@ export const publicationAdmin = (modified_at) => {
 const getDescription = async (signedIn) => {
   const data = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/production/imports/DCEG_Publications.tsv")).text();
   const tsv = tsv2Json2(data);
+  console.log(tsv);
   const json = tsv.data;
   const headers = tsv.headers;
   json.forEach((obj) => {
