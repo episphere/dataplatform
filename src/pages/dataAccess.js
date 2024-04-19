@@ -20,8 +20,7 @@ export const dataAccessHowTo = () => {
 
                     To request access to data on the PDR, the requestor must have an 
                     <a href="https://public.era.nih.gov/commonsplus/public/login.era?TARGET=https%3A%2F%2Fpublic.era.nih.gov%3A443%2Fcommons" target="_blank">eRA Commons account</a> and perform the 
-                    steps outlined below. The following link provides screenshots of these steps: (enter link to PDF of 
-                    screen shots – to be created once PDR Box account created)
+                    steps outlined below.
                     
                     <br><br>
                     ${!localStorage.parms?
@@ -60,7 +59,7 @@ export const dataAccessHowTo = () => {
                         form, along with information about the data to which you are requesting access.</li>
                         <li>Complete the data access request form and select “Send Form” to submit it to the DCEG PDR DAC.</li>
                         <li>The DCEG DAC will review the request to ensure that the proposed research is consistent with the data 
-                        use limitations associated with the requested data (refer to the DCEG PDR DAC Charter for more information)</li>
+                        use limitations associated with the requested data (refer to the <a href="./static/files/DCEG_DAC_Charter.docx" download> DCEG PDR DAC Charter for more information</a>)</li>
                     </ul>
 
                     <b>${!localStorage.parms?`4)`:`2)`} How to access data </b>
