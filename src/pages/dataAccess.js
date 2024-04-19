@@ -11,8 +11,8 @@ export const dataAccessHowTo = () => {
                     Data posted to the DCEG Publication Data Repository (PDR) is made accessible to the research community 
                     in accordance with the consent provided by the study participants and in compliance with the 
                     <a href="https://dceg.cancer.gov/tools/data-sharing" target="_blank">DCEG</a> and 
-                    <a href="https://sharing.nih.gov/data-management-and-sharing-policy" target="_blank">NIH</a> data sharing policy. Data on the PDR is governed by the DCEG PDR data access coordinating committee 
-                    (DAC; provide link to DAC guidelines). Requests for access to data are reviewed by the DCEG PDR DAC to 
+                    <a href="https://sharing.nih.gov/data-management-and-sharing-policy" target="_blank">NIH</a> data sharing policy. Data on the PDR is governed by the <a href="/static/files/DCEG_DAC_Charter.docx" download> DCEG PDR data access coordinating committee 
+                    (DAC)</a>. Requests for access to data are reviewed by the DCEG PDR DAC to 
                     ensure that the proposed research is consistent with the data use and limitations as defined by the 
                     consent provided by study participants.
                     
