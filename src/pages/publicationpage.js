@@ -101,18 +101,6 @@ export const publication = (modified_at) => {
                 </div>
             </div>
         </div>
-
-        ${
-          localStorage.parms &&
-          JSON.parse(localStorage.parms).login &&
-          emailsAllowedToUpdateData.indexOf(
-            JSON.parse(localStorage.parms).login
-          ) !== -1
-            ? `
-            <div class="main-summary-row"><button id="updateSummaryStatsData" class="btn btn-outline-dark" aria-label="Update publication data" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#confluenceMainModal">Update data</button></div>
-        `
-            : ``
-        }
       
         <div class="main-summary-row">
             <div class="col-xl-2 filter-column div-border white-bg align-left p-2" id="summaryFilterSiderBar">
@@ -147,6 +135,65 @@ export const publication = (modified_at) => {
   getDescription(true);
 };
 
+export const publicationAdmin = (modified_at) => {
+  let template = `
+  <div class="main-summary-row">
+         <div class="row align-left w-100 m-0">
+              <h1 class="col page-header pl-0 pt-2">Datasets from DCEG publications</h1>
+                <div class="ml-auto allow-overflow mr-2" style="margin:1rem 0" id="pagesContainer"></div>
+                <div class="ml-auto mt-3 mb-3 mr-2" id="pageSizeContainer"></div>
+                <div class="ml-auto mt-3 mb-3" id="downloadContainer">
+                    <div class="col-md-12 p-0 dropdown">
+                        <div class="grid-elements ">
+                            <button title="Download" class="transparent-btn form-control dropdown-toggle dropdown-btn" data-toggle="dropdown" id="downloadDictionary" style="color:#000000 !important">
+                                Download <i class="fas fa-download" style="color:#000000 !important"></i>
+                            </button>
+                            <div class="dropdown-menu navbar-dropdown" aria-labelledby="downloadDictionary">
+                                <button class="transparent-btn dropdown-item dropdown-menu-links" title="Download dictionary as csv" id="downloadDictionaryCSV">CSV</button>
+                                <button class="transparent-btn dropdown-item dropdown-menu-links" title="Download dictionary as tsv" id="downloadDictionaryTSV">TSV</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-summary-row">
+          <button id="updateSummaryStatsData" class="btn btn-outline-dark" aria-label="Update publication data" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#confluenceMainModal">Update data
+          </button>
+        </div>
+        <div class="main-summary-row">
+            <div class="col-xl-2 filter-column div-border white-bg align-left p-2" id="summaryFilterSiderBar">
+                <div class="main-summary-row">
+                    <div class="col-xl-12 pl-1 pr-0">
+                        <span class="font-size-17 font-bold">Filter</span>
+                        <div id="filterDataCatalogue" class="align-left"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-10 padding-right-zero font-size-16" id="summaryStatsCharts">
+                <button id="filterBarToggle"><i class="fas fa-lg fa-caret-left"></i></button>
+                <!---<div class="main-summary-row pl-2" style="min-height: 10px;margin-bottom: 1rem;">
+                    <div class="col white-bg div-border align-left font-size-17" style="padding: 0.5rem;" id="listFilters">
+                        <span class="font-bold">Region:</span> All
+                    </div>
+                </div>--->
+                <div class="main-summary-row pl-2">
+                    <div class="col-xl-12 pb-2 pl-0 pr-0 white-bg div-border">
+                        <div class="pt-0 pl-2 pb-2 pr-2 allow-overflow" style="height: calc(100vh - 190px) !important;min-height: 500px;" id="descriptionBody"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-summary-row">
+            <div class="offset-xl-2 col data-last-modified align-left mt-3 mb-0 pl-4" id="dataLastModified">
+                Data last modified at - ${new Date(modified_at).toLocaleString()}
+            </div>
+        </div>
+    `;
+  document.getElementById("overview").innerHTML = template;
+  getDescriptionAdmin(true);
+};
+
 const getDescription = async (signedIn) => {
   const data = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/production/imports/DCEG_Publications.tsv")).text();
   const tsv = tsv2Json2(data);
@@ -161,19 +208,6 @@ const getDescription = async (signedIn) => {
     if (obj["dsr"] === "true") obj["dsr"] = "Disease-Specific Research";
     if (obj["dsr_value"] === undefined) obj["dsr_value"] = "False";
   });
-  // json.forEach((obj) => {
-  //   if (obj["Cohort name"]) obj["Cohort name"] = obj["Cohort name"].trim();
-  //   if (obj["Acronym"]) obj["Acronym"] = obj["Acronym"].trim();
-  //   const consortium = obj["Cohort name"] ? obj["Cohort name"] : undefined;
-  //   const studyAcronym = obj["Acronym"] ? obj["Acronym"] : undefined;
-  //   if (studyAcronym && newJsons[`${consortium}${studyAcronym}`] === undefined)
-  //     newJsons[`${consortium}${studyAcronym}`] = {};
-  //   if (studyAcronym) {
-  //     prevAcronym = `${consortium}${studyAcronym}`;
-  //     newJsons[`${consortium}${studyAcronym}`] = obj;
-  //   } else {
-  //   }
-  // });
 
   const allJournals = [];
   Object.values(json).forEach((dt) => {
@@ -183,10 +217,22 @@ const getDescription = async (signedIn) => {
     });
   });
 
+  const allRestrictions = [];
+  Object.values(json).forEach((dt) => {
+    if (dt["res"] === undefined) return;
+    dt["res"].split(",").forEach((ctr) => {
+        if (ctr.trim()) allRestrictions.push(ctr.trim());
+    });
+  });
+
   const uniqueJournals = allJournals
     .filter((d, i) => d && allJournals.indexOf(d.trim()) === i)
     .sort();
   const allTitles = Object.values(json).map((dt) => dt["title"]);
+
+  const uniqueRestrictions = allRestrictions
+  .filter((d, i) => d && allRestrictions.indexOf(d.trim()) === i)
+  .sort();
 
   // const countries = allCountries
   //   .filter((d, i) => allCountries.indexOf(d) === i)
@@ -220,34 +266,163 @@ const getDescription = async (signedIn) => {
             `;
   });
   filterTemplate += `
-                  </ul>
-                    <label class="filter-label font-size-13" for="restrictionsList">Restrictions</label>
-                    <ul class="remove-padding-left font-size-15 filter-sub-div allow-overflow" id="restrictionsList">
+    </ul>
+      <label class="filter-label font-size-13" for="restrictionsList">Restrictions</label>
+        <ul class="remove-padding-left font-size-15 filter-sub-div allow-overflow" id="restrictionsList">`
+
+    uniqueRestrictions.forEach((res) => {
+    filterTemplate += `
+                  <li class="filter-list-item">
+                      <input type="checkbox" data-restrictions="${res}" id="label${res}" class="select-restrictions" style="margin-left: 1px !important;">
+                      <label for="label${res}" class="restrictions-name" title="${res}">${res}</label>
+                  </li>
+        `;
+    })
+  // filterTemplate += `
+  //                 </ul>
+  //                   <label class="filter-label font-size-13" for="restrictionsList">Restrictions</label>
+  //                   <ul class="remove-padding-left font-size-15 filter-sub-div allow-overflow" id="restrictionsList">
+  //                     <li class="filter-list-item">
+  //                         <input type="checkbox" data-restrictions="nores" id="labelnores" class="select-restrictions" style="margin-left: 1px !important;">
+  //                         <label for="labelnores" class="restrictions-name" title="nores">No Restrictions</label>
+  //                     </li>
+  //                     <li class="filter-list-item">
+  //                         <input type="checkbox" data-restrictions="hmb" id="labelhmb" class="select-restrictions" style="margin-left: 1px !important;">
+  //                         <label for="labelhmb" class="restrictions-name" title="hmb">Health/Medical/Biomedical</label>
+  //                     </li>
+  //                     <li class="filter-list-item">
+  //                         <input type="checkbox" data-restrictions="ngm" id="labelngm" class="select-restrictions" style="margin-left: 1px !important;">
+  //                         <label for="labelngm" class="restrictions-name" title="ngm">No General Methods</label>
+  //                     </li>
+  //                     <li class="filter-list-item">
+  //                         <input type="checkbox" data-restrictions="nfp" id="labelnfp" class="select-restrictions" style="margin-left: 1px !important;">
+  //                         <label for="labelnfp" class="restrictions-name" title="nfp">Not for Profit Use Only</label>
+  //                     </li>
+  //                     <li class="filter-list-item">
+  //                         <input type="checkbox" data-restrictions="gru" id="labelgru" class="select-restrictions" style="margin-left: 1px !important;">
+  //                         <label for="labelgru" class="restrictions-name" title="gru">General Research Use</label>
+  //                     </li>
+  //                     <li class="filter-list-item">
+  //                         <input type="checkbox" data-restrictions="dsr" id="labeldsr" class="select-restrictions" style="margin-left: 1px !important;">
+  //                         <label for="labeldsr" class="restrictions-name" title="dsr">Disease-Specific Research</label>
+  //                     </li>
+  //           `;
+  filterTemplate += `
+                    </ul>
+                </div>
+            </div>
+        </div>
+    `;
+  document.getElementById("filterDataCatalogue").innerHTML = filterTemplate;
+  // const descriptions = Object.values(json);
+  document.getElementById("searchContainer").innerHTML = `
+    <div class="input-group">
+        <input type="search" class="form-control rounded" autocomplete="off" placeholder="Search min. 3 characters" aria-label="Search" id="searchDataCatalog" aria-describedby="search-addon" />
+        <span class="input-group-text border-0 search-input">
+            <i class="fas fa-search"></i>
+        </span>
+    </div>
+    `;
+  addEventFilterDataCatalogue(json, headers);
+  downloadFiles(json, headers, "study_description", true);
+  renderStudyDescription(json, defaultPageSize, headers, signedIn);
+  paginationHandler(json, defaultPageSize, headers);
+  document.getElementById("pageSizeContainer").innerHTML = pageSizeTemplate(
+    json,
+    defaultPageSize
+  );
+  addEventPageSizeSelection(json, headers);
+  addEventFilterBarToggle();
+};
+
+const getDescriptionAdmin = async (signedIn) => {
+  //const data = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/production/imports/DCEG_Publications.tsv")).text();
+  const data = await getFile(1506807971290)
+  const tsv = tsv2Json2(data);
+  console.log(tsv);
+  const json = tsv.data;
+  const headers = tsv.headers;
+  // json.forEach((obj) => {
+  //   if (obj["nores"] === "true") obj["nores"] = "No Restrictions";
+  //   if (obj["hmb"] === "true") obj["hmb"] = "Health/Medical/Biomedical";
+  //   if (obj["ngm"] === "true") obj["ngm"] = "No General Methods";
+  //   if (obj["nfp"] === "true") obj["nfp"] = "Not for Profit Use Only";
+  //   if (obj["gru"] === "true") obj["gru"] = "General Research Use";
+  //   if (obj["dsr"] === "true") obj["dsr"] = "Disease-Specific Research";
+  //   if (obj["dsr_value"] === undefined) obj["dsr_value"] = "False";
+  // });
+
+  const allJournals = [];
+  Object.values(json).forEach((dt) => {
+    if (dt["journal_name"] === undefined) return;
+    dt["journal_name"].split(",").forEach((ctr) => {
+        if (ctr.trim()) allJournals.push(ctr.trim());
+    });
+  });
+
+  const allRestrictions = [];
+  Object.values(json).forEach((dt) => {
+    if (dt["res"] === undefined) return;
+    dt["res"].split(",").forEach((ctr) => {
+        if (ctr.trim()) allRestrictions.push(ctr.trim());
+    });
+  });
+
+  const uniqueJournals = allJournals
+    .filter((d, i) => d && allJournals.indexOf(d.trim()) === i)
+    .sort();
+  
+  const uniqueRestrictions = allRestrictions
+    .filter((d, i) => d && allRestrictions.indexOf(d.trim()) === i)
+    .sort();
+
+  const allTitles = Object.values(json).map((dt) => dt["title"]);
+
+  // const countries = allCountries
+  //   .filter((d, i) => allCountries.indexOf(d) === i)
+  //   .sort();
+  const uniqueTitles = allTitles
+    .filter((d, i) => d && allTitles.indexOf(d.trim()) === i)
+    .sort();
+
+  let filterTemplate = `
+        <div class="main-summary-row">
+            <div style="width: 100%;">
+                <div class="form-group" margin:0px>
+                    <div id="searchContainer"></div>
+                </div>
+            </div>
+        </div>
+        `;
+  filterTemplate += `
+        <div class="main-summary-row">
+            <div style="width: 100%;">
+                <div class="form-group" margin:0px>
+                    <label class="filter-label font-size-13" for="journalsList">Journal</label>
+                    <ul class="remove-padding-left font-size-15 filter-sub-div allow-overflow" id="journalsList">
+                        `;
+  uniqueJournals.forEach((journ) => {
+    filterTemplate += `
+                <li class="filter-list-item">
+                    <input type="checkbox" data-journal="${journ}" id="label${journ}" class="select-journal" style="margin-left: 1px !important;">
+                    <label for="label${journ}" class="journal-name" title="${journ}">${shortenText(journ,25)}</label>
+                </li>
+            `;
+  });
+
+  filterTemplate += `
+          </ul>
+            <label class="filter-label font-size-13" for="restrictionsList">Restrictions</label>
+              <ul class="remove-padding-left font-size-15 filter-sub-div allow-overflow" id="restrictionsList">`
+
+  uniqueRestrictions.forEach((res) => {
+  filterTemplate += `
                       <li class="filter-list-item">
-                          <input type="checkbox" data-restrictions="nores" id="labelnores" class="select-restrictions" style="margin-left: 1px !important;">
-                          <label for="labelnores" class="restrictions-name" title="nores">No Restrictions</label>
-                      </li>
-                      <li class="filter-list-item">
-                          <input type="checkbox" data-restrictions="hmb" id="labelhmb" class="select-restrictions" style="margin-left: 1px !important;">
-                          <label for="labelhmb" class="restrictions-name" title="hmb">Health/Medical/Biomedical</label>
-                      </li>
-                      <li class="filter-list-item">
-                          <input type="checkbox" data-restrictions="ngm" id="labelngm" class="select-restrictions" style="margin-left: 1px !important;">
-                          <label for="labelngm" class="restrictions-name" title="ngm">No General Methods</label>
-                      </li>
-                      <li class="filter-list-item">
-                          <input type="checkbox" data-restrictions="nfp" id="labelnfp" class="select-restrictions" style="margin-left: 1px !important;">
-                          <label for="labelnfp" class="restrictions-name" title="nfp">Not for Profit Use Only</label>
-                      </li>
-                      <li class="filter-list-item">
-                          <input type="checkbox" data-restrictions="gru" id="labelgru" class="select-restrictions" style="margin-left: 1px !important;">
-                          <label for="labelgru" class="restrictions-name" title="gru">General Research Use</label>
-                      </li>
-                      <li class="filter-list-item">
-                          <input type="checkbox" data-restrictions="dsr" id="labeldsr" class="select-restrictions" style="margin-left: 1px !important;">
-                          <label for="labeldsr" class="restrictions-name" title="dsr">Disease-Specific Research</label>
+                          <input type="checkbox" data-restrictions="${res}" id="label${res}" class="select-restrictions" style="margin-left: 1px !important;">
+                          <label for="label${res}" class="restrictions-name" title="${res}">${res}</label>
                       </li>
             `;
+    })
   filterTemplate += `
                     </ul>
                 </div>
@@ -278,7 +453,7 @@ const getDescription = async (signedIn) => {
 
 const renderStudyDescription = (descriptions, pageSize, headers, signedIn) => {
   let template = "";
-  const newDesc = descriptions.map(selectProps("title", "date", "author", "journal_name", "journal_acro"));
+  const newDesc = descriptions.map(selectProps("title", "date", "author", "journal_name", "journal_acro", "res"));
 	
   let uniqueTitles = [...new Map(newDesc.map((item) => [item["title"], item])).values()];
   // const allTitles = Object.values(newDesc).map((dt) => [dt["title"], dt["date"], dt["author"], dt["journal_name"], dt["journal_acro"]]);
@@ -301,6 +476,7 @@ const renderStudyDescription = (descriptions, pageSize, headers, signedIn) => {
     uniqueTitles.forEach((desc, index) => {
       if (index > pageSize) return;
       var desc2 = descriptions.filter((dt) => dt['title'] === desc["title"]);
+      console.log(desc2);
         template += `
               <div class="card mt-1 mb-1 align-left">
                   <div style="padding: 10px" aria-expanded="false" id="heading${desc["title"].replace(/\s+/g,"").replace(/[^a-zA-Z ]/g, "")}">
@@ -358,35 +534,10 @@ const renderStudyDescription = (descriptions, pageSize, headers, signedIn) => {
                           ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Study</div><div class="col">${desc2["study"]}</div></div>`
                           : ``
                       }
-                      <div class="row mb-1 m-0"><div class="col-md-3 font-bold">Restrictions</div></div>
+                      <!--<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Restrictions</div></div>-->
                       ${
-                        desc2["nores"]==='No Restrictions'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["nores"]}</div></div>`
-                          : ``
-                      }
-                      ${
-                        desc2["hmb"]==='Health/Medical/Biomedical'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["hmb"]}</div></div>`
-                          : ``
-                      }
-                      ${
-                        desc2["ngm"]==='No General Methods'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["ngm"]}</div></div>`
-                          : ``
-                      }
-                      ${
-                        desc2["nfp"]==='Not for Profit Use Only'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["nfp"]}</div></div>`
-                          : ``
-                      }
-                      ${
-                        desc2["gru"]==='General Research Use'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["gru"]}</div></div>`
-                          : ``
-                      }
-                      ${
-                        desc2["dsr"]==='Disease-Specific Research'
-                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold"></div><div class="col">${desc2["dsr"]}: ${desc2["dsr_value"]}</div></div>`
+                        desc2["res"]
+                          ? `<div class="row mb-1 m-0"><div class="col-md-3 font-bold">Restrictions</div><div class="col">${desc2["res"]}</div></div>`
                           : ``
                       }
                       `;
@@ -538,17 +689,18 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
   }
 
   if (restrictionsSelected.length > 0) {
-    filteredData = filteredData.filter((dt) => {
-      let found = false;
-      if (restrictionsSelected.includes("nores") && dt["nores"] !== "false")  found = true;
-      if (restrictionsSelected.includes("hmb") && dt["hmb"] !== "false") found = true;
-      if (restrictionsSelected.includes("ngm") && dt["ngm"] !== "false") found = true;
-      if (restrictionsSelected.includes("nfp") && dt["nfp"] !== "false") found = true;
-      if (restrictionsSelected.includes("gru") && dt["gru"] !== "false") found = true;
-      if (restrictionsSelected.includes("dsr") && dt["dsr"] !== "false") found = true;
-      if (restrictionsSelected.includes("dsr_value") && dt["dsr_value"] !== "false") found = true;
-      if (found) return dt;
-    });
+    filteredData = filteredData.filter(
+      (dt) => restrictionsSelected.indexOf(dt["res"]) !== -1
+      // let found = false;
+      // if (restrictionsSelected.includes("nores") && dt["nores"] !== "false")  found = true;
+      // if (restrictionsSelected.includes("hmb") && dt["hmb"] !== "false") found = true;
+      // if (restrictionsSelected.includes("ngm") && dt["ngm"] !== "false") found = true;
+      // if (restrictionsSelected.includes("nfp") && dt["nfp"] !== "false") found = true;
+      // if (restrictionsSelected.includes("gru") && dt["gru"] !== "false") found = true;
+      // if (restrictionsSelected.includes("dsr") && dt["dsr"] !== "false") found = true;
+      // if (restrictionsSelected.includes("dsr_value") && dt["dsr_value"] !== "false") found = true;
+      // if (found) return dt;
+    );
   }
 
   if (journalSelected.length === 0 && restrictionsSelected === 0) filteredData = descriptions;
@@ -584,13 +736,7 @@ const filterDataBasedOnSelection = (descriptions, headers) => {
     if (dt["author"].toLowerCase().includes(currentValue)) found = true;
     if (dt["date"].toLowerCase().includes(currentValue)) found = true;
     if (dt["journal_name"].toLowerCase().includes(currentValue)) found = true;
-    if (dt["nores"].toLowerCase().includes(currentValue)) found = true;
-    if (dt["hmb"].toLowerCase().includes(currentValue)) found = true;
-    if (dt["ngm"].toLowerCase().includes(currentValue)) found = true;
-    if (dt["nfp"].toLowerCase().includes(currentValue)) found = true;
-    if (dt["gru"].toLowerCase().includes(currentValue)) found = true;
-    if (dt["dsr"].toLowerCase().includes(currentValue)) found = true;
-    if (dt["dsr_value"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["res"].toLowerCase().includes(currentValue)) found = true;
     if (found) return dt;
   });
   searchedData = searchedData.map((dt) => {

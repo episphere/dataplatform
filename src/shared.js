@@ -51,7 +51,9 @@ export const dataPlatformFolder = 196554876811;
 
 export const dataPlatformDataFolder = 239899508915
 
-export const publicDataFolder = 196819085811;
+export const publicDataFolder = 259664212144;
+
+export const liveUpdateFolder = 196819085811;
 
 export const getFolderItems = async (id) => {
   try {

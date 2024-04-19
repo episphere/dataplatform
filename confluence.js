@@ -1,7 +1,7 @@
 import { navBarMenutemplate } from "./src/components/navBarMenuItems.js";
 import { infoDeck, infoDeckAfterLoggedIn } from "./src/pages/homePage.js";
 import { testPage2 } from "./src/pages/researchStudies.js";
-import { publication, publicationNoSign } from "./src/pages/publicationpage.js";
+import { publication, publicationNoSign, publicationAdmin } from "./src/pages/publicationpage.js";
 import { myDCEGpublication } from "./src/pages/myDCEG.js";
 import { instruction } from "./src/pages/uploadinstruction.js";
 import { dataSubmissionTemplate,
@@ -179,7 +179,7 @@ export const confluence = async () => {
                           Welcome to the DCEG PDR. It appears you don't currently have access to request data. 
                           To gain access, please send an email by using this 
                           <a href = 
-                            "mailto:nci_dceg_pdr@nih.gov?subject=PDR Request Access For ${localStorage.parms ? JSON.parse(localStorage.parms).login : 'Unknown'}&body=**Please do not change the subject line or body of this email or your request may be denied.**%0D%0ARequest to grant access to ${localStorage.parms ? JSON.parse(localStorage.parms).login : 'Unknown'} allowing for request form submission.">
+                            "mailto:nci_dceg_pdr@nih.gov?subject=PDR Request Access For ${localStorage.parms ? JSON.parse(localStorage.parms).login : 'Unknown'}&body=**Please send this email as is. Do not change the subject line or body of this email or your request may be denied.**%0D%0ARequest to grant access to ${localStorage.parms ? JSON.parse(localStorage.parms).login : 'Unknown'} allowing for request form submission.">
                             link.
                           </a>
                           <br>
@@ -223,6 +223,7 @@ export const confluence = async () => {
     const MyDCEGPageElement_upload = document.getElementById("myDCEGID_upload");
     const uploadInstructionElement = document.getElementById("instructionID");
     const dataGovernance = document.getElementById("dataGovernance");
+    const adminDataPage = document.getElementById("adminpublicationID")
 
     // const platformTutorialElement = document.getElementById('platformTutorial');
     // const dataAnalysisElement = document.getElementById('dataAnalysis');
@@ -463,9 +464,23 @@ export const confluence = async () => {
       console.log('publication');
       aboutConfluence("overview");
       publication();
-      addEventUpdateSummaryStatsData();
+      //addEventUpdateSummaryStatsData();
       hideAnimation();
     });
+    if (adminDataPage) {
+      adminDataPage.addEventListener("click", () => {
+        if (adminDataPage.classList.contains("navbar-active")) return;
+        const element = document.getElementById("adminpublicationID");
+        if (!element) return;
+        if (element.classList.contains("navbar-active")) return;
+        document.title = "ADMIN DCEG - Publication";
+        assignNavbarActive(element);
+        console.log('publicationAdmin');
+        aboutConfluence("overview");
+        publicationAdmin();
+        addEventUpdateSummaryStatsData();
+        hideAnimation();     
+    })};
     if (MyDCEGPageElement){
     MyDCEGPageElement.addEventListener("click", () => {
       if (MyDCEGPageElement.classList.contains("navbar-active")) return;
@@ -800,6 +815,9 @@ const manageHash = async () => {
     element.click();
   } else if (hash === "#publicationpage") {
     const element = document.getElementById("publicationID");
+    element.click();
+  } else if (hash === "#adminpublicationpage") {
+    const element = document.getElementById("adminpublicationID");
     element.click();
   } else if (hash === "#myDCEG") {
     const element = document.getElementById("myDCEGID");

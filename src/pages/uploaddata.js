@@ -537,7 +537,7 @@ export async function subForm(eventtest) {
     for (var val of dataAdded){
       //console.log(val);
       if (!val.id.includes('data_upload_description')){
-        uploadStructure(val.files[0], folderId3, document.getElementById(val.id.replace('data_upload', 'data_upload_description')).value);
+        await uploadStructure(val.files[0], folderId3, document.getElementById(val.id.replace('data_upload', 'data_upload_description')).value);
       }
     }
     const headers = Object.keys(obj[0]);
@@ -614,6 +614,12 @@ export async function folderStructure(folderID, folderName) {
   };
 }
 
+// export function fileValidation() {
+//   if(this.item === undefined) {return};
+//   var fileInput = document.getElementById(this.id);
+//   console.log(fileInput);
+// }
+
 export async function nextPrev(n, currentTab) {
   // This function will figure out which tab to display
   var x = document.getElementsByClassName("tab");
@@ -639,7 +645,7 @@ export async function nextPrev(n, currentTab) {
     // var values = Array.from(ele.selectedOptions).map(v=>v.value);
     let template =`<h3><b>Upload Manuscript Data, Data Dictionary, and Other Associated Metadata</b></h3>
     <div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
-      <i>Please attempt to upload all data files and dictionaries in machine readable formats (e.g., csv, tsv, json).</i>
+      <b><i>To support FAIR Research Practices, DCEG strongly encourages the sharing of all data and metadata files in machine readable formats (e.g., csv, tsv, json).</i></b>
     </div>`
     const ele = document.getElementsByName('studySel');
     const eleAll = Array.from(ele).filter((checkbox) => checkbox.checked).map((checkbox) => document.getElementById(checkbox.value));
@@ -662,13 +668,13 @@ export async function nextPrev(n, currentTab) {
           <b>Study Name: </b> ${study}
             <div class='input-group input-group2' >
               <label for="${id}data_upload"> <b>Upload data</b> </label>
-              <input id="${id}data_files" name="${id}data_upload" type="file" single required/>
+              <input id="${id}data_files" name="${id}data_upload" type="file" single required onchange=""/>
               <input id="${id}data_description" name="${id}data_upload" type="text" placeholder="Provide description of uploaded data files including any software required to view data. Note, this will be viewable by users of the data" required/>
             </div>
             <div class='input-group input-group2'>
               <label for="${id}dict_upload"> <b>Upload data dictionary</b> </label>
-              <input id="${id}data_dictionary" name="${id}dict_upload" type="file" single required/> 
-              <input id="${id}data_dictionary_description" name="${id}dict_upload" type="text" placeholder="Provide description of uploaded data dictionary. Note, this will be viewable by users of the data" required/>            
+              <input id="${id}data_dictionary" name="${id}dict_upload" type="file" single required onchange=""/> 
+              <input id="${id}data_dictionary_description" name="${id}dict_upload" type="text" placeholder="Provide description of uploaded data dictionary. This will be viewable by users of the data. Note, the PDR does not permit sharing of data dictionaries as PDFs" required/>            
             </div>
             <div class='input-group input-group2 d-none' id='${id}addAttachment'>
             </div>
@@ -702,14 +708,14 @@ export async function nextPrev(n, currentTab) {
       var newInput = document.createElement('div');
       const selection = ["Data", "Dictionary", "Other Metadata"];
       newInput.className = 'input-addedFiles input-group'
-
+      
       newInput.innerHTML = `
         <select class="datatype-select" name="${id}data${num}">
           <option value="Data">Data</option>
           <option value="Dictionary">Dictionary</option>
           <option value="MetaData">Other Metadata</option>
         </select>
-        <input id="${id}data_upload${num}" name="${id}data${num}" type="file" single required/>
+        <input id="${id}data_upload${num}" name="${id}data${num}" type="file" single required onchange=""/>
         <input id="${id}data_upload_description${num}" name="${id}data${num}" type="text" placeholder="Provide description of uploaded data/metadata. Note, this will be viewable by users of the data" required/>
       `
       idaddAttachment.appendChild(newInput);

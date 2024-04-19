@@ -30,7 +30,8 @@ import {
   tsv2Json,
   json2other,
   getUser,
-  updateBoxCollaboratorTime
+  updateBoxCollaboratorTime,
+  publicDataFolder
 } from "./shared.js";
 import { renderDataSummary } from "./pages/about.js";
 import { variables } from "./variables.js";
@@ -1561,7 +1562,7 @@ export const addEventUpdateSummaryStatsData = () => {
                             </button>`;
 
     let template = '<form id="updateSummaryStatsForm">';
-    template += `<p>Updating data will download an updated publication </br> file to be uploaded to: <a href="https://github.com/episphere/dataplatform/tree/production/imports" target="__blank">DCEG PDR GitHub</a></p>`;
+    template += `<p>Update data will update this Admin page and download a new publication file to be uploaded to: <a href="https://github.com/episphere/dataplatform/tree/production/imports" target="__blank">DCEG PDR GitHub</a> for public table to be updated.</p>`;
 
     template +=
       '<div class="modal-footer"><button type="submit" class="btn btn-outline-primary">Update data</button></div>';
@@ -1627,7 +1628,7 @@ const addEventUpdateSummaryStatsForm = () => {
   const form = document.getElementById("updateSummaryStatsForm");
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const files = await getFolderItems(196819085811);
+    const files = await getFolderItems(publicDataFolder);
     if (files.length === 0) return;
     console.log(files.entries);
     form.innerHTML = "Gathering data...";

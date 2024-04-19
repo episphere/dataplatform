@@ -92,6 +92,15 @@ export const navBarMenutemplate = () => {
               id="approvedData"
               >Approved Data Requests to the PDR
             </a>
+            ${JSON.parse(localStorage.parms).login === 'kopchickbp@nih.gov' || JSON.parse(localStorage.parms).login === 'ahearntu@nih.gov'
+              ?`<a
+              class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
+              href="#adminpublicationpage"
+              id="adminpublicationID"
+              >ADMIN Data Page
+            </a>`
+            :``
+            }
           </div>
         </div>
         ${JSON.parse(localStorage.parms).login.split('@')[1].includes('deloitte.com') || JSON.parse(localStorage.parms).login.split('@')[1].includes('nih.gov')
@@ -103,7 +112,7 @@ export const navBarMenutemplate = () => {
             <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
             <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#uploadinstruction" id="instructionID">How to upload data from my published manuscript </a>
             <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG/upload" id="myDCEGID_upload"> Upload new data</a>
-            <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG" id="myDCEGID">See my uploaded data</a>
+            <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG" id="myDCEGID" hidden>See my uploaded data</a>
             <div id="governanceNav" class="grid-elements"></div>
 
             </div>

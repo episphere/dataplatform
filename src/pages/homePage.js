@@ -111,7 +111,7 @@ export const infoDeckAfterLoggedIn = async () => {
   template += cardContents({
     header: "About PDR",
     button: "Learn about the PDR and how to request access to data",
-    href: "#data_access/overview",
+    href: "#dataAccessHowTo",
     icon: "fa-book",
     explanation: "",
   });

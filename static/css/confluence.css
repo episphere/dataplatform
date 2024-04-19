@@ -2477,3 +2477,8 @@ button.previous-btn {
   font-weight: bolder;
   transition: 150ms border-color linear;
 }
+
+::placeholder {
+  color: #4a4a4a;
+  opacity: 1; /* Firefox */
+}
