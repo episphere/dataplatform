@@ -90,6 +90,7 @@ export const navBarMenutemplate = () => {
               class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
               href="#approvedData"
               id="approvedData"
+              hidden
               >Approved Data Requests to the PDR
             </a>
             ${JSON.parse(localStorage.parms).login === 'kopchickbp@nih.gov' || JSON.parse(localStorage.parms).login === 'ahearntu@nih.gov'

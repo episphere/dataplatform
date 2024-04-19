@@ -150,6 +150,7 @@ export const confluence = async () => {
     }
     if (localStorage.parmsERa && JSON.parse(localStorage.parmsERa).access_token) {
       const responseERa = await getCurrentUserERa();
+      console.log(responseERa);
       showAnimation();
       if (responseERa) {
         const lclStrERa = JSON.parse(localStorage.parmsERa);
