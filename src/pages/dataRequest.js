@@ -284,10 +284,12 @@ export const formSection = async (activeTab, showDescripton) => {
               </div>
           </div>
           <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
-            <div class="input-group input-group2">
+            <div>
+              <p>To request access to DCEG data on the Publication Data Repository, please use the following link to log-in with your eRA credentials.</p>
               <button class="nav-link nav-menu-links custom-btn" title="Login eRA" id="logineRA">
                 <img src="./static/images/era.png"> Login eRA
               </button>
+              <p>Extramural researchers should use "Login.gov" to provide their eRA credentials, and NCI intramural researchers should use their PIV card credentials.</p>
             </div>
           </div>
         </div>
