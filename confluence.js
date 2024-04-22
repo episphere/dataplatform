@@ -312,9 +312,9 @@ export const confluence = async () => {
         const confluenceDiv = document.getElementById("confluenceDiv");
         showAnimation();
         assignNavbarActive(dataDictionaryElement);
-        document.title = "DCEG - Cohorts";
+        document.title = "DCEG - Studies";
         confluenceDiv.innerHTML = dataSummary(
-          "DCEG Cohorts",
+          "DCEG Studies",
           true,
           false,
           false
@@ -449,7 +449,7 @@ export const confluence = async () => {
         const element = document.getElementById("data2");
         if (!element) return;
         if (element.classList.contains("navbar-active")) return;
-        document.title = "DCEG Cohorts";
+        document.title = "DCEG Studies";
         assignNavbarActive(element);
         confluenceDiv.innerHTML = testPage2();
         hideAnimation();
@@ -742,9 +742,9 @@ const manageRouter = async () => {
       return;
     showAnimation();
     assignNavbarActive(dataDictionaryElement);
-    document.title = "DCEG - Cohorts";
+    document.title = "DCEG - Studies";
     confluenceDiv.innerHTML = dataSummary(
-      "DCEG Cohorts",
+      "DCEG Studies",
       true,
       false,
       false,

@@ -43,9 +43,9 @@ export const infoDeck = () => {
     explanation: "",
   });
   template += cardContents({
-    header: "DCEG Cohorts",
+    header: "DCEG Studies",
     button: "Data Platforms for DCEG studies",
-    href: "#researchStudies",
+    href: "https://dceg.cancer.gov/research/who-we-study",
     icon: "fa-database",
     explanation: "",
   });
@@ -130,9 +130,9 @@ export const infoDeckAfterLoggedIn = async () => {
   //   explanation: "",
   // });
   template += cardContents({
-    header: "DCEG Cohorts",
+    header: "DCEG Studies",
     button: "Data Platforms for Datasets from DCEG Studies",
-    href: "#researchStudies",
+    href: "https://dceg.cancer.gov/research/who-we-study",
     icon: "fa-database",
     explanation: "",
   });

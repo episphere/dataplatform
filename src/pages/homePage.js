@@ -37,7 +37,7 @@ export const infoDeck = () => {
   template += cardContents({
     header: "Research Studies",
     button: "Data Platforms for DCEG studies",
-    href: "#researchStudies",
+    href: "https://dceg.cancer.gov/research/who-we-study",
     icon: "fa-layer-group",
     explanation: "",
   });
