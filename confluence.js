@@ -373,7 +373,8 @@ export const confluence = async () => {
             });
           }
         } else {
-          confluenceDiv.innerHTML = await formSectionOther("form");
+          //confluenceDiv.innerHTML = await formSectionOther("form");
+          $("#dcegPreviewerModal").modal("show");
           hideAnimation();
         }
         //formFunctions();
