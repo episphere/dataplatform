@@ -492,7 +492,7 @@ const renderStudyDescription = (descriptions, pageSize, headers, signedIn) => {
       } else {
         template += `
         <div class-"col-md-1">
-          <button title="Please Log In" class="buttonsubmit" onclick="document.getElementById('loginBoxAppEpisphere').click()"><span class="buttonsubmit__text"> Log In To Request </span></button>
+          <a href="#dataAccessHowTo"><button title="Please Log In" class="buttonsubmit"><span class="buttonsubmit__text"> Data Access Process </span></button></a>
         </div>
         `
       }
