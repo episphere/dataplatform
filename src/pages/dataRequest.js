@@ -476,7 +476,6 @@ template += `
                 
               </div>
               <div class="modal-footer">
-            
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               </div>
             </div>
@@ -2700,12 +2699,13 @@ export async function viewFinalDecisionFiles(files) {
     const shortfilename =
       filename.length > 25 ? filename.substring(0, 24) + "..." : filename;
     //let completion_date = await getChairApprovalDate(fileId);
+    let dtaSigned = false;
     template += `
 <div class="card mt-1 mb-1 align-left" >
     <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
         <div class="row">
-            <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable"><button class="uploadDTA" type="button" name="${shortfilename}_DTAUpload" value="${fileInfo.created_by.login}"><i class="fa-solid fa-file-arrow-up"></i></button></div>
-            <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable"><button class="shareBoxData" type="button" name="${shortfilename}" value="${fileInfo.created_by.login}"><i class="fa-solid fa-user-plus"></i></button></div>
+            <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable"><button class="uploadDTA" type="button" name="${shortfilename}_DTAUpload" value="${fileInfo.parent.id}"><i class="fa-solid fa-file-arrow-up"></i></button></br>--/--/--</div>
+            <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable"><button class="shareBoxData" type="button" name="${shortfilename}" value="${fileInfo.created_by.login}" ${dtaSigned ? '' : 'disabled'}><i class="fa-solid fa-user-plus"></i></button></br>--/--/--</div>
             <div class="col-lg-3 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
             <div class="col-lg-2 text-left">${fileInfo.created_by.name}</div>
             <div class="col-lg-1 text-center">${new Date(fileInfo.created_at).toDateString().substring(4)}</div>
@@ -2744,6 +2744,7 @@ export async function viewFinalDecisionFiles(files) {
   if (document.getElementById("files") != null)
     document.getElementById("files").innerHTML = template;
     shareBoxDataFunction();
+    uploadDTAFunction();
 }
 
 function filterSection(files) {
@@ -2858,3 +2859,61 @@ const shareBoxDataFunction = () => {
     });
   });
 };
+
+const uploadDTAFunction = () => {
+  const btns = Array.from(document.querySelectorAll(".uploadDTA"))
+  btns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      console.log(btn.value);
+      console.log(btn.name);
+      $("#popUpModal").modal("show");
+      uploadDTAModal(btn.value)
+    })
+  })
+}
+
+const uploadDTAModal = async (folderValue) => {
+  console.log("testing function to upload DTA");
+  console.log(folderValue);
+  ///
+  // const responseData = csv2Json(await getFile(boxUpdateFile)); // Get summary level data
+  // const lastModified = (await getFileInfo(boxUpdateFile)).modified_at;
+  // console.log(responseData.headers);
+  // console.log(responseData.data);
+  // console.log(lastModified);
+  // ///
+  // let val = '0';
+  // if(document.getElementById('folderID')) {
+  //   val = document.getElementById('folderID').value
+  // } else {
+  //   val = '239899508915'
+  // }
+  // //let val = '239899508915'
+  // console.log(val);
+  // const array = await getFolderInfo(val); //DCEG: 196554876811 BCRP: 145995765326, Confluence: 137304373658
+  // if (!array) {
+  //   document.getElementById("submitID").classList.toggle('buttonsubmit--loading');
+  //   alert("Error: Please input a valid folder ID and check that you have the necessary permissions to access it.");
+  //   return false;
+  // }
+
+  // let template =
+  //   '<div class="card-body data-governance"><ul class="ul-list-style first-list-item collapsible-items p-0 m-0">';
+  // const ID = array.id;
+  // const consortiaName = array.name;
+  // let type = array.type;
+  // let liClass = type === "folder" ? "collapsible consortia-folder" : "";
+  // let title = type === "folder" ? "Expand / Collapse" : "";
+  // template += `<li class="collapsible-items">
+  //           <button class="${liClass}" data-toggle="collapse" href="#toggle${ID}">
+  //               <i title="${title}" data-type="${type}" data-id="${ID}" data-folder-name="${consortiaName}" data-status="pending" class="lazy-loading-spinner"></i>
+  //           </button> ${consortiaName}
+  //       </li>
+  //       `;
+  // template += `</ul></div></div>`;
+  // document.getElementById("folderInput").innerHTML = template;
+  // dataGovernanceLazyLoad();
+  // dataGovernanceCollaboration();
+  // document.getElementById("submitID").classList.toggle('buttonsubmit--loading');
+  return false;
+}

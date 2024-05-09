@@ -1,4 +1,4 @@
-import {csv2Json, csv2JsonTest, uploadFile, uploadFileAny, uploadWordFile, json2other, uploadTSV, createFolder, getFolderItems, descFolder, dataPlatformFolder, dataPlatformDataFolder, publicDataFolder, descFile, showAnimation, hideAnimation, selectProps} from "./../shared.js";
+import {csv2Json, csv2JsonTest, uploadFile, uploadAnyFileVersion, uploadFileAny, uploadWordFile, json2other, uploadTSV, createFolder, getFolderItems, descFolder, dataPlatformFolder, dataPlatformDataFolder, publicDataFolder, descFile, showAnimation, hideAnimation, selectProps, uploadFileVersion} from "./../shared.js";
 import { config } from "./../config.js";
 import { addEventFilterBarToggle } from "../event.js";
 let previousValue = "";
@@ -25,7 +25,8 @@ export const uploadData = () => {
             <div class="modal-body" id='modalBody'>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn-close btn btn-secondary" data-dismiss="modal" aria-label="Return">Return</button>
+              <button type="button" class="btn btn-secondary confirmButton" data-dismiss="modal" aria-label="Confirm">Confirm</button>
             </div>
           </div>
         </div>
@@ -116,7 +117,7 @@ export const dataUploadForm = async () => {
             <div class='input-group input-group2'>
               <label for="author_info" style="width: 100%"> <b>First author listed on manuscript</b><span class='required-label'>*</span></label>
               <input id="author_first" name="author_info" type="text" placeholder="First Name" style="width: 45%" required/>
-              <input id="author_middle" name="author_info" type="text" placeholder="Middle Initial" style="width: 10%" required/>
+              <input id="author_middle" name="author_info" type="text" placeholder="Middle Initial" style="width: 10%"/>
               <input id="author_last" name="author_info" type="text" placeholder="Last Name" style="width: 45%" required/>
             </div>
 
@@ -555,23 +556,9 @@ export async function subForm(eventtest) {
     document.body.appendChild(link);
   }
   await descFolder(folderId2, manu_title + ', ' + studies);
-  //console.log(obj);
-  // const headers = Object.keys(obj[0]);
-  // const tsvValue = json2other(obj, headers, true).replace(/(<b>)|(<\/b>)/g, "");
-  // let tsvContent =
-  //     "data:text/tsv;charset=utf-8," +
-  //     tsvValue;
-  // const encodedUri = encodeURI(tsvContent);
-  // const link = document.createElement("a");
-  // link.setAttribute("href", encodedUri);
-  // link.setAttribute("download", `test.tsv`);
-  // await uploadTSV(tsvValue, folderName+"_"+folderName2+".tsv", publicDataFolder);
-  // await uploadTSV(tsvValue, folderName+"_"+folderName2+".tsv", folderId3);
-  // link.click();
-  // document.body.appendChild(link);
   document.getElementById("modalBody").innerHTML = `
           <p><b>Process complete.</b></p>
-          <p><b>Please visit the below folders to check all files were properly uploaded.</b></p>
+          <p><b>Please visit the below folders to check all files were properly uploaded and confirm. Confirmation will lock these files.</b></p>
           <p><b>Author Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId}" target="__blank">${folderName}_DCEG_Data_Platform</a></p>
           <p><b>Author Folder ID:</b> ${folderId}</p>
           <p><b>Publication Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId2}" target="__blank">${folderName2}</a></p>
@@ -580,8 +567,9 @@ export async function subForm(eventtest) {
           ;
   $("#popUpModal").modal("show");
   let popup = document.getElementById('popUpModal');
-  let btns = popup.querySelectorAll('button');
-  for (let button of btns) {
+  //let btns = popup.querySelectorAll('button');
+  let confirmButton = popup.getElementsByClassName('confirmButton');
+  for (let button of confirmButton) {
     button.addEventListener('click', function () {
       location.reload();
     })
@@ -594,7 +582,30 @@ export async function subForm(eventtest) {
 export async function uploadStructure(file, folder, description) {
   let fileName = file.name;
   let fileBlob = new Blob([file]);
-  let uploadFile = await uploadFileAny(fileBlob, fileName, folder);
+  console.log(file);
+  console.log(fileBlob);
+  console.log(folder);
+  console.log(description);
+  var uploadFile = 'none';
+  let folderItems = await getFolderItems(folder);
+  console.log(folderItems);
+  for (let item of folderItems.entries){
+    if (item.name === fileName) {
+      console.log(item);
+      console.log('uploading existing file');
+      uploadFile = await uploadAnyFileVersion(fileBlob, item.id, fileName);
+      console.log(uploadFile);
+    }
+  }
+  if (uploadFile == 'none'){
+    var uploadFile = await uploadFileAny(fileBlob, fileName, folder);
+    console.log(uploadFile);
+  }
+  console.log(uploadFile);
+  //let uploadFile = await uploadFileAny(fileBlob, fileName, folder);
+  console.log(uploadFile);
+  console.log(fileBlob);
+  console.log(fileName);
   await descFile(uploadFile.entries[0].id, description);
 }
 

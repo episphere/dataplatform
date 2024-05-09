@@ -774,6 +774,44 @@ export const uploadFileVersion = async (data, fileId, type) => {
   }
 };
 
+export const uploadAnyFileVersion = async (data, fileId, fileName) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    const form = new FormData();
+    form.append("file", data);
+    form.append(
+      "attributes",
+      `{"name": "${fileName}"}`
+    );
+
+    let response = await fetch(
+      `https://upload.box.com/api/2.0/files/${fileId}/content`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+        body: form,
+        contentType: false,
+      }
+    );
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await uploadAnyFileVersion(data, fileId);
+    } else if (response.status === 201) {
+      return response.json();
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await uploadAnyFileVersion(data, fileId);
+  }
+};
+
 export const uploadWordFileVersion = async (data, fileId) => {
   try {
     const access_token = JSON.parse(localStorage.parms).access_token;
