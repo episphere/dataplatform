@@ -196,7 +196,7 @@ export const dataUploadForm = async () => {
     });
   addEventFilterBarToggle();
   const form = document.querySelector(".contact-form");
-  form.addEventListener("submit", subForm);
+  form.addEventListener("submit", confirmSubmission);
 }
 
 export const approvedFormSelect = async (csvData) => { //Is there a DSMP function
@@ -490,13 +490,41 @@ export function showTab(n) {
   //fixStepIndicator(n)
 };
 
+export async function confirmSubmission(eventtest) {
+  const btn = document.activeElement;
+  btn.disabled = true;
+  eventtest.preventDefault();
+
+  document.getElementById("modalBody").innerHTML = `
+    <p><b>Please confirm all files and information are correct.</b></p>
+    <p><b>Confirmation will lock the folder to prevent any edits.</b></p>
+    <p><b>If edits are required after confirmation, please contact the PDR Administrator.</b></p>
+    `;
+  $("#popUpModal").modal("show");
+  let popup = document.getElementById('popUpModal');
+  //let btns = popup.querySelectorAll('button');
+  let confirmButton = popup.getElementsByClassName('confirmButton');
+  for (let button of confirmButton) {
+  button.addEventListener('click', function () {
+    subForm(eventtest);
+  })
+  }
+  btn.disabled = false;
+}
+
 export async function subForm(eventtest) {
   const btn = document.activeElement;
   btn.disabled = true;
   eventtest.preventDefault();
+
+
+
   showAnimation();
   // const ele = document.getElementById("duoSel");
   // const eleAll = ele.getElementsByClassName('form2');
+  document.getElementById("modalBody").innerHTML = `
+  <p><b>Collecting information</b></p>
+  `;
   const ele = document.getElementsByName('studySel');
   const eleAll = Array.from(ele).filter((checkbox) => checkbox.checked).map((checkbox) => document.getElementById(checkbox.value));
   var obj = [];
@@ -529,15 +557,32 @@ export async function subForm(eventtest) {
       res: restrictions};
     obj.push(userval);
     const studyName = study;
+    document.getElementById("modalBody").innerHTML = `
+    <p><b>Creating Folder</b></p>
+    `;
     const folderId3 = await folderStructure(folderId2, studyName);
     
+    document.getElementById("modalBody").innerHTML = `
+    <p><b>Uploading Data File</b></p>
+    `;
+
     await uploadStructure(document.getElementById(`${id}data_files`).files[0], folderId3, document.getElementById(`${id}data_description`).value);
+
+    document.getElementById("modalBody").innerHTML = `
+    <p><b>Uploading Dictionary</b></p>
+    `;
+
     await uploadStructure(document.getElementById(`${id}data_dictionary`).files[0], folderId3, document.getElementById(`${id}data_dictionary_description`).value);
+
     const dataAdded = document.querySelectorAll(`[id*="${id}data_upload"]`);
     //console.log(dataAdded);
     for (var val of dataAdded){
       //console.log(val);
       if (!val.id.includes('data_upload_description')){
+        document.getElementById("modalBody").innerHTML = `
+        <p><b>Uploading Additional Files</b></p>
+        `;
+
         await uploadStructure(val.files[0], folderId3, document.getElementById(val.id.replace('data_upload', 'data_upload_description')).value);
       }
     }
@@ -550,6 +595,11 @@ export async function subForm(eventtest) {
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
     link.setAttribute("download", `test.tsv`);
+
+    document.getElementById("modalBody").innerHTML = `
+    <p><b>Uploading TSV Data</b></p>
+    `;
+
     await uploadTSV(tsvValue, folderName+"_"+folderName2+".tsv", publicDataFolder);
     await uploadTSV(tsvValue, "details_"+folderName2+".tsv", folderId3);
     link.click();
@@ -558,22 +608,30 @@ export async function subForm(eventtest) {
   await descFolder(folderId2, manu_title + ', ' + studies);
   document.getElementById("modalBody").innerHTML = `
           <p><b>Process complete.</b></p>
-          <p><b>Please visit the below folders to check all files were properly uploaded and confirm. Confirmation will lock these files.</b></p>
+          <p><b>Please visit the below folders to check all files were properly uploaded and confirm. For any issues please contact the PDR Administrator.</b></p>
           <p><b>Author Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId}" target="__blank">${folderName}_DCEG_Data_Platform</a></p>
           <p><b>Author Folder ID:</b> ${folderId}</p>
           <p><b>Publication Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId2}" target="__blank">${folderName2}</a></p>
           <p><b>Publication Folder ID:</b> ${folderId2}</p>
+          <p><b>In your manuscript, you can refer to this data being available on the National Cancer Institute, Division of Cancer Epidemiology and Genetics Publication Data Repository (epidataplatforms.cancer.gov; ID=${folderId2})</b></p>
           `
           ;
   $("#popUpModal").modal("show");
   let popup = document.getElementById('popUpModal');
-  //let btns = popup.querySelectorAll('button');
-  let confirmButton = popup.getElementsByClassName('confirmButton');
-  for (let button of confirmButton) {
+  let btns = popup.querySelectorAll('button');
+  for (let button of btns) {
     button.addEventListener('click', function () {
       location.reload();
-    })
-  }
+      })
+    }
+  //let popup = document.getElementById('popUpModal');
+  //let btns = popup.querySelectorAll('button');
+  // let confirmButton = popup.getElementsByClassName('confirmButton');
+  // for (let button of confirmButton) {
+  //   button.addEventListener('click', function () {
+  //     location.reload();
+  //   })
+  // }
   hideAnimation();
   //location.reload();
   btn.disabled = false;
@@ -677,6 +735,19 @@ export async function nextPrev(n, currentTab) {
         <b>DMSP: </b> ${id.split('duo')[0]}
         <div class="input-group input-group2 font-size-22">
           <b>Study Name: </b> ${study}
+            <!--<div class='input-group input-group2 inline-field field-br'>
+              <input type="checkbox" id="${id}data_elsewhere" name="${id}data_elsewhere" value="Yes" onclick="
+              var checkBox = document.getElementById('${id}data_elsewhere')
+              var inputBox = document.getElementById('${id}data_elsewhere_loc')
+              console.log(inputBox);
+              if (checkBox.checked == true){
+                inputBox.style.display = 'block'
+                } else {
+                  inputBox.style.display = 'none'
+                }">
+              <label for="${id}data_elsewhere">Select if you have data also stored outside of the PDR for this publication.</label><br>
+              <input id="${id}data_elsewhere_loc" name="${id}data_elsewhere_loc" type="text" placeholder="Data location" style="display:none"/>  
+            </div>-->
             <div class='input-group input-group2' >
               <label for="${id}data_upload"> <b>Upload data</b> </label>
               <input id="${id}data_files" name="${id}data_upload" type="file" single required onchange=""/>
@@ -684,7 +755,7 @@ export async function nextPrev(n, currentTab) {
             </div>
             <div class='input-group input-group2'>
               <label for="${id}dict_upload"> <b>Upload data dictionary</b> </label>
-              <input id="${id}data_dictionary" name="${id}dict_upload" type="file" single required onchange=""/> 
+              <input id="${id}data_dictionary" name="${id}dict_upload" type="file" accept=".xls, .xlsx, .csv, .txt, .tsv" single required onchange=""/> 
               <input id="${id}data_dictionary_description" name="${id}dict_upload" type="text" placeholder="Provide description of uploaded data dictionary. This will be viewable by users of the data. Note, the PDR does not permit sharing of data dictionaries as PDFs" required/>            
             </div>
             <div class='input-group input-group2 d-none' id='${id}addAttachment'>
