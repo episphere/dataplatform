@@ -22,22 +22,22 @@ export const infoDeck = () => {
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`;
   template += cardContents({
     header: "About DCEG Data",
-    button: "Information on Accessing DCEG Data",
+    button: "Information on accessing DCEG data",
     href: "#about/overview",
     icon: "fa-book",
     explanation: "",
   });
   template += cardContents({
     header: "Consortia Projects",
-    button: "Data Platforms for Consortia Projects",
+    button: "Data platforms for consortia projects",
     href: "#data_access/overview",
     icon: "fa-folder-open",
     explanation: "",
   });
   template += cardContents({
     header: "DCEG Studies",
-    button: "Data Platforms for DCEG studies",
-    href: "https://dceg.cancer.gov/research/who-we-study",
+    button: "Information on research conducted by DCEG",
+    href: "#researchStudies",//"https://dceg.cancer.gov/research/who-we-study",
     icon: "fa-layer-group",
     explanation: "",
   });

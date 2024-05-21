@@ -45,8 +45,8 @@ export const navBarMenutemplate = () => {
             </a>
         </div>
         <div class="grid-elements">
-          <a class="nav-link nav-menu-links white-font" href="https://dceg.cancer.gov/research/who-we-study" title="DCEG Studies" id="data2">
-          DCEG Studies
+          <a class="nav-link nav-menu-links white-font" href="#researchStudies" title="DCEG Studies" id="data2">
+          Information on research conducted by DCEG
           </a>
         </div>`
         :``
