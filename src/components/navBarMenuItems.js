@@ -71,7 +71,7 @@ export const navBarMenutemplate = () => {
             aria-haspopup="true"
             aria-expanded="false"
             >
-            DCEG Publications
+            DCEG PDR
           </button>
           <div class="dropdown-menu navbar-dropdown">
             <!--<a
