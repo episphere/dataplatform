@@ -43,8 +43,8 @@ export const infoDeck = () => {
     explanation: "",
   });
   template += cardContents({
-    header: "DCEG Studies",
-    button: "Information on research conducted by DCEG",
+    header: "DCEG Cohorts",
+    button: "Links to DCEG cohorts",//"Information on research conducted by DCEG",
     href: "#researchStudies",//"https://dceg.cancer.gov/research/who-we-study",
     icon: "fa-database",
     explanation: "",
@@ -130,8 +130,8 @@ export const infoDeckAfterLoggedIn = async () => {
   //   explanation: "",
   // });
   template += cardContents({
-    header: "DCEG Studies",
-    button: "Information on research conducted by DCEG",
+    header: "DCEG Cohorts",
+    button: "Links to DCEG cohorts",
     href: "#researchStudies",//"https://dceg.cancer.gov/research/who-we-study",
     icon: "fa-database",
     explanation: "",

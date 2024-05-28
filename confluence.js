@@ -120,17 +120,25 @@ export const confluence = async () => {
 
   if (localStorage.parms === undefined) {
     const loginBoxAppDev = document.getElementById("loginBoxAppDev");
-    const loginBoxAppEpisphere = document.getElementById(
-      "loginBoxAppEpisphere"
-    );
+    const loginBoxAppEpisphere = document.getElementById("loginBoxAppEpisphere");
     const loginBoxAppProd = document.getElementById("loginBoxAppProd");
     const loginBoxAppStage = document.getElementById("loginBoxAppStage");
-    if (location.origin.match("localhost")) loginBoxAppDev.hidden = false;
-    if (location.origin.match(applicationURLs.stage))
+    if (location.origin.match("localhost")) { 
+      loginBoxAppDev.hidden = false;
+      document.getElementById("loginBoxDropDown").addEventListener("click", loginAppDev);
+    };
+    if (location.origin.match(applicationURLs.stage)) { 
       loginBoxAppStage.hidden = false;
-    if (location.origin.match(applicationURLs.prod))
+      document.getElementById("loginBoxDropDown").addEventListener("click", loginObs);
+    };
+    if (location.origin.match(applicationURLs.prod)) {
       loginBoxAppProd.hidden = false;
-    if (location.origin.match("episphere")) loginBoxAppEpisphere.hidden = false;
+      document.getElementById("loginBoxDropDown").addEventListener("click", loginAppEpisphere);
+    };
+    if (location.origin.match("episphere")) {
+      loginBoxAppEpisphere.hidden = false;
+      document.getElementById("loginBoxDropDown").addEventListener("click", loginAppProd);
+    };
     await storeAccessToken();
     manageRouter();
   }
