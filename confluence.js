@@ -381,9 +381,9 @@ export const confluence = async () => {
               if(location.origin.match("localhost")) {
                 location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/&scope=openid+company+email+profile`
               } else if (location.origin.match(applicationURLs.stage)) {
-                location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=d9c1a537-fe1d-437f-a1c4-62a6e481aaeb&redirect_uri=https://epidataplatforms.cancer.gov/&scope=openid+company+email+profile`
+                location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=d9c1a537-fe1d-437f-a1c4-62a6e481aaeb&redirect_uri=https://epidataplatforms.cancer.gov/&scope=openid+email+profile`
               } else if (location.origin.match(applicationURLs.prod)) {
-                  location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=d9c1a537-fe1d-437f-a1c4-62a6e481aaeb&redirect_uri=https://epidataplatforms.cancer.gov/&scope=openid+company+email+profile`
+                  location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=d9c1a537-fe1d-437f-a1c4-62a6e481aaeb&redirect_uri=https://epidataplatforms.cancer.gov/&scope=openid+email+profile`
                 }
             });
           }

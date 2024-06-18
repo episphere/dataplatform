@@ -257,41 +257,117 @@ export const storeAccessTokenERa = async () => {
   let parms = searchParms();
   if (parms.code) {
     //exchange code for authorization token
-    let clt = {};
-    clt.client_id = 'ff775e46-ec74-46a3-b19f-ee2c60e8cf11';
-    clt.server_id = '86514167-daf2-4d14-8b9e-84f895190f3f';
-    document.getElementById("confluenceDiv").innerHTML = "";
+    if (location.origin.match("localhost")) {
+      let clt = {};
+      clt.client_id = 'ff775e46-ec74-46a3-b19f-ee2c60e8cf11';
+      clt.server_id = '86514167-daf2-4d14-8b9e-84f895190f3f';
+      document.getElementById("confluenceDiv").innerHTML = "";
 
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-    var urlencoded = new URLSearchParams();
-    urlencoded.append("client_id", clt.client_id);
-    urlencoded.append("client_secret", clt.server_id);
-    urlencoded.append("grant_type", "authorization_code");
-    urlencoded.append("redirect_uri", "https://episphere.github.io/dataplatform/")
-    urlencoded.append("scope", "openid profile email");
-    urlencoded.append("code", parms.code);
+      var urlencoded = new URLSearchParams();
+      urlencoded.append("client_id", clt.client_id);
+      urlencoded.append("client_secret", clt.server_id);
+      urlencoded.append("grant_type", "authorization_code");
+      urlencoded.append("redirect_uri", "https://episphere.github.io/dataplatform/")
+      urlencoded.append("scope", "openid profile email");
+      urlencoded.append("code", parms.code);
 
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-      redirect: "follow",
-    };
-    const response = await fetch(
-      "https://stsstg.nih.gov/auth/oauth/v2/token",
-      requestOptions
-    );
-    if (response.status === 400) {
-      let testing = await response.json();
-      console.log(testing);
-      //window.history.replaceState({}, "", "./#home");
-    }
-    if (response.status && response.status === 200) {
-      localStorage.parmsERa = JSON.stringify(await response.json());
-      window.history.replaceState({}, "", "./#home");
-      confluence();
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: "follow",
+      };
+      const response = await fetch(
+        "https://stsstg.nih.gov/auth/oauth/v2/token",
+        requestOptions
+      );
+      if (response.status === 400) {
+        let testing = await response.json();
+        console.log(testing);
+        //window.history.replaceState({}, "", "./#home");
+      }
+      if (response.status && response.status === 200) {
+        localStorage.parmsERa = JSON.stringify(await response.json());
+        window.history.replaceState({}, "", "./#home");
+        confluence();
+      }
+    } else if (location.origin.match(applicationURLs.prod)) {
+      let clt = {};
+      clt.client_id = 'd9c1a537-fe1d-437f-a1c4-62a6e481aaeb';
+      clt.server_id = '2bc0509b-b14d-4dee-b592-45c92977d8b3';
+      document.getElementById("confluenceDiv").innerHTML = "";
+
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+      var urlencoded = new URLSearchParams();
+      urlencoded.append("client_id", clt.client_id);
+      urlencoded.append("client_secret", clt.server_id);
+      urlencoded.append("grant_type", "authorization_code");
+      urlencoded.append("redirect_uri", "https://epidataplatforms.cancer.gov/")
+      urlencoded.append("scope", "openid profile email");
+      urlencoded.append("code", parms.code);
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: "follow",
+      };
+      const response = await fetch(
+        "https://stsstg.nih.gov/auth/oauth/v2/token",
+        requestOptions
+      );
+      if (response.status === 400) {
+        let testing = await response.json();
+        console.log(testing);
+        //window.history.replaceState({}, "", "./#home");
+      }
+      if (response.status && response.status === 200) {
+        localStorage.parmsERa = JSON.stringify(await response.json());
+        window.history.replaceState({}, "", "./#home");
+        confluence();
+      }
+    } else if (location.origin.match(applicationURLs.stage)) {
+      let clt = {};
+      clt.client_id = 'd9c1a537-fe1d-437f-a1c4-62a6e481aaeb';
+      clt.server_id = '2bc0509b-b14d-4dee-b592-45c92977d8b3';
+      document.getElementById("confluenceDiv").innerHTML = "";
+
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+      var urlencoded = new URLSearchParams();
+      urlencoded.append("client_id", clt.client_id);
+      urlencoded.append("client_secret", clt.server_id);
+      urlencoded.append("grant_type", "authorization_code");
+      urlencoded.append("redirect_uri", "https://epidataplatforms.cancer.gov/")
+      urlencoded.append("scope", "openid profile email");
+      urlencoded.append("code", parms.code);
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: "follow",
+      };
+      const response = await fetch(
+        "https://stsstg.nih.gov/auth/oauth/v2/token",
+        requestOptions
+      );
+      if (response.status === 400) {
+        let testing = await response.json();
+        console.log(testing);
+        //window.history.replaceState({}, "", "./#home");
+      }
+      if (response.status && response.status === 200) {
+        localStorage.parmsERa = JSON.stringify(await response.json());
+        window.history.replaceState({}, "", "./#home");
+        confluence();
+      }
     }
   } 
 };
