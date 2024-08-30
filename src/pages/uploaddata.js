@@ -228,7 +228,15 @@ export const approvedFormSelect = async (csvData) => { //Is there a DSMP functio
     document.getElementById("nextBtn").style.display = "none";
     // const dsmpdata = csvData.data;
     // const dsmpdataHeaders = csvData.headers;
-    const dsmpdataPDR = dsmpdata.filter((df) => ((df['repositories'] || []).includes('PDR')) && (df['dmsPlanType']).includes('Publication/Presentation'));
+    function filterForPDRPub(data) {
+      if (data.repositories && data.repositories.includes("PDR") && data.dmsPlanType && data.dmsPlanType.includes("Publication/Presentation")) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    const dsmpdataPDR = dsmpdata.filter(filterForPDRPub);
+    //const dsmpdataPDR = dsmpdata.filter((df) => ((df['repositories'] || []).includes('PDR')) && (df['dmsPlanType']).includes('Publication/Presentation'));
     let dsmpdataPDR2 = [];
     for(let item of dsmpdataPDR){
       if (item.cas) {
@@ -249,7 +257,17 @@ export const approvedFormSelect = async (csvData) => { //Is there a DSMP functio
     //   console.log(value);
     // }
     // const dsmpdataHeaders = csvData.headers;
-    const dsmpdataPDR = dsmpdata.filter((df) => ((df['repositories'] || []).includes('DCEG')) && (df['dmsPlanType']).includes('Study'));
+    function filterForPDRStudy(data) {
+      if (data.repositories && data.repositories.includes("PDR") && data.dmsPlanType && data.dmsPlanType.includes("Study")) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    const dsmpdataPDR = dsmpdata.filter(filterForPDRStudy);
+    //console.log(dsmpdataPDRTest);
+    //const dsmpdataPDR = dsmpdata.filter((df) => ((df["repositories"] || []).includes("DCEG")) && (df["dmsPlanType"]).includes("Study"));
     createFilter(dsmpdataPDR, dsmpdataHeaders);
     await populateApprovedSelect(dsmpdataPDR, dsmpdataHeaders);
   }
