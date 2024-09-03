@@ -1945,8 +1945,8 @@ h1 {
 /* Set up general layout rules for outer containers. */
 .contact-form,
 .results {
-  width: 75vw;
-  max-width: 80vw;
+  width: 82vw;
+  max-width: 85vw;
   margin: 2vh auto;
 }
 

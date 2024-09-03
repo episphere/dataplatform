@@ -12,7 +12,7 @@ export const uploadData = () => {
           <h1 class="page-header">Upload New Data to the DCEG Data Sharing Platform</h1>
         </div>
       </div>
-      <div id="uploadFormView" class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
+      <div id="uploadFormView" class="data-submission div-border font-size-18" style="padding-left: 0rem; padding-right: 0rem;">
       </div>
       <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -438,15 +438,15 @@ export const populateApprovedSelect = async (dsmpdataPDR, dsmpheaders) => { //Pu
   // document.getElementById("filterDataCatalogue").innerHTML = filterTemplate;
 
   let template = "";
-  const newDesc = dsmpdataPDR.map(selectProps("planID", "contact_email", "contact_displayName", "studyName", "cas"));
+  const newDesc = dsmpdataPDR.map(selectProps("planID", "contact_email", "contact_displayName", "studyName", "cas", "planTitle"));
   //console.log(newDesc);
   template = `
       <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
           <div class="col-md-1"></div>
           <div class="col-md-2 font-bold ws-nowrap pl-2">Plan ID <button class="transparent-btn sort-column" data-column-name="planID"><i class="fas fa-sort"></i></button></div>
-          <div class="col-md-3 font-bold ws-nowrap">Name <button class="transparent-btn sort-column" data-column-name="contact_displayName"><i class="fas fa-sort"></i></button></div>
-          <div class="col-md-5 font-bold ws-nowrap">Study Name <button class="transparent-btn sort-column" data-column-name="studyName"><i class="fas fa-sort"></i></button></div>
-          <div class="col-md-1"></div>
+          <div class="col-md-2 font-bold ws-nowrap">Name <button class="transparent-btn sort-column" data-column-name="contact_displayName"><i class="fas fa-sort"></i></button></div>
+          <div class="col-md-4 font-bold ws-nowrap">Study Name <button class="transparent-btn sort-column" data-column-name="studyName"><i class="fas fa-sort"></i></button></div>
+          <div class="col-md-3 font-bold ws-nowrap">Plan Title <button class="transparent-btn sort-column" data-column-name="planTitle"><i class="fas fa-sort"></i></button></div>
       </div>`;
   newDesc.forEach((desc, index) => {
     //console.log(desc);
@@ -461,17 +461,15 @@ export const populateApprovedSelect = async (dsmpdataPDR, dsmpheaders) => { //Pu
                 <div class="col-md-2">${
                   desc["planID"] ? desc["planID"] : ""
                 }</div>
-                <div class="col-md-3">${
+                <div class="col-md-2">${
                   desc["contact_displayName"] ? desc["contact_displayName"].replace(/ *\([^)]*\) */g, "").replace(/\[.+?\]/, "") : ""
                 }</div>
-                <div class="col-md-5">${
+                <div class="col-md-4">${
                   desc["studyName"] ? desc["studyName"] : ""
                 }</div>
-                <div class="col-md-1">
-                    <!--<button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${index}">
-                        <i class="fas fa-caret-down fa-2x"></i>
-                    </button>-->
-                </div>
+                <div class="col-md-3">${
+                  desc["planTitle"] ? desc["planTitle"] : ""
+                }</div>
             </div>
         </div>
       </div>`
@@ -901,6 +899,7 @@ const filterDataBasedOnSelectionDSMP = (descriptions, headers) => {
     if (dt["planID"].toLowerCase().includes(currentValue)) found = true;
     if (dt["contact_displayName"].toLowerCase().includes(currentValue)) found = true;
     if (dt["studyName"]) if (dt["studyName"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["planTitle"]) if (dt["planTitle"].toLowerCase().includes(currentValue)) found = true;
     if (found) return dt;
   });
   searchedData = searchedData.map((dt) => {
@@ -914,6 +913,12 @@ const filterDataBasedOnSelectionDSMP = (descriptions, headers) => {
     );
     if (dt["studyName"]){ 
     dt["studyName"] = dt["studyName"].replace(
+      new RegExp(currentValue, "gi"),
+      "<b>$&</b>"
+    );
+  };
+  if (dt["planTitle"]){ 
+    dt["planTitle"] = dt["planTitle"].replace(
       new RegExp(currentValue, "gi"),
       "<b>$&</b>"
     );
