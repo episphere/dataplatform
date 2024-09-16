@@ -257,7 +257,7 @@ export const storeAccessTokenERa = async () => {
   let parms = searchParms();
   if (parms.code) {
     //exchange code for authorization token
-    if (location.origin.match("localhost")) {
+    if (location.origin.match("localhost") || location.origin.match(applicationURLs.epi)) {
       let clt = {};
       clt.client_id = 'ff775e46-ec74-46a3-b19f-ee2c60e8cf11';
       clt.server_id = '86514167-daf2-4d14-8b9e-84f895190f3f';

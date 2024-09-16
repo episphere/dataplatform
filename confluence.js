@@ -123,11 +123,11 @@ export const confluence = async () => {
     const loginBoxAppEpisphere = document.getElementById("loginBoxAppEpisphere");
     const loginBoxAppProd = document.getElementById("loginBoxAppProd");
     const loginBoxAppStage = document.getElementById("loginBoxAppStage");
-    if (location.origin.match("localhost")) { 
+    if (location.origin.match("localhost")) {
       loginBoxAppDev.hidden = false;
       document.getElementById("loginBoxDropDown").addEventListener("click", loginAppDev);
     };
-    if (location.origin.match(applicationURLs.stage)) { 
+    if (location.origin.match(applicationURLs.stage)) {
       loginBoxAppStage.hidden = false;
       document.getElementById("loginBoxDropDown").addEventListener("click", loginObs);
     };
