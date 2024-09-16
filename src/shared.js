@@ -2325,6 +2325,7 @@ export function selectProps(...props){
 
 // Need to change to BCRPP urls
 export const applicationURLs = {
+  epi: "https://episphere.github.io",
   dev: "https://episphere.github.io/dataplatform",
   stage: "https://epidataplatforms-stage.cancer.gov",
   prod: "34.98.117.145",
