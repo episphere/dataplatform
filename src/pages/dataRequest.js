@@ -451,7 +451,7 @@ template += `
               <button type="submit" id="submitFormButton" class="buttonsubmit"> 
                 <span class="buttonsubmit__text"> Send Form </span>
               </button>
-              <button type="button" id="downloadJSON" class="buttonsubmit"> 
+              <button type="button" id="downloadJSON" class="buttonsubmit" hidden> 
                 <span class="buttonsubmit__text"> Download JSON </span>
               </button>
 
