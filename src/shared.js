@@ -318,7 +318,7 @@ export const storeAccessTokenERa = async () => {
         redirect: "follow",
       };
       const response = await fetch(
-        "https://stsstg.nih.gov/auth/oauth/v2/token",
+        "https://sts.nih.gov/auth/oauth/v2/token",
         requestOptions
       );
       if (response.status === 400) {
@@ -355,7 +355,7 @@ export const storeAccessTokenERa = async () => {
         redirect: "follow",
       };
       const response = await fetch(
-        "https://stsstg.nih.gov/auth/oauth/v2/token",
+        "https://sts.nih.gov/auth/oauth/v2/token",
         requestOptions
       );
       if (response.status === 400) {
@@ -1019,7 +1019,12 @@ export const getCurrentUser = async () => {
 export const getCurrentUserERa = async () => {
   try{
     const access_token = JSON.parse(localStorage.parmsERa).access_token;
-    const response = await fetch(`https://stsstg.nih.gov/openid/connect/v1/userinfo?access_token=${access_token}`);
+    let response = ''
+    if (location.origin.match("localhost") || location.origin.match(applicationURLs.epi)) {
+      response = await fetch(`https://stsstg.nih.gov/openid/connect/v1/userinfo?access_token=${access_token}`);
+    } else if (location.origin.match(applicationURLs.prod)) {
+      response = await fetch(`https://sts.nih.gov/openid/connect/v1/userinfo?access_token=${access_token}`);
+    }
     if (response.status === 200) {
       return response.json();
     } else {

@@ -386,7 +386,7 @@ export const confluence = async () => {
                 else if (location.origin.match(applicationURLs.stage)) {
                 location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=d9c1a537-fe1d-437f-a1c4-62a6e481aaeb&redirect_uri=https://epidataplatforms.cancer.gov/&scope=openid+email+profile`
               } else if (location.origin.match(applicationURLs.prod)) {
-                  location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=d9c1a537-fe1d-437f-a1c4-62a6e481aaeb&redirect_uri=https://epidataplatforms.cancer.gov/&scope=openid+email+profile`
+                  location.href = `https://sts.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=d9c1a537-fe1d-437f-a1c4-62a6e481aaeb&redirect_uri=https://epidataplatforms.cancer.gov/&scope=openid+email+profile`
                 }
             });
           }
