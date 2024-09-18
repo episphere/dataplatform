@@ -2328,5 +2328,5 @@ export const applicationURLs = {
   epi: "https://episphere.github.io",
   dev: "https://episphere.github.io/dataplatform",
   stage: "https://epidataplatforms-stage.cancer.gov",
-  prod: "https://epidataplatforms.cancer.gov/",
+  prod: "https://epidataplatforms.cancer.gov",
 };
