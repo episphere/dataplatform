@@ -921,6 +921,7 @@ const manageHash = async () => {
     document.title = "BCRP - Study Description";
     showAnimation();
     const fileInfo = await getFileInfo(904897189551); //new: 904897189551; original: 881144462693
+    console.log(fileInfo);
     aboutConfluence("description", fileInfo ? true : false);
     renderDescription(fileInfo["content_modified_at"]);
     hideAnimation();
