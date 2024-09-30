@@ -399,14 +399,31 @@ template += `
               <input id="author_last" name="author_info" type="text" value="${JSON.parse(localStorage.parmsERa).last_name}" style="width: 33%" readonly/>
             
             <div class="input-group">
-              <label for="institution"><b>Institution</b><span class='required-label'>*</span></label>
+              <label for="institution"><b>Institution</b><span class='required-label'>*</span></label>`
+    if(JSON.parse(localStorage.parmsERa).company){
+            template += `
               <input id="institution" name="institution" type="text" value="${JSON.parse(localStorage.parmsERa).company}" readonly/>
-            </div>
-              
+              </div>`
+    } else {
+          template += `
+            <input id="institution" name="institution" type="text" value="placeholder"/>
+            </div>`
+    }
+
+    if(JSON.parse(localStorage.parmsERa).email){
+          template += `
             <div class="input-group">
               <label for="email"><b>Contact Email</b><span class='required-label'>*</span></label>
               <input id="email" name="email" type="email" value="${JSON.parse(localStorage.parmsERa).email}" readonly/>
-            </div>
+            </div>`
+    } else {
+      template += `
+            <div class="input-group">
+              <label for="email"><b>Contact Email</b><span class='required-label'>*</span></label>
+              <input id="email" name="email" type="email" value="placeholder"/>
+            </div>`
+    }
+        template += `
             </div>
           </div>
             <div style="overflow:auto;">
