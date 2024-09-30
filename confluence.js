@@ -374,7 +374,8 @@ export const confluence = async () => {
           // }
           //let eraLogin = true;
           if (eraLogin) {
-            await dataForm();
+            console.log(eraLogin);
+            dataForm();
           } else {
             document.getElementById("logineRA").addEventListener("click", async function () {
               localStorage.setItem('lastURL', '#data_access/form');

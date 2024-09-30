@@ -312,77 +312,16 @@ template += `
         <section class="contact-form">
           <p style="color:red;"><b>This form is a work in progress and will change dependent on feedback. Current plans include:</b></p>
           <p>Please fill out the form below. This will be reviewed by the DCEG and the necessary DAC(s)</p>
+          
           <form>
-            <!---<div class='col-3 mb-3 input-group'>
-              <input type='file' class='' id='uploadJSON' />
-            </div>--->
             <div class="input-group">
               <label for="date"><b>Date</b><span class='required-label'>*</span></label>
               <input id="date" name="date" type="date" value='${today}' required/>
             </div>
-            <!---<div class="input-group">
-              <label for="datasets"><b>Select datasets to request access to:</b><span class='required-label'>*</span> </label>
-            </div>
-            <div class="input-group">
-                <table id="datasetsformtable">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th>Dataset</th>
-                      <th>Description</th>
-                      <th>Participants</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><input id="study1" name="datasets" type="checkbox" value="study1"/></td>
-                      <td>Study 1</td>
-                      <td>Description of Study 1</td>
-                      <td>1111</td>
-                    </tr>
-                    <tr>
-                      <td><input id="study2" name="datasets" type="checkbox" value="study2"/></td>
-                      <td>Study 2</td>
-                      <td>Description of Study 2</td>
-                      <td>2222</td>
-                    </tr>
-                    <tr>
-                      <td><input id="study3" name="datasets" type="checkbox" value="study3"/></td>
-                      <td>Study 3</td>
-                      <td>Description of Study 3</td>
-                      <td>3333</td>
-                    </tr>
-                    <tr>
-                      <td><input id="study4" name="datasets" type="checkbox" value="study4"/></td>
-                      <td>Study 4</td>
-                      <td>Description of Study 4</td>
-                      <td>4444</td>
-                    </tr>
-                    <tr>
-                      <td><input id="study5" name="datasets" type="checkbox" value="study5"/></td>
-                      <td>Study 5</td>
-                      <td>Description of Study 5</td>
-                      <td>5555</td>
-                    </tr>
-                  </tbody>
-                </table>
-            </div>--->
             <div class="input-group">
               <label for="projname"><b>Title of Proposed Project</b><span class='required-label'>*</span></label>
               <input id="projname" name="projname" type="text" required/>
             </div>
-            <!---<div class="input-group">
-              <label for="amendment"> <b>Is this an amendment?</b><span class='required-label'>*</span> </label>      
-                <input id="amendmentyes" name="amendment" type="radio" value="Yes" required/>
-                  <label class="inline" for="amendmentyes"> Yes </label>
-                <input id="amendmentno" name="amendment" type="radio" value="No" required/>
-                  <label class="inline" for="amendmentno"> No </label>--->
-                <!--label for="ifamendmentyes"> If yes, provide Concept Number of original form </label>
-                  <input type="text" id="conNum" name="conNum"/-->
-            <!---</div>--->
-            <!---<div class='input-group d-none' >
-              <select class='form-select' id='amendmentSelect'></select>
-            </div>--->
             <div class="input-group">
               <label for="typeofres"><b>Data Use Limitations</b><span class='required-label'>*</span></label>
             </div>
@@ -426,61 +365,49 @@ template += `
         template += `
             </div>
           </div>
-            <div style="overflow:auto;">
-              <div style="float:left;">
+          <div style="overflow:auto;">
+            <div style="float:left;">
                 <button type="button" id="addDataBtn" class="buttonsubmit2"><i class="fa fa-plus" aria-hidden="true"></i> Requestor</button>
-              </div>
-              <div style="display: none; float:left;">
+            </div>
+            <div style="display: none; float:left;">
                 <button type="button" id="remDataBtn" class="buttonsubmit2"><i class="fa fa-trash-can" aria-hidden="true"></i> Requestor</button>
-              </div>
-            </div>
-            <div class="input-group">
-              <label><input id="confirmation" name="confirmation" type="checkbox" value="Yes" required/><b> Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b><span class='required-label'>*</span></label>
-            </div>
-            <br>
-            <p><u><b>Publication Data Being Requested</b></u></p>
-              <div class="input-group">
-                <label for="datatitle"><b>Title</b></label>
-                <input id="datatitle" name="datatitle" type="text" value="${JSON.parse(localStorage.dataSelected).title}" readonly/>
-              </div>
-              <div class="input-group">
-                <label for="datajournal"><b>Journal</b></label>
-                <input id="datajournal" name="datajournal" type="text" value="${JSON.parse(localStorage.dataSelected).journal}" readonly/>
-              </div>
-              <div class="input-group">
-                <label for="dataauthor"><b>First Listed Author of Article</b></label>
-                <input id="dataauthor" name="dataauthor" type="text" value="${JSON.parse(localStorage.dataSelected).author}" readonly/>
-              </div>
-            <br>
-            <p><u><b>Description of Proposed Project</b></u></p>
-            <div class="input-group">
-            </div>
-            <div class="input-group">
-              <label for="background"><b>Planned use of data</b><span class='required-label'>*</span></label>
-              <textarea maxlength="1500" id="background" name="background" placeholder="Please provide a brief description of your planned use of the data (1500 character limit)" rows="4" cols="65" required></textarea>
-            </div>
-            <div class="input-group">
-              <label for="aims"><b>Study Aims</b><span class='required-label'>*</span></label>
-              <textarea maxlength="1000" id="aims" name="aims" placeholder="Please provide a brief description of your study aims (1000 character limit)" rows="4" cols="65" required></textarea>
             </div>
           </div>
-              
+          <div class="input-group">
+              <label><input id="confirmation" name="confirmation" type="checkbox" value="Yes" required/><b> Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b><span class='required-label'>*</span></label>
+          </div>
+          <br>
+          <p><u><b>Publication Data Being Requested</b></u></p>
+          <div class="input-group">
+              <label for="datatitle"><b>Title</b></label>
+              <input id="datatitle" name="datatitle" type="text" value="${JSON.parse(localStorage.dataSelected).title}" readonly/>
+          </div>
+          <div class="input-group">
+            <label for="datajournal"><b>Journal</b></label>
+            <input id="datajournal" name="datajournal" type="text" value="${JSON.parse(localStorage.dataSelected).journal}" readonly/>
+          </div>
+          <div class="input-group">
+            <label for="dataauthor"><b>First Listed Author of Article</b></label>
+            <input id="dataauthor" name="dataauthor" type="text" value="${JSON.parse(localStorage.dataSelected).author}" readonly/>
+          </div>
+          <br>
+          <p><u><b>Description of Proposed Project</b></u></p>
+          <div class="input-group">
+            <label for="background"><b>Planned use of data</b><span class='required-label'>*</span></label>
+            <textarea maxlength="1500" id="background" name="background" placeholder="Please provide a brief description of your planned use of the data (1500 character limit)" rows="4" cols="65" required></textarea>
+          </div>
+          <div class="input-group">
+            <label for="aims"><b>Study Aims</b><span class='required-label'>*</span></label>
+            <textarea maxlength="1000" id="aims" name="aims" placeholder="Please provide a brief description of your study aims (1000 character limit)" rows="4" cols="65" required></textarea>
+          </div>
               <button type="submit" id="submitFormButton" class="buttonsubmit"> 
                 <span class="buttonsubmit__text"> Send Form </span>
               </button>
               <button type="button" id="downloadJSON" class="buttonsubmit" hidden> 
                 <span class="buttonsubmit__text"> Download JSON </span>
               </button>
-
-              <!--button type="button" id="downloadWord" class="buttonsubmit d-none"> 
-                <span class="buttonsubmit__text"> Download Word </span>
-              </button>
-              
-              <button type="submit" id="otherButton" class="buttonsubmit d-none"> 
-                <span class="buttonsubmit__text"> Something else </span>
-              </button-->
-            </form>
-          </section>
+        </form>
+      </section>
           <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
@@ -498,9 +425,6 @@ template += `
             </div>
           </div>
         </div>
-          <!--<div class="results">
-          <h2>Form Data</h2>
-          <pre></pre>-->
           </div>
         </div>
       </div>
@@ -2457,7 +2381,7 @@ export const dataForm = async () => {
     });
   }
 
-  const form = await document.querySelector(".contact-form");
+  const form = document.querySelector(".contact-form");
   form.addEventListener("submit", handleFormSubmit);
 
   const downloadJSON = document.getElementById("downloadJSON");
