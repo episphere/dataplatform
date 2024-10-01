@@ -1956,9 +1956,6 @@ export const dataForm = async () => {
     const data = new FormData(eventtest.target);
 
     const formJSON = Object.fromEntries(data.entries());
-    formJSON.basevar = data.getAll("basevar");
-    formJSON.ibcvar = data.getAll("ibcvar");
-    formJSON.reqcoh = data.getAll("reqcoh");
     const results = document.querySelector(".results pre");
     results.innerText = JSON.stringify(formJSON, null, 2);
     // fs.wrtieFile('test.json', formJSON);
@@ -2009,7 +2006,7 @@ export const dataForm = async () => {
             default: new docx.Header({
               children: [
                 new docx.Paragraph({
-                  text: "Breast Cancer Risk Prediction Project Analysis Proposal",
+                  text: "DCEG Data Platform Access Analysis Proposal",
                   heading: docx.HeadingLevel.HEADING_1,
                   alignment: docx.AlignmentType.CENTER,
                 }),
@@ -2042,38 +2039,6 @@ export const dataForm = async () => {
                 }),
                 new docx.TextRun({
                   text: jsondata.projname,
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "Is this an amendment: ",
-                }),
-                new docx.TextRun({
-                  text: jsondata.amendment,
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "Amendment: ",
-                }),
-                new docx.TextRun({
-                  text: jsondata.conNum,
                   bold: false,
                 }),
               ],
@@ -2134,10 +2099,10 @@ export const dataForm = async () => {
               alignment: docx.AlignmentType.START,
               children: [
                 new docx.TextRun({
-                  text: "Are you a member of BCRPP ",
+                  text: "Requested Publication Data: ",
                 }),
                 new docx.TextRun({
-                  text: jsondata.member,
+                  text: jsondata.datatitle,
                   bold: false,
                 }),
               ],
@@ -2150,10 +2115,10 @@ export const dataForm = async () => {
               alignment: docx.AlignmentType.START,
               children: [
                 new docx.TextRun({
-                  text: "BCRPP Study Acronym(s) for the Contact Investigator: ",
+                  text: "Requested Journal Data: ",
                 }),
                 new docx.TextRun({
-                  text: jsondata.acro,
+                  text: jsondata.datajournal,
                   bold: false,
                 }),
               ],
@@ -2166,10 +2131,10 @@ export const dataForm = async () => {
               alignment: docx.AlignmentType.START,
               children: [
                 new docx.TextRun({
-                  text: "All Investigators (and Institutions) who require access: ",
+                  text: "Requested Author Data: ",
                 }),
                 new docx.TextRun({
-                  text: jsondata.investigators,
+                  text: jsondata.dataauthor,
                   bold: false,
                 }),
               ],
@@ -2209,124 +2174,6 @@ export const dataForm = async () => {
                 after: 150,
               },
             }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "Analysis Plan: ",
-                }),
-                new docx.TextRun({
-                  text: jsondata.analyplan,
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "Core Variables: ",
-                }),
-                new docx.TextRun({
-                  text: JSON.stringify(jsondata.basevar, null, 2)
-                    .replace("[", "")
-                    .replace("]", ""),
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "MMD Variables: ",
-                }),
-                new docx.TextRun({
-                  text: jsondata.mmdvarv,
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "BRCA Variables: ",
-                }),
-                new docx.TextRun({
-                  text: JSON.stringify(jsondata.ibcvar, null, 2)
-                    .replace("[", "")
-                    .replace("]", ""),
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "Requested Cohorts: ",
-                }),
-                new docx.TextRun({
-                  text: JSON.stringify(jsondata.reqcoh, null, 2)
-                    .replace("[", "")
-                    .replace("]", ""),
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "Timeline: ",
-                }),
-                new docx.TextRun({
-                  text: jsondata.timeline,
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "Authorship: ",
-                }),
-                new docx.TextRun({
-                  text: jsondata.authorship,
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
           ],
         },
       ],
@@ -2355,7 +2202,7 @@ export const dataForm = async () => {
           i++;
         }
         console.log(blob);
-        let response = await uploadWordFile(blob, filename, 189185316803);
+        let response = await uploadWordFile(blob, filename, uploadFormFolder);
         await assigntasktochair();
         let fileid = response.entries[0].id;
         //Modal code here
@@ -2366,9 +2213,9 @@ export const dataForm = async () => {
       } else {
         // Adding keywords
         console.log(blob);
-        let response = await uploadWordFile(blob, filename, 189185316803);
+        let response = await uploadWordFile(blob, filename, uploadFormFolder);
         if (response.status === 201) {
-          await assigntasktochair();
+          //await assigntasktochair();
           let fileid = response.entries[0].id;
           //Modal code here
           document.getElementById("modalBody").innerHTML = `
