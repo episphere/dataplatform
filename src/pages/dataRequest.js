@@ -2201,31 +2201,42 @@ export const dataForm = async () => {
           }
           i++;
         }
-        console.log(blob);
+        //console.log(blob);
+        // let response = await uploadWordFile(blob, filename, uploadFormFolder);
+        // console.log(response)
+        // //await assigntasktochair();
+        // let fileid = response.entries[0].id;
+        // //Modal code here
+        // document.getElementById("modalBody").innerHTML = `
+        //   <p>File was successfully uploaded.</p>
+        //   <p>Document ID: ${fileid}</p>`;
+        // $("#popUpModal").modal("show");
+      } else {}
+        // Adding keywords
+        //console.log(blob);
         let response = await uploadWordFile(blob, filename, uploadFormFolder);
-        await assigntasktochair();
-        let fileid = response.entries[0].id;
-        //Modal code here
-        document.getElementById("modalBody").innerHTML = `
+        console.log(response);
+        if (response.status === 401 || response.status === 409) {
+          document.getElementById("modalBody").innerHTML = `
           <p>File was successfully uploaded.</p>
           <p>Document ID: ${fileid}</p>`;
-        $("#popUpModal").modal("show");
-      } else {
-        // Adding keywords
-        console.log(blob);
-        let response = await uploadWordFile(blob, filename, uploadFormFolder);
-        if (response.status === 201) {
-          //await assigntasktochair();
+            $("#popUpModal").modal("show");
+        } else {
           let fileid = response.entries[0].id;
           //Modal code here
           document.getElementById("modalBody").innerHTML = `
-        <p>File was successfully uploaded.</p>
-        <p>Document ID: ${fileid}</p>`;
+          <p>File was successfully uploaded.</p>
+          <p>Document ID: ${fileid}</p>`;
           $("#popUpModal").modal("show");
-        } else {
         }
-      }
-    });
+        let popup = document.getElementById('popUpModal');
+        let btns = popup.querySelectorAll('button');
+        for (let button of btns) {
+          button.addEventListener('click', function () {
+            location.reload();
+            })
+          }
+      });
   }
 
   const form = document.querySelector(".contact-form");
