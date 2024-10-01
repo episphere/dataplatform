@@ -1956,8 +1956,8 @@ export const dataForm = async () => {
     const data = new FormData(eventtest.target);
 
     const formJSON = Object.fromEntries(data.entries());
-    const results = document.querySelector(".results pre");
-    results.innerText = JSON.stringify(formJSON, null, 2);
+    //const results = document.querySelector(".results pre");
+    //results.innerText = JSON.stringify(formJSON, null, 2);
     // fs.wrtieFile('test.json', formJSON);
     await generateWord(formJSON);
     btn.classList.toggle("buttonsubmit--loading");
