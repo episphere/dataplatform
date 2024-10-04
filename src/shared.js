@@ -1986,9 +1986,9 @@ export const checkDataSubmissionPermissionLevel = (data, login) => {
     );
     if (newArray.length > 0) return true;
   } else if (
-    array[0].role === "editor" ||
-    array[0].role === "co-owner" ||
-    array[0].role === "uploader"
+    array[0].role.includes("editor") ||
+    array[0].role.includes("co-owner") ||
+    array[0].role.includes("uploader")
   ) {
     return true;
   }

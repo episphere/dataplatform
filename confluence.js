@@ -178,6 +178,7 @@ export const confluence = async () => {
       var accessFolderInfo = false;
     };
     if (accessFolderInfo === false) {
+      console.log("Access folder failed")
       localStorage.setItem("accessFolderInfo", false);
       const header = document.getElementById("dcegPreviewerModalHeader");
       const body = document.getElementById("dcegPreviewerModalBody");
@@ -351,6 +352,7 @@ export const confluence = async () => {
           "folders"
         ); //144028521583, 155292358576
         let getMyPermissionLevel = false;
+        console.log(getCollaborators);
         if (getCollaborators)
           getMyPermissionLevel = checkDataSubmissionPermissionLevel(
             getCollaborators,
@@ -376,7 +378,7 @@ export const confluence = async () => {
           if (eraLogin) {
             console.log(eraLogin);
             dataForm();
-          } else {
+            } else {
             document.getElementById("logineRA").addEventListener("click", async function () {
               localStorage.setItem('lastURL', '#data_access/form');
               if(location.origin.match("localhost")) {
@@ -915,17 +917,17 @@ const manageHash = async () => {
   //   //aboutConfluence("contact");
   //   confluenceContactPage();
   //   hideAnimation();
-  } else if (hash === "#about/description") {
-    const element = document.getElementById("aboutDCEG");
-    if (!element) return;
-    assignNavbarActive(element);
-    document.title = "BCRP - Study Description";
-    showAnimation();
-    const fileInfo = await getFileInfo(904897189551); //new: 904897189551; original: 881144462693
-    console.log(fileInfo);
-    aboutConfluence("description", fileInfo ? true : false);
-    renderDescription(fileInfo["content_modified_at"]);
-    hideAnimation();
+  // } else if (hash === "#about/description") {
+  //   const element = document.getElementById("aboutDCEG");
+  //   if (!element) return;
+  //   assignNavbarActive(element);
+  //   document.title = "BCRP - Study Description";
+  //   showAnimation();
+  //   const fileInfo = await getFileInfo(904897189551); //new: 904897189551; original: 881144462693
+  //   console.log(fileInfo);
+  //   aboutConfluence("description", fileInfo ? true : false);
+  //   renderDescription(fileInfo["content_modified_at"]);
+  //   hideAnimation();
   } else if (hash === "#join") {
     const element = document.getElementById("resourcesBCRPP");
     if (!element) return;
