@@ -506,9 +506,42 @@ export function showTab(n) {
   //fixStepIndicator(n)
 };
 
+export async function checkFileExt() {
+  let approvedFormats = ['csv', 'txt', 'xlsx', 'xls', 'json', 'xml', 'tsv']
+  let dataFile = document.querySelectorAll(`[id*="data_files"]`)[0];
+  let dataDict = document.querySelectorAll(`[id*="data_dictionary"]`)[0];
+  dataFile.onchange = function() {
+    let input = this.files[0].name;
+    let ext = input.split('.').pop();
+    if (!approvedFormats.includes(ext)){
+      document.getElementById("dcegPreviewerModalHeader").getElementsByClassName("modal-title")[0].innerHTML = `
+      Non-Machine-Readable Format Detected`
+      document.getElementById("dcegPreviewerModalBody").innerHTML = `
+      <p><b>File ${input} does not appear to be machine readable.</b></p>
+      <p><b>Please consider uploading file in a different format such as csv or json.</b></p>`
+      $("#dcegPreviewerModal").modal("show");
+    }
+  }
+  dataDict.onchange = function() {
+    let input = this.files[0].name;
+    let ext = input.split('.').pop();
+    if (!approvedFormats.includes(ext)){
+      document.getElementById("dcegPreviewerModalHeader").getElementsByClassName("modal-title")[0].innerHTML = `
+      Non-Machine-Readable Format Detected`
+      document.getElementById("dcegPreviewerModalBody").innerHTML = `
+      <p><b>File ${input} does not appear to be machine readable.</b></p>
+      <p><b>Please consider uploading file in a different format such as csv or json.</b></p>`
+      $("#dcegPreviewerModal").modal("show");
+    }
+  }
+}
+
 export async function confirmSubmission(eventtest) {
   const btn = document.activeElement;
   btn.disabled = true;
+  let dataFile = document.querySelectorAll(`[id*="data_files"]`)[0].value.split('.').pop();
+  let dataDict = document.querySelectorAll(`[id*="data_dictionary"]`)[0].value.split('.').pop();
+  let approvedFormats = ['csv', 'txt', 'xlsx', 'xls', 'json', 'xml', 'tsv']
   eventtest.preventDefault();
 
   document.getElementById("modalBody").innerHTML = `
@@ -837,6 +870,7 @@ export async function nextPrev(n, currentTab) {
       item.addEventListener('click', clickEventRem);
     })
   }
+  checkFileExt();
   showTab(currentTab);
 };
 
