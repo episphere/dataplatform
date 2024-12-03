@@ -57,6 +57,10 @@ export const liveUpdateFolder = 196819085811;
 
 export const livePublicationFile = 1506807971290;
 
+export const finalPublicationSummaryFilesFolder = 293584064501;
+
+export const finalPublicationSummaryFolder = 285184804541;
+
 export const getFolderItems = async (id) => {
   try {
     const access_token = JSON.parse(localStorage.parms).access_token;
@@ -577,6 +581,38 @@ export const moveFile = async (fileId, parentId) => {
   } catch (err) {
     if ((await refreshToken()) === true)
       return await moveFile(fileId, parentId);
+  }
+};
+
+export const moveFolder = async (folderId, parentId) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    let obj = {
+      parent: {
+        id: parentId,
+      },
+    };
+    let response = await fetch(`https://api.box.com/2.0/folders/${folderId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      body: JSON.stringify(obj),
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await moveFolder(folderId, parentId);
+    } else if (response.status === 201) {
+      return response;
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await moveFolder(folderId, parentId);
   }
 };
 

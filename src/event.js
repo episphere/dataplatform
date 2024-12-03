@@ -35,7 +35,12 @@ import {
   uploadTSV,
   liveUpdateFolder,
   livePublicationFile,
-  uploadTSVVersion
+  uploadTSVVersion,
+  moveFile,
+  finalPublicationSummaryFilesFolder,
+  dataPlatformDataFolder,
+  finalPublicationSummaryFolder,
+  moveFolder
 } from "./shared.js";
 import { renderDataSummary } from "./pages/about.js";
 import { variables } from "./variables.js";
@@ -1632,11 +1637,21 @@ const addEventUpdateSummaryStatsForm = () => {
   const form = document.getElementById("updateSummaryStatsForm");
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const files = await getFolderItems(publicDataFolder);
-    if (files.length === 0) return;
-    console.log(files.entries);
+    const newFiles = await getFolderItems(publicDataFolder);
+    console.log(newFiles.entries.length);
+    // if (newFiles.entries.length === 0) {
+    //   alert("No new files uploaded");
+    //   return;
+    // }
+    console.log(newFiles.entries);
     form.innerHTML = "Gathering data...";
+    //Move files to new folder
+    // for (let file of newFiles.entries) {
+    //   console.log(file.id);
+    //   await moveFile(file.id, finalPublicationSummaryFilesFolder);
+    // }
 
+    const files = await getFolderItems(finalPublicationSummaryFilesFolder);
     var dataArray = [];
     for (let file of files.entries) {
       const tsv = await getFile(file.id);
@@ -1661,6 +1676,31 @@ const addEventUpdateSummaryStatsForm = () => {
     link.click();
     await uploadTSVVersion(tsvContent, `DCEG_Publications.tsv`, liveUpdateFolder, livePublicationFile)
     form.innerHTML = `Complete: Please upload file to: </br> <a href="https://github.com/episphere/dataplatform/tree/production/imports" target="__blank">DCEG PDR GitHub</a>`
+    //Move files to new folder
+    // for (let file of files.entries) {
+    //   moveFile(file.id, finalPublicationSummaryFilesFolder);
+    // }
+    const dataPlatformDataFolderItems = await getFolderItems(dataPlatformDataFolder);
+    const folders = dataPlatformDataFolderItems.entries.filter(obj => obj.type === 'folder');
+    const folders2 = await getFolderItems(finalPublicationSummaryFolder);
+    const folders2Names = folders2.entries.map(folder => folder.name);
+    console.log(folders);
+    console.log(folders2.entries);
+
+    for (let folder of folders){
+      let name = folder.name;
+      if (folders2Names.includes(name)){
+        let filesInFolder = await getFolderItems(folder.id);
+        let folderID = folders2.entries.find(obj => obj.name === name).id;
+        for (let items of filesInFolder){
+          await moveFolder(items.id, folderID);
+        }
+      }
+      else {
+        await moveFolder(folder.id, finalPublicationSummaryFolder);
+      }
+    };
+
     return;
     // const folderIds = Array.from(selectedBtn).map((btn) =>
     //   parseInt(btn.dataset.folderId)
