@@ -460,7 +460,8 @@ const renderStudyDescription = (descriptions, pageSize, headers, signedIn) => {
     template = `
         <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
             <div class="col-md-6 font-bold ws-nowrap pl-2">Title of Publication <button class="transparent-btn sort-column" data-column-name="title"><i class="fas fa-sort"></i></button></div>
-            <div class="col-md-3 font-bold ws-nowrap">First Author <button class="transparent-btn sort-column" data-column-name="author"><i class="fas fa-sort"></i></button></div>
+            <div class="col-md-2 font-bold ws-nowrap">First Author <button class="transparent-btn sort-column" data-column-name="author"><i class="fas fa-sort"></i></button></div>
+            <div class="col-md-1 font-bold ws-nowrap">Date <button class="transparent-btn sort-column" data-column-name="date"><i class="fas fa-sort"></i></button></div>
             <div class="col-md-1"></div>
             <div class="col-md-1"></div>
         </div>`;
@@ -475,8 +476,11 @@ const renderStudyDescription = (descriptions, pageSize, headers, signedIn) => {
                           <div class="col-md-6">${
                             desc["title"] ? desc["title"] : ""
                           }</div>
-                          <div class="col-md-3">${
+                          <div class="col-md-2">${
                             desc["author"] ? desc["author"] : ""
+                          }</div>
+                          <div class="col-md-1">${
+                            desc["date"] ? desc["date"] : ""
                           }</div>
                           <div class="col-md-1">
                               <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${desc["title"].replace(/\s+/g,"").replace(/[^a-zA-Z ]/g, "")}">
