@@ -1639,17 +1639,16 @@ const addEventUpdateSummaryStatsForm = () => {
     e.preventDefault();
     const newFiles = await getFolderItems(publicDataFolder);
     console.log(newFiles.entries.length);
-    // if (newFiles.entries.length === 0) {
-    //   alert("No new files uploaded");
-    //   return;
-    // }
+    if (newFiles.entries.length === 0) {
+      alert("No new files uploaded, continuing with downloading recent file");
+    }
     console.log(newFiles.entries);
     form.innerHTML = "Gathering data...";
     //Move files to new folder
-    // for (let file of newFiles.entries) {
-    //   console.log(file.id);
-    //   await moveFile(file.id, finalPublicationSummaryFilesFolder);
-    // }
+    for (let file of newFiles.entries) {
+      console.log(file.id);
+      await moveFile(file.id, finalPublicationSummaryFilesFolder);
+    }
 
     const files = await getFolderItems(finalPublicationSummaryFilesFolder);
     var dataArray = [];
@@ -1676,7 +1675,7 @@ const addEventUpdateSummaryStatsForm = () => {
     link.click();
     await uploadTSVVersion(tsvContent, `DCEG_Publications.tsv`, liveUpdateFolder, livePublicationFile)
     form.innerHTML = `Complete: Please upload file to: </br> <a href="https://github.com/episphere/dataplatform/tree/production/imports" target="__blank">DCEG PDR GitHub</a>`
-    //Move files to new folder
+    // //Move files to new folder
     // for (let file of files.entries) {
     //   moveFile(file.id, finalPublicationSummaryFilesFolder);
     // }
