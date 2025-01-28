@@ -45,8 +45,8 @@ export const navBarMenutemplate = () => {
             </a>
         </div>
         <div class="grid-elements">
-          <a class="nav-link nav-menu-links white-font" href="#researchStudies" title="DCEG Cohorts" id="data2">
-          Links to DCEG cohorts
+          <a class="nav-link nav-menu-links white-font" href="#researchStudies" title="DCEG Studies & Data Resources" id="data2">
+          DCEG Studies & Data Resources
           </a>
         </div>`
         :``
