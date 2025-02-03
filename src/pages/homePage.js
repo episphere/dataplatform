@@ -123,8 +123,8 @@ export const infoDeckAfterLoggedIn = async () => {
 //     explanation: "",
 //   });
   template += cardContents({
-    header: "Data on the PDR",
-    button: "Submit a request to access data on the PDR",
+    header: "Data in the PDR",
+    button: "Submit a request to access data in the PDR",
     href: "#publicationpage",
     icon: "fa-database",
     explanation: "",
