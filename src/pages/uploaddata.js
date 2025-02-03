@@ -179,6 +179,8 @@ export const dataUploadForm = async () => {
     });
   const nextPress = document.getElementById("nextBtn");
   nextPress.addEventListener("click", async function() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
     var allStudies = document.getElementsByName('studySel')
     var selStudies = Array.from(allStudies).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value)
     if (selStudies.length < 1) return alert("Please select at least one study");
