@@ -40,7 +40,8 @@ import {
   finalPublicationSummaryFilesFolder,
   dataPlatformDataFolder,
   finalPublicationSummaryFolder,
-  moveFolder
+  moveFolder,
+  deleteFolder
 } from "./shared.js";
 import { renderDataSummary } from "./pages/about.js";
 import { variables } from "./variables.js";
@@ -1688,14 +1689,19 @@ const addEventUpdateSummaryStatsForm = () => {
 
     for (let folder of folders){
       let name = folder.name;
-      if (folders2Names.includes(name)){
+      if (folder.id == "259664212144"){
+        console.log("Skipping Summary Files");
+      } else if (folders2Names.includes(name) && folder.id != "259664212144"){
         let filesInFolder = await getFolderItems(folder.id);
         let folderID = folders2.entries.find(obj => obj.name === name).id;
-        for (let items of filesInFolder){
-          await moveFolder(items.id, folderID);
+        if (filesInFolder.length > 0){
+          for (let items of filesInFolder){
+            await moveFolder(items.id, folderID);
+          }
+        } else {
+          await deleteFolder(folder.id);
         }
-      }
-      else {
+      } else {
         await moveFolder(folder.id, finalPublicationSummaryFolder);
       }
     };

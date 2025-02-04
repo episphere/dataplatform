@@ -456,6 +456,39 @@ export const createFolder = async (folderId, folderName) => {
   }
 };
 
+export const deleteFolder = async (folderId) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    // let obj = {
+    //   parent: {
+    //     id: folderId,
+    //   },
+    // };
+    let response = await fetch(`https://api.box.com/2.0/folders/${folderId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      //body: JSON.stringify(obj),
+      //redirect: "follow",
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await deleteFolder(folderId);
+    } else if (response.status === 201) {
+      return response.json();
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await deleteFolder(folderId);
+  }
+};
+
 export const descFolder = async (folderId, description) => {
   try {
     const access_token = JSON.parse(localStorage.parms).access_token;
