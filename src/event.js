@@ -1694,9 +1694,14 @@ const addEventUpdateSummaryStatsForm = () => {
       } else if (folders2Names.includes(name) && folder.id != "259664212144"){
         let filesInFolder = await getFolderItems(folder.id);
         let folderID = folders2.entries.find(obj => obj.name === name).id;
-        if (filesInFolder.length > 0){
-          for (let items of filesInFolder){
+        console.log(folderID);
+        console.log(filesInFolder.entries.length);
+        if (filesInFolder.entries.length > 0){
+          for (let items of filesInFolder.entries){
+            console.log(items);
+            console.log(items.id);
             await moveFolder(items.id, folderID);
+            console.log(`Folder ${items.id} moved to ${folderID}`);
           }
         } else {
           await deleteFolder(folder.id);
