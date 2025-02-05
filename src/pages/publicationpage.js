@@ -328,7 +328,7 @@ const getDescription = async (signedIn) => {
 
 const getDescriptionAdmin = async (signedIn) => {
   //const data = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/production/imports/DCEG_Publications.tsv")).text();
-  const data = await getFile(1506807971290)
+  const data = await getFile(1506807971290);
   const tsv = tsv2Json2(data);
   console.log(tsv);
   const json = tsv.data;

@@ -664,7 +664,8 @@ export async function subForm(eventtest) {
           <p><b>Author Folder ID:</b> ${folderId}</p>
           <p><b>Publication Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId2}" target="__blank">${folderName2}</a></p>
           <p><b>Publication Folder ID:</b> ${folderId2}</p>
-          <p><b>In your manuscript, you can refer to this data being available on the National Cancer Institute, Division of Cancer Epidemiology and Genetics Publication Data Repository (epidataplatforms.cancer.gov; ID=${folderId2})</b></p>
+          <p><b>In your manuscript, you can refer to this data being available on the National Cancer Institute, Division of Cancer Epidemiology and Genetics Publication Data Repository </b></p>
+          <!--(epidataplatforms.cancer.gov; ID=${folderId2})-->
           `
           ;
   $("#popUpModal").modal("show");
