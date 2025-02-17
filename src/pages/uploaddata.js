@@ -567,9 +567,6 @@ export async function subForm(eventtest) {
   const btn = document.activeElement;
   btn.disabled = true;
   eventtest.preventDefault();
-
-
-
   showAnimation();
   // const ele = document.getElementById("duoSel");
   // const eleAll = ele.getElementsByClassName('form2');
@@ -593,6 +590,7 @@ export async function subForm(eventtest) {
   const folderName2 = journal_acro + '_' + date
   const folderId2 = await folderStructure(folderId, folderName+'_'+folderName2) //create per journal/year folder
   var studies = []
+  let descArray = [];
   for (const form of eleAll) {
     const id = form.getAttribute('id');
     const dsmp = id.split('duo')[0];
@@ -617,13 +615,17 @@ export async function subForm(eventtest) {
     <p><b>Uploading Data File</b></p>
     `;
 
-    await uploadStructure(document.getElementById(`${id}data_files`).files[0], folderId3, document.getElementById(`${id}data_description`).value);
+    let uploadItem = await uploadStructure(document.getElementById(`${id}data_files`).files[0], folderId3, document.getElementById(`${id}data_description`).value);
+    let uploadObject = {name: document.getElementById(`${id}data_files`).files[0].name, val: uploadItem.entries[0].id, desc: document.getElementById(`${id}data_description`).value}
+    descArray.push(uploadObject);
 
     document.getElementById("modalBody").innerHTML = `
     <p><b>Uploading Dictionary</b></p>
     `;
 
-    await uploadStructure(document.getElementById(`${id}data_dictionary`).files[0], folderId3, document.getElementById(`${id}data_dictionary_description`).value);
+    uploadItem = await uploadStructure(document.getElementById(`${id}data_dictionary`).files[0], folderId3, document.getElementById(`${id}data_dictionary_description`).value);
+    uploadObject = {name: document.getElementById(`${id}data_dictionary`).files[0].name, val: uploadItem.entries[0].id, desc: document.getElementById(`${id}data_dictionary_description`).value}
+    descArray.push(uploadObject);
 
     const dataAdded = document.querySelectorAll(`[id*="${id}data_upload"]`);
     //console.log(dataAdded);
@@ -634,9 +636,12 @@ export async function subForm(eventtest) {
         <p><b>Uploading Additional Files</b></p>
         `;
 
-        await uploadStructure(val.files[0], folderId3, document.getElementById(val.id.replace('data_upload', 'data_upload_description')).value);
+        uploadItem = await uploadStructure(val.files[0], folderId3, document.getElementById(val.id.replace('data_upload', 'data_upload_description')).value);
+        uploadObject = {name: val.files[0].name, val: uploadItem.entries[0].id, desc: document.getElementById(val.id.replace('data_upload', 'data_upload_description')).value}
+        descArray.push(uploadObject);
       }
     }
+    console.log(descArray)
     const headers = Object.keys(obj[0]);
     const tsvValue = json2other(obj, headers, true).replace(/(<b>)|(<\/b>)/g, "");
     let tsvContent =
@@ -647,13 +652,25 @@ export async function subForm(eventtest) {
     link.setAttribute("href", encodedUri);
     link.setAttribute("download", `test.tsv`);
 
+    const descheaders = Object.keys(descArray[0]);
+    const desctsvValue = json2other(descArray, descheaders, true).replace(/(<b>)|(<\/b>)/g, "");
+    let desctsvContent =
+        "data:text/tsv;charset=utf-8," +
+        desctsvValue;
+    const descencodedUri = encodeURI(desctsvContent);
+    const desclink = document.createElement("desca");
+    desclink.setAttribute("href", descencodedUri);
+    desclink.setAttribute("download", `desctest.tsv`);
+
     document.getElementById("modalBody").innerHTML = `
     <p><b>Uploading TSV Data</b></p>
     `;
 
     await uploadTSV(tsvValue, folderName+"_"+folderName2+".tsv", publicDataFolder);
     await uploadTSV(tsvValue, "details_"+folderName2+".tsv", folderId3);
+    await uploadTSV(desctsvValue, "desc_"+folderName2+".tsv", folderId3);
     link.click();
+    desclink.click();
     document.body.appendChild(link);
   }
   await descFolder(folderId2, manu_title + ', ' + studies);
@@ -692,31 +709,21 @@ export async function subForm(eventtest) {
 export async function uploadStructure(file, folder, description) {
   let fileName = file.name;
   let fileBlob = new Blob([file]);
-  console.log(file);
-  console.log(fileBlob);
-  console.log(folder);
-  console.log(description);
   var uploadFile = 'none';
   let folderItems = await getFolderItems(folder);
   console.log(folderItems);
   for (let item of folderItems.entries){
     if (item.name === fileName) {
-      console.log(item);
       console.log('uploading existing file');
       uploadFile = await uploadAnyFileVersion(fileBlob, item.id, fileName);
-      console.log(uploadFile);
     }
   }
   if (uploadFile == 'none'){
     var uploadFile = await uploadFileAny(fileBlob, fileName, folder);
-    console.log(uploadFile);
   }
-  console.log(uploadFile);
   //let uploadFile = await uploadFileAny(fileBlob, fileName, folder);
-  console.log(uploadFile);
-  console.log(fileBlob);
-  console.log(fileName);
   await descFile(uploadFile.entries[0].id, description);
+  return uploadFile;
 }
 
 export async function folderStructure(folderID, folderName) {

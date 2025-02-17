@@ -137,7 +137,7 @@ export const infoDeckAfterLoggedIn = async () => {
     template += cardContents({
         header: "Upload New Data",
         button: "Upload new data to the PDR",
-        href: "#myDCEGID_upload",
+        href: "#myDCEG/upload",
         icon: "fa-upload",
         explanation: "",
     });
