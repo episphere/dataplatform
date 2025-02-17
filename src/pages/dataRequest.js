@@ -2685,9 +2685,8 @@ const uploadDTAModal = async (folderValue) => {
   // if(document.getElementById('folderID')) {
   //   val = document.getElementById('folderID').value
   // } else {
-  //   val = '239899508915'
+  //   val = dataPlatformDataFolder
   // }
-  // //let val = '239899508915'
   // console.log(val);
   // const array = await getFolderInfo(val); //DCEG: 196554876811 BCRP: 145995765326, Confluence: 137304373658
   // if (!array) {

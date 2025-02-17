@@ -212,7 +212,7 @@ export const confluence = async () => {
     //   "folders"
     // );
     //
-    navBarOptions.innerHTML = navBarMenutemplate();
+    navBarOptions.innerHTML = await navBarMenutemplate();
     document.getElementById("logOutBtn").addEventListener("click", logOut);
     const viewUserSubmissionElement =
       document.getElementById("userSubmissions");

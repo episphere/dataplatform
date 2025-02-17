@@ -1,7 +1,10 @@
-import { applicationURLs, emailforChair, emailforDACC } from "./../shared.js";
+import { applicationURLs, emailforChair, emailforDACC, getCollaboration, checkDataSubmissionPermissionLevel, dataPlatformDataFolder} from "./../shared.js";
 const showProjectConceptForm = true;
 const viewAcceptedShow = true;
-export const navBarMenutemplate = () => {
+export const navBarMenutemplate = async () => {
+  const getCollaborators = await getCollaboration(dataPlatformDataFolder,"folders");
+  let getMyPermissionLevel = false;
+  if (getCollaborators) getMyPermissionLevel = checkDataSubmissionPermissionLevel(getCollaborators, JSON.parse(localStorage.parms).login);
   return `
         <div class="grid-elements">
             <a class="nav-link nav-menu-links white-font" href="#home" title="DCEG Home" id="homePage">
@@ -104,7 +107,7 @@ export const navBarMenutemplate = () => {
             }
           </div>
         </div>
-        ${JSON.parse(localStorage.parms).login.split('@')[1].includes('deloitte.com') || JSON.parse(localStorage.parms).login.split('@')[1].includes('nih.gov')
+        ${JSON.parse(localStorage.parms).login.split('@')[1].includes('nih.gov')
           ?`<div class="grid-elements dropdown">
             <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" title="My DCEG Publication Data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             DCEG Investigators
@@ -112,7 +115,10 @@ export const navBarMenutemplate = () => {
             
             <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
             <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#uploadinstruction" id="instructionID">How to upload data from my published manuscript </a>
-            <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG/upload" id="myDCEGID_upload"> Upload new data</a>
+            ${getMyPermissionLevel
+              ?`<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG/upload" id="myDCEGID_upload"> Upload new data</a>`
+              :``
+            }
             <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG" id="myDCEGID" hidden>See my uploaded data</a>
             <div id="governanceNav" class="grid-elements"></div>
 

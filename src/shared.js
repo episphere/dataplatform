@@ -1027,6 +1027,9 @@ export const getCollaboration = async (id, type) => {
       if ((await refreshToken()) === true)
         return await getCollaboration(id, type);
     }
+    if (response.status === 404) {
+      return response.status;
+    }
     if (response.status === 200) {
       return response.json();
     } else {

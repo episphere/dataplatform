@@ -1,5 +1,5 @@
 // Major updates required
-import { getFileInfo } from "./../shared.js";
+import { getFileInfo, getCollaboration, checkDataSubmissionPermissionLevel, dataPlatformDataFolder } from "./../shared.js";
 
 export const infoDeck = () => {
   let template = "";
@@ -109,8 +109,8 @@ export const infoDeckAfterLoggedIn = async () => {
   //       explanation: "",
   //     });
   template += cardContents({
-    header: "About PDR",
-    button: "Learn about the PDR and how to request access to data",
+    header: "How To Request Access",
+    button: "Learn how to request access to data",
     href: "#dataAccessHowTo",
     icon: "fa-book",
     explanation: "",
@@ -129,13 +129,19 @@ export const infoDeckAfterLoggedIn = async () => {
     icon: "fa-database",
     explanation: "",
   });
-//   template += cardContents({
-//     header: "DCEG Investigators",
-//     button: "Manage Publication Data",
-//     href: "#myDCEG",
-//     icon: "fa-user",
-//     explanation: "",
-//   });
+
+    const getCollaborators = await getCollaboration(dataPlatformDataFolder,"folders");
+    let getMyPermissionLevel = false;
+    if (getCollaborators) getMyPermissionLevel = checkDataSubmissionPermissionLevel(getCollaborators, JSON.parse(localStorage.parms).login);
+    if (getMyPermissionLevel){ 
+    template += cardContents({
+        header: "Upload New Data",
+        button: "Upload new data to the PDR",
+        href: "#myDCEGID_upload",
+        icon: "fa-upload",
+        explanation: "",
+    });
+    }
   template += `</div>
             </div>
         </div>
