@@ -489,6 +489,39 @@ export const deleteFolder = async (folderId) => {
   }
 };
 
+export const deleteFile = async (fileId) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    // let obj = {
+    //   parent: {
+    //     id: folderId,
+    //   },
+    // };
+    let response = await fetch(`https://api.box.com/2.0/files/${fileId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      //body: JSON.stringify(obj),
+      //redirect: "follow",
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await deleteFile(fileId);
+    } else if (response.status === 201) {
+      return response.json();
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await deleteFile(fileId);
+  }
+};
+
 export const descFolder = async (folderId, description) => {
   try {
     const access_token = JSON.parse(localStorage.parms).access_token;
@@ -2400,7 +2433,6 @@ export function selectProps(...props){
   }
 };
 
-// Need to change to BCRPP urls
 export const applicationURLs = {
   epi: "https://episphere.github.io",
   dev: "https://episphere.github.io/dataplatform",

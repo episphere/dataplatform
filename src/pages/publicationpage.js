@@ -330,7 +330,6 @@ const getDescriptionAdmin = async (signedIn) => {
   //const data = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/production/imports/DCEG_Publications.tsv")).text();
   const data = await getFile(1506807971290);
   const tsv = tsv2Json2(data);
-  console.log(tsv);
   const json = tsv.data;
   const headers = tsv.headers;
   // json.forEach((obj) => {
@@ -468,7 +467,6 @@ const renderStudyDescription = (descriptions, pageSize, headers, signedIn) => {
     uniqueTitles.forEach((desc, index) => {
       if (index > pageSize) return;
       var desc2 = descriptions.filter((dt) => dt['title'] === desc["title"]);
-      console.log(desc2);
         template += `
               <div class="card mt-1 mb-1 align-left">
                   <div style="padding: 10px" aria-expanded="false" id="heading${desc["title"].replace(/\s+/g,"").replace(/[^a-zA-Z ]/g, "")}">

@@ -41,7 +41,10 @@ import {
   dataPlatformDataFolder,
   finalPublicationSummaryFolder,
   moveFolder,
-  deleteFolder
+  deleteFolder,
+  descFile,
+  descFolder,
+  deleteFile
 } from "./shared.js";
 import { renderDataSummary } from "./pages/about.js";
 import { variables } from "./variables.js";
@@ -1560,7 +1563,6 @@ export const addEventVariableDefinitions = () => {
 
 export const addEventUpdateSummaryStatsData = () => {
   const btn = document.getElementById("updateSummaryStatsData");
-  console.log(btn);
   if (!btn) return;
   btn.addEventListener("click", async () => {
     const header = document.getElementById("confluenceModalHeader");
@@ -1652,6 +1654,7 @@ const addEventUpdateSummaryStatsForm = () => {
     }
 
     const files = await getFolderItems(finalPublicationSummaryFilesFolder);
+
     var dataArray = [];
     for (let file of files.entries) {
       const tsv = await getFile(file.id);
@@ -1662,7 +1665,7 @@ const addEventUpdateSummaryStatsForm = () => {
       //dataArray.push(jsonArray);
       Array.prototype.push.apply(dataArray,jsonArray);
     }
-    form.innerHTML = `Saving File...`
+    form.innerHTML = `Saving File...`;
     console.log(dataArray);
     const headers = Object.keys(dataArray[0]);
     const tsvValue = json2other(dataArray, headers, true).replace(/(<b>)|(<\/b>)/g, "");
@@ -1684,26 +1687,55 @@ const addEventUpdateSummaryStatsForm = () => {
     const folders = dataPlatformDataFolderItems.entries.filter(obj => obj.type === 'folder');
     const folders2 = await getFolderItems(finalPublicationSummaryFolder);
     const folders2Names = folders2.entries.map(folder => folder.name);
-    console.log(folders);
-    console.log(folders2.entries);
 
     for (let folder of folders){
       let name = folder.name;
-      if (folder.id == "259664212144"){
+      if (folder.id == publicDataFolder){
         console.log("Skipping Summary Files");
-      } else if (folders2Names.includes(name) && folder.id != "259664212144"){
-        let filesInFolder = await getFolderItems(folder.id);
-        let folderID = folders2.entries.find(obj => obj.name === name).id;
-        if (filesInFolder.entries.length > 0){
-          for (let items of filesInFolder.entries){
-            await moveFolder(items.id, folderID);
+      } else if (folders2Names.includes(name) && folder.id != publicDataFolder){ //If folder with user name already exists in finalPublicationSummaryFolder
+        let filesInFolder = await getFolderItems(folder.id); // Get files in folder
+        let folderID = folders2.entries.find(obj => obj.name === name).id; // Get already existing folder id to move files to
+        if (filesInFolder.entries.length > 0){ // If the folder is not empty
+          let groupedFiles = Object.groupBy(filesInFolder.entries, ({ type }) => type);
+          for (let items of groupedFiles.file){
+            let response = await getFile(items.id);
+            let responseData = tsv2Json(response);
+            let jsonArray = responseData.data;
+            for (let item of jsonArray){
+              if (item.type == 'file') {
+                await descFile(item.val, item.desc);
+              } else if (item.type == 'folder') {
+                await descFolder(item.val, item.desc);
+              }
+            }
+            await deleteFile(items.id);
+          }
+          for (let items of groupedFiles.folder){ // Get items in folder
+            await moveFolder(items.id, folderID); // Moves folder
             console.log(`Folder ${items.id} moved to ${folderID}`);
           }
-        } else {
+        } else { // If empty then folder can be deleted
           await deleteFolder(folder.id);
           console.log("Empty folder deleted")
         }
       } else {
+        let filesInFolder = await getFolderItems(folder.id); // Get files in folder
+        if (filesInFolder.entries.length > 0){ // If the folder is not empty
+          let groupedFiles = Object.groupBy(filesInFolder.entries, ({ type }) => type);
+          for (let items of groupedFiles.file){
+            let response = await getFile(items.id);
+            let responseData = tsv2Json(response);
+            let jsonArray = responseData.data;
+            for (let item of jsonArray){
+              if (item.type == 'file') {
+                descFile(item.val, item.desc);
+              } else if (item.type == 'folder') {
+                descFolder(item.val, item.desc);
+              }
+            }
+            await deleteFile(items.id);
+          }
+        }
         await moveFolder(folder.id, finalPublicationSummaryFolder);
       }
     };
