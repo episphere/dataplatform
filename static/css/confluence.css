@@ -2496,3 +2496,11 @@ button.previous-btn {
   line-height: 1.125;
   padding: 0rem 0.5rem 0rem 0rem;
 }
+
+ol.image-list img{
+  vertical-align: top;
+}
+
+/* img {
+  max-width: 600px
+} */

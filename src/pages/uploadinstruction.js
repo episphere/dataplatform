@@ -19,11 +19,13 @@ export const instruction = () => {
                             <ol>
                                 <li><b> Log into the DCEG PDR</b>
                                         <p>From the DCEG Epidemiology Data Platform landing page, select (a) “PDR Log in” (upper right corner), (b) enter your NIH Box log in credentials, and then (c) Select “Grant access to Box” when prompted.</p>
-                                        <b>(a)</b> <img src="static/images/step1a.png" alt="Instruction step 1a" width="50%">
-                                    </br></br>
-                                        <b>(b)</b> <img src="static/images/step1b.png" alt="Instruction step 1b" width="50%">
-                                    </br></br>
-                                        <b>(c)</b> <img src="static/images/step1c.png" alt="Instruction step 1c" width="50%">
+                                        <ol type="a" class="image-list">
+                                            <li> <img src="static/images/step1a.png" alt="Instruction step 1a" width="50%"> </li>
+                                            </br></br>
+                                            <li> <img src="static/images/step1b.png" alt="Instruction step 1b" width="50%"> </li>
+                                            </br></br>
+                                            <li> <img src="static/images/step1c.png" alt="Instruction step 1c" width="50%"> </li>
+                                        </ol>
                                 </li>
                                     </br>
                                 <li> Select “Upload new Data” under the DCEG Investigators drop-down menu.
