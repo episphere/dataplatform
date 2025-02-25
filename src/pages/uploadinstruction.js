@@ -19,16 +19,16 @@ export const instruction = () => {
                             <ol>
                                 <li><b> Log into the DCEG PDR</b>
                                         <p>From the DCEG Epidemiology Data Platform landing page, select (a) “PDR Log in” (upper right corner), (b) enter your NIH Box log in credentials, and then (c) Select “Grant access to Box” when prompted.</p>
-                                        <b>(a)</b> <img src="static/images/step1a.png" alt="Instruction step 1a" height="400">
+                                        <b>(a)</b> <img src="static/images/step1a.png" alt="Instruction step 1a" width="50%">
                                     </br></br>
-                                        <b>(b)</b> <img src="static/images/step1b.png" alt="Instruction step 1b" height="250">
+                                        <b>(b)</b> <img src="static/images/step1b.png" alt="Instruction step 1b" width="50%">
                                     </br></br>
-                                        <b>(c)</b> <img src="static/images/step1c.png" alt="Instruction step 1c" height="400">
+                                        <b>(c)</b> <img src="static/images/step1c.png" alt="Instruction step 1c" width="50%">
                                 </li>
                                     </br>
                                 <li> Select “Upload new Data” under the DCEG Investigators drop-down menu.
                                     </br>
-                                    <img src="static/images/step2.png" alt="Instruction step 2">
+                                    <img src="static/images/step2.png" alt="Instruction step 2" width="50%">
                                     </br>
                                 </li>
                                 </br>
@@ -36,34 +36,34 @@ export const instruction = () => {
                                 <li><p>Select “<b>Yes</b>” to the question “Has a data sharing management plan(s) been approved for data in this manuscript?”. If your answer to this question is “No”, you cannot proceed and must revise your DMS plan to use the PDR.</p>
                                     <p>Select if your data deposition corresponds to a Publication/Presentation DMS plan or a Study DMS plan, and then select your DMS plan from the table.</p>
                                     </br>
-                                    <img src="static/images/step3.png" alt="Instruction step 3">
+                                    <img src="static/images/step3.png" alt="Instruction step 3" width="50%">
                                     </br>
                                 </li>
         
                                 </br>
                                 <li><p>Review the data use limitations and restrictions that are associated with the selected DMS plan, and then select “Next” once confirmed.</p>
                                     </br>
-                                    <img src="static/images/step4.png" alt="Instruction step 4">
+                                    <img src="static/images/step4.png" alt="Instruction step 4" width="50%">
                                     </br>
                                 </li>
                                 </br>
 
                                 <li><p>Provide information about your manuscript and the journal in which it is being published. Please provide the journal acronym that is used by the <a href="https://www.ncbi.nlm.nih.gov/nlmcatalog/journals/"> National Library of Medicine Catalog </a>. The information provided in this section will be used to create a Box folder that will store the data and metadata being uploaded to the PDR.</p>
                                     </br>
-                                    <img src="static/images/step5.png" alt="Instruction step 5">
+                                    <img src="static/images/step5.png" alt="Instruction step 5" width="50%">
                                 </li>
                                 </br>
 
                                 <li><p>Select the data and metadata that are being uploaded to the PDR. Provide a file description for each of the files that are being uploaded. Note, the description will be <u>viewable</u> by all approved researchers that are given access to the data/metadata.</p>
                                     <p>It is <b>strongly</b> encouraged that data uploaded to the PDR is <b><u>in non-proprietary file formats</u></b> (e.g. CSV or TXT files), and data dictionaries should be shared in machine-readable file formats (note: PDF files are not machine-readable).</p>
                                     </br>
-                                    <img src="static/images/step6.png" alt="Instruction step 6">
+                                    <img src="static/images/step6.png" alt="Instruction step 6" width="50%">
                                 </li>
                                 </br>
                                 <li>
                                     <p>Confirm all your information is correct before submitting to the PDR. If correct, select “Submit” to deposit your data to the DCEG PDR. If needed, in your manuscript you can refer to your data being available on the National Cancer Institute, Division of Cancer Epidemiology and Genetics Publication Data Repository.</p>
                                     </br>
-                                    <img src="static/images/step7.png" alt="Instruction step 7">
+                                    <img src="static/images/step7.png" alt="Instruction step 7" width="35%">
                                 </li>
                             </ol>
                       <div>
