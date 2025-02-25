@@ -1697,22 +1697,27 @@ const addEventUpdateSummaryStatsForm = () => {
         let folderID = folders2.entries.find(obj => obj.name === name).id; // Get already existing folder id to move files to
         if (filesInFolder.entries.length > 0){ // If the folder is not empty
           let groupedFiles = Object.groupBy(filesInFolder.entries, ({ type }) => type);
-          for (let items of groupedFiles.file){
-            let response = await getFile(items.id);
-            let responseData = tsv2Json(response);
-            let jsonArray = responseData.data;
-            for (let item of jsonArray){
-              if (item.type == 'file') {
-                await descFile(item.val, item.desc);
-              } else if (item.type == 'folder') {
-                await descFolder(item.val, item.desc);
+          console.log(groupedFiles);
+          if (groupedFiles.file){
+            for (let items of groupedFiles.file){
+              let response = await getFile(items.id);
+              let responseData = tsv2Json(response);
+              let jsonArray = responseData.data;
+              for (let item of jsonArray){
+                if (item.type == 'file') {
+                  await descFile(item.val, item.desc);
+                } else if (item.type == 'folder') {
+                  await descFolder(item.val, item.desc);
+                }
               }
+              await deleteFile(items.id);
             }
-            await deleteFile(items.id);
           }
-          for (let items of groupedFiles.folder){ // Get items in folder
-            await moveFolder(items.id, folderID); // Moves folder
-            console.log(`Folder ${items.id} moved to ${folderID}`);
+          if (groupedFiles.folder){
+            for (let items of groupedFiles.folder){ // Get items in folder
+              await moveFolder(items.id, folderID); // Moves folder
+              console.log(`Folder ${items.id} moved to ${folderID}`);
+            }
           }
         } else { // If empty then folder can be deleted
           await deleteFolder(folder.id);
