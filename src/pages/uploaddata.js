@@ -646,25 +646,26 @@ export async function subForm(eventtest) {
       }
     }
     console.log(descArray)
-    const headers = Object.keys(obj[0]);
-    const tsvValue = json2other(obj, headers, true).replace(/(<b>)|(<\/b>)/g, "");
-    let tsvContent =
-        "data:text/tsv;charset=utf-8," +
-        tsvValue;
-    const encodedUri = encodeURI(tsvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `test.tsv`);
-
-    document.getElementById("modalBody").innerHTML = `
-    <p><b>Uploading TSV Data</b></p>
-    `;
-
-    await uploadTSV(tsvValue, folderName+"_"+folderName2+".tsv", publicDataFolder);
-    //await uploadTSV(tsvValue, "details_"+folderName2+".tsv", folderId3); // This will upload to folder containing the files, determined not to be necessary
-    link.click();
-    document.body.appendChild(link);
   }
+
+  const headers = Object.keys(obj[0]);
+  const tsvValue = json2other(obj, headers, true).replace(/(<b>)|(<\/b>)/g, "");
+  let tsvContent =
+      "data:text/tsv;charset=utf-8," +
+      tsvValue;
+  const encodedUri = encodeURI(tsvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `test.tsv`);
+
+  document.getElementById("modalBody").innerHTML = `
+  <p><b>Uploading TSV Data</b></p>
+  `;
+
+  await uploadTSV(tsvValue, folderName+"_"+folderName2+".tsv", publicDataFolder);
+  await uploadTSV(tsvValue, "details_"+folderName2+".tsv", folderId2); // This will upload to folder containing the files, determined not to be necessary
+  link.click();
+  document.body.appendChild(link);
 
   let uploadObject = {type: 'folder', name: folderName2, val: folderId2, desc: manu_title + ', ' + studies};
   descArray.push(uploadObject);
