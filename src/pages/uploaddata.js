@@ -661,7 +661,7 @@ export async function subForm(eventtest) {
     `;
 
     await uploadTSV(tsvValue, folderName+"_"+folderName2+".tsv", publicDataFolder);
-    await uploadTSV(tsvValue, "details_"+folderName2+".tsv", folderId3);
+    //await uploadTSV(tsvValue, "details_"+folderName2+".tsv", folderId3); // This will upload to folder containing the files, determined not to be necessary
     link.click();
     document.body.appendChild(link);
   }
