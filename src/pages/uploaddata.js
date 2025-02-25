@@ -603,16 +603,17 @@ export async function subForm(eventtest) {
     studies.push(study);
     const restrictions = form.querySelectorAll('input[type="checkbox"]:checked')[0].value;
 
-    const userval = {dsmp: dsmp, cas: cas, study: study, date: date, 
-      journal_name: journal_name, journal_acro: journal_acro, title: manu_title, 
-      author: author_first + ' ' + author_middle + ' ' + author_last, 
-      res: restrictions};
-    obj.push(userval);
     const studyName = study;
     document.getElementById("modalBody").innerHTML = `
     <p><b>Creating Folder</b></p>
     `;
     const folderId3 = await folderStructure(folderId2, studyName);
+
+    const userval = {folderid: folderId3, dsmp: dsmp, cas: cas, study: study, date: date, 
+      journal_name: journal_name, journal_acro: journal_acro, title: manu_title, 
+      author: author_first + ' ' + author_middle + ' ' + author_last, 
+      res: restrictions};
+    obj.push(userval);
     
     document.getElementById("modalBody").innerHTML = `
     <p><b>Uploading Data File</b></p>
