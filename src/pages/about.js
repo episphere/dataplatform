@@ -38,12 +38,12 @@ export const aboutConfluence = (activeTab, showDescripton) => {
 // Changes needed here for definitions
 export const renderOverView = async () => {
   let template = `
-  <div class="main-summary-row">
-  <div class="align-left">
-       <h1 class="page-header">Information on Accessing DCEG Epidemiology Data Platforms
-       </h1>
-  </div>
-</div>
+    <div class="main-summary-row">
+      <div class="align-left">
+        <h1 class="page-header">Information on Accessing DCEG Epidemiology Data Platforms - <span style="color:red;">UNDER DEVELOPMENT</span>
+        </h1>
+      </div>
+    </div>
     <div class="home-page-stats font-size-18">
         <div class="main-summary-row">
             <div class="col align-left">
