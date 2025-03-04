@@ -26,21 +26,21 @@ export const infoDeck = () => {
     button: "Information on Accessing DCEG Data",
     href: "#about/overview",
     icon: "fa-database",
-    explanation: "",
+    explanation: "UNDER DEVELOPMENT",
   });
   template += cardContents({
     header: "About DCEG Data",
     button: "Information on Accessing DCEG Data",
     href: "#join",
     icon: "fa-chart-bar",
-    explanation: "",
+    explanation: "Under Development",
   });
   template += cardContents({
     header: "Consortia Projects",
     button: "Data Platform for Consortia Projects",
     href: "#data_access/overview",
     icon: "fa-database",
-    explanation: "",
+    explanation: "Under Development",
   });
   template += cardContents({
     header: "DCEG Studies & Data Resources",

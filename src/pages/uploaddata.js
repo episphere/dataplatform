@@ -47,10 +47,10 @@ export const dataUploadForm = async () => {
         <form class="contact-form" id="regForm">
           <div class="tab">
             <h3><b>Data Sharing Plan</b></h3>
-            <div class="input-group input-group2">
             <div class="how-to">
-            Please see our <a href=#uploadinstruction target="__blank">How-To</a> for step-by-step instructions.
+              <p>Please see our <a href=#uploadinstruction target="__blank">How-To</a> for step-by-step instructions on how to upload data to the PDR.</p>
             </div>
+            <div class="input-group input-group2">
               <label for="approved"> <b>Has a data sharing management plan(s) been approved for data in this manuscript? </b><span class='required-label'>*</span> </label>      
                 <input id="approvedyes" name="approved" type="radio" value="Yes" required/>
                   <label class="inline" for="approvedyes"> Yes </label>

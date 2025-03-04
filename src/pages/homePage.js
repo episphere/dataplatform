@@ -25,21 +25,21 @@ export const infoDeck = () => {
     button: "Information on accessing DCEG data",
     href: "#about/overview",
     icon: "fa-book",
-    explanation: "",
+    explanation: "UNDER DEVELOPMENT",
   });
   template += cardContents({
     header: "Consortia Projects",
     button: "Data platforms for consortia projects",
     href: "#data_access/overview",
     icon: "fa-folder-open",
-    explanation: "",
+    explanation: "UNDER DEVELOPMENT",
   });
   template += cardContents({
     header: "DCEG Studies & Data Resources",
     button: "Data platforms and websites for DCEG studies and resources",//"Information on research conducted by DCEG",
     href: "#researchStudies",//"https://dceg.cancer.gov/research/who-we-study",
     icon: "fa-database",
-    explanation: "",
+    explanation: "UNDER DEVELOPMENT",
   });
   template += cardContents({
     header: "DCEG Publication Data Repository (PDR)",
