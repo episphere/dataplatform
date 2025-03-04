@@ -1,6 +1,3 @@
-// Major updates required
-//test
-// Need to update infoDeck and infoDeckAfterLoggedIn to match template
 import { getFileInfo } from "./../shared.js";
 
 export const infoDeck = () => {
@@ -44,8 +41,8 @@ export const infoDeck = () => {
   });
   template += cardContents({
     header: "DCEG Studies & Data Resources",
-    button: "Data platforms and websites for DCEG studies and resources",//"Information on research conducted by DCEG",
-    href: "#researchStudies",//"https://dceg.cancer.gov/research/who-we-study",
+    button: "Data platforms and websites for DCEG studies and resources",
+    href: "#researchStudies",
     icon: "fa-database",
     explanation: "",
   });
@@ -107,14 +104,7 @@ export const infoDeckAfterLoggedIn = async () => {
             </div>
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`;
-  // if (studyDescription)
-  //   template += cardContents({
-  //     header: "Study Description",
-  //     button: "Study Description",
-  //     href: "#about/description",
-  //     icon: "fa-file-alt",
-  //     explanation: "View descriptions of participating studies.",
-  //   });
+
   template += cardContents({
     header: "Consortia Projects",
     button: "Data Platforms for Consortia Projects",
@@ -122,17 +112,11 @@ export const infoDeckAfterLoggedIn = async () => {
     icon: "fa-handshake",
     explanation: "",
   });
-  // template += cardContents({
-  //   header: "Data Platforms for Consortia Projects",
-  //   button: "Data Platforms for Consortia Projects",
-  //   href: "#data_access/overview",
-  //   icon: "fa-handshake",
-  //   explanation: "",
-  // });
+
   template += cardContents({
     header: "DCEG Studies & Data Resources",
-    button: "Data platforms and websites for DCEG studies and resources",//"Information on research conducted by DCEG",
-    href: "#researchStudies",//"https://dceg.cancer.gov/research/who-we-study",
+    button: "Data platforms and websites for DCEG studies and resources",
+    href: "#researchStudies",
     icon: "fa-database",
     explanation: "",
   });
@@ -143,13 +127,7 @@ export const infoDeckAfterLoggedIn = async () => {
     icon: "fa-database",
     explanation: "",
   });
-  // template += cardContents({
-  //   header: "Explore Data",
-  //   button: "Explore Data",
-  //   href: "#data_exploration/summary",
-  //   icon: "fa-chart-bar",
-  //   explanation: "Explore summary-level data to plan analyses.",
-  // });
+
   template += `</div>
             </div>
         </div>

@@ -1,4 +1,3 @@
-// Major updates required
 import { getFileInfo, getCollaboration, checkDataSubmissionPermissionLevel, dataPlatformDataFolder } from "./../shared.js";
 
 export const infoDeck = () => {
@@ -36,8 +35,8 @@ export const infoDeck = () => {
   });
   template += cardContents({
     header: "DCEG Studies & Data Resources",
-    button: "Data platforms and websites for DCEG studies and resources",//"Information on research conducted by DCEG",
-    href: "#researchStudies",//"https://dceg.cancer.gov/research/who-we-study",
+    button: "Data platforms and websites for DCEG studies and resources",
+    href: "#researchStudies",
     icon: "fa-database",
     explanation: "UNDER DEVELOPMENT",
   });
@@ -81,7 +80,6 @@ export const infoDeck = () => {
 };
 
 export const infoDeckAfterLoggedIn = async () => {
-  //const studyDescription = await getFileInfo(904897189551); //new: 904897189551
   let template = "";
   template += `
         <div class="secondary-bg padding-bottom-1rem">
@@ -100,14 +98,7 @@ export const infoDeckAfterLoggedIn = async () => {
             </div>
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`;
-  //   if (studyDescription)
-  //     template += cardContents({
-  //       header: "Study Description",
-  //       button: "Study Description",
-  //       href: "#about/description",
-  //       icon: "fa-database",
-  //       explanation: "",
-  //     });
+
   template += cardContents({
     header: "How To Request Access",
     button: "Learn how to request access to data",
@@ -115,13 +106,7 @@ export const infoDeckAfterLoggedIn = async () => {
     icon: "fa-book",
     explanation: "",
   });
-//   template += cardContents({
-//     header: "Research Studies",
-//     button: "Data Platforms for DCEG studies",
-//     href: "#researchStudies",
-//     icon: "fa-layer-group",
-//     explanation: "",
-//   });
+
   template += cardContents({
     header: "Data in the PDR",
     button: "Submit a request to access data in the PDR",
