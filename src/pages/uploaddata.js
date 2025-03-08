@@ -24,7 +24,7 @@ export const uploadData = () => {
             </div>
             <div class="modal-body" id='modalBody'>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" id='modalFooter'>
               <button type="button" class="btn-close btn btn-secondary" data-dismiss="modal" aria-label="Return">Return</button>
               <button type="button" class="btn btn-secondary confirmButton" data-dismiss="modal" aria-label="Confirm">Confirm</button>
             </div>
@@ -553,14 +553,16 @@ export async function confirmSubmission(eventtest) {
     <p><b>Please confirm all files and information are correct.</b></p>
     <p><b>Confirmation will lock the folder to prevent any edits.</b></p>
     <p><b>If edits are required after confirmation, please contact the PDR Administrator.</b></p>
+    <p><b>Any files greater than 50MB can take longer than a minute to upload.</b></p>
     `;
   $("#popUpModal").modal("show");
   let popup = document.getElementById('popUpModal');
   //let btns = popup.querySelectorAll('button');
   let confirmButton = popup.getElementsByClassName('confirmButton');
   for (let button of confirmButton) {
-  button.addEventListener('click', function () {
-    subForm(eventtest);
+  button.addEventListener('click', async function () {
+    await subForm(eventtest);
+    hideAnimation();
   })
   }
   btn.disabled = false;
@@ -573,6 +575,7 @@ export async function subForm(eventtest) {
   showAnimation();
   // const ele = document.getElementById("duoSel");
   // const eleAll = ele.getElementsByClassName('form2');
+  document.getElementById("modalFooter").style.display = "none";
   document.getElementById("modalBody").innerHTML = `
   <p><b>Collecting information</b></p>
   `;
@@ -617,6 +620,7 @@ export async function subForm(eventtest) {
     
     document.getElementById("modalBody").innerHTML = `
     <p><b>Uploading Data File</b></p>
+    <p><b>If larger than 50MB, this can take longer than a minute</b></p>
     `;
 
     let uploadItem = await uploadStructure(document.getElementById(`${id}data_files`).files[0], folderId3, document.getElementById(`${id}data_description`).value);
@@ -625,6 +629,7 @@ export async function subForm(eventtest) {
 
     document.getElementById("modalBody").innerHTML = `
     <p><b>Uploading Dictionary</b></p>
+    <p><b>If larger than 50MB, this can take longer than a minute</b></p>
     `;
 
     uploadItem = await uploadStructure(document.getElementById(`${id}data_dictionary`).files[0], folderId3, document.getElementById(`${id}data_dictionary_description`).value);
@@ -638,6 +643,7 @@ export async function subForm(eventtest) {
       if (!val.id.includes('data_upload_description')){
         document.getElementById("modalBody").innerHTML = `
         <p><b>Uploading Additional Files</b></p>
+        <p><b>If larger than 50MB, this can take longer than a minute</b></p>
         `;
 
         uploadItem = await uploadStructure(val.files[0], folderId3, document.getElementById(val.id.replace('data_upload', 'data_upload_description')).value);
@@ -691,6 +697,7 @@ export async function subForm(eventtest) {
           <!--(epidataplatforms.cancer.gov; ID=${folderId2})-->
           `
           ;
+  document.getElementById("modalFooter").style.display = "inline";
   $("#popUpModal").modal("show");
   let popup = document.getElementById('popUpModal');
   let btns = popup.querySelectorAll('button');
@@ -707,7 +714,7 @@ export async function subForm(eventtest) {
   //     location.reload();
   //   })
   // }
-  hideAnimation();
+  // hideAnimation();
   //location.reload();
   btn.disabled = false;
 }
