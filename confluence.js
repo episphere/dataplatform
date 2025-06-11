@@ -378,7 +378,7 @@ export const confluence = async () => {
           if (eraLogin) {
             console.log(eraLogin);
             dataForm();
-        } else {
+            } else {
             document.getElementById("logineRA").addEventListener("click", async function () {
               localStorage.setItem('lastURL', '#data_access/form');
               if(location.origin.match("localhost")) {
@@ -430,16 +430,16 @@ export const confluence = async () => {
       });
     }
     if (dataRequestElement) {
-    dataRequestElement.addEventListener("click", () => {
-      if (dataRequestElement.classList.contains("navbar-active")) return;
-      const element = document.getElementById("dataRequest");
-      if (!element) return;
-      if (element.classList.contains("navbar-active")) return;
-      document.title = "DCEG - Consortia";
-      assignNavbarActive(element);
-      confluenceDiv.innerHTML = dataRequestTemplate("overview");
-      hideAnimation();
-    });
+      dataRequestElement.addEventListener("click", () => {
+        if (dataRequestElement.classList.contains("navbar-active")) return;
+        const element = document.getElementById("dataRequest");
+        if (!element) return;
+        if (element.classList.contains("navbar-active")) return;
+        document.title = "DCEG - Consortia";
+        assignNavbarActive(element);
+        confluenceDiv.innerHTML = dataRequestTemplate("overview");
+        hideAnimation();
+      });
     }
     if (dataAccessElement) {
       dataAccessElement.addEventListener("click", () => {
@@ -466,16 +466,16 @@ export const confluence = async () => {
       })
     }
     if (ConsortiaPageElement) {
-    ConsortiaPageElement.addEventListener("click", () => {
-      if (ConsortiaPageElement.classList.contains("navbar-active")) return;
-      const element = document.getElementById("data2");
-      if (!element) return;
-      if (element.classList.contains("navbar-active")) return;
+      ConsortiaPageElement.addEventListener("click", () => {
+        if (ConsortiaPageElement.classList.contains("navbar-active")) return;
+        const element = document.getElementById("data2");
+        if (!element) return;
+        if (element.classList.contains("navbar-active")) return;
         document.title = "DCEG Studies";
-      assignNavbarActive(element);
-      confluenceDiv.innerHTML = testPage2();
-      hideAnimation();
-    });
+        assignNavbarActive(element);
+        confluenceDiv.innerHTML = testPage2();
+        hideAnimation();
+      });
     }
     PublicationPageElement.addEventListener("click", () => {
       if (PublicationPageElement.classList.contains("navbar-active")) return;
@@ -612,12 +612,12 @@ export const confluence = async () => {
     // //   addEventDataGovernanceNavBar(true);
     // }
     if (JSON.parse(localStorage.parms).login.split('@')[1].includes('deloitte.com') || JSON.parse(localStorage.parms).login.split('@')[1].includes('nih.gov')){
-    document.getElementById("governanceNav").innerHTML = `
-                <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links navbar-active" href="#data_governance" title="Data Governance" id="dataGovernance">
-                    Data Governance
-                </a>
-            `;
-    addEventDataGovernanceNavBar(true);
+      document.getElementById("governanceNav").innerHTML = `
+                  <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links navbar-active" href="#data_governance" title="Data Governance" id="dataGovernance">
+                      Data Governance
+                  </a>
+              `;
+      addEventDataGovernanceNavBar(true);
     }
     manageHash();
   }
