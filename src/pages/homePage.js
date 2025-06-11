@@ -1,5 +1,4 @@
-// Major updates required
-import { getFileInfo } from "./../shared.js";
+import { getFileInfo, getCollaboration, checkDataSubmissionPermissionLevel, dataPlatformDataFolder } from "./../shared.js";
 
 export const infoDeck = () => {
   let template = "";
@@ -22,28 +21,28 @@ export const infoDeck = () => {
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`;
   template += cardContents({
     header: "About DCEG Data",
-    button: "Information on Accessing DCEG Data",
+    button: "Information on accessing DCEG data",
     href: "#about/overview",
-    icon: "fa-info",
-    explanation: "",
+    icon: "fa-book",
+    explanation: "UNDER DEVELOPMENT",
   });
   template += cardContents({
     header: "Consortia Projects",
-    button: "Data Platforms for Consortia Projects",
+    button: "Data platforms for consortia projects",
     href: "#data_access/overview",
     icon: "fa-folder-open",
-    explanation: "",
+    explanation: "UNDER DEVELOPMENT",
   });
   template += cardContents({
-    header: "Research Studies",
-    button: "Data Platforms for DCEG studies",
+    header: "DCEG Studies & Data Resources",
+    button: "Data platforms and websites for DCEG studies and resources",
     href: "#researchStudies",
-    icon: "fa-layer-group",
-    explanation: "",
+    icon: "fa-database",
+    explanation: "UNDER DEVELOPMENT",
   });
   template += cardContents({
-    header: "Datasets from DCEG Publications",
-    button: "Datasets from DCEG Publications available for request",
+    header: "DCEG Publication Data Repository (PDR)",
+    button: "Datasets available for request from the DCEG PDR",
     href: "#publicationpage",
     icon: "fa-database",
     explanation: "",
@@ -81,7 +80,6 @@ export const infoDeck = () => {
 };
 
 export const infoDeckAfterLoggedIn = async () => {
-  const studyDescription = await getFileInfo(904897189551); //new: 904897189551
   let template = "";
   template += `
         <div class="secondary-bg padding-bottom-1rem">
@@ -89,7 +87,7 @@ export const infoDeckAfterLoggedIn = async () => {
                 <div class="banner-logo">
                     <div class="banner-overlay-text row justify-content-center text-center">
                         <div class="col-md-12">
-                            <h1 class="banner-overlay-h1">DCEG Epidemiology Data Platforms
+                            <h1 class="banner-overlay-h1">DCEG Publication Data Repository (PDR)
                             </h1>
                             <div class="banner-overlay-line"></div>
                             <h2 class="banner-overlay-h3" style="font-size:1.7vw;"> Following FAIR principles in Support of Epidemiological Research
@@ -100,42 +98,35 @@ export const infoDeckAfterLoggedIn = async () => {
             </div>
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`;
-  //   if (studyDescription)
-  //     template += cardContents({
-  //       header: "Study Description",
-  //       button: "Study Description",
-  //       href: "#about/description",
-  //       icon: "fa-database",
-  //       explanation: "",
-  //     });
+
   template += cardContents({
-    header: "Consortia Projects",
-    button: "Data Platforms for Consortia Projects",
-    href: "#data_access/overview",
-    icon: "fa-folder-open",
+    header: "How To Request Access",
+    button: "Learn how to request access to data",
+    href: "#dataAccessHowTo",
+    icon: "fa-book",
     explanation: "",
   });
+
   template += cardContents({
-    header: "Research Studies",
-    button: "Data Platforms for DCEG studies",
-    href: "#researchStudies",
-    icon: "fa-layer-group",
-    explanation: "",
-  });
-  template += cardContents({
-    header: "Datasets from DCEG Publications",
-    button: "Datasets from DCEG Publications available for request",
+    header: "Data in the PDR",
+    button: "Submit a request to access data in the PDR",
     href: "#publicationpage",
     icon: "fa-database",
     explanation: "",
   });
-  template += cardContents({
-    header: "DCEG Investigators",
-    button: "Manage Publication Data",
-    href: "#myDCEG",
-    icon: "fa-user",
-    explanation: "",
-  });
+
+    const getCollaborators = await getCollaboration(dataPlatformDataFolder,"folders");
+    let getMyPermissionLevel = false;
+    if (getCollaborators) getMyPermissionLevel = checkDataSubmissionPermissionLevel(getCollaborators, JSON.parse(localStorage.parms).login);
+    if (getMyPermissionLevel){ 
+    template += cardContents({
+        header: "Upload New Data",
+        button: "Upload new data to the PDR",
+        href: "#myDCEG/upload",
+        icon: "fa-upload",
+        explanation: "",
+    });
+    }
   template += `</div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import {csv2Json, csv2JsonTest, uploadFile, uploadFileAny, uploadWordFile, json2other, uploadTSV, createFolder, getFolderItems, descFolder, dataPlatformFolder, publicDataFolder, descFile, showAnimation, hideAnimation, selectProps} from "./../shared.js";
+import {csv2Json, csv2JsonTest, uploadFile, uploadAnyFileVersion, uploadFileAny, uploadWordFile, json2other, uploadTSV, createFolder, getFolderItems, descFolder, dataPlatformFolder, dataPlatformDataFolder, publicDataFolder, descFile, showAnimation, hideAnimation, selectProps, uploadFileVersion} from "./../shared.js";
 import { config } from "./../config.js";
 import { addEventFilterBarToggle } from "../event.js";
 let previousValue = "";
@@ -12,7 +12,7 @@ export const uploadData = () => {
           <h1 class="page-header">Upload New Data to the DCEG Data Sharing Platform</h1>
         </div>
       </div>
-      <div id="uploadFormView" class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
+      <div id="uploadFormView" class="data-submission div-border font-size-18" style="padding-left: 0rem; padding-right: 0rem;">
       </div>
       <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -24,8 +24,9 @@ export const uploadData = () => {
             </div>
             <div class="modal-body" id='modalBody'>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <div class="modal-footer" id='modalFooter'>
+              <button type="button" class="btn-close btn btn-secondary" data-dismiss="modal" aria-label="Return">Return</button>
+              <button type="button" class="btn btn-secondary confirmButton" data-dismiss="modal" aria-label="Confirm">Confirm</button>
             </div>
           </div>
         </div>
@@ -46,6 +47,9 @@ export const dataUploadForm = async () => {
         <form class="contact-form" id="regForm">
           <div class="tab">
             <h3><b>Data Sharing Plan</b></h3>
+            <div class="how-to">
+              <p>Please see our <a href=#uploadinstruction target="__blank">How-To</a> for step-by-step instructions on how to upload data to the PDR.</p>
+            </div>
             <div class="input-group input-group2">
               <label for="approved"> <b>Has a data sharing management plan(s) been approved for data in this manuscript? </b><span class='required-label'>*</span> </label>      
                 <input id="approvedyes" name="approved" type="radio" value="Yes" required/>
@@ -79,8 +83,7 @@ export const dataUploadForm = async () => {
                   <button id="filterBarToggle"><i class="fas fa-lg fa-caret-left"></i></button>
                   <div class="main-summary-row pl-2">
                       <div class="col-xl-12 pb-2 pl-0 pr-0 white-bg div-border">
-                          <div class="pt-0 pl-2 pb-2 pr-2 allow-overflow" style="height: calc(100vh - 190px) !important;min-height: 500px;" id="descriptionBody">  
-                          </div>
+                        <div class="allow-overflow" style="height: calc(100vh - 500px) !important;min-height: 300px;" id="descriptionBody"></div>
                       </div>
                   </div>
               </div>
@@ -117,7 +120,7 @@ export const dataUploadForm = async () => {
             <div class='input-group input-group2'>
               <label for="author_info" style="width: 100%"> <b>First author listed on manuscript</b><span class='required-label'>*</span></label>
               <input id="author_first" name="author_info" type="text" placeholder="First Name" style="width: 45%" required/>
-              <input id="author_middle" name="author_info" type="text" placeholder="Middle Initial" style="width: 10%" required/>
+              <input id="author_middle" name="author_info" type="text" placeholder="Middle Initial" style="width: 10%"/>
               <input id="author_last" name="author_info" type="text" placeholder="Last Name" style="width: 45%" required/>
             </div>
 
@@ -152,16 +155,18 @@ export const dataUploadForm = async () => {
         </form>
   `
   document.getElementById("uploadFormView").innerHTML = template;
-  // document.getElementById("loginERa").addEventListener("click", async function () {
+  // document.getElementById("logineRA").addEventListener("click", async function () {
   //   location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/&state=${config.iniAppLocal.stateIni}`
   // });
   var currentTab = 0;
   showTab(currentTab);
   //console.log(currentTab);
   const dsmp = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/main/imports/dmsp_output.csv")).text();//await (await fetch("./imports/dsmp_output.csv")).text();
-  // const icoutput = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/main/imports/ic_output.csv")).text();
-  // console.log(icoutput);
+  const icoutput = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/main/imports/ic_output.csv")).text();
+  let icData = csv2JsonTest(icoutput);
   let csvData = csv2JsonTest(dsmp);
+  console.log(csvData)
+  console.log(icData);
   //await populateApprovedSelect(csvData);
   document.getElementById("approvedyes").addEventListener("click", approvedFormSelect);
   document.getElementById("approvedno").addEventListener("click", approvedFormSelect);
@@ -177,13 +182,15 @@ export const dataUploadForm = async () => {
     });
   const nextPress = document.getElementById("nextBtn");
   nextPress.addEventListener("click", async function() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
     var allStudies = document.getElementsByName('studySel')
     var selStudies = Array.from(allStudies).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value)
     if (selStudies.length < 1) return alert("Please select at least one study");
     for (var study of selStudies){
       var ele = document.getElementById(study);
       var eleCheck = ele.querySelectorAll('input[type="checkbox"]')
-      if (!Array.prototype.slice.call(eleCheck).some(x => x.checked)) return alert("Please select at least one data use restriction per study.")
+      if (!Array.prototype.slice.call(eleCheck).some(x => x.checked)) return alert("To continue, all studies require an Institutional Certification.")
     }
       // for (var ele of document.getElementsByClassName('form2')) {
       //   var eleCheck = ele.querySelectorAll('input[type="checkbox"]');
@@ -194,7 +201,7 @@ export const dataUploadForm = async () => {
     });
   addEventFilterBarToggle();
   const form = document.querySelector(".contact-form");
-  form.addEventListener("submit", subForm);
+  form.addEventListener("submit", confirmSubmission);
 }
 
 export const approvedFormSelect = async (csvData) => { //Is there a DSMP function
@@ -226,8 +233,22 @@ export const approvedFormSelect = async (csvData) => { //Is there a DSMP functio
     document.getElementById("nextBtn").style.display = "none";
     // const dsmpdata = csvData.data;
     // const dsmpdataHeaders = csvData.headers;
-    const dsmpdataPDR = dsmpdata.filter((df) => ((df['repositories'] || []).includes('PDR')) && (df['dmsPlanType']).includes('Publication/Presentation'));
-    console.log(dsmpdataPDR);
+    function filterForPDRPub(data) {
+      if (data.repositories && data.repositories.includes("PDR") && data.dmsPlanType && data.dmsPlanType.includes("Publication/Presentation")) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    const dsmpdataPDR = dsmpdata.filter(filterForPDRPub);
+    //const dsmpdataPDR = dsmpdata.filter((df) => ((df['repositories'] || []).includes('PDR')) && (df['dmsPlanType']).includes('Publication/Presentation'));
+    let dsmpdataPDR2 = [];
+    for(let item of dsmpdataPDR){
+      if (item.cas) {
+        dsmpdataPDR2.push(item);
+      };
+    };
+    console.log(dsmpdataPDR2);
     createFilter(dsmpdataPDR, dsmpdataHeaders);
     await populateApprovedSelect(dsmpdataPDR, dsmpdataHeaders);
 
@@ -241,7 +262,17 @@ export const approvedFormSelect = async (csvData) => { //Is there a DSMP functio
     //   console.log(value);
     // }
     // const dsmpdataHeaders = csvData.headers;
-    const dsmpdataPDR = dsmpdata.filter((df) => ((df['repositories'] || []).includes('PDR')) && (df['dmsPlanType']).includes('Study'));
+    function filterForPDRStudy(data) {
+      if (data.repositories && data.repositories.includes("PDR") && data.dmsPlanType && data.dmsPlanType.includes("Study")) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    const dsmpdataPDR = dsmpdata.filter(filterForPDRStudy);
+    //console.log(dsmpdataPDRTest);
+    //const dsmpdataPDR = dsmpdata.filter((df) => ((df["repositories"] || []).includes("DCEG")) && (df["dmsPlanType"]).includes("Study"));
     createFilter(dsmpdataPDR, dsmpdataHeaders);
     await populateApprovedSelect(dsmpdataPDR, dsmpdataHeaders);
   }
@@ -253,16 +284,20 @@ export const dsmpSelected = async (csvData) => {
   let icData = csv2JsonTest(icoutput);
   console.log(icData);
   let template =`
-  <label for="duoSel"> <b>Please select the required data use restrictions and requirements associated with the data based on the study's Institutional Certification (IC). If you have questions about your study's IC, please contact your <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Data Sharing Administrator (DSA)</a>.</b><span class='required-label'>*</span> </label>
-    <div class='input-group input-group2 font-size-22'>`;
+  <label for="duoSel"> <b>Below are the data use restrictions and requirements associated with the data based on the study's Institutional Certification (IC). If you have questions about your study's IC, please contact your <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank">Data Sharing Administrator (DSA)</a>.</b><span class='required-label'>*</span> </label>
+    `;
   const elePlan = document.getElementById('approvedDSMP')
   const checked = elePlan.querySelectorAll('input[type="checkbox"]:checked');
   const values = [...checked].map(c=>c.value);
   //var values = Array.from(ele.selectedOptions).map(({ value }) => value);//Array.from(ele.selectedOptions).map(v=>v.value);
   console.log(values);
   for (const value of values){
-    let dmspVal = value.split('.v')[0];
-    var dmspIC = icData.data.find(item => item.planID === dmspVal);
+    let dmspVal = value//.split('.v')[0];
+    console.log(dmspVal);
+    console.log(icData);
+    let casID = csvData.data.find(item => item.planID === dmspVal).cas;
+    console.log(casID);
+    var dmspIC = icData.data.find(item => item.cas === casID);
     if (dmspIC){
       console.log('yes');
     }
@@ -275,25 +310,36 @@ export const dsmpSelected = async (csvData) => {
       selectedData.cas = 'None'
     }
     var cas = selectedData.cas.split(";");
-    //console.log(studies);
     //console.log(cas);
     const duoEl = document.getElementById("duoSel");
     duoEl.classList.toggle("d-none", values === "");
     template +=`
-          <h3>DMSP: ${value}</h3>`;
+    <div class='input-group input-group2 font-size-22'>
+        <div class="selectionInfo">
+          <b>DMSP:</b> ${value}
+        </div>
+          `;
     if (dmspIC){
       for (let i=0; i <studies.length; i++) {
       template += `
       <div class="input-group input-group2 font-size-22">
         <div class="inline-field field-br">
           <input id="${value}sel${i}" name="studySel" type="checkbox" value="${value}duo${i}" checked/> <!---${studies.length === 1 ? 'checked':''}--->
-          <label class="container-ul" for="${value}sel${i}"><h4><b>cas: ${cas[i]}</b>, ${studies[i]}</h4></label>
+          <label class="container-ul" for="${value}sel${i}"><b>Study Name:</b> ${studies[i]}</label>
         </div>
         <div class="input-group input-group2">
           <ul class="form2" id='${value}duo${i}' cas='${cas[i]}' study='${studies[i]}'>
             <div class="inline-field">
-              <input id="${value}${dmspIC.dul}${i}" name="duoSel" type="checkbox" value="NR" checked disabled/>
-              <label class="container-ul" for="${value}nores${i}">${dmspIC.dul}: ${dmspIC.ds_dul}</label>
+              <input id="${value}${dmspIC.dul}${i}" name="duoSel" type="checkbox" value="${dmspIC.dul}" checked disabled/>
+              `
+          if (dmspIC.dul === 'Disease-specific'){
+          template += `
+              <label class="container-ul" for="${value}nores${i}">${dmspIC.dul}: ${dmspIC.ds_dul ? dmspIC.ds_dul : "Not-specified"}</label>`
+          } else {
+          template += `
+            <label class="container-ul" for="${value}nores${i}">${dmspIC.dul}</label>`
+          }
+        template += `
             </div>
           </ul>
           </div>
@@ -307,43 +353,19 @@ export const dsmpSelected = async (csvData) => {
             <div class="input-group input-group2 font-size-22">
               <div class="inline-field field-br">
                 <input id="${value}sel${i}" name="studySel" type="checkbox" value="${value}duo${i}" checked/> <!---${studies.length === 1 ? 'checked':''}--->
-                <label class="container-ul" for="${value}sel${i}"><h4><b>cas: ${cas[i]}</b>, ${studies[i]}</h4></label>
+                <label class="container-ul" for="${value}sel${i}"><b>Study:</b> ${studies[i]}</label>
               </div>
               <div class="input-group input-group2">
-                <ul class="form2" id='${value}duo${i}' cas='${cas[i]}' study='${studies[i]}'>
-                  <div class="inline-field">
-                    <input id="${value}nores${i}" name="duoSel" type="checkbox" value="NR"/>
-                    <label class="container-ul" for="${value}nores${i}">No Restrictions</label>
-                  </div>
-                  <div class="inline-field">
-                    <input id="${value}gru${i}" name="duoSel" type="checkbox" value="GRU"/>
-                    <label class="container-ul" for="${value}gru${i}">General Research Use</label>
-                  </div>
-                  <div class="inline-field">
-                    <input id="${value}hmb${i}" name="duoSel" type="checkbox" value="HMB"/>
-                    <label class="container-ul" for="${value}hmb${i}">Health/Medical/Biomedical</label>
-                  </div>
-                  <div class="inline-field">
-                    <input id="${value}ngm${i}" name="duoSel" type="checkbox" value="NGM"/>
-                    <label class="container-ul" for="${value}ngm${i}">No General Methods</label>
-                  </div>
-                  <div class="inline-field">
-                    <input id="${value}nfp${i}" name="duoSel" type="checkbox" value="NFP"/>
-                    <label class="container-ul" for="${value}nfp${i}">Not for Profit Use Only</label>
-                  </div>
-                  <div class="inline-field">
-                    <input id="${value}dsr${i}" name="duoSel" type="checkbox" value="DSR"/>
-                    <label class="container-ul" for="${value}dsr${i}">Disease-specific Research</label>
-                  </div>
-                  <div class="inline-field">
-                    <input id="${value}dsr${i}input" name="duoSel" type="text" placeholder="Name of specific disease" class='d-none'/>
-                  </div>
+                <ul class="form3" id='${value}duo${i}' cas='${cas[i]}' study='${studies[i]}'>
+               <!--<input id="${value}none${i}" name="duoSel" type="checkbox" value="NR" checked disabled/>-->
+               <label class="container-ul" for="${value}none${i}">No IC found. Please complete the IC form <a href="https://nih.sharepoint.com/sites/NCI-DCEG-myDCEG/SitePages/Data-Sharing-and-Management-(DSM)-Policy.aspx" target="__blank"> here</a>. If you have questions please contact your branch's Data Sharing Administrator.</label>
                 </ul>
                 </div>
               </div>
             `
             }
     }
+    template += `<hr width="100%" size="2"></div></div>`
   }
   template +=`
             </div>`
@@ -374,9 +396,7 @@ export const createFilter = (dsmpdataPDR, dsmpdataHeaders) => {
           <div class="form-group" margin:0px>
               <div id="searchContainer">
                 <div class="input-group">
-                    <input type="search" class="form-control rounded" autocomplete="off" placeholder="Search min. 3 characters" aria-label="Search" id="searchDataCatalog" aria-describedby="search-addon" />
-                    <span class="input-group-text border-0 search-input">
-                        <i class="fas fa-search"></i>
+                    <input type="search" class="form-control rounded" autocomplete="off" placeholder="Search" aria-label="Search" id="searchDataCatalog" aria-describedby="search-addon" />
                     </span>
                 </div>
               </div>
@@ -423,15 +443,15 @@ export const populateApprovedSelect = async (dsmpdataPDR, dsmpheaders) => { //Pu
   // document.getElementById("filterDataCatalogue").innerHTML = filterTemplate;
 
   let template = "";
-  const newDesc = dsmpdataPDR.map(selectProps("planID", "contact_email", "contact_displayName", "studyName", "cas"));
+  const newDesc = dsmpdataPDR.map(selectProps("planID", "contact_email", "contact_displayName", "studyName", "cas", "planTitle"));
   //console.log(newDesc);
   template = `
       <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
           <div class="col-md-1"></div>
           <div class="col-md-2 font-bold ws-nowrap pl-2">Plan ID <button class="transparent-btn sort-column" data-column-name="planID"><i class="fas fa-sort"></i></button></div>
-          <div class="col-md-3 font-bold ws-nowrap">Name <button class="transparent-btn sort-column" data-column-name="contact_displayName"><i class="fas fa-sort"></i></button></div>
-          <div class="col-md-5 font-bold ws-nowrap">Study Name <button class="transparent-btn sort-column" data-column-name="studyName"><i class="fas fa-sort"></i></button></div>
-          <div class="col-md-1"></div>
+          <div class="col-md-2 font-bold ws-nowrap">Name <button class="transparent-btn sort-column" data-column-name="contact_displayName"><i class="fas fa-sort"></i></button></div>
+          <div class="col-md-4 font-bold ws-nowrap">Study Name <button class="transparent-btn sort-column" data-column-name="studyName"><i class="fas fa-sort"></i></button></div>
+          <div class="col-md-3 font-bold ws-nowrap">Plan Title <button class="transparent-btn sort-column" data-column-name="planTitle"><i class="fas fa-sort"></i></button></div>
       </div>`;
   newDesc.forEach((desc, index) => {
     //console.log(desc);
@@ -446,17 +466,15 @@ export const populateApprovedSelect = async (dsmpdataPDR, dsmpheaders) => { //Pu
                 <div class="col-md-2">${
                   desc["planID"] ? desc["planID"] : ""
                 }</div>
-                <div class="col-md-3">${
-                  desc["contact_displayName"] ? desc["contact_displayName"] : ""
+                <div class="col-md-2">${
+                  desc["contact_displayName"] ? desc["contact_displayName"].replace(/ *\([^)]*\) */g, "").replace(/\[.+?\]/, "") : ""
                 }</div>
-                <div class="col-md-5">${
+                <div class="col-md-4">${
                   desc["studyName"] ? desc["studyName"] : ""
                 }</div>
-                <div class="col-md-1">
-                    <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${index}">
-                        <i class="fas fa-caret-down fa-2x"></i>
-                    </button>
-                </div>
+                <div class="col-md-3">${
+                  desc["planTitle"] ? desc["planTitle"] : ""
+                }</div>
             </div>
         </div>
       </div>`
@@ -493,6 +511,63 @@ export function showTab(n) {
   //fixStepIndicator(n)
 };
 
+export async function checkFileExt() {
+  let approvedFormats = ['csv', 'txt', 'xlsx', 'xls', 'json', 'xml', 'tsv']
+  let dataFile = document.querySelectorAll(`[id*="data_files"]`)[0];
+  let dataDict = document.querySelectorAll(`[id*="data_dictionary"]`)[0];
+  dataFile.onchange = function() {
+    let input = this.files[0].name;
+    let ext = input.split('.').pop();
+    if (!approvedFormats.includes(ext)){
+      document.getElementById("dcegPreviewerModalHeader").getElementsByClassName("modal-title")[0].innerHTML = `
+      Non-Machine-Readable Format Detected`
+      document.getElementById("dcegPreviewerModalBody").innerHTML = `
+      <p><b>File ${input} does not appear to be machine readable.</b></p>
+      <p><b>Please consider uploading file in a different format such as csv or json.</b></p>`
+      $("#dcegPreviewerModal").modal("show");
+    }
+  }
+  dataDict.onchange = function() {
+    let input = this.files[0].name;
+    let ext = input.split('.').pop();
+    if (!approvedFormats.includes(ext)){
+      document.getElementById("dcegPreviewerModalHeader").getElementsByClassName("modal-title")[0].innerHTML = `
+      Non-Machine-Readable Format Detected`
+      document.getElementById("dcegPreviewerModalBody").innerHTML = `
+      <p><b>File ${input} does not appear to be machine readable.</b></p>
+      <p><b>Please consider uploading file in a different format such as csv or json.</b></p>`
+      $("#dcegPreviewerModal").modal("show");
+    }
+  }
+}
+
+export async function confirmSubmission(eventtest) {
+  const btn = document.activeElement;
+  btn.disabled = true;
+  let dataFile = document.querySelectorAll(`[id*="data_files"]`)[0].value.split('.').pop();
+  let dataDict = document.querySelectorAll(`[id*="data_dictionary"]`)[0].value.split('.').pop();
+  let approvedFormats = ['csv', 'txt', 'xlsx', 'xls', 'json', 'xml', 'tsv']
+  eventtest.preventDefault();
+
+  document.getElementById("modalBody").innerHTML = `
+    <p><b>Please confirm all files and information are correct.</b></p>
+    <p><b>Confirmation will lock the folder to prevent any edits.</b></p>
+    <p><b>If edits are required after confirmation, please contact the PDR Administrator.</b></p>
+    <p><b>Any files greater than 50MB can take longer than a minute to upload.</b></p>
+    `;
+  $("#popUpModal").modal("show");
+  let popup = document.getElementById('popUpModal');
+  //let btns = popup.querySelectorAll('button');
+  let confirmButton = popup.getElementsByClassName('confirmButton');
+  for (let button of confirmButton) {
+  button.addEventListener('click', async function () {
+    await subForm(eventtest);
+    hideAnimation();
+  })
+  }
+  btn.disabled = false;
+}
+
 export async function subForm(eventtest) {
   const btn = document.activeElement;
   btn.disabled = true;
@@ -500,6 +575,10 @@ export async function subForm(eventtest) {
   showAnimation();
   // const ele = document.getElementById("duoSel");
   // const eleAll = ele.getElementsByClassName('form2');
+  document.getElementById("modalFooter").style.display = "none";
+  document.getElementById("modalBody").innerHTML = `
+  <p><b>Collecting information</b></p>
+  `;
   const ele = document.getElementsByName('studySel');
   const eleAll = Array.from(ele).filter((checkbox) => checkbox.checked).map((checkbox) => document.getElementById(checkbox.value));
   var obj = [];
@@ -513,10 +592,11 @@ export async function subForm(eventtest) {
   const author_last = document.getElementById(`author_last`).value;
 
   const folderName = JSON.parse(localStorage.parms).login.split('@')[0];
-  const folderId = await folderStructure(dataPlatformFolder, folderName+'_DCEG_Data_Platform'); //create users parent folder //make Variable
+  const folderId = await folderStructure(dataPlatformDataFolder, folderName+'_DCEG_Data_Platform'); //create users parent folder //make Variable
   const folderName2 = journal_acro + '_' + date
   const folderId2 = await folderStructure(folderId, folderName+'_'+folderName2) //create per journal/year folder
-  var studies = []
+  var studies = [];
+  let descArray = [];
   for (const form of eleAll) {
     const id = form.getAttribute('id');
     const dsmp = id.split('duo')[0];
@@ -524,35 +604,56 @@ export async function subForm(eventtest) {
     const cas = form.getAttribute('cas');
     const study = form.getAttribute('study');
     studies.push(study);
-    const nores = document.getElementById(`${dsmp}nores${ver}`).checked;
-    const hmb = document.getElementById(`${dsmp}hmb${ver}`).checked;
-    const ngm = document.getElementById(`${dsmp}ngm${ver}`).checked;
-    const gru = document.getElementById(`${dsmp}gru${ver}`).checked;
-    const dsr = document.getElementById(`${dsmp}dsr${ver}`).checked;
-    const dsrinput = document.getElementById(`${dsmp}dsr${ver}input`).value==='' ? 'none' : document.getElementById(`${dsmp}dsr${ver}input`).value;
-    const nfp = document.getElementById(`${dsmp}nfp${ver}`).checked;
+    const restrictions = form.querySelectorAll('input[type="checkbox"]:checked')[0].value;
 
-    const userval = {dsmp: dsmp, cas: cas, study: study, date: date, 
+    const studyName = study;
+    document.getElementById("modalBody").innerHTML = `
+    <p><b>Creating Folder</b></p>
+    `;
+    const folderId3 = await folderStructure(folderId2, studyName);
+
+    const userval = {folderid: folderId3, dsmp: dsmp, cas: cas, study: study, date: date, 
       journal_name: journal_name, journal_acro: journal_acro, title: manu_title, 
       author: author_first + ' ' + author_middle + ' ' + author_last, 
-      nores: nores, hmb: hmb, ngm: ngm, gru: gru, dsr: dsr, dsr_value: dsrinput, nfp: nfp};
+      res: restrictions};
     obj.push(userval);
-    const studyName = study;
-    const folderId3 = await folderStructure(folderId2, studyName);
     
-    await uploadStructure(document.getElementById(`${id}data_files`).files[0], folderId3, document.getElementById(`${id}data_description`).value);
-    await uploadStructure(document.getElementById(`${id}data_dictionary`).files[0], folderId3, document.getElementById(`${id}data_dictionary_description`).value);
+    document.getElementById("modalBody").innerHTML = `
+    <p><b>Uploading Data File</b></p>
+    <p><b>If larger than 50MB, this can take longer than a minute</b></p>
+    `;
+
+    let uploadItem = await uploadStructure(document.getElementById(`${id}data_files`).files[0], folderId3, document.getElementById(`${id}data_description`).value);
+    let uploadObject = {type: 'file', name: document.getElementById(`${id}data_files`).files[0].name, val: uploadItem.entries[0].id, desc: document.getElementById(`${id}data_description`).value}
+    descArray.push(uploadObject);
+
+    document.getElementById("modalBody").innerHTML = `
+    <p><b>Uploading Dictionary</b></p>
+    <p><b>If larger than 50MB, this can take longer than a minute</b></p>
+    `;
+
+    uploadItem = await uploadStructure(document.getElementById(`${id}data_dictionary`).files[0], folderId3, document.getElementById(`${id}data_dictionary_description`).value);
+    uploadObject = {type: 'file', name: document.getElementById(`${id}data_dictionary`).files[0].name, val: uploadItem.entries[0].id, desc: document.getElementById(`${id}data_dictionary_description`).value}
+    descArray.push(uploadObject);
+
     const dataAdded = document.querySelectorAll(`[id*="${id}data_upload"]`);
     //console.log(dataAdded);
     for (var val of dataAdded){
       //console.log(val);
       if (!val.id.includes('data_upload_description')){
-        uploadStructure(val.files[0], folderId3, document.getElementById(val.id.replace('data_upload', 'data_upload_description')).value);
+        document.getElementById("modalBody").innerHTML = `
+        <p><b>Uploading Additional Files</b></p>
+        <p><b>If larger than 50MB, this can take longer than a minute</b></p>
+        `;
+
+        uploadItem = await uploadStructure(val.files[0], folderId3, document.getElementById(val.id.replace('data_upload', 'data_upload_description')).value);
+        uploadObject = {type: 'file', name: val.files[0].name, val: uploadItem.entries[0].id, desc: document.getElementById(val.id.replace('data_upload', 'data_upload_description')).value}
+        descArray.push(uploadObject);
       }
     }
+    console.log(descArray)
   }
-  await descFolder(folderId2, manu_title + ', ' + studies);
-  //console.log(obj);
+
   const headers = Object.keys(obj[0]);
   const tsvValue = json2other(obj, headers, true).replace(/(<b>)|(<\/b>)/g, "");
   let tsvContent =
@@ -562,27 +663,58 @@ export async function subForm(eventtest) {
   const link = document.createElement("a");
   link.setAttribute("href", encodedUri);
   link.setAttribute("download", `test.tsv`);
-  await uploadTSV(tsvValue, folderName+folderName2+".tsv", publicDataFolder);
+
+  document.getElementById("modalBody").innerHTML = `
+  <p><b>Uploading TSV Data</b></p>
+  `;
+
+  await uploadTSV(tsvValue, folderName+"_"+folderName2+".tsv", publicDataFolder);
+  await uploadTSV(tsvValue, "details_"+folderName2+".tsv", folderId2); // This will upload to folder containing the files, determined not to be necessary
   link.click();
   document.body.appendChild(link);
+
+  let uploadObject = {type: 'folder', name: folderName2, val: folderId2, desc: manu_title + ', ' + studies};
+  descArray.push(uploadObject);
+  const descheaders = Object.keys(descArray[0]);
+  const desctsvValue = json2other(descArray, descheaders, true).replace(/(<b>)|(<\/b>)/g, "");
+  let desctsvContent =
+      "data:text/tsv;charset=utf-8," +
+      desctsvValue;
+  const descencodedUri = encodeURI(desctsvContent);
+  const desclink = document.createElement("desca");
+  desclink.setAttribute("href", descencodedUri);
+  desclink.setAttribute("download", `desctest.tsv`);
+  await uploadTSV(desctsvValue, "pdr_desc_"+folderName2+".tsv", folderId);
+
   document.getElementById("modalBody").innerHTML = `
           <p><b>Process complete.</b></p>
-          <p><b>Please visit the below folders to check all files were properly uploaded.</b></p>
+          <p><b>Please visit the below folders to check all files were properly uploaded and confirm. For any issues please contact the PDR Administrator.</b></p>
           <p><b>Author Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId}" target="__blank">${folderName}_DCEG_Data_Platform</a></p>
           <p><b>Author Folder ID:</b> ${folderId}</p>
           <p><b>Publication Folder Name:</b> <a href="https://nih.app.box.com/folder/${folderId2}" target="__blank">${folderName2}</a></p>
           <p><b>Publication Folder ID:</b> ${folderId2}</p>
+          <p><b>In your manuscript, you can refer to this data being available on the National Cancer Institute, Division of Cancer Epidemiology and Genetics Publication Data Repository </b></p>
+          <!--(epidataplatforms.cancer.gov; ID=${folderId2})-->
           `
           ;
+  document.getElementById("modalFooter").style.display = "inline";
   $("#popUpModal").modal("show");
   let popup = document.getElementById('popUpModal');
   let btns = popup.querySelectorAll('button');
   for (let button of btns) {
     button.addEventListener('click', function () {
       location.reload();
-    })
-  }
-  hideAnimation();
+      })
+    }
+  //let popup = document.getElementById('popUpModal');
+  //let btns = popup.querySelectorAll('button');
+  // let confirmButton = popup.getElementsByClassName('confirmButton');
+  // for (let button of confirmButton) {
+  //   button.addEventListener('click', function () {
+  //     location.reload();
+  //   })
+  // }
+  // hideAnimation();
   //location.reload();
   btn.disabled = false;
 }
@@ -590,8 +722,21 @@ export async function subForm(eventtest) {
 export async function uploadStructure(file, folder, description) {
   let fileName = file.name;
   let fileBlob = new Blob([file]);
-  let uploadFile = await uploadFileAny(fileBlob, fileName, folder);
-  await descFile(uploadFile.entries[0].id, description);
+  var uploadFile = 'none';
+  let folderItems = await getFolderItems(folder);
+  console.log(folderItems);
+  for (let item of folderItems.entries){
+    if (item.name === fileName) {
+      console.log('uploading existing file');
+      uploadFile = await uploadAnyFileVersion(fileBlob, item.id, fileName);
+    }
+  }
+  if (uploadFile == 'none'){
+    var uploadFile = await uploadFileAny(fileBlob, fileName, folder);
+  }
+  //let uploadFile = await uploadFileAny(fileBlob, fileName, folder);
+  //await descFile(uploadFile.entries[0].id, description);
+  return uploadFile;
 }
 
 export async function folderStructure(folderID, folderName) {
@@ -609,6 +754,12 @@ export async function folderStructure(folderID, folderName) {
     return testing2.id;
   };
 }
+
+// export function fileValidation() {
+//   if(this.item === undefined) {return};
+//   var fileInput = document.getElementById(this.id);
+//   console.log(fileInput);
+// }
 
 export async function nextPrev(n, currentTab) {
   // This function will figure out which tab to display
@@ -633,7 +784,10 @@ export async function nextPrev(n, currentTab) {
   if (currentTab === 1) {
     // var ele = document.getElementById("approvedDSMP");
     // var values = Array.from(ele.selectedOptions).map(v=>v.value);
-    let template =`<h3><b>Upload Manuscript Data, Data Dictionary, and Other Associated Metadata</b></h3>`
+    let template =`<h3><b>Upload Manuscript Data, Data Dictionary, and Other Associated Metadata</b></h3>
+    <div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+      <b><i>To support FAIR Research Practices, DCEG strongly encourages the sharing of all data and metadata files in machine readable formats (e.g., csv, tsv, json).</i></b>
+    </div>`
     const ele = document.getElementsByName('studySel');
     const eleAll = Array.from(ele).filter((checkbox) => checkbox.checked).map((checkbox) => document.getElementById(checkbox.value));
     //const ele = document.getElementById("duoSel");
@@ -650,27 +804,40 @@ export async function nextPrev(n, currentTab) {
       const study = form.getAttribute('study');
       template +=
       `<div class="contact-form input-group input-group2 font-size-22" id="${id}Form">
-        <h3>DMSP: ${id.split('duo')[0]}</h3>
+        <b>DMSP: </b> ${id.split('duo')[0]}
         <div class="input-group input-group2 font-size-22">
-          <h4><b>cas: ${cas}</b>, ${study}</h4>
+          <b>Study Name: </b> ${study}
+            <!--<div class='input-group input-group2 inline-field field-br'>
+              <input type="checkbox" id="${id}data_elsewhere" name="${id}data_elsewhere" value="Yes" onclick="
+              var checkBox = document.getElementById('${id}data_elsewhere')
+              var inputBox = document.getElementById('${id}data_elsewhere_loc')
+              console.log(inputBox);
+              if (checkBox.checked == true){
+                inputBox.style.display = 'block'
+                } else {
+                  inputBox.style.display = 'none'
+                }">
+              <label for="${id}data_elsewhere">Select if you have data also stored outside of the PDR for this publication.</label><br>
+              <input id="${id}data_elsewhere_loc" name="${id}data_elsewhere_loc" type="text" placeholder="Data location" style="display:none"/>  
+            </div>-->
             <div class='input-group input-group2' >
               <label for="${id}data_upload"> <b>Upload data</b> </label>
-              <input id="${id}data_files" name="${id}data_upload" type="file" single required/>
+              <input id="${id}data_files" name="${id}data_upload" type="file" single required onchange=""/>
               <input id="${id}data_description" name="${id}data_upload" type="text" placeholder="Provide description of uploaded data files including any software required to view data. Note, this will be viewable by users of the data" required/>
             </div>
             <div class='input-group input-group2'>
               <label for="${id}dict_upload"> <b>Upload data dictionary</b> </label>
-              <input id="${id}data_dictionary" name="${id}dict_upload" type="file" single required/> 
-              <input id="${id}data_dictionary_description" name="${id}dict_upload" type="text" placeholder="Provide description of uploaded data dictionary. Note, this will be viewable by users of the data" required/>            
+              <input id="${id}data_dictionary" name="${id}dict_upload" type="file" accept=".xls, .xlsx, .csv, .txt, .tsv" single required onchange=""/> 
+              <input id="${id}data_dictionary_description" name="${id}dict_upload" type="text" placeholder="Provide description of uploaded data dictionary. This will be viewable by users of the data. Note, the PDR does not permit sharing of data dictionaries as PDFs" required/>            
             </div>
             <div class='input-group input-group2 d-none' id='${id}addAttachment'>
             </div>
             <div style="overflow:auto;">
               <div style="float:left;">
-                <button type="button" id="${id}addDataBtn" class="buttonsubmit2"><i class="fa fa-plus" aria-hidden="true"></i> (Meta)Data</button>
+                <button type="button" id="${id}addDataBtn" class="buttonsubmit2"><i class="fa fa-plus" aria-hidden="true"></i> More Data</button>
               </div>
               <div style="display: none; float:right;">
-                <button type="button" id="${id}remDataBtn" class="buttonsubmit2"><i class="fa fa-trash-can" aria-hidden="true"></i> Last (Meta)Data</button>
+                <button type="button" id="${id}remDataBtn" class="buttonsubmit2"><i class="fa fa-trash-can" aria-hidden="true"></i> Last Data</button>
               </div>
             </div>
           </div>
@@ -693,28 +860,22 @@ export async function nextPrev(n, currentTab) {
       }
       let idaddAttachment = document.getElementById(`${id}addAttachment`)
       var newInput = document.createElement('div');
+      const selection = ["Data", "Dictionary", "Other Metadata"];
       newInput.className = 'input-addedFiles input-group'
-
+      
       newInput.innerHTML = `
-        <label for="${id}data${num}"> <b>Upload additional data/metadata</b> </label>
-        <input id="${id}data_upload${num}" name="${id}data${num}" type="file" single required/>
+        <select class="datatype-select" name="${id}data${num}">
+          <option value="Data">Data</option>
+          <option value="Dictionary">Dictionary</option>
+          <option value="MetaData">Other Metadata</option>
+        </select>
+        <input id="${id}data_upload${num}" name="${id}data${num}" type="file" single required onchange=""/>
         <input id="${id}data_upload_description${num}" name="${id}data${num}" type="text" placeholder="Provide description of uploaded data/metadata. Note, this will be viewable by users of the data" required/>
       `
       idaddAttachment.appendChild(newInput);
       idaddAttachment.classList.toggle("d-none", false);
       var remBtn = document.getElementById(`${id}remDataBtn`);
       remBtn.parentElement.style.display = "inline";
-
-      // remBtn.addEventListener('click', function(e) {
-      //   console.log(e.target.id);
-      //   var parId = e.target.id.replace('removeDataBtn','addAttachment');
-      //   var parDiv = document.getElementById(parId);
-      //   console.log(parDiv.lastChild);
-      //   parDiv.removeChild(parDiv.lastChild);
-      //   if (parDiv.childElementCount < 1) {
-      //     remBtn.parentElement.style.display = "none";
-      //   }
-      // })
     }
     const clickEventRem = e => {
       var parId = e.target.id.replace('remDataBtn','addAttachment');
@@ -732,6 +893,7 @@ export async function nextPrev(n, currentTab) {
       item.addEventListener('click', clickEventRem);
     })
   }
+  checkFileExt();
   showTab(currentTab);
 };
 
@@ -794,6 +956,7 @@ const filterDataBasedOnSelectionDSMP = (descriptions, headers) => {
     if (dt["planID"].toLowerCase().includes(currentValue)) found = true;
     if (dt["contact_displayName"].toLowerCase().includes(currentValue)) found = true;
     if (dt["studyName"]) if (dt["studyName"].toLowerCase().includes(currentValue)) found = true;
+    if (dt["planTitle"]) if (dt["planTitle"].toLowerCase().includes(currentValue)) found = true;
     if (found) return dt;
   });
   searchedData = searchedData.map((dt) => {
@@ -807,6 +970,12 @@ const filterDataBasedOnSelectionDSMP = (descriptions, headers) => {
     );
     if (dt["studyName"]){ 
     dt["studyName"] = dt["studyName"].replace(
+      new RegExp(currentValue, "gi"),
+      "<b>$&</b>"
+    );
+  };
+  if (dt["planTitle"]){ 
+    dt["planTitle"] = dt["planTitle"].replace(
       new RegExp(currentValue, "gi"),
       "<b>$&</b>"
     );

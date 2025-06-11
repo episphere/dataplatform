@@ -74,8 +74,8 @@
     />
 
     <!-- polyfill.io only loads a Promise polyfill if your browser needs one -->
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Promise"></script>
-
+    <!-- polyfill deleted due to security concern-->
+     
     <!-- Latest version of Preview SDK for your locale -->
     <script src="https://cdn01.boxcdn.net/platform/preview/2.83.0/en-US/preview.js"></script>
     <link
@@ -156,20 +156,50 @@
               <div class="grid-elements">
                 <a
                   class="nav-link nav-menu-links white-font"
-                  href="#researchStudies"
+                  href="#researchStudies",
                   id="data2"
-                  title="Research Studies"
-                  >Research Studies</a
+                  title="DCEG Studies & Data Resources"
+                  >DCEG Studies & Data Resources</a
                 >
               </div>
-              <div class="grid-elements">
-                <a
-                  class="nav-link nav-menu-links white-font"
-                  href="#publicationpage"
-                  id="publicationID"
+              <div class="grid-elements dropdown">
+                <button
+                  class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font"
+                  role="button"
                   title="DCEG Publications"
-                  >DCEG Publications</a
-                >
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  >
+                  DCEG PDR
+                </button>
+                <div class="dropdown-menu navbar-dropdown">
+                  <a
+                    class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
+                    href="#dataAccessHowTo"
+                    id="dataAccessHowTo"
+                  >Data Access Process
+                  </a>
+                  <a
+                    class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
+                    href="#publicationpage"
+                    id="publicationID"
+                    >DCEG Publication Datasets
+                  </a>
+                  <a
+                    class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
+                    href="#approvedData"
+                    id="approvedData"
+                    hidden
+                    >Approved Data Requests to the PDR
+                  </a>
+                  <button
+                    class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
+                    title="Login Dropdown"
+                    id="loginBoxDropDown"
+                    >PDR Log In
+                  </button>
+                </div>
               </div>
               <div class="grid-elements" style="display: none;">
                 <a
@@ -200,7 +230,7 @@
                   title="Login Dev"
                   id="loginBoxAppDev"
                 >
-                  Login Dev
+                  PDR Log In Dev
                 </button>
                 <button
                   hidden="true"
@@ -208,7 +238,7 @@
                   title="Login Stage"
                   id="loginBoxAppStage"
                 >
-                  Login Stage
+                PDR Log In Stage
                 </button>
                 <button
                   hidden="true"
@@ -216,7 +246,7 @@
                   title="Login"
                   id="loginBoxAppEpisphere"
                 >
-                  Log in
+                PDR Log in
                 </button>
                 <button
                   hidden="true"
@@ -224,7 +254,7 @@
                   title="Login"
                   id="loginBoxAppProd"
                 >
-                  Log in
+                  PDR Log in
                 </button>
               </div>
             </div>
@@ -282,6 +312,32 @@
             <div class="modal-content h-100">
               <div class="modal-header" id="bcrppPreviewerModalHeader"></div>
               <div class="modal-body" id="bcrppPreviewerModalBody"></div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="modal fade"
+          id="dcegPreviewerModal"
+          data-keyboard="false"
+          data-backdrop="static"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div
+            class="modal-dialog modal-lg modal-dialog-centered"
+            role="document"
+            style="height: 500px"
+          >
+            <div class="modal-content h-30">
+              <div class="modal-header" id="dcegPreviewerModalHeader">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body" id="dcegPreviewerModalBody"></div>
             </div>
           </div>
         </div>

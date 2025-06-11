@@ -1,6 +1,3 @@
-// Major updates required
-//test
-// Need to update infoDeck and infoDeckAfterLoggedIn to match template
 import { getFileInfo } from "./../shared.js";
 
 export const infoDeck = () => {
@@ -26,32 +23,32 @@ export const infoDeck = () => {
     button: "Information on Accessing DCEG Data",
     href: "#about/overview",
     icon: "fa-database",
-    explanation: "",
+    explanation: "UNDER DEVELOPMENT",
   });
   template += cardContents({
     header: "About DCEG Data",
     button: "Information on Accessing DCEG Data",
     href: "#join",
     icon: "fa-chart-bar",
-    explanation: "",
+    explanation: "Under Development",
   });
   template += cardContents({
     header: "Consortia Projects",
     button: "Data Platform for Consortia Projects",
     href: "#data_access/overview",
     icon: "fa-database",
-    explanation: "",
+    explanation: "Under Development",
   });
   template += cardContents({
-    header: "Research Studies",
-    button: "Data Platforms for DCEG studies",
+    header: "DCEG Studies & Data Resources",
+    button: "Data platforms and websites for DCEG studies and resources",
     href: "#researchStudies",
     icon: "fa-database",
     explanation: "",
   });
   template += cardContents({
-    header: "Datasets from DCEG Publications",
-    button: "Datasets from DCEG Publications available for request",
+    header: "DCEG Publication Data Repository (PDR)",
+    button: "Datasets available for request from the DCEG PDR",
     href: "#publicationpage",
     icon: "fa-database",
     explanation: "",
@@ -97,7 +94,7 @@ export const infoDeckAfterLoggedIn = async () => {
                 <!---<img src="./static/images/nci-vol-10623-150.jpg" class="banner-logo" style="min-height: 120px;  max-height=250px;" alt="Confluence logo">--->
                 <div class="banner-overlay-text row justify-content-center text-center">
                     <div class="col-md-12">
-                        <h1 class="banner-overlay-h1">DCEG Epidemiology Data Platforms
+                        <h1 class="banner-overlay-h1">DCEG Publication Data Repository (PDR)
                         </h1>
                         <div class="banner-overlay-line"></div>
                         <h2 class="banner-overlay-h3" style="font-size:2vw;">  Following FAIR principles in Support of Epidemiological Research
@@ -107,14 +104,7 @@ export const infoDeckAfterLoggedIn = async () => {
             </div>
             <div class="container align-middle text-center" style="margin-top: 70px;">
                 <div class="card-deck" id="infoDeck" style="min-height: 200px;">`;
-  // if (studyDescription)
-  //   template += cardContents({
-  //     header: "Study Description",
-  //     button: "Study Description",
-  //     href: "#about/description",
-  //     icon: "fa-file-alt",
-  //     explanation: "View descriptions of participating studies.",
-  //   });
+
   template += cardContents({
     header: "Consortia Projects",
     button: "Data Platforms for Consortia Projects",
@@ -122,16 +112,10 @@ export const infoDeckAfterLoggedIn = async () => {
     icon: "fa-handshake",
     explanation: "",
   });
-  // template += cardContents({
-  //   header: "Data Platforms for Consortia Projects",
-  //   button: "Data Platforms for Consortia Projects",
-  //   href: "#data_access/overview",
-  //   icon: "fa-handshake",
-  //   explanation: "",
-  // });
+
   template += cardContents({
-    header: "Research Studies",
-    button: "Data Platforms for Datasets from DCEG Studies",
+    header: "DCEG Studies & Data Resources",
+    button: "Data platforms and websites for DCEG studies and resources",
     href: "#researchStudies",
     icon: "fa-database",
     explanation: "",
@@ -143,13 +127,7 @@ export const infoDeckAfterLoggedIn = async () => {
     icon: "fa-database",
     explanation: "",
   });
-  // template += cardContents({
-  //   header: "Explore Data",
-  //   button: "Explore Data",
-  //   href: "#data_exploration/summary",
-  //   icon: "fa-chart-bar",
-  //   explanation: "Explore summary-level data to plan analyses.",
-  // });
+
   template += `</div>
             </div>
         </div>

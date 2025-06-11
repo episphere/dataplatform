@@ -30,7 +30,21 @@ import {
   tsv2Json,
   json2other,
   getUser,
-  updateBoxCollaboratorTime
+  updateBoxCollaboratorTime,
+  publicDataFolder,
+  uploadTSV,
+  liveUpdateFolder,
+  livePublicationFile,
+  uploadTSVVersion,
+  moveFile,
+  finalPublicationSummaryFilesFolder,
+  dataPlatformDataFolder,
+  finalPublicationSummaryFolder,
+  moveFolder,
+  deleteFolder,
+  descFile,
+  descFolder,
+  deleteFile
 } from "./shared.js";
 import { renderDataSummary } from "./pages/about.js";
 import { variables } from "./variables.js";
@@ -403,21 +417,24 @@ export const addEventShowAllCollaborator = () => {
         const id = entry.id;
         //const userid = entry.accessible_by.id;
         //const folderName = entry.item.name;
+        const subFolderName = entry.item ? entry.item.name : ""; 
         const addedBy = `${entry.created_by.name}`;
         const addedAt = new Date(entry.added_at).toLocaleString();
         const expiresAt = new Date(entry.expires_at).toLocaleString();
-        allEntries.push({
-          name,
-          email,
-          role,
-          status,
-          addedBy,
-          addedAt,
-          id,
-          folderName,
-          expiresAt
-          //userid
-        });
+        if (email.includes("@nih.gov")){
+          allEntries.push({
+            name,
+            email,
+            role,
+            status,
+            addedBy,
+            addedAt,
+            id,
+            subFolderName,
+            expiresAt
+            //userid
+          });
+        };
       });
 
       allEntries = allEntries.sort((a, b) =>
@@ -522,9 +539,11 @@ export const addEventShowExtCollaborator = () => {
         //console.log(email);
         //const email = !entry.invite_email ? entry.accessible_by.login : entry.invite_email;
         // email = email == null ? "null" : email;
+        console.log(entry);
         const role = entry.role;
         const status = entry.status;
         const id = entry.id;
+        const subFolderName = entry.item ? entry.item.name : ""; 
         const addedBy = entry.created_by ? entry.created_by.name : "";
         const addedAt = new Date(entry.added_at).toLocaleString();
         const expiresAt = entry.expires_at !== null ? new Date(entry.expires_at).toDateString() : "None";
@@ -537,7 +556,7 @@ export const addEventShowExtCollaborator = () => {
             addedBy,
             addedAt,
             id,
-            folderName,
+            subFolderName,
             expiresAt
           });
         };
@@ -603,6 +622,7 @@ const renderCollaboratorsList = (allEntries, userPermission) => {
       table += document.getElementById("listExtCollaborators").classList.contains("active-tab") ? `<th>Check </th>` : ``;
       table += `<th>Name <button class="transparent-btn sort-column" data-column-name="name" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
               <th>Email <button class="transparent-btn sort-column" data-column-name="email" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
+              <th>Folder <button class="transparent-btn sort-solumn" data-column-name="folder" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
               <th>Role <button class="transparent-btn sort-column" data-column-name="role" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
               <th>Added by <button class="transparent-btn sort-column" data-column-name="addedBy" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
               <th>Expires at <button class="transparent-btn sort-column" data-column-name="expiresAt" data-order-by="asc"><i class="fas fa-sort"></i></button></th>
@@ -619,16 +639,17 @@ const renderCollaboratorsList = (allEntries, userPermission) => {
 const renderCollaboratorListTBody = (allEntries, userPermission) => {
   let tbody = "";
   allEntries.forEach((entry) => {
-    const { name, email, role, addedBy, expiresAt, id, folderName } = entry;
+    const { name, email, role, addedBy, expiresAt, id, subFolderName } = entry;
     const userName = JSON.parse(localStorage.parms).name;
     tbody += `<tr>`
     tbody += document.getElementById("listExtCollaborators").classList.contains("active-tab") ? `<td title="${id}"><input type="checkbox" id="${id}" name="extendCollab" value="${role}" checked></td>` : ``;
     tbody += `  <td title="${name}">${name.length > 20 ? `${name.slice(0, 20)}...` : `${name}`}</td>
                 <td title="${email}">${email.length > 20 ? `${email.slice(0, 20)}...` : `${email}`}</td>
+                <td title="${subFolderName}">${subFolderName.length > 35 ? `${subFolderName.slice(0, 35)}...` : `${subFolderName}`}</td>
                 <td>${email !== JSON.parse(localStorage.parms).login && userPermission && updatePermissionsOptions(userPermission, role) && userName === addedBy? `<select title="Update permission" data-collaborator-id="${id}" data-previous-permission="${role}" data-collaborator-name="${name}" data-collaborator-login="${email}" class="form-control updateCollaboratorRole">${updatePermissionsOptions(userPermission,role)}</select>`: `${role}`}</td>
                 <td title="${addedBy}">${addedBy.length > 20 ? `${addedBy.slice(0, 20)}...` : `${addedBy}`}</td>
                 <td title="${expiresAt}">${expiresAt}</td>
-                <td>${addedBy === userName? `<button class="removeCollaborator" title="Remove collaborator" data-collaborator-id="${id}" data-email="${email}" data-collaborator-name="${name}" data-folder-name="${folderName}"><i class="fas fa-user-minus"></i></button>`: ``}</td>
+                <td>${addedBy === userName? `<button class="removeCollaborator" title="Remove collaborator" data-collaborator-id="${id}" data-email="${email}" data-collaborator-name="${name}" data-folder-name="${subFolderName}"><i class="fas fa-user-minus"></i></button>`: ``}</td>
               </tr>`;
   });
   document.getElementById("tBodyCollaboratorList").innerHTML = tbody;
@@ -712,37 +733,74 @@ const addEventSearchCollaborators = (allEntries, userPermission) => {
 
 const updatePermissionsOptions = (userPermission, role) => {
   if (userPermission === "owner")
-    return `<option ${
+    return `
+    <option ${
+      role === "previewer" ? `selected` : ``
+    } value="previewer">previewer</option>
+    <option ${
       role === "co-owner" ? `selected` : ``
-    } value="co-owner">co-owner</option><option ${
+    } value="co-owner">co-owner</option>
+    <option ${
       role === "editor" ? `selected` : ``
-    } value="editor">editor</option><option ${
+    } value="editor">editor</option>
+    <option ${
       role === "viewer" ? `selected` : ``
-    } value="viewer">viewer</option><option ${
+    } value="viewer">viewer</option>
+    <option ${
       role === "uploader" ? `selected` : ``
-    } value="uploader">uploader</option>`;
+    } value="uploader">uploader</option>
+    <option ${
+      role === "previewer uploader" ? `selected` : ``
+    } value="previewer uploader">previewer uploader</option>
+    <option ${
+      role === "viewer uploader" ? `selected` : ``
+    } value="viewer uploader">viewer uploader</option>
+    `
+    ;
   else if (userPermission === "co-owner")
-    return `<option ${
+    return `
+    <option ${
+      role === "previewer" ? `selected` : ``
+    } value="previewer">previewer</option>
+    <option ${
       role === "co-owner" ? `selected` : ``
-    } value="co-owner">co-owner</option><option ${
+    } value="co-owner">co-owner</option>
+    <option ${
       role === "editor" ? `selected` : ``
-    } value="editor">editor</option><option ${
+    } value="editor">editor</option>
+    <option ${
       role === "viewer" ? `selected` : ``
-    } value="viewer">viewer</option><option ${
+    } value="viewer">viewer</option>
+    <option ${
       role === "uploader" ? `selected` : ``
-    } value="uploader">uploader</option>`;
+    } value="uploader">uploader</option>
+    <option ${
+      role === "previewer uploader" ? `selected` : ``
+    } value="previewer uploader">previewer uploader</option>
+    <option ${
+      role === "viewer uploader" ? `selected` : ``
+    } value="viewer uploader">viewer uploader</option>`;
   else if (
     userPermission === "editor" &&
     role !== "co-owner" &&
     role !== "owner"
   )
-    return `<option ${
+    return `
+    <option ${
+      role === "previewer" ? `selected` : ``
+    } value="previewer">previewer</option><option ${
       role === "editor" ? `selected` : ``
     } value="editor">editor</option><option ${
       role === "viewer" ? `selected` : ``
     } value="viewer">viewer</option><option ${
       role === "uploader" ? `selected` : ``
-    } value="uploader">uploader</option>`;
+    } value="uploader">uploader</option>
+    <option ${
+      role === "previewer uploader" ? `selected` : ``
+    } value="previewer uploader">previewer uploader</option>
+    <option ${
+      role === "viewer uploader" ? `selected` : ``
+    } value="viewer uploader">viewer uploader</option>`;
   else return null;
 };
 const addEventUpdateCollaborator = () => {
@@ -1020,6 +1078,9 @@ const addEventCollaboratorForm = (ID, type, name) => {
           );
           top = top + 2;
           if (response.status === 200 || response.status === 201) {
+            const { jsonData, headers } = csvJSON(await getFile(boxUpdateFile)); // Get summary level data
+            const lastModified = (await getFileInfo(boxUpdateFile)).modified_at;
+            console.log(jsonData)
             template += notificationTemplate(
               top,
               `<span class="successMsg">Added new collaborator</span>`,
@@ -1502,7 +1563,6 @@ export const addEventVariableDefinitions = () => {
 
 export const addEventUpdateSummaryStatsData = () => {
   const btn = document.getElementById("updateSummaryStatsData");
-  console.log(btn);
   if (!btn) return;
   btn.addEventListener("click", async () => {
     const header = document.getElementById("confluenceModalHeader");
@@ -1514,7 +1574,7 @@ export const addEventUpdateSummaryStatsData = () => {
                             </button>`;
 
     let template = '<form id="updateSummaryStatsForm">';
-    template += `<p>Updating data will download an updated publication </br> file to be uploaded to: <a href="https://github.com/episphere/dataplatform/tree/production/imports" target="__blank">DCEG PDR GitHub</a></p>`;
+    template += `<p>Update data will update this Admin page and download a new publication file to be uploaded to: <a href="https://github.com/episphere/dataplatform/tree/production/imports" target="__blank">DCEG PDR GitHub</a> for public table to be updated.</p>`;
 
     template +=
       '<div class="modal-footer"><button type="submit" class="btn btn-outline-primary">Update data</button></div>';
@@ -1580,10 +1640,20 @@ const addEventUpdateSummaryStatsForm = () => {
   const form = document.getElementById("updateSummaryStatsForm");
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const files = await getFolderItems(196819085811);
-    if (files.length === 0) return;
-    console.log(files.entries);
+    const newFiles = await getFolderItems(publicDataFolder);
+    console.log(newFiles.entries.length);
+    if (newFiles.entries.length === 0) {
+      alert("No new files uploaded, continuing with downloading recent file");
+    }
+    console.log(newFiles.entries);
     form.innerHTML = "Gathering data...";
+    //Move files to new folder
+    for (let file of newFiles.entries) {
+      console.log(file.id);
+      await moveFile(file.id, finalPublicationSummaryFilesFolder);
+    }
+
+    const files = await getFolderItems(finalPublicationSummaryFilesFolder);
 
     var dataArray = [];
     for (let file of files.entries) {
@@ -1595,7 +1665,7 @@ const addEventUpdateSummaryStatsForm = () => {
       //dataArray.push(jsonArray);
       Array.prototype.push.apply(dataArray,jsonArray);
     }
-    form.innerHTML = `Saving File...`
+    form.innerHTML = `Saving File...`;
     console.log(dataArray);
     const headers = Object.keys(dataArray[0]);
     const tsvValue = json2other(dataArray, headers, true).replace(/(<b>)|(<\/b>)/g, "");
@@ -1607,7 +1677,74 @@ const addEventUpdateSummaryStatsForm = () => {
     link.setAttribute("href", encodedUri);
     link.setAttribute("download", `DCEG_Publications.tsv`);
     link.click();
+    await uploadTSVVersion(tsvContent, `DCEG_Publications.tsv`, liveUpdateFolder, livePublicationFile)
     form.innerHTML = `Complete: Please upload file to: </br> <a href="https://github.com/episphere/dataplatform/tree/production/imports" target="__blank">DCEG PDR GitHub</a>`
+    // //Move files to new folder
+    // for (let file of files.entries) {
+    //   moveFile(file.id, finalPublicationSummaryFilesFolder);
+    // }
+    const dataPlatformDataFolderItems = await getFolderItems(dataPlatformDataFolder);
+    const folders = dataPlatformDataFolderItems.entries.filter(obj => obj.type === 'folder');
+    const folders2 = await getFolderItems(finalPublicationSummaryFolder);
+    const folders2Names = folders2.entries.map(folder => folder.name);
+
+    for (let folder of folders){
+      let name = folder.name;
+      if (folder.id == publicDataFolder){
+        console.log("Skipping Summary Files");
+      } else if (folders2Names.includes(name) && folder.id != publicDataFolder){ //If folder with user name already exists in finalPublicationSummaryFolder
+        let filesInFolder = await getFolderItems(folder.id); // Get files in folder
+        let folderID = folders2.entries.find(obj => obj.name === name).id; // Get already existing folder id to move files to
+        if (filesInFolder.entries.length > 0){ // If the folder is not empty
+          let groupedFiles = Object.groupBy(filesInFolder.entries, ({ type }) => type);
+          console.log(groupedFiles);
+          if (groupedFiles.file){
+            for (let items of groupedFiles.file){
+              let response = await getFile(items.id);
+              let responseData = tsv2Json(response);
+              let jsonArray = responseData.data;
+              for (let item of jsonArray){
+                if (item.type == 'file') {
+                  await descFile(item.val, item.desc);
+                } else if (item.type == 'folder') {
+                  await descFolder(item.val, item.desc);
+                }
+              }
+              await deleteFile(items.id);
+            }
+          }
+          if (groupedFiles.folder){
+            for (let items of groupedFiles.folder){ // Get items in folder
+              await moveFolder(items.id, folderID); // Moves folder
+              console.log(`Folder ${items.id} moved to ${folderID}`);
+            }
+          }
+        } else { // If empty then folder can be deleted
+          await deleteFolder(folder.id);
+          console.log("Empty folder deleted")
+        }
+      } else {
+        let filesInFolder = await getFolderItems(folder.id); // Get files in folder
+        if (filesInFolder.entries.length > 0){ // If the folder is not empty
+          let groupedFiles = Object.groupBy(filesInFolder.entries, ({ type }) => type);
+          for (let items of groupedFiles.file){
+            let response = await getFile(items.id);
+            let responseData = tsv2Json(response);
+            let jsonArray = responseData.data;
+            for (let item of jsonArray){
+              if (item.type == 'file') {
+                descFile(item.val, item.desc);
+              } else if (item.type == 'folder') {
+                descFolder(item.val, item.desc);
+              }
+            }
+            await deleteFile(items.id);
+          }
+        }
+        await moveFolder(folder.id, finalPublicationSummaryFolder);
+      }
+    };
+
     return;
     // const folderIds = Array.from(selectedBtn).map((btn) =>
     //   parseInt(btn.dataset.folderId)

@@ -38,6 +38,8 @@ import {
   showCommentsDropDown,
   getChairApprovalDate,
   uploadFile,
+  showCommentsDCEG,
+  nameofDACC
 } from "../shared.js";
 import { addEventToggleCollapsePanelBtn } from "./description.js";
 import { showPreview } from "../components/boxPreview.js";
@@ -49,7 +51,7 @@ import {
   sortTableByColumn,
   filterCheckBox,
 } from "../event.js";
-import { template } from "./dataGovernance.js";
+import { template, testingDataGov, dataGovTest } from "./dataGovernance.js";
 
 export const dataAccessNotSignedIn = () => {
   let template = `
@@ -57,7 +59,7 @@ export const dataAccessNotSignedIn = () => {
           <div class="container body-min-height">
               <div class="main-summary-row">
                   <div class="align-left">
-                      <h1 class="page-header">Data Platforms for Consortia Projects
+                      <h1 class="page-header">Data Platforms for Consortia Projects - <span style="color:red;">UNDER DEVELOPMENT</span>
                       </h1>
                   </div>
               </div>
@@ -147,7 +149,7 @@ export const dataAccess = (activeTab, showDescripton) => {
             <div class="container body-min-height">
                 <div class="main-summary-row">
                     <div class="align-left">
-                        <h1 class="page-header">Data Platforms for Consortium Projects
+                        <h1 class="page-header">Data Platforms for Consortium Projects - <span style="color:red;">UNDER DEVELOPMENT</span>
                         </h1>
                     </div>
                 </div>
@@ -180,13 +182,11 @@ export const dataAccess = (activeTab, showDescripton) => {
   return template;
 };
 export const formSectionOther = async (activeTab, showDescripton) => {
-  let authChair =
-    emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let authDacc =
     emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
 
   let navBarItems = "";
-  if (authDacc && authChair) {
+  if (authDacc) {
     navBarItems = pageNavBar(
       "data_access",
       activeTab
@@ -194,24 +194,6 @@ export const formSectionOther = async (activeTab, showDescripton) => {
       // "Project Concept Form",
       // "View Submissions",
       // "Chair Menu",
-      // "DACC Menu"
-    );
-  } else if (authChair) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab
-      // "Overview",
-      // "Project Concept Form",
-      // "View Submissions",
-      // "Chair Menu"
-    );
-  } else if (authDacc) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab
-      // "Overview",
-      // "Project Concept Form",
-      // "View Submissions",
       // "DACC Menu"
     );
   } else {
@@ -253,63 +235,68 @@ export const formSectionOther = async (activeTab, showDescripton) => {
 };
 
 export const formSection = async (activeTab, showDescripton) => {
-//   let authChair =
-//   emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
-// let authDacc =
-//   emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
-
-let navBarItems = "";
-// if (authDacc && authChair) {
-//   navBarItems = pageNavBar(
-//     "data_access",
-//     activeTab,
-//     "Overview",
-//     "Project Concept Form",
-//     "View Submissions",
-//     "Chair Menu",
-//     "DACC Menu"
-//   );
-// } else if (authChair) {
-//   navBarItems = pageNavBar(
-//     "data_access",
-//     activeTab,
-//     "Overview",
-//     "Project Concept Form",
-//     "View Submissions",
-//     "Chair Menu"
-//   );
-// } else if (authDacc) {
-//   navBarItems = pageNavBar(
-//     "data_access",
-//     activeTab,
-//     "Overview",
-//     "Project Concept Form",
-//     "View Submissions",
-//     "DACC Menu"
-//   );
-// } else {
-//   navBarItems = pageNavBar(
-//     "data_access",
-//     activeTab,
-//     "Overview",
-//     "Project Concept Form",
-//     "View Submissions"
-//   );
-// }
-let template = `
+  let eraLogin = localStorage.parmsERa;
+  let boxLogin = localStorage.parms;
+  let navBarItems = "";
+  let template = `
     <div class="general-bg body-min-height padding-bottom-1rem">
         <div class="container">
-          <!---${navBarItems}--->
-        
     </div>
     `;
-const date = new Date();
-const today =
-  date.getFullYear() +
-  "-" +
-  ("0" + (date.getMonth() + 1)).slice(-2) +
-  "-" +
-  ("0" + date.getDate()).slice(-2);
+  const date = new Date();
+  const today =
+    date.getFullYear() +
+    "-" +
+    ("0" + (date.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + date.getDate()).slice(-2);
+
+  if (boxLogin === undefined){
+    template += ` 
+      <div class="general-bg padding-bottom-1rem">
+        <div class="container body-min-height">
+          <div class="main-summary-row">
+              <div class="align-left">
+                  <h1 class="page-header">Data Access Proposal Form</h1>
+                  <button id='autofillJson' class='d-none'>AutoFill JSON</button>
+              </div>
+          </div>
+          <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
+            <div class="input-group input-group2">
+              To access data proposal form, please first log in.
+            </div>
+          </div>
+        </div>
+      </div>     
+      `;
+    return template;
+  }
+
+  if (eraLogin == undefined) {
+    //console.log(eraLogin);
+    template += ` 
+      <div class="general-bg padding-bottom-1rem">
+        <div class="container body-min-height">
+          <div class="main-summary-row">
+              <div class="align-left">
+                  <h1 class="page-header">Data Access Proposal Form</h1>
+                  <button id='autofillJson' class='d-none'>AutoFill JSON</button>
+              </div>
+          </div>
+          <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
+            <div>
+              <p>To request access to DCEG data on the Publication Data Repository, please use the following link to log-in with your eRA credentials.</p>
+              <button class="nav-link nav-menu-links custom-btn" title="Login eRA" id="logineRA">
+                <img src="./static/images/era.png"> Login eRA
+              </button>
+              <p>Extramural researchers should use "Login.gov" to provide their eRA credentials, and NCI intramural researchers should use their PIV card credentials.</p>
+            </div>
+          </div>
+        </div>
+      </div>     
+      `;
+    return template;
+  }
 
 const dictionaryVars = localStorage.getItem("dictionaryVars");
 template += ` 
@@ -321,418 +308,123 @@ template += `
               <button id='autofillJson' class='d-none'>AutoFill JSON</button>
           </div>
       </div>
-      <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
-        <div class="input-group input-group2">
-          <button class="nav-link nav-menu-links custom-btn" title="Login ERa" id="loginERa">
-            <img src="./static/images/era.png"> Login ERa
-          </button>
-        </div>           
+      <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">          
         <section class="contact-form">
           <p style="color:red;"><b>This form is a work in progress and will change dependent on feedback. Current plans include:</b></p>
-          <ul>
-            <li style="color:red;">Auto completing the parts of the form depending on publication selected</li>
-            <li style="color:red;">Checks that data requested matches research aims based on data use limitations</li>
-          </ul>
           <p>Please fill out the form below. This will be reviewed by the DCEG and the necessary DAC(s)</p>
+          
           <form>
-            <!---<div class='col-3 mb-3 input-group'>
-              <input type='file' class='' id='uploadJSON' />
-            </div>--->
             <div class="input-group">
               <label for="date"><b>Date</b><span class='required-label'>*</span></label>
               <input id="date" name="date" type="date" value='${today}' required/>
             </div>
-            <!---<div class="input-group">
-              <label for="datasets"><b>Select datasets to request access to:</b><span class='required-label'>*</span> </label>
-            </div>
-            <div class="input-group">
-                <table id="datasetsformtable">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th>Dataset</th>
-                      <th>Description</th>
-                      <th>Participants</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><input id="study1" name="datasets" type="checkbox" value="study1"/></td>
-                      <td>Study 1</td>
-                      <td>Description of Study 1</td>
-                      <td>1111</td>
-                    </tr>
-                    <tr>
-                      <td><input id="study2" name="datasets" type="checkbox" value="study2"/></td>
-                      <td>Study 2</td>
-                      <td>Description of Study 2</td>
-                      <td>2222</td>
-                    </tr>
-                    <tr>
-                      <td><input id="study3" name="datasets" type="checkbox" value="study3"/></td>
-                      <td>Study 3</td>
-                      <td>Description of Study 3</td>
-                      <td>3333</td>
-                    </tr>
-                    <tr>
-                      <td><input id="study4" name="datasets" type="checkbox" value="study4"/></td>
-                      <td>Study 4</td>
-                      <td>Description of Study 4</td>
-                      <td>4444</td>
-                    </tr>
-                    <tr>
-                      <td><input id="study5" name="datasets" type="checkbox" value="study5"/></td>
-                      <td>Study 5</td>
-                      <td>Description of Study 5</td>
-                      <td>5555</td>
-                    </tr>
-                  </tbody>
-                </table>
-            </div>--->
             <div class="input-group">
               <label for="projname"><b>Title of Proposed Project</b><span class='required-label'>*</span></label>
               <input id="projname" name="projname" type="text" required/>
             </div>
-            <!---<div class="input-group">
-              <label for="amendment"> <b>Is this an amendment?</b><span class='required-label'>*</span> </label>      
-                <input id="amendmentyes" name="amendment" type="radio" value="Yes" required/>
-                  <label class="inline" for="amendmentyes"> Yes </label>
-                <input id="amendmentno" name="amendment" type="radio" value="No" required/>
-                  <label class="inline" for="amendmentno"> No </label>--->
-                <!--label for="ifamendmentyes"> If yes, provide Concept Number of original form </label>
-                  <input type="text" id="conNum" name="conNum"/-->
-            <!---</div>--->
-            <!---<div class='input-group d-none' >
-              <select class='form-select' id='amendmentSelect'></select>
-            </div>--->
             <div class="input-group">
-              <label for="typeofres"><b>Type of Research</b><span class='required-label'>*</span></label>
+              <label for="typeofres"><b>Data Use Limitations</b><span class='required-label'>*</span></label>
             </div>
             <div class="input-group">
                 <div class="inline-field">
-                  <input id="disres" name="typeofres" type="checkbox" value="Disease-related studies"/>
-                  <label class="container-ul" for="disres"><b>Disease-related studies:</b> The primary purpose of the research is to learn more about a particular disease or disorder.</label>
-                </div>
-                <div class="inline-field">
-                  <input id="devres" name="typeofres" type="checkbox" value="Methods development and validation studies"/>
-                  <label class="container-ul" for="devres"><b>Methods development and validation studies:</b> The primary purpose fo the research is to develop and/or validate new methods for analyzing or interpreting data...</label>
-                </div>
-                <div class="inline-field">
-                  <input id="conres" name="typeofres" type="checkbox" value="Controls"/>
-                  <label class="container-ul" for="conres"><b>Controls:</b> The reason for this request is to increase the number of controls available for a comparison group.</label>
-                </div>
-                <div class="inline-field">
-                  <input id="popres" name="typeofres" type="checkbox" value="Population structure or normal variation studies"/>
-                  <label class="container-ul" for="popres"><b>Population structure or normal variation studies:</b> The primary purpose of the research is to understand variation in the general population</label>
-                </div>
-                <div class="inline-field">
-                  <input id="otherres" name="typeofres" type="checkbox" value="Other"/>
-                  <label class="container-ul" for="otherres"><b>Other</b> (please specify below):</label>
-                  <textarea id="otherresinput" name="typeofres" rows="2" cols="65" required></textarea>
+                  <input id="disres" name="typeofres" type="checkbox" value="placeholder" checked/>
+                  <label class="container-ul" for="disres"><b>Placeholder</b> </label>
                 </div>
             </div>
+          <div id="investigators">
+            <div class="input-group author_name">
+              <label for="investigators"><b>Primary Requestor</b> <span class='required-label'>*</span></label>
+              <input id="author_first" name="author_info" type="text" value="${JSON.parse(localStorage.parmsERa).first_name}" style="width: 33%" readonly/>
+              <input id="author_last" name="author_info" type="text" value="${JSON.parse(localStorage.parmsERa).last_name}" style="width: 33%" readonly/>
+            
             <div class="input-group">
-              <label for="investigators"><b>Contact Investigator(s)</b> <span class='required-label'>*</span></label>
-              <input id="investigators" name="investigators" type="text" required/>
-            </div>
-            <div class="input-group">
-              <label for="institution"><b>Institution(s)</b><span class='required-label'>*</span></label>
-              <input id="institution" name="institution" type="text" required/>
-            </div>
-              
+              <label for="institution"><b>Institution</b><span class='required-label'>*</span></label>`
+    if(JSON.parse(localStorage.parmsERa).company){
+            template += `
+              <input id="institution" name="institution" type="text" value="${JSON.parse(localStorage.parmsERa).company}" readonly/>
+              </div>`
+    } else {
+          template += `
+            <input id="institution" name="institution" type="text" value="placeholder"/>
+            </div>`
+    }
+
+    if(JSON.parse(localStorage.parmsERa).email){
+          template += `
             <div class="input-group">
               <label for="email"><b>Contact Email</b><span class='required-label'>*</span></label>
-              <input id="email" name="email" type="email" required/>
-            </div>
-            <!---<div class="input-group">
-              <label for="member"> <b>Are you a member of DCEG?</b> <span class='required-label'>*</span></label>
-                <input id="memberyes" name="member" type="radio" value="Yes" required/>
-                  <label class="inline" for="memberyes"> Yes </label>
-                <input id="memberno" name="member" type="radio" value="No" required/>
-                  <label class="inline" for="memberno"> No </label>
-            </div>--->
-            <!---<div class="input-group">
-              <label for="acro"><b>BCRPP Study Acronym(s) for the Contact Investigator</b></span></label>
-              <textarea id="acro" name="acro" rows="2" cols="65"></textarea>
-            </div>--->
+              <input id="email" name="email" type="email" value="${JSON.parse(localStorage.parmsERa).email}" readonly/>
+            </div>`
+    } else {
+      template += `
             <div class="input-group">
-              <label for="allinvest"><b>ALL Investigators (and their institutions) who will require access to the data requested</b><span class='required-label'>*</span></label>
-              <textarea id="allinvest" name="allinvest" rows="2" cols="65" required></textarea>
+              <label for="email"><b>Contact Email</b><span class='required-label'>*</span></label>
+              <input id="email" name="email" type="email" value="placeholder"/>
+            </div>`
+    }
+        template += `
             </div>
-            <div class="input-group">
-              <label><input id="confirmation" name="confirmation" type="checkbox" value="Yes" required/><b> Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b><span class='required-label'>*</span></label>
-            </div>
-            <br>
-            <p><u><b>Project Description</b></u></p>
-            <div class="input-group">
-            <p>Please provide a concise description of Background, Aims, and Analysis Plan. Provide enough detail so contributing cohorts can assess whether Aims (i) align with participant consents and (ii) overlap with other cohort projects. Please list all planned analyses.</p>
           </div>
-            <div class="input-group">
-              <label for="background"><b>Background</b><span class='required-label'>*</span></label>
-              <textarea id="background" name="background" rows="4" cols="65" required></textarea>
+          <div style="overflow:auto;">
+            <div style="float:left;">
+                <button type="button" id="addDataBtn" class="buttonsubmit2"><i class="fa fa-plus" aria-hidden="true"></i> Requestor</button>
             </div>
-            <div class="input-group">
-              <label for="aims"><b>Aims</b><span class='required-label'>*</span></label>
-              <textarea id="aims" name="aims" rows="4" cols="65" required> </textarea>
+            <div style="display: none; float:left;">
+                <button type="button" id="remDataBtn" class="buttonsubmit2"><i class="fa fa-trash-can" aria-hidden="true"></i> Requestor</button>
             </div>
-            <div class="input-group">
-              <label for="analyplan"><b>Analysis Plan</b><span class='required-label'>*</span></label>
-              <textarea id="analyplan" name="analyplan" rows="4" cols="65" required> </textarea>
-            </div>
-            <br>
-            <!---<p><u><b>Core Covariate, Mammography and Incident Breast Cancer Data Requested</b></u></p>
-              <button class='btn btn-primary btn-sm' type='button' id='importDictvars'>Import Variables</button>--->
-            <!---<div class="input-group">
-              <p>The <a href="#data_exploration/dictionary">BCRPP data dictionary</a> lists and describes variables shared by cohorts participating in the BCRPP. 
-              Data availability and descriptive statistics can be explored via the <a href="#data_exploration/summary">Explore Data</a> tool. If data from a particular category is requested,
-              all variables from that category will be provided.</p>
-            </div>
-            
-            <div class="input-group">
-              <label for="basevar"><b>Baseline</b><span class='required-label'>*</span></label>
-              <label>
-                <input id="basevarv" name="basevarv" type="checkbox" value="basevarv"/>
-                Check All
-              </label>
-            </div>
-            
-            <div class="input-group">
-              <ul class="form" id='basevarlist'>
-                <div class="inline-field">
-                  <input id="alctob" name="basevar" type="checkbox" value="Alcohol and Tobacco"/>
-                  <label class="container-ul" for="alctob">Alcohol and Tobacco</label>
-                </div>
-                <div class="inline-field">
-                  <input id="anthros" name="basevar" type="checkbox" value="Anthropometry"/>
-                  <label class="container-ul" for="anthros">Anthropometry</label>
-                </div>
-                <div class="inline-field">
-                  <input id="demos" name="basevar" type="checkbox" value="Demographics"/>
-                  <label class="container-ul" for="demos">Demographics</label>
-                </div>
-                <div class="inline-field">
-                  <input id="identdates" name="basevar" type="checkbox" value="Identification/Dates"/>
-                  <label class="container-ul" for="identdates">Identification/Dates</label>
-                </div>
-                <div class="inline-field">
-                  <input id="pershist" name="basevar" type="checkbox" value="Personal and Family Health History"/>
-                  <label class="container-ul" for="pershist">Personal and Family Health History</label>
-                </div>
-                <div class="inline-field">
-                  <input id="physact" name="basevar" type="checkbox" value="Physical Activity"/>
-                  <label class="container-ul" for="physact">Physical Activity</label>
-                </div>
-                <div class="inline-field">
-                  <input id="reprohist" name="basevar" type="checkbox" value="Reproductive History"/>
-                  <label class="container-ul" for="reprohist">Reproductive History</label>
-                </div>
-                <div class="inline-field">
-                  <input id="scrhist" name="basevar" type="checkbox" value="Screening History"/>
-                  <label class="container-ul" for="scrhist">Screening History</label>
-                </div>
-              </ul>
-            </div>
-            <div class="input-group">
-              <label for="ibcvar"><b>Incident Breast Cancer</b><span class='required-label'>*</span></label>
-              <label>
-                <input id="ibcvarv" name="ibcvarv" type="checkbox" value="ibcvarv"/>
-                Check All
-              </label>
-            </div>
-            <div class="input-group">
-              <ul class="form" id='ibcvarlist'>
-                <div class="inline-field">
-                  <input id="diag" name="ibcvar" type="checkbox" value="Diagnostic"/>
-                  <label class="container-ul" for="diag">Diagnostic</label>
-                </div>
-                <div class="inline-field">
-                  <input id="path" name="ibcvar" type="checkbox" value="Pathology"/>
-                  <label class="container-ul" for="path">Pathology</label>
-                </div>
-              </ul>
-            </div>
-            <div class="input-group">
-              <label for="mmdvar"><b>Mammographic Density</b><span class='required-label'>*</span></label>
-              <label>
-                <input id="mmdvarv" name="mmdvarv" type="checkbox" value="Mammographic Density"/>
-              </label>
-            </div>
-            <div class="input-group">
-              <p>Select cohorts from which data is being requested. Proposals only requesting data from a single cohort will not be approved. If you are interested in only analyzing data from a particular cohort, please contact that cohort directly. Information on cohorts can be found <a href="#about/description">here</a>.</p>
-              <label for="reqcoh"><b>Requested Cohorts</b><span class='required-label'>*</span></label>
-              <label>
-                <input id="reqcohv" name="reqcohv" type="checkbox" value="reqcohv"/>
-                Check All
-              </label>
-            </div>
-            <div class="input-group">
-              <ul class="form" id='reqcohlist'>
-                <div class="inline-field">
-                  <input id="CSDLH" name="reqcoh" type="checkbox" value="CSDLH"/>
-                  <label class="container-ul" for="CSDLH">CSDLH</label>
-                </div>
-                <div class="inline-field">
-                  <input id="BCFR" name="reqcoh" type="checkbox" value="BCFR"/>
-                  <label class="container-ul" for="BCFR">BCFR</label>
-                </div>
-                <div class="inline-field">
-                  <input id="BWHS" name="reqcoh" type="checkbox" value="BWHS"/>
-                  <label class="container-ul" for="BWHS">BWHS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="CARET" name="reqcoh" type="checkbox" value="CARET"/>
-                  <label class="container-ul" for="CARET">CARET</label>
-                </div>
-                <div class="inline-field">
-                  <input id="CLUE-II" name="reqcoh" type="checkbox" value="CLUE-II"/>
-                  <label class="container-ul" for="CLUE-II">CLUE-II</label>
-                </div>
-                <div class="inline-field">
-                  <input id="Connect" name="reqcoh" type="checkbox" value="Connect"/>
-                  <label class="container-ul" for="Connect">Connect</label>
-                </div>
-                <div class="inline-field">
-                  <input id="CPS-2" name="reqcoh" type="checkbox" value="CPS-2"/>
-                  <label class="container-ul" for="CPS-2">CPS-2</label>
-                </div>
-                <div class="inline-field">
-                  <input id="CPS-3" name="reqcoh" type="checkbox" value="CPS-3"/>
-                  <label class="container-ul" for="CPS-3">CPS-3</label>
-                </div>
-                <div class="inline-field">
-                  <input id="CTS" name="reqcoh" type="checkbox" value="CTS"/>
-                  <label class="container-ul" for="CTS">CTS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="EPIC" name="reqcoh" type="checkbox" value="EPIC"/>
-                  <label class="container-ul" for="EPIC">EPIC</label>
-                </div>
-                <div class="inline-field">
-                  <input id="GS" name="reqcoh" type="checkbox" value="GS"/>
-                  <label class="container-ul" for="GS">GS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="JANUS" name="reqcoh" type="checkbox" value="JANUS"/>
-                  <label class="container-ul" for="JANUS">JANUS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="MAC" name="reqcoh" type="checkbox" value="MAC"/>
-                  <label class="container-ul" for="MAC">MAC</label>
-                </div>
-                <div class="inline-field">
-                  <input id="MCCS" name="reqcoh" type="checkbox" value="MCCS"/>
-                  <label class="container-ul" for="MCCS">MCCS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="MEC" name="reqcoh" type="checkbox" value="MEC"/>
-                  <label class="container-ul" for="MEC">MEC</label>
-                </div>
-                <div class="inline-field">
-                  <input id="MMHS" name="reqcoh" type="checkbox" value="MMHS"/>
-                  <label class="container-ul" for="MMHS">MMHS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="NHS" name="reqcoh" type="checkbox" value="NHS"/>
-                  <label class="container-ul" for="NHS">NHS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="NHS-2" name="reqcoh" type="checkbox" value="NHS-2"/>
-                  <label class="container-ul" for="NHS-2">NHS-2</label>
-                </div>
-                <div class="inline-field">
-                  <input id="NYUWHS" name="reqcoh" type="checkbox" value="NYUWHS"/>
-                  <label class="container-ul" for="NYUWHS">NYUWHS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="PLCO" name="reqcoh" type="checkbox" value="PLCO"/>
-                  <label class="container-ul" for="PLCO">PLCO</label>
-                </div>
-                <div class="inline-field">
-                  <input id="SISTER" name="reqcoh" type="checkbox" value="SISTER"/>
-                  <label class="container-ul" for="SISTER">SISTER</label>
-                </div>
-                <div class="inline-field">
-                  <input id="SNM" name="reqcoh" type="checkbox" value="SNM"/>
-                  <label class="container-ul" for="SNM">SNM</label>
-                </div>
-                <div class="inline-field">
-                  <input id="VITAL" name="reqcoh" type="checkbox" value="VITAL"/>
-                  <label class="container-ul" for="VITAL">VITAL</label>
-                </div>
-                <div class="inline-field">
-                  <input id="WHI" name="reqcoh" type="checkbox" value="WHI"/>
-                  <label class="container-ul" for="WHI">WHI</label>
-                </div>
-                <div class="inline-field">
-                  <input id="WHS" name="reqcoh" type="checkbox" value="WHS"/>
-                  <label class="container-ul" for="WHS">WHS</label>
-                </div>
-                <div class="inline-field">
-                  <input id="WISDOM" name="reqcoh" type="checkbox" value="WISDOM"/>
-                  <label class="container-ul" for="WISDOM">WISDOM</label>
-                </div>
-                <div class="inline-field">
-                  <input id="WLH" name="reqcoh" type="checkbox" value="WLH"/>
-                  <label class="container-ul" for="WLH">WLH</label>
-                </div>
-              </ul>
-            </div>--->
-            <br>
-            <p><u><b>Timeline</b></u><span class='required-label'>*</span></p>
-              <div class="input-group">
-                <p style="color:red;"><b>TBD</b></p>
-              <!---<label for="timeline">Please indicate estimated time from receipt of data to completion of analyses and submission of paper; 
-                the expectation is that results will be published within one year after completion</label>
-                <textarea id="timeline" name="timeline" rows="4" cols="65" required></textarea>--->
-              </div>
-            <br>
-            <p><u><b>Authorship</b></u><span class='required-label'>*</span></p>
-              <div class="input-group">
-                <p style="color:red;"><b>TBD</b></p>
-                <!---<label for="authconf"><input id="authconf" name="authconf" type="checkbox" value="Yes" required/> Please confirm that you acknowledge the intention to include representatives of the 
-                contributing cohorts as co-authors and that you will provide contributing cohorts 30 days to review the draft manuscript 
-                before submission. </label>
-                
-                <label for="Authorship"><i>Please include any special considerations you would like to bring to the DACC’s attention.</i></label>
-                <textarea id="authorship" name="authorship" rows="4" cols="65"></textarea>--->
-              </div>
-              
+          </div>
+          <div class="input-group">
+              <label><input id="confirmation" name="confirmation" type="checkbox" value="Yes" required/><b> Please confirm that ALL the named investigators have read AND agreed to be named on this proposal?</b><span class='required-label'>*</span></label>
+          </div>
+          <br>
+          <p><u><b>Publication Data Being Requested</b></u></p>
+          <div class="input-group">
+              <label for="datatitle"><b>Title</b></label>
+              <input id="datatitle" name="datatitle" type="text" value="${JSON.parse(localStorage.dataSelected).title}" readonly/>
+          </div>
+          <div class="input-group">
+            <label for="datajournal"><b>Journal</b></label>
+            <input id="datajournal" name="datajournal" type="text" value="${JSON.parse(localStorage.dataSelected).journal}" readonly/>
+          </div>
+          <div class="input-group">
+            <label for="dataauthor"><b>First Listed Author of Article</b></label>
+            <input id="dataauthor" name="dataauthor" type="text" value="${JSON.parse(localStorage.dataSelected).author}" readonly/>
+          </div>
+          <br>
+          <p><u><b>Description of Proposed Project</b></u></p>
+          <div class="input-group">
+            <label for="background"><b>Planned use of data</b><span class='required-label'>*</span></label>
+            <textarea maxlength="1500" id="background" name="background" placeholder="Please provide a brief description of your planned use of the data (1500 character limit)" rows="4" cols="65" required></textarea>
+          </div>
+          <div class="input-group">
+            <label for="aims"><b>Study Aims</b><span class='required-label'>*</span></label>
+            <textarea maxlength="1000" id="aims" name="aims" placeholder="Please provide a brief description of your study aims (1000 character limit)" rows="4" cols="65" required></textarea>
+          </div>
               <button type="submit" id="submitFormButton" class="buttonsubmit"> 
                 <span class="buttonsubmit__text"> Send Form </span>
               </button>
-              <button type="button" id="downloadJSON" class="buttonsubmit"> 
+              <button type="button" id="downloadJSON" class="buttonsubmit" hidden> 
                 <span class="buttonsubmit__text"> Download JSON </span>
               </button>
-              <!--button type="button" id="downloadWord" class="buttonsubmit d-none"> 
-                <span class="buttonsubmit__text"> Download Word </span>
-              </button>
-              
-              <button type="submit" id="otherButton" class="buttonsubmit d-none"> 
-                <span class="buttonsubmit__text"> Something else </span>
-              </button-->
-            </form>
-          </section>
+        </form>
+      </section>
           <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
               <div class="modal-body" id='modalBody'>
                 
               </div>
               <div class="modal-footer">
-            
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               </div>
             </div>
           </div>
         </div>
-          <div class="results">
-          <h2>Form Data</h2>
-          <pre></pre>
           </div>
         </div>
       </div>
@@ -821,45 +513,19 @@ export const populateAmendSelect = async () => {
   });
 };
 export const acceptedStudiesSection = (activeTab) => {
-  let authChair =
-    emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let authDacc =
     emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
   let navBarItems = "";
-  if (authDacc && authChair) {
+  if (authDacc) {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
-      "Chair Menu",
-      "DACC Menu"
-    );
-  } else if (authChair) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
-      "Chair Menu"
-    );
-  } else if (authDacc) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
       "DACC Menu"
     );
   } else {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
       "View Submissions"
     );
   }
@@ -930,492 +596,434 @@ export const acceptedStudiesView = async () => {
   document.getElementById("acceptedStudiesView").innerHTML = template;
 };
 
-export const chairSection = (activeTab) => {
-  let authChair =
-    emailforChair.indexOf(JSON.parse(localStorage.parms).login) !== -1;
-  let authDacc =
-    emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1;
-  let navBarItems = "";
-  if (authDacc && authChair) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
-      "Chair Menu",
-      "DACC Menu"
-    );
-  } else if (authChair) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
-      "Chair Menu"
-    );
-  } else if (authDacc) {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
-      "DACC Menu"
-    );
-  } else {
-    navBarItems = pageNavBar(
-      "data_access",
-      activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions"
-    );
-  }
-  let template = `
-      <div class="general-bg body-min-height padding-bottom-1rem">
-          <div class="container">
-            ${navBarItems}
-          
-      </div>
-      `;
-  template += `
-    <div id="chairFileView" class="align-left"></div>
-  </div>
-  `;
+// export const chairFileView = async () => {
+//   const responseUpload = await getFolderItems(uploadFormFolder);
+//   let filearrayUpload = responseUpload.entries;
 
-  return template;
-};
+//   const responseDACC = await getFolderItems(daccReviewFolder);
+//   let filearrayDACC = responseDACC.entries;
 
-export const chairFileView = async () => {
-  const responseUpload = await getFolderItems(uploadFormFolder);
-  let filearrayUpload = responseUpload.entries;
+//   const responseDACCChairReview = await getFolderItems(daccReviewChairFolder);
+//   let filearrayDACCChairReview = responseDACCChairReview.entries;
 
-  const responseDACC = await getFolderItems(daccReviewFolder);
-  let filearrayDACC = responseDACC.entries;
+//   const responseChair = await getFolderItems(chairReviewFolder);
+//   let filearrayChair = responseChair.entries;
 
-  const responseDACCChairReview = await getFolderItems(daccReviewChairFolder);
-  let filearrayDACCChairReview = responseDACCChairReview.entries;
+//   const responseAccepted = await getFolderItems(acceptedFolder);
+//   let filearrayAccepted = responseAccepted.entries;
 
-  const responseChair = await getFolderItems(chairReviewFolder);
-  let filearrayChair = responseChair.entries;
+//   const responseDenied = await getFolderItems(deniedFolder);
+//   let filearrayDenied = responseDenied.entries;
 
-  const responseAccepted = await getFolderItems(acceptedFolder);
-  let filearrayAccepted = responseAccepted.entries;
-
-  const responseDenied = await getFolderItems(deniedFolder);
-  let filearrayDenied = responseDenied.entries;
-
-  var template = `
-    <div class="general-bg padding-bottom-1rem">
-      <div class="container body-min-height">
-        <div class="main-summary-row">
-            <div class="align-left">
-                <h1 class="page-header">Chair Access Only</h1>
-            </div>
-        </div>
+//   var template = `
+//     <div class="general-bg padding-bottom-1rem">
+//       <div class="container body-min-height">
+//         <div class="main-summary-row">
+//             <div class="align-left">
+//                 <h1 class="page-header">Chair Access Only</h1>
+//             </div>
+//         </div>
 
   
-    <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
-    <ul class='nav nav-tabs mb-3' role='tablist'>
-      <li class='nav-item' role='presentation'>
-        <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> New Concepts </a>
-      </li>
-      <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='inProgressTab' href='#inProgress' data-mdb-toggle="tab" role='tab' aria-controls='inProgress' aria-selected='true'> Under Review </a>
-      </li>
-      <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'> Review Completed </a>
-      </li>
-      <li class='nav-item' role='presentation'>
-         <a class='nav-link' id='decidedTab' href='#decided' data-mdb-toggle="tab" role='tab' aria-controls='decided' aria-selected='true'> DACC Decision </a>
-      </li>
-      <!--li class='nav-item' role='presentation'>
-         <a class='nav-link' id='deniedTab' href='#denied' data-mdb-toggle="tab" role='tab' aria-controls='denied' aria-selected='true'> Denied </a>
-      </li-->
-    </ul>`;
+//     <div class="data-submission div-border font-size-18" style="padding-left: 1rem; padding-right: 1rem;">
+//     <ul class='nav nav-tabs mb-3' role='tablist'>
+//       <li class='nav-item' role='presentation'>
+//         <a class='nav-link active' id='toBeCompletedTab' href='#toBeCompleted' data-mdb-toggle="tab" role='tab' aria-controls='toBeCompleted' aria-selected='true'> New Concepts </a>
+//       </li>
+//       <li class='nav-item' role='presentation'>
+//          <a class='nav-link' id='inProgressTab' href='#inProgress' data-mdb-toggle="tab" role='tab' aria-controls='inProgress' aria-selected='true'> Under Review </a>
+//       </li>
+//       <li class='nav-item' role='presentation'>
+//          <a class='nav-link' id='daccCompletedTab' href='#daccCompleted' data-mdb-toggle="tab" role='tab' aria-controls='daccCompleted' aria-selected='true'> Review Completed </a>
+//       </li>
+//       <li class='nav-item' role='presentation'>
+//          <a class='nav-link' id='decidedTab' href='#decided' data-mdb-toggle="tab" role='tab' aria-controls='decided' aria-selected='true'> DACC Decision </a>
+//       </li>
+//       <!--li class='nav-item' role='presentation'>
+//          <a class='nav-link' id='deniedTab' href='#denied' data-mdb-toggle="tab" role='tab' aria-controls='denied' aria-selected='true'> Denied </a>
+//       </li-->
+//     </ul>`;
 
-  const filesincomplete = [];
-  const filesinprogress = [];
-  const filescompleted = [];
-  const filesdecided = [];
+//   const filesincomplete = [];
+//   const filesinprogress = [];
+//   const filescompleted = [];
+//   const filesdecided = [];
 
-  for (let obj of filearrayUpload) {
-    filesincomplete.push(obj);
-  }
+//   for (let obj of filearrayUpload) {
+//     filesincomplete.push(obj);
+//   }
 
-  for (let obj of filearrayDACC) {
-    filesinprogress.push(obj);
-  }
+//   for (let obj of filearrayDACC) {
+//     filesinprogress.push(obj);
+//   }
 
-  for (let obj of filearrayDACCChairReview) {
-    filesinprogress.push(obj);
-  }
+//   for (let obj of filearrayDACCChairReview) {
+//     filesinprogress.push(obj);
+//   }
 
-  for (let obj of filearrayChair) {
-    filescompleted.push(obj);
-  }
+//   for (let obj of filearrayChair) {
+//     filescompleted.push(obj);
+//   }
 
-  for (let obj of filearrayAccepted) {
-    filesdecided.push(obj);
-  }
+//   for (let obj of filearrayAccepted) {
+//     filesdecided.push(obj);
+//   }
 
-  for (let obj of filearrayDenied) {
-    filesdecided.push(obj);
-  }
+//   for (let obj of filearrayDenied) {
+//     filesdecided.push(obj);
+//   }
 
-  template += "<div class='tab-content' id='selectedTab'>";
+//   template += "<div class='tab-content' id='selectedTab'>";
 
-  template += `<div class='tab-pane fade show active' 
-                  id='toBeCompleted' role='tabpanel' 
-                  aria-labeledby='toBeCompletedTab'> `;
-  template += renderFilePreviewDropdown(filesincomplete, "toBeCompleted");
+//   template += `<div class='tab-pane fade show active' 
+//                   id='toBeCompleted' role='tabpanel' 
+//                   aria-labeledby='toBeCompletedTab'> `;
+//   template += renderFilePreviewDropdown(filesincomplete, "toBeCompleted");
 
-  template += `<div class='tab-pane fade'
-                 id='inProgress' role='tabpanel'
-                 aria-labeledby='inProgressTab' style="vertical-align:top">
-                 <a href="mailto:${emailforDACC.join(
-                   "; "
-                 )}" id='email' class='btn btn-dark'>Send Email to DACC</a>`;
-  template += renderFilePreviewDropdown(filesinprogress, "inProgress");
+//   template += `<div class='tab-pane fade'
+//                  id='inProgress' role='tabpanel'
+//                  aria-labeledby='inProgressTab' style="vertical-align:top">
+//                  <a href="mailto:${emailforDACC.join(
+//                    "; "
+//                  )}" id='email' class='btn btn-dark'>Send Email to DACC</a>`;
+//   template += renderFilePreviewDropdown(filesinprogress, "inProgress");
 
-  template += `<div class='tab-pane fade'
-                id='daccCompleted' role='tabpanel'
-                aria-labelledby='daccCompletedTab'>
-               <a href="mailto:${emailforDACC.join(
-                 "; "
-               )}" id='email' class='btn btn-dark'>Send Email to DACC</a>`;
-  template += renderFilePreviewDropdown(filescompleted, "daccCompleted");
+//   template += `<div class='tab-pane fade'
+//                 id='daccCompleted' role='tabpanel'
+//                 aria-labelledby='daccCompletedTab'>
+//                <a href="mailto:${emailforDACC.join(
+//                  "; "
+//                )}" id='email' class='btn btn-dark'>Send Email to DACC</a>`;
+//   template += renderFilePreviewDropdown(filescompleted, "daccCompleted");
 
-  template += `<div class='tab-pane fade' 
-                id='decided' role='tabpanel'
-                aria-labelledby='decidedTab'>
+//   template += `<div class='tab-pane fade' 
+//                 id='decided' role='tabpanel'
+//                 aria-labelledby='decidedTab'>
                 
-                </div>`;
+//                 </div>`;
 
-  template += `<div id='filePreview'>`;
-  if (
-    filescompleted.length !== 0 ||
-    filesinprogress.length !== 0 ||
-    filesincomplete.length !== 0 ||
-    filesdecided !== 0
-  ) {
-    template += `
-        <div class='row'>
-          <div id='boxFilePreview' class="col-8 preview-container"></div>
-          <div id='fileComments' class='col-4 mt-2'></div>
-        </div>
+//   template += `<div id='filePreview'>`;
+//   if (
+//     filescompleted.length !== 0 ||
+//     filesinprogress.length !== 0 ||
+//     filesincomplete.length !== 0 ||
+//     filesdecided !== 0
+//   ) {
+//     template += `
+//         <div class='row'>
+//           <div id='boxFilePreview' class="col-8 preview-container"></div>
+//           <div id='fileComments' class='col-4 mt-2'></div>
+//         </div>
 
-        <div class='row card-body dacc-submit' id='sendtodaccButton' class="col-8" style="background-color:#f6f6f6; display:block">
-            <form>
-              <label for"message">Send to DACC</label>
-              <div class="input-group">
-                <textarea id="message" name="message" rows="6" cols="50"></textarea>
-              </div>
-              <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
-                <span class="buttonsubmit__text"> Send </span> </button>
-            </form>
-        </div>
+//         <div class='row card-body dacc-submit' id='sendtodaccButton' class="col-8" style="background-color:#f6f6f6; display:block">
+//             <form>
+//               <label for"message">Send to DACC</label>
+//               <div class="input-group">
+//                 <textarea id="message" name="message" rows="6" cols="50"></textarea>
+//               </div>
+//               <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+//                 <span class="buttonsubmit__text"> Send </span> </button>
+//             </form>
+//         </div>
 
-        <div class='row card-body dacc-override' id='daccOverride' class="col-6" style='display:none'>
-          <form>
-              <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
-                <span class="buttonsubmit__text"> Move To Review Complete </span> 
-              </button>
-          </form>
-        </div>
+//         <div class='row card-body dacc-override' id='daccOverride' class="col-6" style='display:none'>
+//           <form>
+//               <button type="submit" value="test" class="buttonsubmit" onclick="this.classList.toggle('buttonsubmit--loading')"> 
+//                 <span class="buttonsubmit__text"> Move To Review Complete </span> 
+//               </button>
+//           </form>
+//         </div>
 
-        <div id='finalChairDecision' class="card-body approvedeny" style="background-color:#f6f6f6; display:none">
-          <form>
-            <label for="message">Enter Message for submitter or the DACC</label>
-            <div class='text-muted small'>Submitter will only see the below comment after approve or deny. </div>
-            <label for="grade">Select recommendation: </label>
-          <select name="grade" id="grade2"></option>
-            <option value = "1"> 1 - Approved as submitted</option>
-            <option value = "2"> 2 - Approved, pending conditions/clarification of some issues </option>
-            <option value = "3"> 3 - Approved, but data release will be delayed </option>
-            <option value = "4"> 4 - Not approved </option>
-            <option value = "6"> 6 - Decision pending clarification of several issues</option>
-            <option value = "777"> 777 - Duplicate Proposal</option>
-            </select>
-          <br>
-            <div class="input-group">
-                <textarea id="message" name="message" rows="6" cols="65"></textarea>
-            </div>
-            <button type="submit" class="buttonsubmit" value="approved" onclick="this.classList.toggle('buttonsubmit--loading')">
-              <span class="buttonsubmit__text"> Approve </span></button>
-            <button type="submit" class="buttonsubmit" value="rejected" onclick="this.classList.toggle('buttonsubmit--loading')">
-              <span class="buttonsubmit__text"> Deny </span></button>
-            <button type="submit" class="buttonsubmit" value="daccReview" onclick="this.classList.toggle('buttonsubmit--loading')">
-              <span class="buttonsubmit__text"> Return to DACC </span></button>  
-          </form>
-        </div>
-        `;
-  }
-  template += `
-      </div>
-    </div>
-    `;
-  //};
+//         <div id='finalChairDecision' class="card-body approvedeny" style="background-color:#f6f6f6; display:none">
+//           <form>
+//             <label for="message">Enter Message for submitter or the DACC</label>
+//             <div class='text-muted small'>Submitter will only see the below comment after approve or deny. </div>
+//             <label for="grade">Select recommendation: </label>
+//           <select name="grade" id="grade2"></option>
+//             <option value = "1"> 1 - Approved as submitted</option>
+//             <option value = "2"> 2 - Approved, pending conditions/clarification of some issues </option>
+//             <option value = "3"> 3 - Approved, but data release will be delayed </option>
+//             <option value = "4"> 4 - Not approved </option>
+//             <option value = "6"> 6 - Decision pending clarification of several issues</option>
+//             <option value = "777"> 777 - Duplicate Proposal</option>
+//             </select>
+//           <br>
+//             <div class="input-group">
+//                 <textarea id="message" name="message" rows="6" cols="65"></textarea>
+//             </div>
+//             <button type="submit" class="buttonsubmit" value="approved" onclick="this.classList.toggle('buttonsubmit--loading')">
+//               <span class="buttonsubmit__text"> Approve </span></button>
+//             <button type="submit" class="buttonsubmit" value="rejected" onclick="this.classList.toggle('buttonsubmit--loading')">
+//               <span class="buttonsubmit__text"> Deny </span></button>
+//             <button type="submit" class="buttonsubmit" value="daccReview" onclick="this.classList.toggle('buttonsubmit--loading')">
+//               <span class="buttonsubmit__text"> Return to DACC </span></button>  
+//           </form>
+//         </div>
+//         `;
+//   }
+//   template += `
+//       </div>
+//     </div>
+//     `;
+//   //};
 
-  document.getElementById("chairFileView").innerHTML = template;
-  viewFinalDecisionFilesTemplate(filesdecided);
-  submitToDacc();
-  daccOverride();
-  commentApproveReject();
-  if (filesincomplete.length != 0) {
-    switchFiles("toBeCompleted");
-    showPreview(filesincomplete[0].id);
-    document.getElementById(
-      "toBeCompletedselectedDoc"
-    ).children[0].selected = true;
-    document.getElementById("boxFilePreview").classList.remove("col-8");
-    document.getElementById("fileComments").style.display = "none";
-  } else {
-    document.getElementById("filePreview").classList.remove("d-block");
-    document.getElementById("filePreview").classList.add("d-none");
-  }
+//   document.getElementById("chairFileView").innerHTML = template;
+//   viewFinalDecisionFilesTemplate(filesdecided);
+//   submitToDacc();
+//   daccOverride();
+//   commentApproveReject();
+//   if (filesincomplete.length != 0) {
+//     switchFiles("toBeCompleted");
+//     showPreview(filesincomplete[0].id);
+//     document.getElementById(
+//       "toBeCompletedselectedDoc"
+//     ).children[0].selected = true;
+//     document.getElementById("boxFilePreview").classList.remove("col-8");
+//     document.getElementById("fileComments").style.display = "none";
+//   } else {
+//     document.getElementById("filePreview").classList.remove("d-block");
+//     document.getElementById("filePreview").classList.add("d-none");
+//   }
 
-  //Switch Tabs
-  switchTabs(
-    "toBeCompleted",
-    ["inProgress", "daccCompleted", "decided"],
-    filesincomplete
-  );
-  switchTabs(
-    "inProgress",
-    ["toBeCompleted", "daccCompleted", "decided"],
-    filesinprogress
-  );
-  switchTabs(
-    "daccCompleted",
-    ["inProgress", "toBeCompleted", "decided"],
-    filescompleted
-  );
-  switchTabs(
-    "decided",
-    ["inProgress", "daccCompleted", "toBeCompleted"],
-    filesdecided
-  );
+//   //Switch Tabs
+//   switchTabs(
+//     "toBeCompleted",
+//     ["inProgress", "daccCompleted", "decided"],
+//     filesincomplete
+//   );
+//   switchTabs(
+//     "inProgress",
+//     ["toBeCompleted", "daccCompleted", "decided"],
+//     filesinprogress
+//   );
+//   switchTabs(
+//     "daccCompleted",
+//     ["inProgress", "toBeCompleted", "decided"],
+//     filescompleted
+//   );
+//   switchTabs(
+//     "decided",
+//     ["inProgress", "daccCompleted", "toBeCompleted"],
+//     filesdecided
+//   );
 
-  if (localStorage.getItem("currentTab")) {
-    const currTab = localStorage.getItem("currentTab");
-    if (document.getElementById(currTab) != null) {
-      document.getElementById(currTab).click();
-    }
-  }
+//   if (localStorage.getItem("currentTab")) {
+//     const currTab = localStorage.getItem("currentTab");
+//     if (document.getElementById(currTab) != null) {
+//       document.getElementById(currTab).click();
+//     }
+//   }
 
-  hideAnimation();
-};
+//   hideAnimation();
+// };
 
-export const submitToDacc = () => {
-  let submitDacc = async (e) => {
-    const btn = document.activeElement;
-    btn.disabled = true;
-    e.preventDefault();
-    let message = e.target[0].value;
-    //Send multiple files
-    const filesToSend = [];
-    const elements = document.querySelectorAll(
-      ".tab-content .active #toBeCompletedselectedDoc option"
-    );
-    for (let i = 0; i < elements.length; i++) {
-      if (elements[i].selected) {
-        filesToSend.push(elements[i].value);
-      }
-    }
-    for (const fileId of filesToSend) {
-      await createCompleteTask(fileId, message);
-      let tasklist = await getTaskList(fileId);
-      let tasktodacc = tasklist.entries[0].id;
-      for (
-        let i = 0, daccemaillength = emailforDACC.length;
-        i < daccemaillength;
-        i++
-      ) {
-        await assignTask(tasktodacc, emailforDACC[i]);
-      }
-      await createComment(fileId, message);
-      await moveFile(fileId, daccReviewFolder);
-    }
+// export const submitToDacc = () => {
+//   let submitDacc = async (e) => {
+//     const btn = document.activeElement;
+//     btn.disabled = true;
+//     e.preventDefault();
+//     let message = e.target[0].value;
+//     //Send multiple files
+//     const filesToSend = [];
+//     const elements = document.querySelectorAll(
+//       ".tab-content .active #toBeCompletedselectedDoc option"
+//     );
+//     for (let i = 0; i < elements.length; i++) {
+//       if (elements[i].selected) {
+//         filesToSend.push(elements[i].value);
+//       }
+//     }
+//     for (const fileId of filesToSend) {
+//       await createCompleteTask(fileId, message);
+//       let tasklist = await getTaskList(fileId);
+//       let tasktodacc = tasklist.entries[0].id;
+//       for (
+//         let i = 0, daccemaillength = emailforDACC.length;
+//         i < daccemaillength;
+//         i++
+//       ) {
+//         await assignTask(tasktodacc, emailforDACC[i]);
+//       }
+//       await createComment(fileId, message);
+//       await moveFile(fileId, daccReviewFolder);
+//     }
 
-    document.location.reload(true);
-  };
-  const sdform = document.querySelector(".dacc-submit");
-  if (sdform) {
-    sdform.addEventListener("submit", submitDacc);
-  }
-};
-export const daccOverride = () => {
-  let override = async (e) => {
-    e.preventDefault();
-    const btn = document.activeElement;
-    btn.disabled = true;
+//     document.location.reload(true);
+//   };
+//   const sdform = document.querySelector(".dacc-submit");
+//   if (sdform) {
+//     sdform.addEventListener("submit", submitDacc);
+//   }
+// };
+// export const daccOverride = () => {
+//   let override = async (e) => {
+//     e.preventDefault();
+//     const btn = document.activeElement;
+//     btn.disabled = true;
 
-    const filesToSend = [];
-    const elements = document.querySelectorAll(
-      ".tab-content .active #inProgressselectedDoc option"
-    );
-    for (let i = 0; i < elements.length; i++) {
-      if (elements[i].selected) {
-        filesToSend.push(elements[i].value);
-      }
-    }
-    for (const fileId of filesToSend) {
-      let tasklist = await getTaskList(fileId);
-      let entries = tasklist.entries;
+//     const filesToSend = [];
+//     const elements = document.querySelectorAll(
+//       ".tab-content .active #inProgressselectedDoc option"
+//     );
+//     for (let i = 0; i < elements.length; i++) {
+//       if (elements[i].selected) {
+//         filesToSend.push(elements[i].value);
+//       }
+//     }
+//     for (const fileId of filesToSend) {
+//       let tasklist = await getTaskList(fileId);
+//       let entries = tasklist.entries;
 
-      if (entries.length !== 0) {
-        for (let item of entries) {
-          if (item.is_completed == false && item.action == "complete") {
-            deleteTask(item.id);
-          }
-        }
-        await moveFile(fileId, chairReviewFolder);
-        await createFileTask(fileId);
-        tasklist = await getTaskList(fileId);
-        entries = tasklist.entries;
-        for (let item of entries) {
-          if (item.is_completed == false) {
-            await assignTask(item.id, emailforChair[0]);
-          }
-        }
-      }
-    }
-    document.location.reload(true);
-  };
-  const overrideform = document.querySelector(".dacc-override");
-  if (overrideform) {
-    overrideform.addEventListener("submit", override);
-  }
-};
+//       if (entries.length !== 0) {
+//         for (let item of entries) {
+//           if (item.is_completed == false && item.action == "complete") {
+//             deleteTask(item.id);
+//           }
+//         }
+//         await moveFile(fileId, chairReviewFolder);
+//         await createFileTask(fileId);
+//         tasklist = await getTaskList(fileId);
+//         entries = tasklist.entries;
+//         for (let item of entries) {
+//           if (item.is_completed == false) {
+//             await assignTask(item.id, emailforChair[0]);
+//           }
+//         }
+//       }
+//     }
+//     document.location.reload(true);
+//   };
+//   const overrideform = document.querySelector(".dacc-override");
+//   if (overrideform) {
+//     overrideform.addEventListener("submit", override);
+//   }
+// };
 
-export const commentApproveReject = () => {
-  let approveComment = async (e) => {
-    e.preventDefault();
-    const btn = document.activeElement;
-    btn.disabled = true;
-    // let taskId = btn.name;
-    let fileId = document.querySelector(
-      ".tab-content .active #daccCompletedselectedDoc"
-    ).value; //document.getElementById('selectedDoc').value;
-    // Send multiple files
-    const filesToSend = [];
-    const elements = document.querySelectorAll(
-      ".tab-content .active #daccCompletedselectedDoc option"
-    );
-    for (let i = 0; i < elements.length; i++) {
-      if (elements[i].selected) {
-        filesToSend.push(elements[i].value);
-      }
-    }
-    for (const fileId of filesToSend) {
-      let tasklist = await getTaskList(fileId);
-      let entries = tasklist.entries;
-      if (entries.length !== 0) {
-        for (let item of entries) {
-          if (item.is_completed == false && item.action == "review") {
-            for (let taskassignment of item.task_assignment_collection
-              .entries) {
-              if (
-                taskassignment.assigned_to.login ==
-                JSON.parse(localStorage.parms).login
-              ) {
-                var taskId = taskassignment.id;
-              }
-            }
-          }
-        }
-      }
-      let decision = e.submitter.value;
-      let grade = e.target[0].value;
-      let comment = e.target[1].value;
+// export const commentApproveReject = () => {
+//   let approveComment = async (e) => {
+//     e.preventDefault();
+//     const btn = document.activeElement;
+//     btn.disabled = true;
+//     // let taskId = btn.name;
+//     let fileId = document.querySelector(
+//       ".tab-content .active #daccCompletedselectedDoc"
+//     ).value; //document.getElementById('selectedDoc').value;
+//     // Send multiple files
+//     const filesToSend = [];
+//     const elements = document.querySelectorAll(
+//       ".tab-content .active #daccCompletedselectedDoc option"
+//     );
+//     for (let i = 0; i < elements.length; i++) {
+//       if (elements[i].selected) {
+//         filesToSend.push(elements[i].value);
+//       }
+//     }
+//     for (const fileId of filesToSend) {
+//       let tasklist = await getTaskList(fileId);
+//       let entries = tasklist.entries;
+//       if (entries.length !== 0) {
+//         for (let item of entries) {
+//           if (item.is_completed == false && item.action == "review") {
+//             for (let taskassignment of item.task_assignment_collection
+//               .entries) {
+//               if (
+//                 taskassignment.assigned_to.login ==
+//                 JSON.parse(localStorage.parms).login
+//               ) {
+//                 var taskId = taskassignment.id;
+//               }
+//             }
+//           }
+//         }
+//       }
+//       let decision = e.submitter.value;
+//       let grade = e.target[0].value;
+//       let comment = e.target[1].value;
 
-      let message = "Rating: " + grade + "\nComment: " + comment;
-      if (decision !== "daccReview") {
-        await updateTaskAssignment(taskId, decision, message);
-      }
-      await createComment(fileId, message);
-      let fileInfo = await getFileInfo(fileId);
-      let uploaderName = fileInfo.created_by.login;
-      if (decision == "approved") {
-        await moveFile(fileId, acceptedFolder);
-      } else if (decision == "rejected") {
-        await moveFile(fileId, deniedFolder);
-      } else if (decision == "daccReview") {
-        // Delete review task assigned to chair
-        let tasklist = await getTaskList(fileId);
-        const taskEntries = tasklist.entries;
-        if (taskEntries.length !== 0) {
-          for (let entry of entries) {
-            if (entry.action === "review") {
-              if (entry.is_completed == false) {
-                await deleteTask(entry.id);
-              }
-            }
-          }
-        }
+//       let message = "Scoring: " + grade + "\nComment: " + comment;
+//       if (decision !== "daccReview") {
+//         await updateTaskAssignment(taskId, decision, message);
+//       }
+//       await createComment(fileId, message);
+//       let fileInfo = await getFileInfo(fileId);
+//       let uploaderName = fileInfo.created_by.login;
+//       if (decision == "approved") {
+//         await moveFile(fileId, acceptedFolder);
+//       } else if (decision == "rejected") {
+//         await moveFile(fileId, deniedFolder);
+//       } else if (decision == "daccReview") {
+//         // Delete review task assigned to chair
+//         let tasklist = await getTaskList(fileId);
+//         const taskEntries = tasklist.entries;
+//         if (taskEntries.length !== 0) {
+//           for (let entry of entries) {
+//             if (entry.action === "review") {
+//               if (entry.is_completed == false) {
+//                 await deleteTask(entry.id);
+//               }
+//             }
+//           }
+//         }
 
-        //Create complete tasks for DACC
-        await createCompleteTask(fileId, message);
-        tasklist = await getTaskList(fileId);
-        let tasktodacc;
-        for (const entry of tasklist.entries) {
-          if (entry.is_completed == false) {
-            if (entry.action === "complete") {
-              tasktodacc = entry.id;
-            }
-          }
-        }
-        for (
-          let i = 0, daccemaillength = emailforDACC.length;
-          i < daccemaillength;
-          i++
-        ) {
-          await assignTask(tasktodacc, emailforDACC[i]);
-        }
+//         //Create complete tasks for DACC
+//         await createCompleteTask(fileId, message);
+//         tasklist = await getTaskList(fileId);
+//         let tasktodacc;
+//         for (const entry of tasklist.entries) {
+//           if (entry.is_completed == false) {
+//             if (entry.action === "complete") {
+//               tasktodacc = entry.id;
+//             }
+//           }
+//         }
+//         for (
+//           let i = 0, daccemaillength = emailforDACC.length;
+//           i < daccemaillength;
+//           i++
+//         ) {
+//           await assignTask(tasktodacc, emailforDACC[i]);
+//         }
 
-        //Move file to DACC Review (Resubmit) folder
-        await moveFile(fileId, daccReviewChairFolder);
-      }
+//         //Move file to DACC Review (Resubmit) folder
+//         await moveFile(fileId, daccReviewChairFolder);
+//       }
 
-      if (decision != "daccReview") {
-        let folderItems = await getFolderItems(submitterFolder);
-        let folderEntries = folderItems.entries;
-        let folderID = "none";
-        for (let obj of folderEntries) {
-          if (obj.name == uploaderName) {
-            folderID = obj.id;
-          }
-        }
-        let cpFileId = "";
-        if (folderID == "none") {
-          const newFolder = await createFolder(submitterFolder, uploaderName);
-          await addNewCollaborator(
-            newFolder.id,
-            "folder",
-            uploaderName,
-            "viewer"
-          );
-          const cpFile = await copyFile(fileId, newFolder.id);
-          cpFileId = cpFile.id;
-        } else {
-          const cpFile = await copyFile(fileId, folderID);
-          cpFileId = cpFile.id;
-        }
-        await createComment(cpFileId, "This file was " + decision);
-        await createComment(cpFileId, message);
-      }
-    }
-    document.location.reload(true);
-  };
+//       if (decision != "daccReview") {
+//         let folderItems = await getFolderItems(submitterFolder);
+//         let folderEntries = folderItems.entries;
+//         let folderID = "none";
+//         for (let obj of folderEntries) {
+//           if (obj.name == uploaderName) {
+//             folderID = obj.id;
+//           }
+//         }
+//         let cpFileId = "";
+//         if (folderID == "none") {
+//           const newFolder = await createFolder(submitterFolder, uploaderName);
+//           await addNewCollaborator(
+//             newFolder.id,
+//             "folder",
+//             uploaderName,
+//             "viewer"
+//           );
+//           const cpFile = await copyFile(fileId, newFolder.id);
+//           cpFileId = cpFile.id;
+//         } else {
+//           const cpFile = await copyFile(fileId, folderID);
+//           cpFileId = cpFile.id;
+//         }
+//         await createComment(cpFileId, "This file was " + decision);
+//         await createComment(cpFileId, message);
+//       }
+//     }
+//     document.location.reload(true);
+//   };
 
-  const form = document.querySelector(".approvedeny");
-  if (form) {
-    form.addEventListener("submit", approveComment);
-  }
-};
+//   const form = document.querySelector(".approvedeny");
+//   if (form) {
+//     form.addEventListener("submit", approveComment);
+//   }
+// };
 
 const viewFile = () => {
   var preview = new Box.Preview();
@@ -1459,36 +1067,25 @@ export const daccSection = (activeTab) => {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
-      "Chair Menu",
+      //"Chair Menu",
       "DACC Menu"
     );
   } else if (authChair) {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
-      "Chair Menu"
+      //"Chair Menu"
     );
   } else if (authDacc) {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
-      "View Submissions",
       "DACC Menu"
     );
   } else {
     navBarItems = pageNavBar(
       "data_access",
       activeTab,
-      "Overview",
-      "Project Concept Form",
       "View Submissions"
     );
   }
@@ -1507,18 +1104,61 @@ export const daccSection = (activeTab) => {
   return template;
 };
 
+// export const getAllSubFiles = async (folder) => {
+//   const response = await getFolderItems(folder);
+//   for (let item of response.entries) {
+//     if (item.type === "folder") {
+//       getAllSubFiles(item.id);
+//     }
+//     else if (item.type === "file") {
+//       outputarray.push(item.id)
+//       console.log(item.id);
+//     }
+//   }
+// }
+
 export const daccFileView = async () => {
   const responseDACC = await getFolderItems(daccReviewFolder);
   let filearrayDACC = responseDACC.entries;
   const responseDACCChairReview = await getFolderItems(daccReviewChairFolder);
   let filearrayDACCChairReview = responseDACCChairReview.entries;
 
-  const responseChair = await getFolderItems(chairReviewFolder);
-  let filearrayChair = responseChair.entries;
+  // const responseChair = await getFolderItems(chairReviewFolder);
+  // let filearrayChair = responseChair.entries;
   const responseAccepted = await getFolderItems(acceptedFolder);
-  let filearrayAccepted = responseAccepted.entries;
-  const responseDenied = await getFolderItems(deniedFolder);
-  let filearrayDenied = responseDenied.entries;
+  var filearrayAccepted = [];
+  var filearrayDenied = [];
+  const sortAllFiles = await getAllSubFiles(acceptedFolder, 'none');
+
+  async function getAllSubFiles(folder, acceptedCheck) {
+    const response = await getFolderItems(folder);
+    for (let item of response.entries) {
+      if (item.type === "folder") {
+        if(item.name === "Accepted") {
+          getAllSubFiles(item.id, true);
+          console.log(item);
+        }
+        else if(item.name === "Denied") {
+          getAllSubFiles(item.id, false);
+        }
+        else {
+          getAllSubFiles(item.id, acceptedCheck)
+        }
+      }
+      else if (item.type === "file") {
+        if (acceptedCheck === true) {
+          filearrayAccepted.push(item);
+        }
+        else if (acceptedCheck === false) {
+          filearrayDenied.push(item);
+        }
+      }
+    }
+  }
+
+  //let filearrayAccepted = responseAccepted.entries;
+  //const responseDenied = await getFolderItems(deniedFolder);
+  //let filearrayDenied = responseDenied.entries;
   let template = `
             <div class="general-bg padding-bottom-1rem">
             <div class="container body-min-height">
@@ -1547,6 +1187,8 @@ export const daccFileView = async () => {
   const filesincomplete = [];
   const filesreviewed = [];
   let filescompleted = [];
+
+//All For loops can be changed to forEach to parallelize the process
   for (let obj of filearrayDACC) {
     let id = obj.id;
     let tasks = await getTaskList(id);
@@ -1578,25 +1220,6 @@ export const daccFileView = async () => {
               if (!filescompleted.includes(obj)) {
                 filescompleted.push(obj);
               }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  for (let obj of filearrayChair) {
-    let id = obj.id;
-    let tasks = await getTaskList(id);
-
-    if (tasks.entries.length != 0) {
-      for (let items of tasks.entries) {
-        for (let itemtasks of items.task_assignment_collection.entries) {
-          if (
-            itemtasks.assigned_to.login == JSON.parse(localStorage.parms).login
-          ) {
-            if (!filescompleted.includes(obj)) {
-              filescompleted.push(obj);
             }
           }
         }
@@ -1679,18 +1302,19 @@ export const daccFileView = async () => {
       }
     }
   }
+
   template += "<div class='tab-content' id='selectedTab'>";
 
   template += `<div class='tab-pane fade show active'
                 id='dacctoBeCompleted' role='tabpanel'
               aria-labeledby='dacctoBeCompletedTab'>
-              <a href="mailto:${emailforChair[0]}" id='email' class='btn btn-dark'>Send Email to Chair</a>`;
+              <!--<a href="mailto:${emailforChair[0]}" id='email' class='btn btn-dark'>Send Email to Chair</a>-->`;
   template += renderFilePreviewDropdown(filesincomplete, "dacctoBeCompleted");
 
   template += `<div class='tab-pane fade'
                 id='daccReview' role='tabpanel'
                 aria-labeledby='daccReviewTab'>
-                <a href="mailto:${emailforChair[0]}" id='email' class='btn btn-dark'>Send Email to Chair</a> `;
+                <!--<a href="mailto:${emailforChair[0]}" id='email' class='btn btn-dark'>Send Email to Chair</a>-->`;
   template += renderFilePreviewDropdown(filesreviewed, "daccReview");
 
   template += `<div class='tab-pane fade' 
@@ -1715,12 +1339,9 @@ export const daccFileView = async () => {
       <form>  
         <label for="grade">Select recommendation: </label>
           <select name="grade" id="grade"></option>
-            <option value = "1"> 1 - Approved as submitted</option>
-            <option value = "2"> 2 - Approved, pending conditions/clarification of some issues </option>
-            <option value = "3"> 3 - Approved, but data release will be delayed </option>
-            <option value = "4"> 4 - Not approved </option>
-            <option value = "6"> 6 - Decision pending clarification of several issues</option>
-            <option value = "777"> 777 - Duplicate Proposal</option>
+            <option value = "1"> 1 - Approve</option>
+            <option value = "2"> 2 - Approve, pending additional information </option>
+            <option value = "3"> 3 - Reject </option>
             </select>
           <br>
             <label for"message">Submit Comment:</label>
@@ -1733,13 +1354,12 @@ export const daccFileView = async () => {
       </div>`;
   }
   template += `
-      </div>
+      <!--</div>-->
     </div>`;
-  //}
   document.getElementById("daccFileView").innerHTML = template;
 
-  filescompleted = [...filearrayAccepted, ...filearrayDenied];
-  viewFinalDecisionFilesTemplate(filescompleted);
+  //filescompleted = [...filearrayAccepted, ...filearrayDenied];
+  viewFinalDecisionFilesTemplate([...filearrayAccepted, ...filearrayDenied]);
   if (filesincomplete.length != 0) {
     switchFiles("dacctoBeCompleted");
     showPreview(filesincomplete[0].id);
@@ -1747,7 +1367,6 @@ export const daccFileView = async () => {
   } else {
     document.getElementById("filePreview").classList.remove("d-block");
     document.getElementById("filePreview").classList.add("d-none");
-    //}
   }
 
   submitToComment();
@@ -1794,13 +1413,12 @@ export const submitToComment = () => {
             ) {
               var taskId = taskassignment.id;
               await updateTaskAssignment(taskId, "completed");
+              item.is_completed = true;
             }
           }
         }
       }
     }
-    tasklist = await getTaskList(fileId);
-    entries = tasklist.entries;
     var numCompletedTasks = 0;
     if (entries.length !== 0) {
       for (let item of entries) {
@@ -1809,13 +1427,28 @@ export const submitToComment = () => {
         }
       }
       if (numCompletedTasks == entries.length) {
-        await moveFile(fileId, chairReviewFolder);
-        await createFileTask(fileId);
-        tasklist = await getTaskList(fileId);
-        entries = tasklist.entries;
-        for (let item of entries) {
-          if (item.is_completed == false) {
-            await assignTask(item.id, emailforChair[0]);
+        let comments = await listComments(fileId);
+        let commentsResponse = JSON.parse(comments).entries;
+        let scorelist = [];
+        for (let comment of commentsResponse) {
+          scorelist.push(comment.message[8]);
+        }
+        console.log(scorelist);
+        const allEqual = scorelist => scorelist.every(val => val === scorelist[0]);
+        if (allEqual && scorelist[0]==='1'){
+          await moveFile(fileId, acceptedFolder);
+          console.log("all equal 1");
+        } else if (allEqual && scorelist[0]==='3') {
+          await moveFile(fileId, deniedFolder);
+          console.log("all equal 3");
+        } else {
+          await moveFile(fileId, daccReviewChairFolder)
+          console.log("not equal 2");
+          for (let dacc of emailforDACC) {
+            let item = await createFileTask(fileId);
+            console.log(item);
+            await createCompleteTask(item.id, dacc);
+            console.log("moved and assigned");
           }
         }
       }
@@ -1847,6 +1480,59 @@ export const dataApproval = () => {
 };
 
 export const dataForm = async () => {
+  let addDataBtns = document.querySelectorAll('[id$=addDataBtn]');
+  let remDataBtns = document.querySelectorAll('[id$=remDataBtn]');
+  const clickEvent = e => {
+    let parent = e.target.parentElement.parentElement.parentElement;
+    //const ele = document.getElementById(parent);
+    console.log(parent);
+    const eleAll = parent.getElementsByClassName('author_name');
+    // let id = parent.id.slice(0,-4); //Remove 'Form' from id
+    // //console.log(id);
+    let num = eleAll.length + 1
+    // if (num > 0 && document.getElementById(`${id}data_upload${num-1}`).value===''){
+    //   return alert("Please attach file to additional data before adding more data");
+    // }
+    let idaddAttachment = document.getElementById(`investigators`)
+    var newInput = document.createElement('div');
+    newInput.className = 'input-group author_name'
+
+    newInput.innerHTML = `
+      <label for="investigators"><b>Requestor ${num}</b> <span class='required-label'>*</span></label>
+        <input id="author_first${num}" name="author_info${num}" type="text" placeholder="First Name" style="width: 33%"/>
+        <input id="author_last${num}" name="author_info${num}" type="text" placeholder="Last Name" style="width: 33%"/>
+      <div class="input-group">
+        <label for="institution${num}"><b>Institution Investigator ${num}</b><span class='required-label'>*</span></label>
+        <input id="institution${num}" name="institution${num}" type="text" placeholder="Institution"/>
+      </div>
+      <div class="input-group">
+        <label for="email${num}"><b>Contact Email Investigator ${num}</b><span class='required-label'>*</span></label>
+        <input id="email${num}" name="email${num}" type="email" placeholder="Email"/>
+      </div>
+    `
+    idaddAttachment.appendChild(newInput);
+    idaddAttachment.classList.toggle("d-none", false);
+    var remBtn = document.getElementById(`remDataBtn`);
+    remBtn.parentElement.style.display = "inline";
+  }
+  const clickEventRem = e => {
+    //console.log(e.target.id);
+    var parId = e.target.id.replace('remDataBtn','investigators');
+    //console.log(parId);
+    var parDiv = document.getElementById(parId);
+    //console.log(parDiv);
+    parDiv.removeChild(parDiv.lastChild);
+    if (parDiv.childElementCount < 2) {
+      e.target.parentElement.style.display = "none";
+    }
+  }
+  addDataBtns.forEach((item) => {
+    item.addEventListener('click', clickEvent);
+  })
+  remDataBtns.forEach((item) => {
+    item.addEventListener('click', clickEventRem);
+  })
+
   let files = await getFolderItems(uploadFormFolder);
   const d = new Date();
   let filename =
@@ -2270,11 +1956,8 @@ export const dataForm = async () => {
     const data = new FormData(eventtest.target);
 
     const formJSON = Object.fromEntries(data.entries());
-    formJSON.basevar = data.getAll("basevar");
-    formJSON.ibcvar = data.getAll("ibcvar");
-    formJSON.reqcoh = data.getAll("reqcoh");
-    const results = document.querySelector(".results pre");
-    results.innerText = JSON.stringify(formJSON, null, 2);
+    //const results = document.querySelector(".results pre");
+    //results.innerText = JSON.stringify(formJSON, null, 2);
     // fs.wrtieFile('test.json', formJSON);
     await generateWord(formJSON);
     btn.classList.toggle("buttonsubmit--loading");
@@ -2323,7 +2006,7 @@ export const dataForm = async () => {
             default: new docx.Header({
               children: [
                 new docx.Paragraph({
-                  text: "Breast Cancer Risk Prediction Project Analysis Proposal",
+                  text: "DCEG Data Platform Access Analysis Proposal",
                   heading: docx.HeadingLevel.HEADING_1,
                   alignment: docx.AlignmentType.CENTER,
                 }),
@@ -2356,38 +2039,6 @@ export const dataForm = async () => {
                 }),
                 new docx.TextRun({
                   text: jsondata.projname,
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "Is this an amendment: ",
-                }),
-                new docx.TextRun({
-                  text: jsondata.amendment,
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "Amendment: ",
-                }),
-                new docx.TextRun({
-                  text: jsondata.conNum,
                   bold: false,
                 }),
               ],
@@ -2448,10 +2099,10 @@ export const dataForm = async () => {
               alignment: docx.AlignmentType.START,
               children: [
                 new docx.TextRun({
-                  text: "Are you a member of BCRPP ",
+                  text: "Requested Publication Data: ",
                 }),
                 new docx.TextRun({
-                  text: jsondata.member,
+                  text: jsondata.datatitle,
                   bold: false,
                 }),
               ],
@@ -2464,10 +2115,10 @@ export const dataForm = async () => {
               alignment: docx.AlignmentType.START,
               children: [
                 new docx.TextRun({
-                  text: "BCRPP Study Acronym(s) for the Contact Investigator: ",
+                  text: "Requested Journal Data: ",
                 }),
                 new docx.TextRun({
-                  text: jsondata.acro,
+                  text: jsondata.datajournal,
                   bold: false,
                 }),
               ],
@@ -2480,10 +2131,10 @@ export const dataForm = async () => {
               alignment: docx.AlignmentType.START,
               children: [
                 new docx.TextRun({
-                  text: "All Investigators (and Institutions) who require access: ",
+                  text: "Requested Author Data: ",
                 }),
                 new docx.TextRun({
-                  text: jsondata.investigators,
+                  text: jsondata.dataauthor,
                   bold: false,
                 }),
               ],
@@ -2523,124 +2174,6 @@ export const dataForm = async () => {
                 after: 150,
               },
             }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "Analysis Plan: ",
-                }),
-                new docx.TextRun({
-                  text: jsondata.analyplan,
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "Core Variables: ",
-                }),
-                new docx.TextRun({
-                  text: JSON.stringify(jsondata.basevar, null, 2)
-                    .replace("[", "")
-                    .replace("]", ""),
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "MMD Variables: ",
-                }),
-                new docx.TextRun({
-                  text: jsondata.mmdvarv,
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "BRCA Variables: ",
-                }),
-                new docx.TextRun({
-                  text: JSON.stringify(jsondata.ibcvar, null, 2)
-                    .replace("[", "")
-                    .replace("]", ""),
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "Requested Cohorts: ",
-                }),
-                new docx.TextRun({
-                  text: JSON.stringify(jsondata.reqcoh, null, 2)
-                    .replace("[", "")
-                    .replace("]", ""),
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "Timeline: ",
-                }),
-                new docx.TextRun({
-                  text: jsondata.timeline,
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
-            new docx.Paragraph({
-              heading: docx.HeadingLevel.HEADING_2,
-              alignment: docx.AlignmentType.START,
-              children: [
-                new docx.TextRun({
-                  text: "Authorship: ",
-                }),
-                new docx.TextRun({
-                  text: jsondata.authorship,
-                  bold: false,
-                }),
-              ],
-              spacing: {
-                after: 150,
-              },
-            }),
           ],
         },
       ],
@@ -2668,34 +2201,45 @@ export const dataForm = async () => {
           }
           i++;
         }
-        console.log(blob);
-        let response = await uploadWordFile(blob, filename, 189185316803);
-        await assigntasktochair();
-        let fileid = response.entries[0].id;
-        //Modal code here
-        document.getElementById("modalBody").innerHTML = `
+        //console.log(blob);
+        // let response = await uploadWordFile(blob, filename, uploadFormFolder);
+        // console.log(response)
+        // //await assigntasktochair();
+        // let fileid = response.entries[0].id;
+        // //Modal code here
+        // document.getElementById("modalBody").innerHTML = `
+        //   <p>File was successfully uploaded.</p>
+        //   <p>Document ID: ${fileid}</p>`;
+        // $("#popUpModal").modal("show");
+      } else {}
+        // Adding keywords
+        //console.log(blob);
+        let response = await uploadWordFile(blob, filename, uploadFormFolder);
+        console.log(response);
+        if (response.status === 401 || response.status === 409) {
+          document.getElementById("modalBody").innerHTML = `
           <p>File was successfully uploaded.</p>
           <p>Document ID: ${fileid}</p>`;
-        $("#popUpModal").modal("show");
-      } else {
-        // Adding keywords
-        console.log(blob);
-        let response = await uploadWordFile(blob, filename, 189185316803);
-        if (response.status === 201) {
-          await assigntasktochair();
+            $("#popUpModal").modal("show");
+        } else {
           let fileid = response.entries[0].id;
           //Modal code here
           document.getElementById("modalBody").innerHTML = `
-        <p>File was successfully uploaded.</p>
-        <p>Document ID: ${fileid}</p>`;
+          <p>File was successfully uploaded.</p>
+          <p>Document ID: ${fileid}</p>`;
           $("#popUpModal").modal("show");
-        } else {
         }
-      }
-    });
+        let popup = document.getElementById('popUpModal');
+        let btns = popup.querySelectorAll('button');
+        for (let button of btns) {
+          button.addEventListener('click', function () {
+            location.reload();
+            })
+          }
+      });
   }
 
-  const form = await document.querySelector(".contact-form");
+  const form = document.querySelector(".contact-form");
   form.addEventListener("submit", handleFormSubmit);
 
   const downloadJSON = document.getElementById("downloadJSON");
@@ -2811,8 +2355,7 @@ const viewDACCFiles = async (files, taskids) => {
   }
   return template;
 };
-// const chairFileViews = async () => {
-// }
+
 export async function viewFinalDecisionFilesTemplate(files) {
   let template = "";
   let filesInfo = [];
@@ -2820,6 +2363,7 @@ export async function viewFinalDecisionFilesTemplate(files) {
     const fileInfo = await getFileInfo(file.id);
     filesInfo.push(fileInfo);
   }
+  console.log(filesInfo);
   if (filesInfo.length > 0) {
     template += `
     <div id='decidedFiles'>
@@ -2831,12 +2375,15 @@ export async function viewFinalDecisionFilesTemplate(files) {
                       <span class="font-size-17 font-bold">Filter</span>
                       <div id="filterData" class="align-left"></div>
                   </div>
+                  <div class="col-xl-12 pl-1 pr-0">
+                      <span class="font-size-10"> <h6 class="badge badge-pill badge-1">1</h6>: Approved as submitted 
+                                                  <h6 class="badge badge-pill badge-2">2</h6>: Approved, pending conditions 
+                                                  <h6 class="badge badge-pill badge-3">3</h6>: Not Approved </span>
+                  </div>
               </div>
           </div>
       </div>
       </div>
-      <!--div class='table-responsive'>
-      <table class='table'-->
       
       <div class='col-xl-12 pr-0'>`;
 
@@ -2844,7 +2391,28 @@ export async function viewFinalDecisionFilesTemplate(files) {
 
     template += '<div id="files"> </div>';
 
-    template += '<!--tbody id="files"-->';
+    template += `
+    <div id='popUpModal' class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id='modalBody'>
+            <div id="folderInput">
+            </div>
+          </div>
+          <div class="modal-footer">
+        
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    `;
+
   } else {
     template += `
               No files to show.            
@@ -2859,7 +2427,7 @@ export async function viewFinalDecisionFilesTemplate(files) {
     for (const file of filesInfo) {
       document
         .getElementById(`study${file.id}`)
-        .addEventListener("click", showCommentsDropDown(file.id));
+        .addEventListener("click", showCommentsDCEG(file.id));
     }
 
     let btns = Array.from(document.querySelectorAll(".preview-file"));
@@ -2907,12 +2475,16 @@ export async function viewFinalDecisionFilesTemplate(files) {
 }
 
 export function viewFinalDecisionFilesColumns() {
-  return `<div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
-    <div class="col-lg-3 text-left font-bold ws-nowrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept Name"><i class="fas fa-sort"></i></button></div>
-    <div class="col-lg-2 text-left font-bold ws-nowrap header-sortable">Submitted By <button class="transparent-btn sort-column" data-column-name="Submitted By"><i class="fas fa-sort"></i></button></div>
-    <div class="col-lg-3 text-left font-bold ws-nowrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Submission Date"><i class="fas fa-sort"></i></button></div>
-    <div class="col-lg-2 text-left font-bold ws-nowrap header-sortable">Decision<button class="transparent-btn sort-column" data-column-name="Decision"><i class="fas fa-sort"></i></button></div>
-    <div class="col-lg-2 text-left font-bold ws-nowrap header-sortable">Decided On<button class="transparent-btn sort-column" data-column-name="Decision Date"><i class="fas fa-sort"></i></button></div>
+  return `<div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1); font-size: .8em">
+    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">DTA</div>
+    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Share Data</div>
+    <div class="col-lg-3 text-left font-bold ws-nowrap text-wrap header-sortable">Concept Name <button class="transparent-btn sort-column" data-column-name="Concept Name"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-2 text-left font-bold ws-nowrap text-wrap header-sortable">Primary Requestor <button class="transparent-btn sort-column" data-column-name="Author"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Submission Date <button class="transparent-btn sort-column" data-column-name="Submission Date"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">Status <button class="transparent-btn sort-column" data-column-name="Status"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">${nameofDACC[0]}<button class="transparent-btn sort-column" data-column-name="review0"><i class="fas fa-sort"></i></button></div>
+    <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable">${nameofDACC[1]}<button class="transparent-btn sort-column" data-column-name="review1"><i class="fas fa-sort"></i></button></div>
+    <div class="col-md-1 text-right font-bold ws-nowrap text-wrap header-sortable"></div>
   </div>`;
 }
 
@@ -2920,30 +2492,32 @@ export async function viewFinalDecisionFiles(files) {
   let template = "";
 
   for (const fileInfo of files) {
+    console.log(fileInfo);
     const fileId = fileInfo.id;
-    let filename = fileInfo.name.split("_").slice(0, -4).join(" ");
+    let filename = fileInfo.name//.split("_").slice(0, -4).join(" ");
     const shortfilename =
-      filename.length > 21 ? filename.substring(0, 20) + "..." : filename;
-
-    let completion_date = await getChairApprovalDate(fileId);
+      filename.length > 25 ? filename.substring(0, 24) + "..." : filename;
+    //let completion_date = await getChairApprovalDate(fileId);
+    let dtaSigned = false;
     template += `
 <div class="card mt-1 mb-1 align-left" >
     <div style="padding: 10px" aria-expanded="false" id="file${fileId}" class='filedata'>
         <div class="row">
+            <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable"><button class="uploadDTA" type="button" name="${shortfilename}_DTAUpload" value="${fileInfo.parent.id}"><i class="fa-solid fa-file-arrow-up"></i></button></br>--/--/--</div>
+            <div class="col-lg-1 text-center font-bold ws-nowrap text-wrap header-sortable"><button class="shareBoxData" type="button" name="${shortfilename}" value="${fileInfo.created_by.login}" ${dtaSigned ? '' : 'disabled'}><i class="fa-solid fa-user-plus"></i></button></br>--/--/--</div>
             <div class="col-lg-3 text-left">${shortfilename}<button class="btn btn-lg custom-btn preview-file" title='Preview File' data-file-id="${fileId}" aria-label="Preview File"  data-keyboard="false" data-backdrop="static" data-toggle="modal" data-target="#bcrppPreviewerModal"><i class="fas fa-external-link-alt"></i></button></div>
             <div class="col-lg-2 text-left">${fileInfo.created_by.name}</div>
-            <div class="col-lg-2 text-center">${new Date(fileInfo.created_at)
-              .toDateString()
-              .substring(4)}</div>
-            <div class="col-lg-2 pl-6 text-right">${
-              fileInfo.parent.name === "Accepted"
+            <div class="col-lg-1 text-center">${new Date(fileInfo.created_at).toDateString().substring(4)}</div>
+            <div class="col-lg-1 pl-6 text-center">${
+              fileInfo.description.includes("Accepted")
                 ? '<h6 class="badge badge-pill badge-success">Accepted</h6>'
-                : fileInfo.parent.name === "Denied"
+                : fileInfo.description.includes("Denied")
                 ? '<h6 class="badge badge-pill badge-danger">Denied</h6>'
-                : '<h6 class="badge badge-pill badge-warning">Under Review</h6>'
+                : '<h6 class="badge badge-pill badge-warning">In Review</h6>'
             }</div>
-            <div class="col-lg-2 pl-6 text-right">${completion_date}</div>
-            <div class="col-lg-1 text-right">
+            <div class="col-lg-1 pl-6 text-center" id="review0${fileId}">--</div>
+            <div class="col-lg-1 pl-6 text-center" id="review1${fileId}">--</div>
+            <div class="col-md-1 text-right">
                 <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${fileId}">
                     <i class="fas fa-caret-down fa-2x"></i>
                 </button>
@@ -2968,14 +2542,16 @@ export async function viewFinalDecisionFiles(files) {
   template += `</div></div></div></div>`;
   if (document.getElementById("files") != null)
     document.getElementById("files").innerHTML = template;
+    shareBoxDataFunction();
+    uploadDTAFunction();
 }
 
 function filterSection(files) {
   //Get all possible values for filters (Submitted By and Decision)
   let template = "";
-  const decisionFilterButtons = [
-    ...new Set([...files.map((fileInfo) => fileInfo.parent.name)]),
-  ];
+  // const decisionFilterButtons = [
+  //   ...new Set([...files.map((fileInfo) => fileInfo.parent.name)]),
+  // ];
   template += `
   <div class='row'>
     <div class='col-lg-7'>
@@ -2994,24 +2570,24 @@ function filterSection(files) {
   <div class='col-lg-5'>
 
    `;
-  if (decisionFilterButtons.length !== 0) {
-    template += `
-    <label class="filter-label font-size-17 font-bold" for="variableTypeList">Decision</label>
-    <div class='row' id="decisionFilterList"></div>`;
-  }
-  let decisionFilterTemp = "";
-  decisionFilterButtons.forEach((decision, index) => {
-    if (decision === "Chair Final Review") {
-      decision = "Under Review";
-    }
-    decisionFilterTemp += `
-   <li class="filter-list-item">
-     <input type="checkbox" data-variable-type="${decision}" name='decision${decision}' id="decision${index}" value='${decision}' class="filter-var" style="margin-left: 1px !important;" data-variable-column='Decision'>
-     <label for="label${decision}" class="sub-category px-1" title="${decision}">${decision}</label>
-     `;
-  });
+  // if (decisionFilterButtons.length !== 0) {
+  //   template += `
+  //   <label class="filter-label font-size-17 font-bold" for="variableTypeList">Decision</label>
+  //   <div class='row' id="decisionFilterList"></div>`;
+  // }
+  // let decisionFilterTemp = "";
+  // decisionFilterButtons.forEach((decision, index) => {
+  //   if (decision === "Chair Final Review") {
+  //     decision = "Under Review";
+  //   }
+  //   decisionFilterTemp += `
+  //  <li class="filter-list-item">
+  //    <input type="checkbox" data-variable-type="${decision}" name='decision${decision}' id="decision${index}" value='${decision}' class="filter-var" style="margin-left: 1px !important;" data-variable-column='Decision'>
+  //    <label for="label${decision}" class="sub-category px-1" title="${decision}">${decision}</label>
+  //    `;
+  // });
   document.getElementById("filterData").innerHTML = template;
-  document.getElementById("decisionFilterList").innerHTML = decisionFilterTemp;
+  //document.getElementById("decisionFilterList").innerHTML = decisionFilterTemp;
 }
 
 export const formFunctions = () => {
@@ -3062,3 +2638,80 @@ export const formFunctions = () => {
     }
   });
 };
+
+const shareBoxDataFunction = () => {
+  const btns = Array.from(document.querySelectorAll(".shareBoxData"));
+  btns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      console.log(btn.value);
+      console.log(btn.name);
+      $("#popUpModal").modal("show");
+      dataGovTest();
+      // const header = document.getElementById("confluencePreviewerModalHeader");
+      // const body = document.getElementById("confluencePreviewerModalBody");
+      // header.innerHTML = `<h5 class="modal-title">File preview</h5>
+      //                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      //                            <span aria-hidden="true">&times;</span>
+      //                        </button>`;
+      // const fileId = btn.dataset.fileId;
+      // filePreviewer(fileId, "#confluencePreviewerModalBody");
+    });
+  });
+};
+
+const uploadDTAFunction = () => {
+  const btns = Array.from(document.querySelectorAll(".uploadDTA"))
+  btns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      console.log(btn.value);
+      console.log(btn.name);
+      $("#popUpModal").modal("show");
+      uploadDTAModal(btn.value)
+    })
+  })
+}
+
+const uploadDTAModal = async (folderValue) => {
+  console.log("testing function to upload DTA");
+  console.log(folderValue);
+  ///
+  // const responseData = csv2Json(await getFile(boxUpdateFile)); // Get summary level data
+  // const lastModified = (await getFileInfo(boxUpdateFile)).modified_at;
+  // console.log(responseData.headers);
+  // console.log(responseData.data);
+  // console.log(lastModified);
+  // ///
+  // let val = '0';
+  // if(document.getElementById('folderID')) {
+  //   val = document.getElementById('folderID').value
+  // } else {
+  //   val = dataPlatformDataFolder
+  // }
+  // console.log(val);
+  // const array = await getFolderInfo(val); //DCEG: 196554876811 BCRP: 145995765326, Confluence: 137304373658
+  // if (!array) {
+  //   document.getElementById("submitID").classList.toggle('buttonsubmit--loading');
+  //   alert("Error: Please input a valid folder ID and check that you have the necessary permissions to access it.");
+  //   return false;
+  // }
+
+  // let template =
+  //   '<div class="card-body data-governance"><ul class="ul-list-style first-list-item collapsible-items p-0 m-0">';
+  // const ID = array.id;
+  // const consortiaName = array.name;
+  // let type = array.type;
+  // let liClass = type === "folder" ? "collapsible consortia-folder" : "";
+  // let title = type === "folder" ? "Expand / Collapse" : "";
+  // template += `<li class="collapsible-items">
+  //           <button class="${liClass}" data-toggle="collapse" href="#toggle${ID}">
+  //               <i title="${title}" data-type="${type}" data-id="${ID}" data-folder-name="${consortiaName}" data-status="pending" class="lazy-loading-spinner"></i>
+  //           </button> ${consortiaName}
+  //       </li>
+  //       `;
+  // template += `</ul></div></div>`;
+  // document.getElementById("folderInput").innerHTML = template;
+  // dataGovernanceLazyLoad();
+  // dataGovernanceCollaboration();
+  // document.getElementById("submitID").classList.toggle('buttonsubmit--loading');
+  return false;
+}

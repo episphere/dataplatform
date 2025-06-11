@@ -14,6 +14,11 @@ import {
   getCollaboration,
   checkMyPermissionLevel,
   getFolderInfo,
+  boxUpdateFile,
+  csv2Json,
+  getFile,
+  getFileInfo,
+  dataPlatformDataFolder,
 } from "../shared.js";
 
 export const template = async () => {
@@ -103,8 +108,19 @@ export const testingDataGov = async () => {
 
 export const dataGovTest = async () => {
   console.log("testing data gov test function");
-  let val = document.getElementById('folderID').value
-  if (val === '') val = '0';
+  ///
+  const responseData = csv2Json(await getFile(boxUpdateFile)); // Get summary level data
+  const lastModified = (await getFileInfo(boxUpdateFile)).modified_at;
+  console.log(responseData.headers);
+  console.log(responseData.data);
+  console.log(lastModified);
+  ///
+  let val = '0';
+  if(document.getElementById('folderID')) {
+    val = document.getElementById('folderID').value
+  } else {
+    val = dataPlatformDataFolder;
+  }
   console.log(val);
   const array = await getFolderInfo(val); //DCEG: 196554876811 BCRP: 145995765326, Confluence: 137304373658
   if (!array) {
@@ -203,6 +219,7 @@ export const dataGovernanceLazyLoad = (element) => {
       const bool = await checkMyPermissionLevel(await getCollaboration(id, `${type}s`), JSON.parse(localStorage.parms).login, id, type);
       if (bool === true) {
         const button = document.createElement("button");
+        button.dataset.dismiss = "modal";
         button.dataset.toggle = "modal";
         button.dataset.target = "#modalShareFolder";
         button.classList = ["share-folder"];
@@ -254,6 +271,7 @@ export const dataGovernanceLazyLoad = (element) => {
 
         if (!element.dataset.sharable) {
           const button = document.createElement("button");
+          button.dataset.dismiss = "modal";
           button.dataset.toggle = "modal";
           button.dataset.target = "#modalShareFolder";
           button.classList = ["share-folder"];

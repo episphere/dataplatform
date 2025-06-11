@@ -32,7 +32,7 @@ export const testPage2 = () => {
     <div class="container body-min-height">
       <div class="main-summary-row">
         <div class="align-left">
-          <h1 class="page-header">Data Platforms for DCEG Research Studies</h1>
+          <h1 class="page-header">Websites for DCEG Cohorts - <span style="color:red;">UNDER DEVELOPMENT</span></h1>
         </div>
           <div class="main-summary-row">
             <div class="col-xl-12 padding-right-zero font-size-16" id="summaryStatsCharts">
@@ -47,34 +47,96 @@ export const testPage2 = () => {
       </div>
     </div>
 `
+  //document.getElementById('overview').innerHTML = template;
   getStudies();
   return template;
 };
 
 const getStudies = async () => {
-  const data = await (await fetch("./DCEGcohortswithplatforms.txt")).text();
+  const data = await (await fetch("https://raw.githubusercontent.com/episphere/dataplatform/production/DCEGcohortswithplatforms2.txt")).text();
+  //const data = await (await fetch("./DCEGcohortswithplatforms2.tsv")).text()
   const tsv2json = tsv2Json(data);
   console.log(tsv2json);
   const json = tsv2json.data;
   const headers = tsv2json.headers;
-  console.log(headers);
-  console.log(json);
-
+  let newJsons = {};
+  let prev= '';
   let template = "";
-  if (json.length > 0) {
-    template += `
-      <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
-        <div class="col-md-12 font-bold ws-nowrap pl-2">Studies <button class="transparent-btn sort-column" data-column-name="study"><i class="fas fa-sort"></i></button></div>
-      </div>;
-    `
-  }
+
   json.forEach(obj => {
-    template += `
-    
-    `
+    if(obj['Study']) obj['Study'] = obj['Study'].trim();
+    const study = obj['Study'] ? obj['Study'] : undefined;
+    if(study && newJsons[`${study}`] === undefined) newJsons[`${study}`] = {}
+    if(study) {
+      prev = `${study}`;
+      newJsons[`${study}`] = obj;
+      if(newJsons[`${study}`].pis === undefined) newJsons[`${study}`].pis = [];
+      newJsons[`${study}`].pis.push({PI: obj['PI']})
+      delete newJsons[`${study}`]['PI']
+    }
+    else {
+      newJsons[prev].pis.push({PI: obj['PI']})
+    }
   })
+  console.log(newJsons);
+  const descriptions = Object.values(newJsons);
+  if (json.length > 0) {
+    // template += `
+    //   <div class="row m-0 pt-2 pb-2 align-left div-sticky" style="border-bottom: 1px solid rgb(0,0,0, 0.1);">
+    //     <div class="col-md-12 font-bold ws-nowrap pl-2">Studies <button class="transparent-btn sort-column" data-column-name="study"><i class="fas fa-sort"></i></button></div>
+    //   </div>
+    // `
+    descriptions.forEach((desc, index) => {
+      console.log(desc);
+      template += `
+      <div class="card mt-1 mb-1 align-left">
+        <div style="padding: 10px" aria-expanded="false" id="heading${desc['Study'].replace(/\s/g, '').replace(/(<b>)|(<\/b>)/g, '').replaceAll(',','').trim()}">
+            <div class="row">
+                <div class="col-md-11">${desc['Study']}</div>
+                <div class="col-md-1">
+                  <button title="Expand/Collapse" class="transparent-btn collapse-panel-btn" data-toggle="collapse" data-target="#study${desc['Study'].replace(/\s/g, '').replace(/(<b>)|(<\/b>)/g, '').replaceAll(',','').trim()}">
+                      <i class="fas fa-caret-down fa-2x"></i>
+                  </button>
+                </div>
+            </div>
+        </div>
+        <div id="study${desc['Study'].replace(/\s/g, '').replace(/(<b>)|(<\/b>)/g, '').replaceAll(',','').trim()}" class="collapse" aria-labelledby="heading${desc['Study'].replace(/\s/g, '').replace(/(<b>)|(<\/b>)/g, '').replaceAll(',','').trim()}">
+          <div class="card-body" style="padding-left: 10px;background-color:#f6f6f6;">
+              ${desc['Description'] ? `<div class="row mb-1"><div class="col-md-2 font-bold">Description</div><div class="col">${desc['Description']}</div></div>`: ``}
+              ${desc['Link'] ? `<div class="row mb-1"><div class="col-md-2 font-bold">Link</div><div class="col"><a href="${desc['Link']}">${desc['Link']}</a></div></div>`: ``}
+          `
+          if(desc['pis'].length > 0) {
+              desc['pis'].forEach(info => {
+                  console.log(info);
+                  template += `<div class="row"><div class="col-md-2 font-bold">PI</div><div class="col">${info['PI']}</div></div>`
+              })
+          }
+          template +=`
+          </div>
+        </div>
+      </div>
+      `
+    });
+  }
+  document.getElementById('descriptionBody').innerHTML = template;
+  addEventToggleCollapsePanelBtn();
 }
 
+export const addEventToggleCollapsePanelBtn = () => {
+  const btns = document.getElementsByClassName('collapse-panel-btn');
+  Array.from(btns).forEach(btn => {
+      btn.addEventListener('click', () => {
+          if(btn.querySelector('.fas.fa-2x').classList.contains('fa-caret-down')) {
+              btn.querySelector('.fas.fa-2x').classList.remove('fa-caret-down')
+              btn.querySelector('.fas.fa-2x').classList.add('fa-caret-up')
+          }
+          else {
+              btn.querySelector('.fas.fa-2x').classList.remove('fa-caret-up')
+              btn.querySelector('.fas.fa-2x').classList.add('fa-caret-down')
+          }
+      })
+  })
+}
 //   return `
 //   <div class="general-bg padding-bottom-1rem">
 //   <div class="container body-min-height">

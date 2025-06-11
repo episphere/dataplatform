@@ -1,7 +1,10 @@
-import { applicationURLs, emailforChair, emailforDACC } from "./../shared.js";
+import { applicationURLs, emailforChair, emailforDACC, getCollaboration, checkDataSubmissionPermissionLevel, dataPlatformDataFolder} from "./../shared.js";
 const showProjectConceptForm = true;
-const viewSubmissionsShow = true;
-export const navBarMenutemplate = () => {
+const viewAcceptedShow = true;
+export const navBarMenutemplate = async () => {
+  const getCollaborators = await getCollaboration(dataPlatformDataFolder,"folders");
+  let getMyPermissionLevel = false;
+  if (getCollaborators) getMyPermissionLevel = checkDataSubmissionPermissionLevel(getCollaborators, JSON.parse(localStorage.parms).login);
   return `
         <div class="grid-elements">
             <a class="nav-link nav-menu-links white-font" href="#home" title="DCEG Home" id="homePage">
@@ -9,33 +12,102 @@ export const navBarMenutemplate = () => {
             </a>
         </div>
         <div class="grid-elements">
-            <a class="nav-link nav-menu-links white-font" href="#about/overview" id="aboutDCEG">
-            About
-            </a>            
+          <div class="grid-elements dropdown">
+            <button
+              class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font"
+              role="button"
+              title="Data Access"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              >
+              Data Access
+            </button>
+          <div class="dropdown-menu navbar-dropdown">
+            <a
+              class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
+              href="#dataAccessHowTo"
+              id="dataAccessHowTo"
+            >Process
+            </a>
+          ${localStorage.accessFolderInfo === 'false'
+          ? `
+            <button type="button" class="dropdown-item nav-link nav-menu-links dropdown-menu-links" title="Pop-up for login" onclick=${`$("#dcegPreviewerModal").modal("show")`}>
+              How-To  
+            </button>
+          `
+          : ``
+          }          
         </div>
-        <div class="grid-elements">
+      </div>
+      </div>
+      ${!localStorage.parms && !JSON.parse(localStorage.parms).name
+        ?`<div class="grid-elements">
             <a class="nav-link nav-menu-links white-font" href="#data_access/overview" title="Consortia" id="dataRequest">
                 Consortia
             </a>
         </div>
         <div class="grid-elements">
-          <a class="nav-link nav-menu-links white-font" href="#researchStudies" title="Research Studies" id="data2">
-          Research Studies
+          <a class="nav-link nav-menu-links white-font" href="#researchStudies" title="DCEG Studies & Data Resources" id="data2">
+          DCEG Studies & Data Resources
           </a>
-        </div>
-
+        </div>`
+        :``
+      }
         <div class="grid-elements" style="display: none;">
           <a class="nav-link nav-menu-links white-font" href="#data_access/form" title="Data Form" id="dataForm"> 
             Data Form
           </a>
         </div>
 
-        <div class="grid-elements">
-          <a class="nav-link nav-menu-links white-font" href="#publicationpage" title="DCEG Publications" id="publicationID">
-          DCEG Publications
+        <!--<div class="grid-elements">
+          <a class="nav-link nav-menu-links white-font" href="#publicationpage" title="DCEG PDR" id="publicationID">
+          DCEG PDR
           </a>
+        </div>-->
+        <div class="grid-elements dropdown">
+          <button
+            class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font"
+            role="button"
+            title="DCEG Publications"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            >
+            DCEG PDR
+          </button>
+          <div class="dropdown-menu navbar-dropdown">
+            <!--<a
+              class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
+              href="#dataAccessHowTo"
+              id="dataAccessHowTo"
+            >Data Access Process
+            </a>-->
+            <a
+              class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
+              href="#publicationpage"
+              id="publicationID"
+              >Browse and Request PDR Data
+            </a>
+            <a
+              class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
+              href="#approvedData"
+              id="approvedData"
+              hidden
+              >Approved Data Requests to the PDR
+            </a>
+            ${JSON.parse(localStorage.parms).login === 'kopchickbp@nih.gov' || JSON.parse(localStorage.parms).login === 'ahearntu@nih.gov'
+              ?`<a
+              class="dropdown-item nav-link nav-menu-links dropdown-menu-links"
+              href="#adminpublicationpage"
+              id="adminpublicationID"
+              >ADMIN Data Page
+            </a>`
+            :``
+            }
+          </div>
         </div>
-        ${JSON.parse(localStorage.parms).login.split('@')[1].includes('deloitte.com') || JSON.parse(localStorage.parms).login.split('@')[1].includes('nih.gov')
+        ${JSON.parse(localStorage.parms).login.split('@')[1].includes('nih.gov')
           ?`<div class="grid-elements dropdown">
             <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" title="My DCEG Publication Data" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             DCEG Investigators
@@ -43,50 +115,24 @@ export const navBarMenutemplate = () => {
             
             <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
             <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#uploadinstruction" id="instructionID">How to upload data from my published manuscript </a>
-            <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG/upload" id="myDCEGID_upload"> Upload new data</a>
-            <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG" id="myDCEGID">See my uploaded data</a>
+            ${getMyPermissionLevel
+              ?`<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG/upload" id="myDCEGID_upload"> Upload new data</a>`
+              :``
+            }
+            <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links" href="#myDCEG" id="myDCEGID" hidden>See my uploaded data</a>
             <div id="governanceNav" class="grid-elements"></div>
 
             </div>
           </div>`
           :``
         }
-        <!---<div class="grid-elements">
-          <a class="nav-link nav-menu-links white-font" href="#myDCEG/upload" title="My DCEG Publication Data - Upload" id="myDCEGID_upload">
-            Upload
-          </a>
-        </div>--->
-        <div class="grid-elements">
-            <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/dataplatform/issues" title="Dataplatform github issues">
-                Report issue
-            </a>
-        </div>
-
-                <!---<div class='grid-elements dropdown'>
+          ${emailforDACC.indexOf(JSON.parse(localStorage.parms).login) !== -1
+               ? `<div class='grid-elements dropdown'>
                     <button class="nav-link nav-menu-links dropdown-toggle dropdown-btn white-font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Consortia
+                        DACC
                     </button>
                     <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/overview" title="Consortia" id="dataRequest"> Consortia </a>
-                    ${
-                      showProjectConceptForm
-                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/form" title="Data Form" id="dataForm"> </a>
-                    `
-                        : ""
-                    }
-                    ${
-                      viewSubmissionsShow
-                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#userSubmissions" title='View Your Submissions' id="userSubmissions"> </a>`
-                        : ""
-                    }--->
-                    <!---a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/accepted" title="Accepted Studies" id="dataAccepted"> Accepted </a--->
-                    ${
-                      emailforChair.indexOf(
-                        JSON.parse(localStorage.parms).login
-                      ) !== -1
-                        ? `<a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/chairView" title="Chair File View" id="chairView">  </a>`
-                        : ``
-                    }
+                    <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links pl-4" href="#data_access/accepted" title="Accepted Studies" id="dataAccepted"> Accepted </a>
                     ${
                       emailforDACC.indexOf(
                         JSON.parse(localStorage.parms).login
@@ -95,7 +141,14 @@ export const navBarMenutemplate = () => {
                         : ``
                     }
             </div>
-
+          </div>`
+          : ``
+          }
+          <div class="grid-elements">
+              <a class="nav-link nav-menu-links white-font" rel="noopener" target="_blank" href="https://github.com/episphere/dataplatform/issues" title="Dataplatform github issues">
+                  Report issue
+              </a>
+          </div>
 
         <div class="navbar-nav ml-auto">
             ${
@@ -165,10 +218,10 @@ export function pageNavBar(page, activeTab, ...pageHeaders) {
     //   );
     //   if (activeTab === "User Submissions") link.classList.add("active");
     // }
-    if (header === "Chair Menu") {
-      link.href = `#${page}/chairView`;
-      if (activeTab === "chairView") link.classList.add("active");
-    }
+    // if (header === "Chair Menu") {
+    //   link.href = `#${page}/chairView`;
+    //   if (activeTab === "chairView") link.classList.add("active");
+    // }
     if (header === "Accepted") {
       link.href = `#${page}/acceptedStudies`;
       if (activeTab === "acceptedStudies") link.classList.add("active");

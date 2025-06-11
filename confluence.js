@@ -1,7 +1,7 @@
 import { navBarMenutemplate } from "./src/components/navBarMenuItems.js";
 import { infoDeck, infoDeckAfterLoggedIn } from "./src/pages/homePage.js";
 import { testPage2 } from "./src/pages/researchStudies.js";
-import { publication } from "./src/pages/publicationpage.js";
+import { publication, publicationNoSign, publicationAdmin } from "./src/pages/publicationpage.js";
 import { myDCEGpublication } from "./src/pages/myDCEG.js";
 import { instruction } from "./src/pages/uploadinstruction.js";
 import { dataSubmissionTemplate,
@@ -22,8 +22,6 @@ import {
   formSection,
   approveRejectSection,
   daccSection,
-  chairSection,
-  chairFileView,
   daccFileView,
   formSectionOther,
   formFunctions,
@@ -31,6 +29,10 @@ import {
   amendFormSelect,
   populateAmendSelect,
 } from "./src/pages/dataRequest.js";
+import {
+  dataAccessHowTo,
+  approvedData
+} from "./src/pages/dataAccess.js";
 import {
   checkAccessTokenValidity,
   loginAppDev,
@@ -62,6 +64,8 @@ import {
   getFile,
   storeAccessTokenERa,
   getCurrentUserERa,
+  getFolderInfo,
+  checkMyPermissionLevel
 } from "./src/shared.js";
 import {
   addEventConsortiaSelect,
@@ -90,10 +94,14 @@ import { config } from "./src/config.js";
  */
 
 export const confluence = async () => {
-  if ("serviceWorker" in navigator) {
-    try {
-      navigator.serviceWorker.register("./serviceWorker.js");
-    } catch (error) {}
+  if(window.navigator && navigator.serviceWorker) {
+    navigator.serviceWorker.getRegistrations()
+    .then(function(registrations) {
+      for(let registration of registrations) {
+        registration.unregister();
+        console.log("Service worker removed.")
+      }
+    });
   }
   const confluenceDiv = document.getElementById("confluenceDiv");
   const navBarOptions = document.getElementById("navBarOptions");
@@ -112,22 +120,29 @@ export const confluence = async () => {
 
   if (localStorage.parms === undefined) {
     const loginBoxAppDev = document.getElementById("loginBoxAppDev");
-    const loginBoxAppEpisphere = document.getElementById(
-      "loginBoxAppEpisphere"
-    );
+    const loginBoxAppEpisphere = document.getElementById("loginBoxAppEpisphere");
     const loginBoxAppProd = document.getElementById("loginBoxAppProd");
     const loginBoxAppStage = document.getElementById("loginBoxAppStage");
-    if (location.origin.match("localhost")) loginBoxAppDev.hidden = false;
-    if (location.origin.match(applicationURLs.stage))
+    if (location.origin.match("localhost")) {
+      loginBoxAppDev.hidden = false;
+      document.getElementById("loginBoxDropDown").addEventListener("click", loginAppDev);
+    };
+    if (location.origin.match(applicationURLs.stage)) {
       loginBoxAppStage.hidden = false;
-    if (location.origin.match(applicationURLs.prod))
+      document.getElementById("loginBoxDropDown").addEventListener("click", loginObs);
+    };
+    if (location.origin.match(applicationURLs.prod)) {
       loginBoxAppProd.hidden = false;
-    if (location.origin.match("episphere")) loginBoxAppEpisphere.hidden = false;
+      document.getElementById("loginBoxDropDown").addEventListener("click", loginAppEpisphere);
+    };
+    if (location.origin.match("episphere")) {
+      loginBoxAppEpisphere.hidden = false;
+      document.getElementById("loginBoxDropDown").addEventListener("click", loginAppProd);
+    };
     await storeAccessToken();
     manageRouter();
   }
   if (localStorage.parmsERa === undefined) {
-    console.log("No ERa");
     await storeAccessTokenERa();
     manageRouter();
   }
@@ -143,16 +158,61 @@ export const confluence = async () => {
     }
     if (localStorage.parmsERa && JSON.parse(localStorage.parmsERa).access_token) {
       const responseERa = await getCurrentUserERa();
+      console.log(responseERa);
       showAnimation();
       if (responseERa) {
         const lclStrERa = JSON.parse(localStorage.parmsERa);
-        locatStorage.parmsERa = JSON.stringify({
+        localStorage.parmsERa = JSON.stringify({
           ...lclStrERa,
           ...responseERa,
         });
       }
     }
-    navBarOptions.innerHTML = navBarMenutemplate();
+
+    // Check if access to submit
+    let folderCheck = 249771633109//249771633108 //249771633109
+    try {
+      var accessFolderInfo = await getFolderInfo(folderCheck);
+      localStorage.setItem("accessFolderInfo", true);
+    } catch (error) {
+      var accessFolderInfo = false;
+    };
+    if (accessFolderInfo === false) {
+      console.log("Access folder failed")
+      localStorage.setItem("accessFolderInfo", false);
+      const header = document.getElementById("dcegPreviewerModalHeader");
+      const body = document.getElementById("dcegPreviewerModalBody");
+      header.innerHTML = `<h5 class="modal-title">Data Request Access Required</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>`;
+      body.innerHTML = `<div>
+                          Welcome to the DCEG PDR. It appears you don't currently have access to request data. 
+                          To gain access, please send an email by using this 
+                          <a href = 
+                            "mailto:nci_dceg_pdr@nih.gov?subject=PDR Request Access For ${localStorage.parms ? JSON.parse(localStorage.parms).login : 'Unknown'}&body=**Please send this email as is. Do not change the subject line or body of this email or your request may be denied.**%0D%0ARequest to grant access to ${localStorage.parms ? JSON.parse(localStorage.parms).login : 'Unknown'} allowing for request form submission.">
+                            link.
+                          </a>
+                          <br>
+                          Please do not change the subject line or body of the email or your request may be denied. 
+                          You may close this box to explore the PDR and to continue with Data Request Access please go to the Data Access Process tab or refresh browser.
+                        </div>`
+      $("#dcegPreviewerModal").modal("show");
+    }
+    // const bool = await checkMyPermissionLevel(
+    //     await getCollaboration(
+    //       folderCheck,
+    //       `folders`
+    //     ),
+    //     JSON.parse(localStorage.parms).login
+    //   );
+
+    // const getCollaborators = await getCollaboration(
+    //   folderCheck,
+    //   "folders"
+    // );
+    //
+    navBarOptions.innerHTML = await navBarMenutemplate();
     document.getElementById("logOutBtn").addEventListener("click", logOut);
     const viewUserSubmissionElement =
       document.getElementById("userSubmissions");
@@ -167,11 +227,14 @@ export const confluence = async () => {
     const chairViewElement = document.getElementById("chairView");
     const daccViewElement = document.getElementById("daccView");
     const ConsortiaPageElement = document.getElementById("data2");
+    const dataAccessElement = document.getElementById("dataAccessHowTo");
+    const dataApprovedElement = document.getElementById("approvedData");
     const PublicationPageElement = document.getElementById("publicationID");
     const MyDCEGPageElement = document.getElementById("myDCEGID");
     const MyDCEGPageElement_upload = document.getElementById("myDCEGID_upload");
     const uploadInstructionElement = document.getElementById("instructionID");
     const dataGovernance = document.getElementById("dataGovernance");
+    const adminDataPage = document.getElementById("adminpublicationID")
 
     // const platformTutorialElement = document.getElementById('platformTutorial');
     // const dataAnalysisElement = document.getElementById('dataAnalysis');
@@ -259,9 +322,9 @@ export const confluence = async () => {
         const confluenceDiv = document.getElementById("confluenceDiv");
         showAnimation();
         assignNavbarActive(dataDictionaryElement);
-        document.title = "DCEG - Research Studies";
+        document.title = "DCEG - Studies";
         confluenceDiv.innerHTML = dataSummary(
-          "Research Studies",
+          "DCEG Studies",
           true,
           false,
           false
@@ -289,11 +352,14 @@ export const confluence = async () => {
           "folders"
         ); //144028521583, 155292358576
         let getMyPermissionLevel = false;
+        console.log(getCollaborators);
         if (getCollaborators)
           getMyPermissionLevel = checkDataSubmissionPermissionLevel(
             getCollaborators,
             JSON.parse(localStorage.parms).login
           );
+        let eraLogin = false;
+        if (localStorage.parmsERa) eraLogin = true
         if (getMyPermissionLevel) {
           confluenceDiv.innerHTML = await formSection("form");
           //populateAmendSelect();
@@ -303,12 +369,33 @@ export const confluence = async () => {
           // document
           //   .getElementById("amendmentno")
           //   .addEventListener("click", amendFormSelect);
-          document.getElementById("loginERa").addEventListener("click", async function () {
-            location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/&scope=openid+profile+email`
-          });
-          await dataForm();
+          // if (!eraLogin) {
+          //   document.getElementById("logineRA").addEventListener("click", async function () {
+          //     location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/&scope=openid+company+email+profile`
+          //   });
+          // }
+          //let eraLogin = true;
+          if (eraLogin) {
+            console.log(eraLogin);
+            dataForm();
         } else {
-          confluenceDiv.innerHTML = await formSectionOther("form");
+            document.getElementById("logineRA").addEventListener("click", async function () {
+              localStorage.setItem('lastURL', '#data_access/form');
+              if(location.origin.match("localhost")) {
+                location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/&scope=openid+company+email+profile`
+              } else if (location.origin.match(applicationURLs.epi)) {
+                location.href = `https://stsstg.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=ff775e46-ec74-46a3-b19f-ee2c60e8cf11&redirect_uri=https://episphere.github.io/dataplatform/&scope=openid+company+email+profile`
+              }
+                else if (location.origin.match(applicationURLs.stage)) {
+                location.href = `https://sts.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=d9c1a537-fe1d-437f-a1c4-62a6e481aaeb&redirect_uri=https://epidataplatforms.cancer.gov/&scope=openid+email+profile`
+              } else if (location.origin.match(applicationURLs.prod)) {
+                  location.href = `https://sts.nih.gov/auth/oauth/v2/authorize?response_type=code&client_id=d9c1a537-fe1d-437f-a1c4-62a6e481aaeb&redirect_uri=https://epidataplatforms.cancer.gov/&scope=openid+email+profile`
+                }
+            });
+          }
+        } else {
+          //confluenceDiv.innerHTML = await formSectionOther("form");
+          $("#dcegPreviewerModal").modal("show");
           hideAnimation();
         }
         //formFunctions();
@@ -329,19 +416,6 @@ export const confluence = async () => {
         hideAnimation();
       });
     }
-    if (chairViewElement) {
-      chairViewElement.addEventListener("click", () => {
-        if (chairViewElement.classList.contains("navbar-active")) return;
-        const element = document.getElementById("chairView");
-        showAnimation();
-        if (!element) return;
-        if (element.classList.contains("navbar-active")) return;
-        document.title = "DCEG - Chair View";
-        assignNavbarActive(element);
-        confluenceDiv.innerHTML = chairSection("chairView");
-        chairFileView();
-      });
-    }
     if (daccViewElement) {
       daccViewElement.addEventListener("click", () => {
         if (daccViewElement.classList.contains("navbar-active")) return;
@@ -355,7 +429,7 @@ export const confluence = async () => {
         daccFileView();
       });
     }
-
+    if (dataRequestElement) {
     dataRequestElement.addEventListener("click", () => {
       if (dataRequestElement.classList.contains("navbar-active")) return;
       const element = document.getElementById("dataRequest");
@@ -366,16 +440,43 @@ export const confluence = async () => {
       confluenceDiv.innerHTML = dataRequestTemplate("overview");
       hideAnimation();
     });
+    }
+    if (dataAccessElement) {
+      dataAccessElement.addEventListener("click", () => {
+        if (dataAccessElement.classList.contains("navbar-active")) return;
+        const element = document.getElementById("dataAccessHowTo");
+        if (!element) return;
+        if (element.classList.contains("navbar-active")) return;
+        document.title = "Data Access How To";
+        assignNavbarActive(element);
+        confluenceDiv.innerHTML = dataAccessHowTo();
+        hideAnimation();
+      });
+    }
+    if (dataApprovedElement) {
+      dataApprovedElement.addEventListener("click", () => {
+        if (dataApprovedElement.classList.contains("navbar-active")) return;
+        const element = document.getElementById("approvedData");
+        if (!element) return;
+        if (element.classList.contains("navbar-active")) return;
+        document.title = "Approved Data Requests";
+        assignNavbarActive(element);
+        confluenceDiv.innerHTML = approvedData();
+        hideAnimation();
+      })
+    }
+    if (ConsortiaPageElement) {
     ConsortiaPageElement.addEventListener("click", () => {
       if (ConsortiaPageElement.classList.contains("navbar-active")) return;
       const element = document.getElementById("data2");
       if (!element) return;
       if (element.classList.contains("navbar-active")) return;
-      document.title = "Research Studies";
+        document.title = "DCEG Studies";
       assignNavbarActive(element);
       confluenceDiv.innerHTML = testPage2();
       hideAnimation();
     });
+    }
     PublicationPageElement.addEventListener("click", () => {
       if (PublicationPageElement.classList.contains("navbar-active")) return;
       const element = document.getElementById("publicationID");
@@ -384,13 +485,25 @@ export const confluence = async () => {
       document.title = "DCEG - Publication";
       assignNavbarActive(element);
       console.log('publication');
-      //confluenceDiv.innerHTML = publication();
       aboutConfluence("overview");
       publication();
-      addEventUpdateSummaryStatsData();
-      //publicationPageTemplate();
+      //addEventUpdateSummaryStatsData();
       hideAnimation();
     });
+    if (adminDataPage) {
+      adminDataPage.addEventListener("click", () => {
+        if (adminDataPage.classList.contains("navbar-active")) return;
+        const element = document.getElementById("adminpublicationID");
+        if (!element) return;
+        if (element.classList.contains("navbar-active")) return;
+        document.title = "ADMIN DCEG - Publication";
+        assignNavbarActive(element);
+        console.log('publicationAdmin');
+        aboutConfluence("overview");
+        publicationAdmin();
+        addEventUpdateSummaryStatsData();
+        hideAnimation();     
+    })};
     if (MyDCEGPageElement){
     MyDCEGPageElement.addEventListener("click", () => {
       if (MyDCEGPageElement.classList.contains("navbar-active")) return;
@@ -498,12 +611,14 @@ export const confluence = async () => {
     // //         `;
     // //   addEventDataGovernanceNavBar(true);
     // }
+    if (JSON.parse(localStorage.parms).login.split('@')[1].includes('deloitte.com') || JSON.parse(localStorage.parms).login.split('@')[1].includes('nih.gov')){
     document.getElementById("governanceNav").innerHTML = `
                 <a class="dropdown-item nav-link nav-menu-links dropdown-menu-links navbar-active" href="#data_governance" title="Data Governance" id="dataGovernance">
                     Data Governance
                 </a>
             `;
     addEventDataGovernanceNavBar(true);
+    }
     manageHash();
   }
 };
@@ -564,6 +679,20 @@ const manageRouter = async () => {
     document.title = "DCEG - researchStudies";
     assignNavbarActive(element);
     confluenceDiv.innerHTML = testPage2();
+  } else if(hash === "#dataAccessHowTo") {
+    const element = document.getElementById("dataAccessHowTo");
+    if (!element) return;
+    if (element.classList.contains("navbar-active")) return;
+    document.title = "Data Access How To";
+    assignNavbarActive(element);
+    confluenceDiv.innerHTML = dataAccessHowTo();
+  } else if(hash === "#approvedData") {
+    const element = document.getElementById("approvedData");
+    if (!element) return;
+    if (element.classList.contains("navbar-active")) return;
+    document.title = "Approved Data Requests";
+    assignNavbarActive(element);
+    confluenceDiv.innerHTML = approvedData();
   } else if (hash === "#publicationpage") {
     const element = document.getElementById("publicationID");
     if (!element) return;
@@ -571,7 +700,7 @@ const manageRouter = async () => {
     document.title = "DCEG - publicationpage";
     assignNavbarActive(element);
     aboutConfluence("overview");
-    publication();
+    publicationNoSign();
   } else if (hash === "#myDCEG") {
     const element = document.getElementById("myDCEGID");
     if (!element) return;
@@ -617,15 +746,6 @@ const manageRouter = async () => {
     document.title = "DCEG - Accepted Studies";
     confluenceDiv.innerHTML = acceptedStudiesSection();
     removeActiveClass("nav-link", "active");
-  } else if (hash === "#data_access/chairView") {
-    const chairViewElement = document.getElementById("chairView");
-    if (!chairViewElement) return;
-    if (chairViewElement.classList.contains("navbar-active")) return;
-    showAnimation();
-    assignNavbarActive(chairViewElement);
-    document.title = "DCEG - Chair View";
-    confluenceDiv.innerHTML = chairSection();
-    removeActiveClass("nav-link", "active");
   } else if (hash === "#data_access/daccView") {
     const daccViewElement = document.getElementById("daccView");
     showAnimation();
@@ -644,9 +764,9 @@ const manageRouter = async () => {
       return;
     showAnimation();
     assignNavbarActive(dataDictionaryElement);
-    document.title = "DCEG - Research Studies";
+    document.title = "DCEG - Studies";
     confluenceDiv.innerHTML = dataSummary(
-      "Research Studies",
+      "DCEG Studies",
       true,
       false,
       false,
@@ -676,7 +796,10 @@ const manageRouter = async () => {
 const manageHash = async () => {
   document.querySelector("[role='contentinfo']").innerHTML = footerTemplate();
   if (localStorage.parms === undefined) return;
-  const hash = decodeURIComponent(window.location.hash);
+  let hash = decodeURIComponent(window.location.hash);
+  if(localStorage.lastURL){
+    hash = localStorage.lastURL;
+  }
   if (
     !document.getElementById("navBarBtn").classList.contains("collapsed") &&
     document.getElementById("navbarToggler").classList.contains("show")
@@ -707,8 +830,17 @@ const manageHash = async () => {
   } else if (hash === "#researchStudies") {
     const element = document.getElementById("data2");
     element.click();
+  } else if (hash ==="#dataAccessHowTo") {
+    const element = document.getElementById("dataAccessHowTo");
+    element.click();
+  } else if (hash === "#approvedData") {
+    const element = document.getElementById("approvedData");
+    element.click();
   } else if (hash === "#publicationpage") {
     const element = document.getElementById("publicationID");
+    element.click();
+  } else if (hash === "#adminpublicationpage") {
+    const element = document.getElementById("adminpublicationID");
     element.click();
   } else if (hash === "#myDCEG") {
     const element = document.getElementById("myDCEGID");
@@ -721,6 +853,9 @@ const manageHash = async () => {
     element.click();
   } else if (hash === "#data_access/form") {
     const element = document.getElementById("dataForm");
+    if(localStorage.lastURL){
+      localStorage.removeItem('lastURL');
+    }
     if (!element) return;
     element.click();
   } else if (hash === "#data_access/acceptedStudies") {
@@ -782,16 +917,17 @@ const manageHash = async () => {
   //   //aboutConfluence("contact");
   //   confluenceContactPage();
   //   hideAnimation();
-  } else if (hash === "#about/description") {
-    const element = document.getElementById("aboutDCEG");
-    if (!element) return;
-    assignNavbarActive(element);
-    document.title = "BCRP - Study Description";
-    showAnimation();
-    const fileInfo = await getFileInfo(904897189551); //new: 904897189551; original: 881144462693
-    aboutConfluence("description", fileInfo ? true : false);
-    renderDescription(fileInfo["content_modified_at"]);
-    hideAnimation();
+  // } else if (hash === "#about/description") {
+  //   const element = document.getElementById("aboutDCEG");
+  //   if (!element) return;
+  //   assignNavbarActive(element);
+  //   document.title = "BCRP - Study Description";
+  //   showAnimation();
+  //   const fileInfo = await getFileInfo(904897189551); //new: 904897189551; original: 881144462693
+  //   console.log(fileInfo);
+  //   aboutConfluence("description", fileInfo ? true : false);
+  //   renderDescription(fileInfo["content_modified_at"]);
+  //   hideAnimation();
   } else if (hash === "#join") {
     const element = document.getElementById("resourcesBCRPP");
     if (!element) return;

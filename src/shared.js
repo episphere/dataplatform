@@ -6,7 +6,7 @@ export const emailsAllowedToUpdateData = [
   "ahearntu@nih.gov", "kopchickbp@nih.gov"
 ];
 
-export const emailforChair = []//['Roger.Milne@cancervic.org.au','ahearntu@nih.gov', 'garciacm@nih.gov', 'sbehpour@deloitte.com','kopchickbp@nih.gov'];
+export const emailforChair = ['kopchickbp@nih.gov']
 //  [
 // "Roger.Milne@cancervic.org.au",
 // "ahearntu@nih.gov",
@@ -15,14 +15,11 @@ export const emailforChair = []//['Roger.Milne@cancervic.org.au','ahearntu@nih.g
 // "kopchickbp@nih.gov",
 // ];
 
-export const emailforDACC = []//['pkraft@hsph.harvard.edu', 'garciacm@nih.gov', 'ahearntu@nih.gov',  'mukopadhyays2@nih.gov'];;
+export const emailforDACC = ['troisir@nih.gov', 'tobiasg@nih.gov', 'kopchickbp@nih.gov', 'ahearntu@nih.gov']
 
-// [
-//   "pkraft@hsph.harvard.edu",
-//   "garciacm@nih.gov",
-//   "ahearntu@nih.gov",
-//   "mukopadhyays2@nih.gov",
-// ]; // , 'mia.gaudet@nih.gov', 'troisir@nih.gov', 'mukopadhyays2@nih.gov', 'montserrat.garcia-closas@nih.gov', 'garciacm@nih.gov'];
+export const nameofDACC = ['Rebecca Troisi', 'Geoffrey Tobias']
+
+export const boxUpdateFile = 1462786990973;
 
 export const publicDataFileId = 697309514903; //Unknown
 
@@ -34,25 +31,35 @@ export const missingnessStatsFileId = 1043323929905; //653087731560; //Unknown, 
 // export const missingnessStatsFileId = 653087731560;
 export const cps2StatsFileId = 908522264695;
 
-export const uploadFormFolder = 155292358576;
+export const uploadFormFolder = 249771633109//155292358576;
 
-export const daccReviewFolder = 161192245846;
+export const daccReviewFolder = 249773817149;
 
-export const daccReviewChairFolder = 165542319674;
+export const daccReviewChairFolder = 249772406122;//165542319674;
 
 export const chairReviewFolder = 161191639493;
 
 //export const finalFolder = 162221886155 //Currently using Temp Folder. Final Folder:161192097034;
 
-export const acceptedFolder = 162222239448;
+export const acceptedFolder = 249770507203;
 
-export const deniedFolder = 162221803333;
+export const deniedFolder = 249771671306;
 
 export const submitterFolder = 162222418449;
 
 export const dataPlatformFolder = 196554876811;
 
-export const publicDataFolder = 196819085811;
+export const dataPlatformDataFolder = 239899508915;//156698557621;//239899508915
+
+export const publicDataFolder = 259664212144;
+
+export const liveUpdateFolder = 196819085811;
+
+export const livePublicationFile = 1506807971290;
+
+export const finalPublicationSummaryFilesFolder = 293584064501;
+
+export const finalPublicationSummaryFolder = 285184804541;
 
 export const getFolderItems = async (id) => {
   try {
@@ -254,41 +261,117 @@ export const storeAccessTokenERa = async () => {
   let parms = searchParms();
   if (parms.code) {
     //exchange code for authorization token
-    let clt = {};
-    clt.client_id = 'ff775e46-ec74-46a3-b19f-ee2c60e8cf11';
-    clt.server_id = '86514167-daf2-4d14-8b9e-84f895190f3f';
-    document.getElementById("confluenceDiv").innerHTML = "";
+    if (location.origin.match("localhost") || location.origin.match(applicationURLs.epi)) {
+      let clt = {};
+      clt.client_id = 'ff775e46-ec74-46a3-b19f-ee2c60e8cf11';
+      clt.server_id = '86514167-daf2-4d14-8b9e-84f895190f3f';
+      document.getElementById("confluenceDiv").innerHTML = "";
 
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-    var urlencoded = new URLSearchParams();
-    urlencoded.append("client_id", clt.client_id);
-    urlencoded.append("client_secret", clt.server_id);
-    urlencoded.append("grant_type", "authorization_code");
-    urlencoded.append("redirect_uri", "https://episphere.github.io/dataplatform/")
-    urlencoded.append("scope", "openid profile email");
-    urlencoded.append("code", parms.code);
+      var urlencoded = new URLSearchParams();
+      urlencoded.append("client_id", clt.client_id);
+      urlencoded.append("client_secret", clt.server_id);
+      urlencoded.append("grant_type", "authorization_code");
+      urlencoded.append("redirect_uri", "https://episphere.github.io/dataplatform/")
+      urlencoded.append("scope", "openid profile email");
+      urlencoded.append("code", parms.code);
 
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-      redirect: "follow",
-    };
-    const response = await fetch(
-      "https://stsstg.nih.gov/auth/oauth/v2/token",
-      requestOptions
-    );
-    if (response.status === 400) {
-      let testing = await response.json();
-      console.log(testing);
-      //window.history.replaceState({}, "", "./#home");
-    }
-    if (response.status && response.status === 200) {
-      localStorage.parmsERa = JSON.stringify(await response.json());
-      window.history.replaceState({}, "", "./#home");
-      confluence();
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: "follow",
+      };
+      const response = await fetch(
+        "https://stsstg.nih.gov/auth/oauth/v2/token",
+        requestOptions
+      );
+      if (response.status === 400) {
+        let testing = await response.json();
+        console.log(testing);
+        //window.history.replaceState({}, "", "./#home");
+      }
+      if (response.status && response.status === 200) {
+        localStorage.parmsERa = JSON.stringify(await response.json());
+        window.history.replaceState({}, "", "./#home");
+        confluence();
+      }
+    } else if (location.origin.match(applicationURLs.prod)) {
+      let clt = {};
+      clt.client_id = 'd9c1a537-fe1d-437f-a1c4-62a6e481aaeb';
+      clt.server_id = '2bc0509b-b14d-4dee-b592-45c92977d8b3';
+      document.getElementById("confluenceDiv").innerHTML = "";
+
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+      var urlencoded = new URLSearchParams();
+      urlencoded.append("client_id", clt.client_id);
+      urlencoded.append("client_secret", clt.server_id);
+      urlencoded.append("grant_type", "authorization_code");
+      urlencoded.append("redirect_uri", "https://epidataplatforms.cancer.gov/")
+      urlencoded.append("scope", "openid profile email");
+      urlencoded.append("code", parms.code);
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: "follow",
+      };
+      const response = await fetch(
+        "https://sts.nih.gov/auth/oauth/v2/token",
+        requestOptions
+      );
+      if (response.status === 400) {
+        let testing = await response.json();
+        console.log(testing);
+        //window.history.replaceState({}, "", "./#home");
+      }
+      if (response.status && response.status === 200) {
+        localStorage.parmsERa = JSON.stringify(await response.json());
+        window.history.replaceState({}, "", "./#home");
+        confluence();
+      }
+    } else if (location.origin.match(applicationURLs.stage)) {
+      let clt = {};
+      clt.client_id = 'd9c1a537-fe1d-437f-a1c4-62a6e481aaeb';
+      clt.server_id = '2bc0509b-b14d-4dee-b592-45c92977d8b3';
+      document.getElementById("confluenceDiv").innerHTML = "";
+
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+      var urlencoded = new URLSearchParams();
+      urlencoded.append("client_id", clt.client_id);
+      urlencoded.append("client_secret", clt.server_id);
+      urlencoded.append("grant_type", "authorization_code");
+      urlencoded.append("redirect_uri", "https://epidataplatforms.cancer.gov/")
+      urlencoded.append("scope", "openid profile email");
+      urlencoded.append("code", parms.code);
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: "follow",
+      };
+      const response = await fetch(
+        "https://sts.nih.gov/auth/oauth/v2/token",
+        requestOptions
+      );
+      if (response.status === 400) {
+        let testing = await response.json();
+        console.log(testing);
+        //window.history.replaceState({}, "", "./#home");
+      }
+      if (response.status && response.status === 200) {
+        localStorage.parmsERa = JSON.stringify(await response.json());
+        window.history.replaceState({}, "", "./#home");
+        confluence();
+      }
     }
   } 
 };
@@ -370,6 +453,72 @@ export const createFolder = async (folderId, folderName) => {
   } catch (err) {
     if ((await refreshToken()) === true)
       return await createFolder(folderId, folderName);
+  }
+};
+
+export const deleteFolder = async (folderId) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    // let obj = {
+    //   parent: {
+    //     id: folderId,
+    //   },
+    // };
+    let response = await fetch(`https://api.box.com/2.0/folders/${folderId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      //body: JSON.stringify(obj),
+      //redirect: "follow",
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await deleteFolder(folderId);
+    } else if (response.status === 201) {
+      return response.json();
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await deleteFolder(folderId);
+  }
+};
+
+export const deleteFile = async (fileId) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    // let obj = {
+    //   parent: {
+    //     id: folderId,
+    //   },
+    // };
+    let response = await fetch(`https://api.box.com/2.0/files/${fileId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      //body: JSON.stringify(obj),
+      //redirect: "follow",
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await deleteFile(fileId);
+    } else if (response.status === 201) {
+      return response.json();
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await deleteFile(fileId);
   }
 };
 
@@ -501,6 +650,38 @@ export const moveFile = async (fileId, parentId) => {
   }
 };
 
+export const moveFolder = async (folderId, parentId) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    let obj = {
+      parent: {
+        id: parentId,
+      },
+    };
+    let response = await fetch(`https://api.box.com/2.0/folders/${folderId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      body: JSON.stringify(obj),
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await moveFolder(folderId, parentId);
+    } else if (response.status === 201) {
+      return response;
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await moveFolder(folderId, parentId);
+  }
+};
+
 export const uploadFile = async (data, fileName, folderId, html) => {
   try {
     const access_token = JSON.parse(localStorage.parms).access_token;
@@ -594,6 +775,51 @@ export const uploadTSV = async (data, fileName, folderId, html) => {
   } catch (err) {
     if ((await refreshToken()) === true)
       return await uploadFile(data, fileName, folderId, html);
+  }
+};
+
+export const uploadTSVVersion = async (data, fileName, folderId, fileId) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    const form = new FormData();
+    let blobData = "";
+    console.log('Using HTML');
+    blobData = new Blob([data], {
+      type: "text/html",
+    });
+    form.append("file", blobData);
+    form.append(
+      "attributes",
+      `{"name": "${fileName}", "parent": {"id": "${folderId}"}}`
+    );
+
+    let response = await fetch(`https://upload.box.com/api/2.0/files/${fileId}/content`, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+      body: form,
+      contentType: false,
+    });
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await uploadTSVVersion(data, fileName, folderId, fileId);
+    } else if (response.status === 201) {
+      return response.json();
+    } else if (response.status === 409) {
+      return {
+        status: response.status,
+        json: await response.json(),
+      };
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await uploadTSVVersion(data, fileName, folderId, fileId);
   }
 };
 
@@ -726,6 +952,44 @@ export const uploadFileVersion = async (data, fileId, type) => {
   }
 };
 
+export const uploadAnyFileVersion = async (data, fileId, fileName) => {
+  try {
+    const access_token = JSON.parse(localStorage.parms).access_token;
+    const form = new FormData();
+    form.append("file", data);
+    form.append(
+      "attributes",
+      `{"name": "${fileName}"}`
+    );
+
+    let response = await fetch(
+      `https://upload.box.com/api/2.0/files/${fileId}/content`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+        body: form,
+        contentType: false,
+      }
+    );
+    if (response.status === 401) {
+      if ((await refreshToken()) === true)
+        return await uploadAnyFileVersion(data, fileId);
+    } else if (response.status === 201) {
+      return response.json();
+    } else {
+      return {
+        status: response.status,
+        statusText: response.statusText,
+      };
+    }
+  } catch (err) {
+    if ((await refreshToken()) === true)
+      return await uploadAnyFileVersion(data, fileId);
+  }
+};
+
 export const uploadWordFileVersion = async (data, fileId) => {
   try {
     const access_token = JSON.parse(localStorage.parms).access_token;
@@ -796,6 +1060,9 @@ export const getCollaboration = async (id, type) => {
       if ((await refreshToken()) === true)
         return await getCollaboration(id, type);
     }
+    if (response.status === 404) {
+      return response.status;
+    }
     if (response.status === 200) {
       return response.json();
     } else {
@@ -857,7 +1124,12 @@ export const getCurrentUser = async () => {
 export const getCurrentUserERa = async () => {
   try{
     const access_token = JSON.parse(localStorage.parmsERa).access_token;
-    const response = await fetch(`https://stsstg.nih.gov/openid/connect/v1/userinfo?access_token=${access_token}`);
+    let response = ''
+    if (location.origin.match("localhost") || location.origin.match(applicationURLs.epi)) {
+      response = await fetch(`https://stsstg.nih.gov/openid/connect/v1/userinfo?access_token=${access_token}`);
+    } else if (location.origin.match(applicationURLs.prod)) {
+      response = await fetch(`https://sts.nih.gov/openid/connect/v1/userinfo?access_token=${access_token}`);
+    }
     if (response.status === 200) {
       return response.json();
     } else {
@@ -1088,7 +1360,7 @@ export const createFileTask = async (fileId) => {
     if (response.status === 401) {
       if ((await refreshToken()) === true) return await createFileTask(fileId);
     } else {
-      return response;
+      return await response.json();
     }
   } catch (err) {
     if ((await refreshToken()) === true) return await createFileTask(fileId);
@@ -1460,6 +1732,69 @@ export async function showCommentsDropDown(id) {
   return;
 }
 
+export async function showCommentsDCEG(id) {
+  const commentSection = document.getElementById(`file${id}Comments`);
+  const response = await listComments(id);
+  //console.log(response);
+  let comments = JSON.parse(response).entries;
+  if (comments.length === 0) {
+    const dropdownSection = document.getElementById(`file${id}Comments`);
+    dropdownSection.innerHTML = `
+              
+                    No Comments to show.
+        `;
+
+    return;
+  }
+  let template = ` 
+    <div class='container-fluid'>`;
+  const user = JSON.parse(localStorage.parms).login;
+  const uniqueUsers = [...new Set(comments.map((item) => item.created_by.login))]
+  //for (const user of uniqueUsers){
+      //const userComments = comments.filter(element => element.created_by.login === user);
+      let newDate = new Date(0);
+    for (const comment of comments) {
+      const comment_date = new Date(comment.created_at);
+      const date = comment_date.toLocaleDateString();
+      const time = comment_date.toLocaleTimeString();
+      //if (comment_date > newDate) {
+          newDate = comment_date;
+          const ifcons = emailforDACC.includes(comment.created_by.login);
+          if (ifcons){
+              const cons = emailforDACC.indexOf(comment.created_by.login);
+              console.log(cons);
+              const score = comment.message[8];
+              const inputScore = document.getElementById(`review${cons}${id}`);
+              try {inputScore.innerHTML = `<h6 class="badge badge-pill badge-${score}">${score}</h6>`}
+              catch {console.log(inputScore)}; 
+          }
+      //}           
+
+      template += `
+        <div>
+            <div class='row'>
+                <div class='col-8 p-0'>
+                    <p class='text-primary small mb-0 align-left'>${comment.created_by.name}</p>
+                </div>
+            `;
+
+      template += `    
+            </div>
+            <div class='row'>
+                    <p class='my-0' id='comment${comment.id}'>${comment.message}</p>
+            </div>
+            <div class='row'>
+                <p class='small mb-0 font-weight-light'>${date} at ${time}</p>
+            </div>
+            <hr class='my-1'>
+        </div>
+        `;
+      }
+  //}
+  commentSection.innerHTML = template;
+  return;
+}
+
 export const listComments = async (id) => {
   try {
     const access_token = JSON.parse(localStorage.parms).access_token;
@@ -1756,9 +2091,9 @@ export const checkDataSubmissionPermissionLevel = (data, login) => {
     );
     if (newArray.length > 0) return true;
   } else if (
-    array[0].role === "editor" ||
-    array[0].role === "co-owner" ||
-    array[0].role === "uploader"
+    array[0].role.includes("editor") ||
+    array[0].role.includes("co-owner") ||
+    array[0].role.includes("uploader")
   ) {
     return true;
   }
@@ -1868,7 +2203,6 @@ export const csvJSON = (csv) => {
 };
 
 export const tsv2Json = (tsv) => {
-  console.log(tsv);
   const lines = tsv
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -1877,11 +2211,11 @@ export const tsv2Json = (tsv) => {
     .split(/[\r]+/g);
   const result = [];
   const headers = lines[0].replace(/"/g, "").split(/[\t]/g);
-  console.log(lines);
+  //console.log(lines);
   for (let i = 1; i < lines.length; i++) {
     const obj = {};
     const currentline = lines[i].split(/[\t]/g);
-    console.log(currentline);
+    //console.log(currentline);
     for (let j = 0; j < headers.length; j++) {
       if (currentline[j]) {
         let value = headers[j];
@@ -1929,13 +2263,16 @@ export const csv2Json = (csv) => {
   for (let i = 1; i < lines.length; i++) {
     const obj = {};
     const currentline = lines[i].split(/[,\t]/g);
+    console.log(currentline);
     for (let j = 0; j < headers.length; j++) {
       if (currentline[j]) {
         let value = headers[j];
         obj[value] = currentline[j];
+        console.log(obj);
       }
     }
     if (Object.keys(obj).length > 0) result.push(obj);
+    console.log(result);
   }
   return {
     data: result,
@@ -2096,9 +2433,9 @@ export function selectProps(...props){
   }
 };
 
-// Need to change to BCRPP urls
 export const applicationURLs = {
+  epi: "https://episphere.github.io",
   dev: "https://episphere.github.io/dataplatform",
   stage: "https://epidataplatforms-stage.cancer.gov",
-  prod: "34.98.117.145",
+  prod: "https://epidataplatforms.cancer.gov",
 };
