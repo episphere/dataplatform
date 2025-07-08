@@ -2,6 +2,12 @@
 <html lang="en-US">
   <!--- Changes needed host url, checking changes made-->
   <head>
+    <!--If directed here from confluence.gov-->
+    <script>
+      if (location.hostname === 'confluence.cancer.gov') {
+        location.href = 'https://epidataplatforms.cancer.gov/confluence';
+      }
+    </script>
     <!-- <script>
       const host = location.host;
       let measurementID = "";
